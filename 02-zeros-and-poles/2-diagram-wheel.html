@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tone Wheels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lesson.css">
+  <style>
+    body { padding: 3rem 1rem; }
+    .frame { max-width: 1000px; margin: 0 auto; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+  </style>
+  <style id="wh-style">
+    .wh .bg { fill: var(--paper); }
+    .wh .axis { stroke: var(--rule); stroke-width: 1; }
+    .wh .wheel { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+    .wh .hop { fill: none; stroke: var(--input); stroke-width: 1.6; stroke-dasharray: 5 4; }
+    .wh .stop { fill: var(--ink); }
+    .wh .stop0 { fill: var(--input); }
+    .wh .num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+    .wh .name { font-family: var(--font-body); font-weight: 600; font-size: 16px; fill: var(--ink); }
+    .wh .read { font-family: var(--font-mono); font-size: 13px; fill: var(--ink-soft); }
+    .wh .note { font-family: var(--font-title); font-style: italic; font-size: 16px; fill: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="diagram-container">
+      <svg class="wh" viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tone-wheels-title tone-wheels-desc">
+        <title id="tone-wheels-title">Every tone turns a wheel</title>
+        <desc id="tone-wheels-desc">At 8,000 samples per second, a 1,000 Hz tone turns a dot 45° per sample and stops at eight places, a 2,000 Hz tone turns 90° and stops at four, and the 4,000 Hz whine turns 180° and flips between right and left; reading the dot's left-right position at each stop gives the tone's samples.</desc>
+        <rect class="bg" width="1000" height="420"/>
+        <line class="axis" x1="74" y1="200" x2="286" y2="200"/>
+        <circle class="wheel" cx="180" cy="200" r="90"/>
+        <path class="hop" d="M270.0 200.0 L243.6 136.4 L180.0 110.0 L116.4 136.4 L90.0 200.0 L116.4 263.6 L180.0 290.0 L243.6 263.6 L270.0 200.0"/>
+        <circle class="stop0" cx="270.0" cy="200.0" r="8"/>
+        <text class="num" x="292.0" y="204.0" text-anchor="middle">0</text>
+        <circle class="stop" cx="243.6" cy="136.4" r="6"/>
+        <text class="num" x="259.2" y="124.8" text-anchor="middle">1</text>
+        <circle class="stop" cx="180.0" cy="110.0" r="6"/>
+        <text class="num" x="180.0" y="92.0" text-anchor="middle">2</text>
+        <circle class="stop" cx="116.4" cy="136.4" r="6"/>
+        <text class="num" x="100.8" y="124.8" text-anchor="middle">3</text>
+        <circle class="stop" cx="90.0" cy="200.0" r="6"/>
+        <text class="num" x="68.0" y="204.0" text-anchor="middle">4</text>
+        <circle class="stop" cx="116.4" cy="263.6" r="6"/>
+        <text class="num" x="100.8" y="283.2" text-anchor="middle">5</text>
+        <circle class="stop" cx="180.0" cy="290.0" r="6"/>
+        <text class="num" x="180.0" y="316.0" text-anchor="middle">6</text>
+        <circle class="stop" cx="243.6" cy="263.6" r="6"/>
+        <text class="num" x="259.2" y="283.2" text-anchor="middle">7</text>
+        <text class="name" x="180" y="342" text-anchor="middle">1,000 Hz · 45° per sample</text>
+        <text class="read" x="180" y="368" text-anchor="middle">reads 1, 0.71, 0, −0.71, −1, −0.71, 0, 0.71</text>
+        <line class="axis" x1="394" y1="200" x2="606" y2="200"/>
+        <circle class="wheel" cx="500" cy="200" r="90"/>
+        <path class="hop" d="M590.0 200.0 L500.0 110.0 L410.0 200.0 L500.0 290.0 L590.0 200.0"/>
+        <circle class="stop0" cx="590.0" cy="200.0" r="8"/>
+        <text class="num" x="612.0" y="204.0" text-anchor="middle">0</text>
+        <circle class="stop" cx="500.0" cy="110.0" r="6"/>
+        <text class="num" x="500.0" y="92.0" text-anchor="middle">1</text>
+        <circle class="stop" cx="410.0" cy="200.0" r="6"/>
+        <text class="num" x="388.0" y="204.0" text-anchor="middle">2</text>
+        <circle class="stop" cx="500.0" cy="290.0" r="6"/>
+        <text class="num" x="500.0" y="316.0" text-anchor="middle">3</text>
+        <text class="name" x="500" y="342" text-anchor="middle">2,000 Hz · 90° per sample</text>
+        <text class="read" x="500" y="368" text-anchor="middle">reads 1, 0, −1, 0</text>
+        <line class="axis" x1="714" y1="200" x2="926" y2="200"/>
+        <circle class="wheel" cx="820" cy="200" r="90"/>
+        <path class="hop" d="M910.0 200.0 L730.0 200.0"/>
+        <circle class="stop0" cx="910.0" cy="200.0" r="8"/>
+        <text class="num" x="932.0" y="204.0" text-anchor="middle">0</text>
+        <circle class="stop" cx="730.0" cy="200.0" r="6"/>
+        <text class="num" x="708.0" y="204.0" text-anchor="middle">1</text>
+        <text class="name" x="820" y="342" text-anchor="middle">4,000 Hz · 180° per sample</text>
+        <text class="read" x="820" y="368" text-anchor="middle">reads 1, −1</text>
+        <text class="note" x="500" y="400" text-anchor="middle">read the dot's left-right position at each numbered stop: those are the samples</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Whistle at five thousand hertz into a phone, and the phone stores three thousand.
+You have seen this before. On video, a fast wheel can seem to turn backwards.
+A phone cannot store a wave. It measures the wave eight thousand times per second, and keeps only those dots.
+Between two dots, it knows nothing. So it draws the slowest wave that fits them.
+For a slow tone, the slowest fit is the true tone. For a fast tone, a slower wave fits the same dots.
+The limit is half the sampling rate: four thousand hertz. Above it, a tone folds back, like a mirror. Five thousand is one thousand above, so it lands one thousand below.
+After sampling, the true tone and the false one give the same numbers. You cannot undo it. So the phone network removes high tones before it samples.
+Sampling sees only dots. Stay below half the sampling rate, or filter first.

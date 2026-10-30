@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sampling and Aliasing</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&display=block">
+<style>
+/* ACCENT = what the phone stores */
+:root {
+  --ground: #F8F4EC;
+  --surface: #EFE8DE;
+  --ink: #43334C;
+  --ink-soft: #7A6C82;
+  --rule: #E0D8DB;
+  --accent: #E83C91;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene { position: absolute; inset: 0; }
+.cam { position: absolute; inset: 0; }
+.layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(0 calc(1920px - var(--x0) - var(--p) * var(--w)) 0 0); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 48px; line-height: 56px; white-space: pre; letter-spacing: 0.02em; }
+.lbl.s { font-size: 36px; line-height: 44px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent); }
+.big { position: absolute; font-family: var(--sans); font-weight: 600; font-size: 64px; line-height: 72px; white-space: pre; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const M = Motion.film({ fps: 30, duration: 67.7, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#43334C', soft: '#7A6C82', rule: '#E0D8DB', accent: '#E83C91', surface: '#EFE8DE', ground: '#F8F4EC' };
+const FS = 8000, T = 0.002, N = 16;
+const main = document.getElementById('main');
+let uid = 0;
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }
+function scene(id) { const existing = document.getElementById(id + 'cam'); if (existing) return existing; const s = el('section', { id, class: 'scene' }, main); return el('div', { id: id + 'cam', class: 'cam' }, s); }
+['s1', 's2', 's3', 's5', 's6', 's7', 's7b', 's8'].forEach(scene);
+function layer(parent, inner, opts = {}) {
+  const id = opts.id || 'L' + (++uid);
+  const d = el('div', { id, class: 'layer' + (opts.reveal ? ' reveal' : '') }, parent);
+  if (opts.reveal) { d.style.setProperty('--x0', opts.reveal[0] + 'px'); d.style.setProperty('--w', (opts.reveal[1] - opts.reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid);
+  const e = el('div', { id, class: cls }, parent); e.textContent = text;
+  e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 600) + 'px'; e.style.width = '1200px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+function wavePath(f, x0, x1, yc, amp) { let d = ''; const steps = 900; for (let i = 0; i <= steps; i++) { const t = T * i / steps, x = x0 + (x1 - x0) * i / steps, y = yc - amp * Math.cos(2 * Math.PI * f * t); d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); } return d; }
+function dotXY(f, n, x0, x1, yc, amp) { return [x0 + (x1 - x0) * n / N, yc - amp * Math.cos(2 * Math.PI * f * n / FS)]; }
+function holdSteps(f, x0, x1, yc, amp) { let d = ''; let prev; for (let n = 0; n <= N; n++) { const [x, y] = dotXY(f, n, x0, x1, yc, amp); if (prev) d += `M${x} ${prev} L${x} ${y}`; if (n < N) d += `M${x} ${y} L${x + (x1 - x0) / N} ${y}`; prev = y; } return d; }
+const reveal = (sel, a, b, ease = 'softInOut', from = 0) => M.kf(sel, '--p', [[0, from], [a, from], [b, 1, ease]]);
+const fade = (sel, a, b, to = 0, from = 1) => M.kf(sel, 'opacity', [[0, from], [a, from], [b, to, 'softInOut']]);
+
+function scope(parent, { x0, x1, yc, amp, f, trueAlpha = .5 }) {
+  const base = layer(parent, `<line x1="${x0}" y1="${yc}" x2="${x1}" y2="${yc}" stroke="${C.rule}" stroke-width="3"/>`);
+  const tw = layer(parent, `<path d="${wavePath(f, x0, x1, yc, amp)}" fill="none" stroke="${C.ink}" stroke-opacity="${trueAlpha}" stroke-width="3"/>`, { reveal: [x0, x1] });
+  const hold = layer(parent, `<path d="${holdSteps(f, x0, x1, yc, amp)}" fill="none" stroke="${C.ink}" stroke-opacity=".28" stroke-width="2.5"/>`);
+  const dots = [];
+  for (let n = 0; n <= N; n++) { const [x, y] = dotXY(f, n, x0, x1, yc, amp); dots.push(layer(parent, `<circle cx="${x}" cy="${y}" r="11" fill="${C.ink}"/>`)); }
+  return { base, tw, hold, dots, stored: fs => layer(parent, `<path d="${wavePath(fs, x0, x1, yc, amp)}" fill="none" stroke="${C.accent}" stroke-width="6"/>`, { reveal: [x0, x1] }) };
+}
+const showDots = (dots, at, gap) => dots.forEach((d, i) => M.show(d, at + Math.round(i * gap)));
+
+/* S1 HOOK 0-189: a 5,000 Hz whistle, sampled, stored as 3,000 Hz */
+{
+  const cam = scene('s1');
+  const s = scope(cam, { x0: 160, x1: 1760, yc: 600, amp: 260, f: 5000 });
+  reveal(s.tw, 0, 50, 'softLand', .12);
+  M.show(s.hold, 40); showDots(s.dots, 40, 1.5);
+  const st = s.stored(3000); reveal(st, 132, 166, 'softLand');
+  M.show(label(cam, '5,000 Hz', 160, 120), 36);
+  M.show(label(cam, '3,000 Hz', 1760, 120, 'lbl acc', 'right'), 132);
+  M.drift('#s1cam', { prop: 'scale', from: 1, to: 1.035, start: 0, end: 189 });
+}
+
+/* S2 FAMILIAR 189-393: a wheel filmed at a frame rate turns backwards */
+{
+  M.cut(189, { hide: ['#s1'], show: ['#s2'] });
+  const cam = scene('s2');
+  const spokes = r => [0, 45, 90, 135].map(a => { const c = Math.cos(a * Math.PI / 180) * r, s = Math.sin(a * Math.PI / 180) * r; return `<line x1="${-c}" y1="${-s}" x2="${c}" y2="${s}" stroke="${C.ink}" stroke-width="10" stroke-linecap="round"/>`; }).join('');
+  const wheel = (cx, id) => { const d = el('div', { id, style: `position:absolute;left:${cx - 300}px;top:220px;width:600px;height:600px` }, cam); d.innerHTML = `<svg viewBox="-300 -300 600 600" width="600" height="600"><circle r="270" fill="none" stroke="${C.ink}" stroke-width="14"/>${spokes(262)}<circle r="26" fill="${C.ink}"/></svg>`; return '#' + id; };
+  const real = wheel(520, 'wheelReal'), video = wheel(1400, 'wheelVideo');
+  const per = 40, span = 393 - 189, total = per * span / 6;
+  M.kf(real, 'rotation', [[189, 0], [393, total]]);
+  M.kf(video, 'rotation', [[189, 0], [393, total]], { step: 6 });
+  M.show(label(cam, 'real', 520, 880, 'lbl', 'center'), 189);
+  M.show(label(cam, 'on video', 1400, 880, 'lbl acc', 'center'), 250);
+  M.show(layer(cam, `<path d="M 700 160 A 300 300 0 0 1 820 300" fill="none" stroke="${C.ink}" stroke-width="5"/><path d="M 806 284 L 822 304 L 832 278" fill="none" stroke="${C.ink}" stroke-width="5"/>`), 200);
+  M.show(layer(cam, `<path d="M 1580 300 A 300 300 0 0 0 1460 160" fill="none" stroke="${C.accent}" stroke-width="5"/><path d="M 1478 152 L 1456 158 L 1466 180" fill="none" stroke="${C.accent}" stroke-width="5"/>`), 262);
+}
+
+/* S3+S4 SAMPLING 393-843: measure at fixed moments, keep only dots, fit the slowest wave */
+{
+  M.cut(393, { hide: ['#s2'], show: ['#s3'] });
+  const cam = scene('s3');
+  const g = { x0: 160, x1: 1760, yc: 600, amp: 260, f: 1000 };
+  const s = scope(cam, g);
+  reveal(s.tw, 393, 430, 'softLand', .2);
+  const sweep = layer(cam, `<line x1="0" y1="250" x2="0" y2="950" stroke="${C.ink}" stroke-width="3" stroke-dasharray="10 8"/>`);
+  M.show(sweep, 455); M.hide(sweep, 594);
+  M.kf(sweep, 'x', [[0, g.x0], [455, g.x0], [592, g.x1]]);
+  s.dots.forEach((d, n) => M.show(d, 455 + Math.round(n / N * 137)));
+  M.show(label(cam, '8,000 per second', 160, 120), 494, 748);
+  fade(s.tw, 560, 600);
+  const gap = layer(cam, `<rect x="${g.x0 + 4 * 100 + 14}" y="300" width="72" height="600" fill="${C.surface}"/><text x="${g.x0 + 450}" y="300" text-anchor="middle" font-family="Geist Mono, monospace" font-size="64" fill="${C.ink}">?</text>`);
+  M.show(gap, 660); M.hide(gap, 742);
+  const fit = layer(cam, `<path d="${wavePath(1000, g.x0, g.x1, g.yc, g.amp)}" fill="none" stroke="${C.ink}" stroke-width="5"/>`, { reveal: [g.x0, g.x1] });
+  reveal(fit, 748, 800, 'softInOut');
+  M.show(label(cam, 'slowest fit', 1760, 120, 'lbl', 'right'), 748);
+  M.drift('#s3cam', { prop: 'scale', from: 1, to: 1.05, start: 393, end: 843 });
+}
+
+/* S5 COMPARE 843-1107: slow tone keeps itself, fast tone becomes a slower one */
+{
+  M.cut(843, { hide: ['#s3'], show: ['#s5'] });
+  const cam = scene('s5');
+  const top = scope(cam, { x0: 420, x1: 1760, yc: 300, amp: 150, f: 1000, trueAlpha: .9 });
+  M.show(top.hold, 843); showDots(top.dots, 843, 0);
+  reveal(top.tw, 843, 870, 'softLand', .3);
+  const topSt = top.stored(1000); reveal(topSt, 880, 925);
+  M.show(label(cam, '1,000 Hz', 160, 230), 843);
+  M.show(label(cam, 'stored 1,000', 160, 300, 'lbl s'), 900);
+  const bot = scope(cam, { x0: 420, x1: 1760, yc: 760, amp: 150, f: 5000 });
+  reveal(bot.tw, 955, 990, 'softLand');
+  M.show(bot.hold, 975); showDots(bot.dots, 975, 1.2);
+  const botSt = bot.stored(3000); reveal(botSt, 1030, 1075);
+  M.show(label(cam, '5,000 Hz', 160, 690), 955);
+  M.show(label(cam, 'stored 3,000', 160, 760, 'lbl s acc'), 1030);
+  M.drift('#s5cam', { prop: 'scale', from: 1.04, to: 1, start: 843, end: 1107 });
+}
+
+/* S6 DISCOVERY 1107-1506: the fold chart; 5,000 is 1,000 above the limit and lands 1,000 below */
+const chart = { X0: 260, X1: 1660, Y0: 900, Y1: 260 };
+const cx = f => chart.X0 + f * (chart.X1 - chart.X0) / 8000, cy = r => chart.Y0 - r * (chart.Y0 - chart.Y1) / 4000;
+function foldChart(parent, prefix) {
+  const ids = {};
+  ids.zone = layer(parent, `<rect x="${cx(4000)}" y="${cy(4000)}" width="${cx(8000) - cx(4000)}" height="${chart.Y0 - cy(4000)}" fill="${C.surface}"/>`);
+  ids.axes = layer(parent, `<line x1="${chart.X0}" y1="${chart.Y0}" x2="${chart.X1}" y2="${chart.Y0}" stroke="${C.ink}" stroke-width="3"/><line x1="${chart.X0}" y1="${chart.Y0}" x2="${chart.X0}" y2="${cy(4000) - 20}" stroke="${C.ink}" stroke-width="3"/>` +
+    [0, 4000, 8000].map(f => `<text x="${cx(f)}" y="${chart.Y0 + 56}" text-anchor="middle" font-family="Geist Mono, monospace" font-size="34" fill="${C.soft}">${f.toLocaleString('en-US')}</text>`).join('') +
+    `<text x="${chart.X1}" y="${chart.Y0 + 108}" text-anchor="end" font-family="Geist Mono, monospace" font-size="30" fill="${C.soft}">TRUE TONE (Hz)</text><text x="${chart.X0}" y="${cy(4000) - 44}" font-family="Geist Mono, monospace" font-size="30" fill="${C.soft}">STORED (Hz)</text>`);
+  ids.limit = layer(parent, `<line x1="${cx(4000)}" y1="${cy(4000) - 40}" x2="${cx(4000)}" y2="${chart.Y0}" stroke="${C.ink}" stroke-width="3" stroke-dasharray="12 9"/>`);
+  ids.safe = layer(parent, `<path d="M${cx(0)} ${cy(0)} L${cx(4000)} ${cy(4000)}" fill="none" stroke="${C.ink}" stroke-width="7"/>`, { reveal: [cx(0), cx(4000)] });
+  ids.fold = layer(parent, `<path d="M${cx(4000)} ${cy(4000)} L${cx(8000)} ${cy(0)}" fill="none" stroke="${C.accent}" stroke-width="7" stroke-dasharray="22 12"/>`, { reveal: [cx(4000), cx(8000)] });
+  return ids;
+}
+{
+  M.cut(1107, { hide: ['#s5'], show: ['#s6'] });
+  const cam = scene('s6');
+  const k = foldChart(cam);
+  M.show(k.axes, 1107); M.show(k.zone, 1228);
+  M.show(k.limit, 1123);
+  M.show(label(cam, 'limit 4,000 Hz', cx(4000), 150, 'lbl', 'center'), 1182);
+  reveal(k.safe, 1107, 1200, 'softInOut', .15);
+  reveal(k.fold, 1268, 1300, 'whip');
+  const over = layer(cam, `<line x1="${cx(4000)}" y1="${chart.Y0 - 30}" x2="${cx(5000)}" y2="${chart.Y0 - 30}" stroke="${C.ink}" stroke-width="5"/><line x1="${cx(4000)}" y1="${chart.Y0 - 46}" x2="${cx(4000)}" y2="${chart.Y0 - 14}" stroke="${C.ink}" stroke-width="5"/><line x1="${cx(5000)}" y1="${chart.Y0 - 46}" x2="${cx(5000)}" y2="${chart.Y0 - 14}" stroke="${C.ink}" stroke-width="5"/>`);
+  M.show(over, 1355);
+  M.show(label(cam, '+1,000', (cx(4000) + cx(5000)) / 2 - 80, chart.Y0 - 100, 'lbl s'), 1362);
+  const trueDot = layer(cam, `<circle cx="${cx(5000)}" cy="${cy(3000)}" r="18" fill="${C.ink}"/>`);
+  M.show(trueDot, 1328);
+  M.show(label(cam, '5,000', cx(5000) + 34, cy(3000) - 28), 1328);
+  const mirror = layer(cam, `<path d="M${cx(3000)} ${cy(3000)} L${cx(5000)} ${cy(3000)}" fill="none" stroke="${C.accent}" stroke-width="5"/>`, { reveal: [cx(3000), cx(5000)] });
+  M.kf(mirror, '--p', [[0, 0], [1413, 0], [1440, 1, 'softLand']]);
+  const mEl = document.querySelector(mirror);
+  mEl.style.transformOrigin = `${(cx(3000) + cx(5000)) / 2}px 50%`; mEl.style.scale = '-1 1';
+  const recDot = layer(cam, `<circle cx="${cx(3000)}" cy="${cy(3000)}" r="18" fill="${C.ground}" stroke="${C.accent}" stroke-width="7"/>`);
+  M.show(recDot, 1440);
+  M.show(label(cam, '3,000 Hz', cx(3000) - 34, cy(3000) - 28, 'lbl acc', 'right'), 1440);
+  M.drift('#s6cam', { prop: 'scale', from: 1, to: 1.03, start: 1107, end: 1506 });
+}
+
+/* S7 CONSEQUENCE 1506-1839: identical numbers, then a filter before the sampler */
+{
+  M.cut(1506, { hide: ['#s6'], show: ['#s7'] });
+  const cam = scene('s7');
+  const fmt = v => { const r = Math.round(v * 100) / 100; return (r < 0 ? '−' : ' ') + Math.abs(r).toFixed(2); };
+  M.show(label(cam, '3,000 Hz', 620, 150, 'big', 'center'), 1506);
+  M.show(label(cam, '5,000 Hz', 1300, 150, 'big', 'center'), 1506);
+  for (let n = 0; n < 6; n++) {
+    const y = 270 + n * 96;
+    M.show(label(cam, fmt(Math.cos(2 * Math.PI * 3000 * n / FS)), 700, y, 'lbl', 'right'), 1531 + n * 5);
+    M.show(label(cam, fmt(Math.cos(2 * Math.PI * 5000 * n / FS)), 1380, y, 'lbl', 'right'), 1576 + n * 5);
+    M.show(label(cam, '=', 960, y, 'lbl acc', 'center'), 1619);
+  }
+  M.show(label(cam, 'sample 0 to 5, at 8,000 per second', 960, 870, 'lbl s', 'center'), 1531);
+  M.drift('#s7cam', { prop: 'scale', from: 1, to: 1.04, start: 1506, end: 1688 });
+}
+{
+  M.cut(1688, { hide: ['#s7'], show: ['#s7b'] });
+  const cam = scene('s7b');
+  const ax = layer(cam, `<line x1="${chart.X0}" y1="600" x2="${chart.X1}" y2="600" stroke="${C.ink}" stroke-width="3"/>` + [0, 4000, 8000].map(f => `<text x="${cx(f)}" y="664" text-anchor="middle" font-family="Geist Mono, monospace" font-size="34" fill="${C.soft}">${f.toLocaleString('en-US')}</text>`).join('') + `<text x="${chart.X1}" y="716" text-anchor="end" font-family="Geist Mono, monospace" font-size="30" fill="${C.soft}">TONE (Hz)</text>`);
+  M.show(ax, 1688);
+  const band = layer(cam, `<rect x="${cx(3400)}" y="380" width="${cx(8000) - cx(3400)}" height="220" fill="${C.surface}"/><line x1="${cx(3400)}" y1="360" x2="${cx(3400)}" y2="600" stroke="${C.ink}" stroke-width="8"/>`, { reveal: [cx(3400) - 6, cx(8000)] });
+  reveal(band, 1722, 1750, 'softLand');
+  M.show(label(cam, 'filter 3,400 Hz', cx(3400), 270, 'lbl', 'center'), 1722);
+  const low = layer(cam, `<circle cx="${cx(1000)}" cy="540" r="20" fill="${C.ink}"/>`), high = layer(cam, `<circle cx="${cx(5000)}" cy="540" r="20" fill="${C.ink}"/>`);
+  M.show(low, 1688); M.show(high, 1688);
+  M.show(label(cam, 'voice 1,000', cx(1000), 440, 'lbl s', 'center'), 1695);
+  const hl = label(cam, 'whistle 5,000', cx(5000), 440, 'lbl s', 'center');
+  M.show(hl, 1702);
+  fade(high, 1749, 1784); fade(hl, 1749, 1784);
+  M.show(label(cam, 'removed', cx(5000), 420, 'lbl s', 'center'), 1786);
+}
+
+/* S8 RECAP 1839-end: the fold chart again, with the filter in front of the fold */
+{
+  M.cut(1839, { hide: ['#s7b'], show: ['#s8'] });
+  const cam = scene('s8');
+  const k = foldChart(cam);
+  [k.zone, k.axes, k.limit].forEach(i => M.show(i, 1839));
+  reveal(k.safe, 1839, 1870, 'softLand', .3);
+  reveal(k.fold, 1880, 1905, 'softLand', 0);
+  M.show(label(cam, 'limit 4,000 Hz', cx(4000), 150, 'lbl', 'center'), 1839);
+  const gate = layer(cam, `<rect x="${cx(3400)}" y="${cy(4000) - 40}" width="${cx(8000) - cx(3400)}" height="${chart.Y0 - cy(4000) + 40}" fill="${C.ground}" fill-opacity=".78"/><line x1="${cx(3400)}" y1="${cy(4000) - 40}" x2="${cx(3400)}" y2="${chart.Y0}" stroke="${C.ink}" stroke-width="8"/>`, { reveal: [cx(3400) - 6, cx(8000)] });
+  reveal(gate, 1988, 2012, 'softLand');
+  M.show(label(cam, 'filter first', cx(6000), cy(3400), 'lbl', 'center'), 1990);
+  M.drift('#s8cam', { prop: 'scale', from: 1.06, to: 1, start: 1839, end: 2031 });
+}
+
+['#s2', '#s3', '#s5', '#s6', '#s7', '#s7b', '#s8'].forEach(s => M.hide(s, 0));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

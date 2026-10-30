@@ -1,0 +1,49 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.950
+Every call on your phone line now carries a thin, high whine. Four thousand hertz, right at the limit.
+
+2
+00:00:05.350 --> 00:00:10.470
+You can't swap the cheap chip that causes it. [sigh] All you have are the samples: eight thousand numbers every second.
+
+3
+00:00:11.270 --> 00:00:17.700
+So try the laziest idea there is. Average each sample with the one before it. The whine's samples flip up, down, up, down, so every average lands on zero.
+
+4
+00:00:18.200 --> 00:00:24.520
+A voice moves slowly. Its neighboring samples are almost equal, so their averages come out almost the same. The voice passes, and the whine is gone.
+
+5
+00:00:25.520 --> 00:00:39.880
+Here is the picture behind it. A tone is a dot going round a wheel, and its pitch is how far the dot turns between two samples. The whine flips it halfway around, every single time. So put every tone on that wheel, zero hertz on the right, four thousand on the left. The average has one special point, a zero, sitting right where the whine lands.
+
+6
+00:00:40.380 --> 00:00:45.420
+How much of a tone gets out depends on its distance to that zero. Far away, almost all of it. On the zero, nothing at all.
+
+7
+00:00:46.420 --> 00:00:53.340
+Then the whine moves, to two thousand hertz, the top of the circle. So you put a zero up there instead, with its mirror twin at the bottom, and the whine is gone again.
+
+8
+00:00:53.840 --> 00:01:00.630
+But now everyone sounds like they're talking through a sock. Unroll the circle into a line of tones, and you can see why: the zeros dull every tone around them.
+
+9
+00:01:01.430 --> 00:01:08.730
+The fix is feedback. Let the filter reuse its own past output, and you get poles, points that push the volume back up. Put one just inside the circle, right beside each zero.
+
+10
+00:01:09.130 --> 00:01:14.890
+For any tone far from the whine, a zero and its pole cancel out, [surprise-oh] and the voice comes back whole. Only the whine is removed.
+
+11
+00:01:16.090 --> 00:01:24.640
+There's one rule. A pole's distance from the center is how much each echo keeps. Inside the circle, every echo is smaller than the last. Push a pole outside, and each echo grows, until the filter blows up.
+
+12
+00:01:25.440 --> 00:01:31.110
+Zeros remove tones. Poles give the neighbors back. And now, every time a call starts, a faint ring is left behind. That's the next bug.

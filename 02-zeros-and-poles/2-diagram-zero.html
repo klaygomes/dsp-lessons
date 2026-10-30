@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero on the Circle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lesson.css">
+  <style>
+    body { padding: 3rem 1rem; }
+    .frame { max-width: 1000px; margin: 0 auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .frame h1 { margin-bottom: 1.5rem; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+  <style id="zc-style">
+    .zc .bg { fill: var(--paper); }
+    .zc .circle { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+    .zc .alias { fill: none; stroke: var(--rule); stroke-width: 1.6; stroke-dasharray: 4 4; }
+    .zc .axis { stroke: var(--rule); stroke-width: 1; }
+    .zc .tick { stroke: var(--ink-soft); stroke-width: 1.4; }
+    .zc .dist { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 8 5; fill: none; }
+    .zc .tone { fill: var(--ink); }
+    .zc .zero { fill: var(--paper); stroke: var(--accent); stroke-width: 3; }
+    .zc .removed { fill: var(--accent); }
+    .zc .mask { fill: var(--paper); }
+    .zc .lbl { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; fill: var(--ink); }
+    .zc .lbl-acc { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; fill: var(--accent-ink); }
+    .zc .soft { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; fill: var(--ink-soft); }
+    .zc .note { font-family: var(--font-title); font-style: italic; font-size: 16px; fill: var(--ink-soft); }
+    .zc .head { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; fill: var(--ink-soft); }
+    .zc .row { font-family: var(--font-body); font-size: 15px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+    .zc .row-acc { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); font-variant-numeric: tabular-nums; }
+    .zc .rule { stroke: var(--rule); stroke-width: 1; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Unit circle · two-point average · 8,000 samples per second</p>
+    <h1>The closer a tone is to the zero, the less of it passes</h1>
+
+    <div class="diagram-container">
+      <svg class="zc" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="zero-circle-title zero-circle-desc">
+        <title id="zero-circle-title">The closer a tone is to the zero, the less of it passes</title>
+        <desc id="zero-circle-desc">On the unit circle, 0 Hz sits at the right, 2,000 Hz at the top and 4,000 Hz at the left, where the two-point average has its zero; the share of a tone that passes is its distance to the zero divided by 2, so 0 Hz passes 100%, 2,000 Hz passes 71% and 4,000 Hz is removed.</desc>
+
+        <rect class="bg" width="1000" height="560"/>
+
+        <line class="axis" x1="100" y1="300" x2="560" y2="300"/>
+        <path class="alias" d="M 140 300 A 200 200 0 0 0 540 300"/>
+        <path class="circle" d="M 540 300 A 200 200 0 0 0 140 300"/>
+
+        <line class="tick" x1="481.4" y1="158.6" x2="492.7" y2="147.3"/>
+        <line class="tick" x1="198.6" y1="158.6" x2="187.3" y2="147.3"/>
+        <text class="soft" x="500" y="140">1,000</text>
+        <text class="soft" x="180" y="140" text-anchor="end">3,000</text>
+
+        <line class="dist" x1="540" y1="300" x2="140" y2="300"/>
+        <path class="dist" d="M 340 100 L 140 300"/>
+
+        <circle class="zero" cx="140" cy="300" r="13"/>
+        <circle class="removed" cx="140" cy="300" r="5"/>
+        <circle class="tone" cx="540" cy="300" r="7"/>
+        <circle class="tone" cx="340" cy="100" r="7"/>
+
+        <text class="lbl" x="556" y="296">0 Hz</text>
+        <text class="lbl" x="340" y="80" text-anchor="middle">2,000 Hz</text>
+        <text class="lbl-acc" x="122" y="276" text-anchor="end">4,000 Hz</text>
+        <text class="lbl-acc" x="122" y="294" text-anchor="end">ON THE ZERO</text>
+
+        <rect class="mask" x="274" y="304" width="132" height="22"/>
+        <text class="soft" x="340" y="319" text-anchor="middle">DISTANCE 2.00</text>
+        <rect class="mask" x="244" y="236" width="112" height="22"/>
+        <text class="soft" x="300" y="251" text-anchor="middle">DISTANCE 1.41</text>
+
+        <text class="note" x="340" y="528" text-anchor="middle">lower half: each tone's mirror arrow</text>
+
+        <text class="head" x="640" y="170">TONE</text>
+        <text class="head" x="760" y="170">DISTANCE</text>
+        <text class="head" x="880" y="170">PASSES</text>
+        <line class="rule" x1="640" y1="184" x2="960" y2="184"/>
+        <text class="row" x="640" y="214">0 Hz</text>
+        <text class="row" x="760" y="214">2.00</text>
+        <text class="row" x="880" y="214">100%</text>
+        <line class="rule" x1="640" y1="230" x2="960" y2="230"/>
+        <text class="row" x="640" y="260">2,000 Hz</text>
+        <text class="row" x="760" y="260">1.41</text>
+        <text class="row" x="880" y="260">71%</text>
+        <line class="rule" x1="640" y1="276" x2="960" y2="276"/>
+        <text class="row-acc" x="640" y="306">4,000 Hz</text>
+        <text class="row-acc" x="760" y="306">0</text>
+        <text class="row-acc" x="880" y="306">0%, removed</text>
+        <line class="rule" x1="640" y1="322" x2="960" y2="322"/>
+        <text class="note" x="640" y="356">passes = distance to the zero ÷ 2</text>
+        <text class="note" x="640" y="378">(2 is the distance of 0 Hz)</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

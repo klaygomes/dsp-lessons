@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequency Folding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lesson.css">
+  <style>
+    :root { --bg: var(--paper); --surface: var(--paper-2); --fg: var(--ink); --muted: var(--ink-soft); }
+    :root { --dd-serif: "Instrument Serif", serif; --dd-sans: "Geist", system-ui, sans-serif; --dd-mono: "Geist Mono", ui-monospace, monospace; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--dd-sans); background: var(--bg); color: var(--fg); padding: 3rem 1rem; }
+    .frame { max-width: 1000px; margin: 0 auto; }
+    .eyebrow { font-family: var(--dd-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--dd-serif); font-weight: 400; letter-spacing: -0.02em; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); margin-bottom: 1.5rem; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+    .bg { fill: var(--bg); }
+    .zone { fill: var(--surface); }
+    .grid { stroke: var(--rule); stroke-width: 1; }
+    .axis { stroke: var(--fg); stroke-width: 1.2; }
+    .safe { stroke: var(--fg); stroke-width: 2.4; fill: none; }
+    .fold { stroke: var(--accent); stroke-width: 2.4; fill: none; stroke-dasharray: 10 5; }
+    .limit { stroke: var(--fg); stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .mirror { stroke: var(--accent); stroke-width: 1.4; fill: none; }
+    .dot-true { fill: var(--accent-ink); }
+    .dot-rec { fill: var(--bg); stroke: var(--fg); stroke-width: 2.4; }
+    .mask { fill: var(--bg); }
+    .zmask { fill: var(--surface); }
+    .tick, .cap, .lbl { font-family: var(--dd-mono); fill: var(--muted); }
+    .tick { font-size: 11px; }
+    .cap { font-size: 11px; letter-spacing: 0.14em; }
+    .lbl { font-size: 12px; letter-spacing: 0.08em; fill: var(--fg); }
+    .zone-name { font-family: var(--dd-sans); font-weight: 600; font-size: 15px; fill: var(--fg); }
+    .note { font-family: var(--dd-serif); font-style: italic; font-size: 15px; fill: var(--muted); }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Line chart · sampling at 8,000 samples per second</p>
+    <h1>Above half the sampling rate, frequencies fold back</h1>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="frequency-folding-title frequency-folding-desc">
+        <title id="frequency-folding-title">Above half the sampling rate, frequencies fold back</title>
+        <desc id="frequency-folding-desc">At 8,000 samples per second, a true frequency up to 4,000 Hz is stored as itself, and a higher true frequency is stored as 8,000 Hz minus that frequency, so a 5,000 Hz tone is stored as 3,000 Hz.</desc>
+
+        <rect class="bg" width="1000" height="520"/>
+        <rect class="zone" x="500" y="80" width="420" height="340"/>
+
+        <line class="grid" x1="80" y1="335" x2="920" y2="335"/>
+        <line class="grid" x1="80" y1="250" x2="920" y2="250"/>
+        <line class="grid" x1="80" y1="165" x2="920" y2="165"/>
+        <line class="grid" x1="80" y1="80" x2="920" y2="80"/>
+
+        <line class="axis" x1="80" y1="420" x2="920" y2="420"/>
+        <line class="axis" x1="80" y1="80" x2="80" y2="420"/>
+        <line class="limit" x1="500" y1="56" x2="500" y2="420"/>
+
+        <path class="mirror" d="M 395 165 L 605 165"/>
+
+        <polyline class="safe" points="80,420 500,80"/>
+        <polyline class="fold" points="500,80 920,420"/>
+
+        <circle class="dot-rec" cx="395" cy="165" r="6"/>
+        <circle class="dot-true" cx="605" cy="165" r="6"/>
+
+        <rect class="mask" x="356" y="36" width="288" height="18"/>
+        <text class="lbl" x="500" y="49" text-anchor="middle">LIMIT: HALF THE SAMPLING RATE</text>
+
+        <text class="zone-name" x="112" y="112">Safe</text>
+        <text class="note" x="112" y="132">stored as it is</text>
+        <text class="zone-name" x="888" y="112" text-anchor="end">Folds back</text>
+        <text class="note" x="888" y="132" text-anchor="end">stored as an alias</text>
+
+        <rect class="zmask" x="672" y="178" width="148" height="34"/>
+        <text class="lbl" x="680" y="192">TRUE 5,000 Hz</text>
+        <text class="note" x="680" y="208">a phone whistle</text>
+        <rect class="mask" x="160" y="178" width="164" height="34"/>
+        <text class="lbl" x="316" y="192" text-anchor="end">STORED 3,000 Hz</text>
+        <text class="note" x="316" y="208" text-anchor="end">what the phone stores</text>
+
+        <text class="tick" x="80" y="440" text-anchor="middle">0</text>
+        <text class="tick" x="290" y="440" text-anchor="middle">2,000</text>
+        <text class="tick" x="500" y="440" text-anchor="middle">4,000</text>
+        <text class="tick" x="710" y="440" text-anchor="middle">6,000</text>
+        <text class="tick" x="920" y="440" text-anchor="middle">8,000</text>
+        <text class="cap" x="500" y="462" text-anchor="middle">TRUE FREQUENCY (Hz)</text>
+
+        <text class="tick" x="68" y="424" text-anchor="end">0</text>
+        <text class="tick" x="68" y="339" text-anchor="end">1,000</text>
+        <text class="tick" x="68" y="254" text-anchor="end">2,000</text>
+        <text class="tick" x="68" y="169" text-anchor="end">3,000</text>
+        <text class="tick" x="68" y="84" text-anchor="end">4,000</text>
+        <text class="cap" x="24" y="66">STORED FREQUENCY (Hz)</text>
+
+        <line class="grid" x1="80" y1="482" x2="920" y2="482"/>
+        <line class="safe" x1="80" y1="502" x2="112" y2="502"/>
+        <text class="tick" x="120" y="506">stored = true</text>
+        <line class="fold" x1="300" y1="502" x2="332" y2="502"/>
+        <text class="tick" x="340" y="506">stored = 8,000 − true</text>
+        <line class="mirror" x1="560" y1="502" x2="592" y2="502"/>
+        <text class="tick" x="600" y="506">same distance from the limit, mirrored</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notch on the Circle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lesson.css">
+  <style>
+    body { padding: 3rem 1rem; }
+    .frame { max-width: 1000px; margin: 0 auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .frame h1 { margin-bottom: 1.5rem; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+  <style id="nc-style">
+    .nc .bg { fill: var(--paper); }
+    .nc .circle { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+    .nc .axis { stroke: var(--rule); stroke-width: 1; }
+    .nc .tick { stroke: var(--ink-soft); stroke-width: 1.4; }
+    .nc .dist-zero { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 8 5; fill: none; }
+    .nc .dist-pole { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 2 4; fill: none; }
+    .nc .tone { fill: var(--ink); }
+    .nc .zero { fill: var(--paper); stroke: var(--accent); stroke-width: 3; }
+    .nc .pole { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+    .nc .mask { fill: var(--paper); }
+    .nc .lbl { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; fill: var(--ink); }
+    .nc .lbl-acc { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; fill: var(--accent-ink); }
+    .nc .soft { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; fill: var(--ink-soft); }
+    .nc .note { font-family: var(--font-title); font-style: italic; font-size: 16px; fill: var(--ink-soft); }
+    .nc .head { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; fill: var(--ink-soft); }
+    .nc .row { font-family: var(--font-body); font-size: 15px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+    .nc .row-acc { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); font-variant-numeric: tabular-nums; }
+    .nc .rule { stroke: var(--rule); stroke-width: 1; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Unit circle · notch at 2,000 Hz · 8,000 samples per second</p>
+    <h1>A pole beside the zero gives the neighbors back</h1>
+
+    <div class="diagram-container">
+      <svg class="nc" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="notch-circle-title notch-circle-desc">
+        <title id="notch-circle-title">A pole beside the zero gives the neighbors back</title>
+        <desc id="notch-circle-desc">The notch filter has a zero on the unit circle at 2,000 Hz and a pole just inside it at radius 0.9; seen up close at the top of the circle, a 1,500 Hz tone is 0.39 from the zero and 0.38 from the pole, so the two distances nearly cancel and 97% of it passes, against 38% with the zero alone, while 1,900 Hz, at 0.08 and 0.13, keeps 60% and 2,000 Hz is still removed.</desc>
+
+        <rect class="bg" width="1000" height="520"/>
+
+        <clipPath id="nc-clip"><rect x="20" y="40" width="640" height="420"/></clipPath>
+        <g clip-path="url(#nc-clip)"><path class="circle" d="M 800.0 311.7 A 900 900 0 0 0 -200.0 311.7"/>
+        <line class="tick" x1="770.2" y1="292.6" x2="782.0" y2="273.4"/>
+        <line class="tick" x1="708.6" y1="258.1" x2="718.8" y2="238.0"/>
+        <line class="tick" x1="644.4" y1="228.5" x2="659.9" y2="191.1"/>
+        <line class="tick" x1="578.1" y1="204.0" x2="585.1" y2="182.7"/>
+        <line class="tick" x1="510.1" y1="184.9" x2="515.4" y2="163.0"/>
+        <line class="tick" x1="440.8" y1="171.1" x2="444.3" y2="148.9"/>
+        <line class="tick" x1="370.6" y1="162.8" x2="372.4" y2="140.3"/>
+        <line class="tick" x1="300.0" y1="160.0" x2="300.0" y2="119.5"/>
+        <line class="tick" x1="229.4" y1="162.8" x2="227.6" y2="140.3"/>
+        <line class="tick" x1="159.2" y1="171.1" x2="155.7" y2="148.9"/>
+        <line class="tick" x1="89.9" y1="184.9" x2="84.6" y2="163.0"/>
+        <line class="tick" x1="21.9" y1="204.0" x2="14.9" y2="182.7"/>
+        <line class="tick" x1="-44.4" y1="228.5" x2="-59.9" y2="191.1"/>
+        <line class="tick" x1="-108.6" y1="258.1" x2="-118.8" y2="238.0"/>
+        <line class="tick" x1="-170.2" y1="292.6" x2="-182.0" y2="273.4"/>
+        </g>
+        <path class="dist-zero" d="M 644.4 228.5 L 300.0 160.0"/>
+        <path class="dist-pole" d="M 644.4 228.5 L 300.0 250.0"/>
+        <path class="dist-zero" d="M 370.6 162.8 L 300.0 160.0"/>
+        <path class="dist-pole" d="M 370.6 162.8 L 300.0 250.0"/>
+        <circle class="zero" cx="300.0" cy="160.0" r="11"/>
+        <line class="pole" x1="292.0" y1="242.0" x2="308.0" y2="258.0"/><line class="pole" x1="308.0" y1="242.0" x2="292.0" y2="258.0"/>
+        <circle class="tone" cx="644.4" cy="228.5" r="7"/>
+        <circle class="tone" cx="370.6" cy="162.8" r="7"/>
+
+        <text class="lbl-acc" x="282" y="156" text-anchor="end">ZERO · 2,000 Hz</text>
+        <text class="lbl-acc" x="282" y="255" text-anchor="end">POLE · RADIUS 0.9</text>
+        <text class="lbl" x="644" y="258" text-anchor="middle">1,500 Hz</text>
+        <text class="lbl" x="384" y="140">1,900 Hz</text>
+
+        <rect class="mask" x="448" y="168" width="48" height="18"/>
+        <text class="soft" x="472" y="181" text-anchor="middle">0.39</text>
+        <rect class="mask" x="448" y="244" width="48" height="18"/>
+        <text class="soft" x="472" y="257" text-anchor="middle">0.38</text>
+        <rect class="mask" x="352" y="204" width="48" height="18"/>
+        <text class="soft" x="376" y="217" text-anchor="middle">0.13</text>
+        <rect class="mask" x="312" y="168" width="40" height="16"/>
+        <text class="soft" x="332" y="180" text-anchor="middle">0.08</text>
+
+        <text class="note" x="340" y="470" text-anchor="middle">zoomed in on the top of the circle;</text>
+        <text class="note" x="340" y="492" text-anchor="middle">the mirror pair at the bottom works the same way</text>
+
+        <text class="head" x="700" y="170">TONE</text>
+        <text class="head" x="790" y="170">ZERO ONLY</text>
+        <text class="head" x="890" y="170">WITH POLE</text>
+        <line class="rule" x1="700" y1="184" x2="990" y2="184"/>
+        <text class="row" x="700" y="214">1,500 Hz</text>
+        <text class="row" x="790" y="214">38%</text>
+        <text class="row" x="890" y="214">97%</text>
+        <line class="rule" x1="700" y1="230" x2="990" y2="230"/>
+        <text class="row" x="700" y="260">1,900 Hz</text>
+        <text class="row" x="790" y="260">8%</text>
+        <text class="row" x="890" y="260">60%</text>
+        <line class="rule" x1="700" y1="276" x2="990" y2="276"/>
+        <text class="row-acc" x="700" y="306">2,000 Hz</text>
+        <text class="row-acc" x="790" y="306">0%</text>
+        <text class="row-acc" x="890" y="306">0%, removed</text>
+        <line class="rule" x1="700" y1="322" x2="990" y2="322"/>
+        <text class="note" x="700" y="356">passes = distances to zeros ÷ distances</text>
+        <text class="note" x="700" y="378">to poles, compared with 0 Hz</text>
+        <line class="dist-zero" x1="700" y1="406" x2="732" y2="406"/>
+        <text class="soft" x="740" y="410">TO THE ZERO</text>
+        <line class="dist-pole" x1="850" y1="406" x2="882" y2="406"/>
+        <text class="soft" x="890" y="410">TO THE POLE</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

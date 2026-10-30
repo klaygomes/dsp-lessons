@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Whine on Line Two</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --input: #2F7F7A;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(0 calc(1920px - var(--x0) - var(--p) * var(--w)) 0 0); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 60px; white-space: pre; }
+.lbl.s { font-size: 40px; line-height: 48px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent); }
+.big { position: absolute; font-family: var(--mono); font-size: 76px; line-height: 90px; white-space: pre; }
+.dashline { position: absolute; height: 0; border-top: 4px dashed var(--ink); transform-origin: 0 50%; }
+.dotm { position: absolute; width: 32px; height: 32px; margin: -16px 0 0 -16px; border-radius: 50%; background: var(--ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const M = Motion.film({ fps: 30, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', input: '#2F7F7A', paper2: '#ECE4D6', paper: '#F6F1E7' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : Math.round(SCHEDULE.duration * 30);
+const SPOKEN = { four: ['four', '4'], eight: ['eight', '8'], two: ['two', '2'], zero: ['zero', '0'] };
+const word = (i, text, nth = 0) => {
+  const forms = SPOKEN[text] || [text];
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9]/g, ''); return forms.some(f => t.startsWith(f)); });
+  return (hits[nth] || hits[0] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+function el(tag, attrs, parent, htmlText) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (htmlText !== undefined) e.innerHTML = htmlText; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 700) + 'px'; e.style.width = '1400px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut', from = 0) => M.kf(sel, '--p', [[0, from], [a, from], [b, 1, ease]]);
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+
+const pointOf = f => [Math.cos(Math.PI * f / 4000), Math.sin(Math.PI * f / 4000)];
+const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+const notch = (thetaHz, r) => { const [c, s] = pointOf(thetaHz); return { zeros: [[c, s], [c, -s]], poles: r ? [[r * c, r * s], [r * c, -r * s]] : [] }; };
+const raw = (f, F) => { const p = pointOf(f); return F.zeros.reduce((m, z) => m * dist(p, z), 1) / F.poles.reduce((m, q) => m * dist(p, q), 1); };
+const loudest = F => { let m = 0; for (let f = 0; f <= 4000; f += 20) m = Math.max(m, raw(f, F)); return m; };
+const passes = (f, F) => raw(f, F) / loudest(F);
+const avgPasses = f => Math.abs(Math.cos(Math.PI * f / 8000));
+
+{
+  const c = cam(1), n = sceneStart(1);
+  const voice = t => 150 * Math.sin(2 * Math.PI * 180 * t) + 90 * Math.sin(2 * Math.PI * 310 * t + 1);
+  const pts = []; for (let i = 0; i <= 2400; i++) { const t = i / 2400 * 0.04; pts.push([-1920 + i * 1.6, 600 - voice(t) - 34 * Math.cos(2 * Math.PI * 4000 * t)]); }
+  const wave = layer(c, `<path d="${path(pts)}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  M.kf(wave, 'x', [[n, 0], [sceneEnd(1), 1180]]);
+  M.show(label(c, '4,000 Hz', 1760, 170, 'lbl acc', 'right'), word(1, 'four'));
+  M.show(layer(c, `<path d="M 1500 520 Q 1600 420 1700 330" fill="none" stroke="${C.accent}" stroke-width="4"/>`), word(1, 'four'));
+}
+{
+  const c = cam(2), n = sceneStart(2);
+  for (let row = 0; row < 6; row++) for (let col = 0; col < 10; col++) {
+    const k = row * 10 + col, v = 0.55 * Math.sin(k * 0.37) + 0.3 * Math.cos(k * 1.9) + (k % 2 ? -0.2 : 0.2);
+    M.show(label(c, (v < 0 ? '−' : ' ') + Math.abs(v).toFixed(2), 160 + col * 166, 230 + row * 100, 'lbl s'), n + Math.round(k * 0.9));
+  }
+  M.show(label(c, '8,000 per second', 960, 110, 'lbl', 'center'), word(2, 'eight'));
+  M.drift('#s2cam', { prop: 'x', from: 0, to: -60, start: n, end: sceneEnd(2) });
+}
+{
+  const c = cam(3), n = sceneStart(3), land = word(3, 'every');
+  const top = ['+1', '−1', '+1', '−1', '+1', '−1', '+1', '−1'];
+  top.forEach((t, i) => M.show(label(c, t, 260 + i * 200, 330, 'big'), word(3, 'whine') + i * 3));
+  M.show(label(c, 'samples', 260, 230, 'lbl s'), n);
+  M.show(label(c, 'averages', 260, 520, 'lbl s'), land - 6);
+  for (let i = 1; i < 8; i++) M.show(label(c, ' 0', 160 + i * 200 + 100, 620, 'big acc'), land + i * 4);
+  M.show(layer(c, `<line x1="260" y1="470" x2="1760" y2="470" stroke="${C.rule}" stroke-width="3"/>`), land - 6);
+}
+{
+  const c = cam(4), n = sceneStart(4), X0 = 200, X1 = 1720, yc = 560, A = 260;
+  const slow = i => Math.cos(2 * Math.PI * 500 * i / 8000);
+  const dots = [], avg = [];
+  for (let i = 0; i <= 32; i++) dots.push(`<circle cx="${X0 + i * 47.5}" cy="${yc - A * slow(i)}" r="12" fill="${C.ink}"/>`);
+  for (let i = 1; i <= 32; i++) avg.push(`<circle cx="${X0 + (i - 0.5) * 47.5}" cy="${yc - A * (slow(i) + slow(i - 1)) / 2}" r="12" fill="${C.accent}"/>`);
+  M.show(layer(c, `<line x1="${X0}" y1="${yc}" x2="${X1}" y2="${yc}" stroke="${C.rule}" stroke-width="3"/>${dots.join('')}`), n);
+  const a = layer(c, avg.join(''), [X0, X1]); reveal(a, word(4, 'averages'), word(4, 'averages') + 40, 'softLand');
+  M.show(label(c, 'samples', 200, 140, 'lbl s'), n);
+  M.show(label(c, 'averages', 200, 200, 'lbl acc'), word(4, 'averages'));
+  M.show(label(c, 'voice passes', 1720, 140, 'lbl', 'right'), word(4, 'passes'));
+  M.drift('#s4cam', { prop: 'scale', from: 1, to: 1.03, start: n, end: sceneEnd(4) });
+}
+
+function circleScene(c, { cx, cy, R, full = false }) {
+  const arc = layer(c, `<line x1="${cx - R - 30}" y1="${cy}" x2="${cx + R + 30}" y2="${cy}" stroke="${C.rule}" stroke-width="3"/><path d="M ${cx + R} ${cy} A ${R} ${R} 0 0 0 ${cx - R} ${cy}" fill="none" stroke="${C.ink}" stroke-width="5"/>${full ? `<path d="M ${cx - R} ${cy} A ${R} ${R} 0 0 0 ${cx + R} ${cy}" fill="none" stroke="${C.rule}" stroke-width="4" stroke-dasharray="14 12"/>` : ''}`);
+  const at = ([x, y]) => [cx + x * R, cy - y * R];
+  const zero = ([x, y], alpha = 1) => layer(c, `<circle cx="${at([x, y])[0]}" cy="${at([x, y])[1]}" r="24" fill="${C.paper}" stroke="${C.accent}" stroke-width="8" opacity="${alpha}"/>`);
+  const pole = ([x, y], alpha = 1) => { const [px, py] = at([x, y]); return layer(c, `<g opacity="${alpha}" stroke="${C.accent}" stroke-width="8" stroke-linecap="round"><line x1="${px - 18}" y1="${py - 18}" x2="${px + 18}" y2="${py + 18}"/><line x1="${px + 18}" y1="${py - 18}" x2="${px - 18}" y2="${py + 18}"/></g>`); };
+  return { arc, at, zero, pole };
+}
+function movingDot(c, at, keys, n0) {
+  const d = el('div', { id: 'D' + (++uid), class: 'dotm' }, c);
+  M.kf('#' + d.id, 'x', keys.map(([f, hz]) => [f, at(pointOf(hz))[0]]));
+  M.kf('#' + d.id, 'y', keys.map(([f, hz]) => [f, at(pointOf(hz))[1]]));
+  M.show('#' + d.id, n0);
+  return '#' + d.id;
+}
+{
+  const c = cam(5), n = sceneStart(5), P = word(5, 'put'), F = word(5, 'flips');
+  const WX = 960, WY = 560, WR = 340;
+  M.show(layer(c, `<line x1="${WX - WR - 30}" y1="${WY}" x2="${WX + WR + 30}" y2="${WY}" stroke="${C.rule}" stroke-width="3"/><circle cx="${WX}" cy="${WY}" r="${WR}" fill="none" stroke="${C.ink}" stroke-width="5"/>`), n, P);
+  const spot = deg => [WX + WR * Math.cos(deg * Math.PI / 180), WY - WR * Math.sin(deg * Math.PI / 180)];
+  const hops = [];
+  for (let f = n, k = 0; f < F; f += 7, k++) hops.push([f, 45 * k]);
+  for (let f = F, k = 0; f < P; f += 9, k++) hops.push([f, 180 * k]);
+  const wheelDot = el('div', { id: 'D' + (++uid), class: 'dotm' }, c); wheelDot.style.background = C.input;
+  const stepKeys = axis => hops.flatMap(([f, deg], i) => i === 0 ? [[0, spot(deg)[axis]], [f, spot(deg)[axis]]] : [[f, spot(hops[i - 1][1])[axis]], [f, spot(deg)[axis]]]);
+  M.kf('#' + wheelDot.id, 'x', stepKeys(0)); M.kf('#' + wheelDot.id, 'y', stepKeys(1));
+  M.show('#' + wheelDot.id, n, P);
+  M.show(label(c, '45° per sample', 1760, 110, 'lbl', 'right'), n, F);
+  M.show(label(c, 'the whine: 180° per sample', 1760, 110, 'lbl acc', 'right'), F, P);
+  const g = circleScene(c, { cx: 960, cy: 820, R: 560 });
+  M.show(g.arc, P);
+  M.show(label(c, '0 Hz', 960 + 560, 860, 'lbl s', 'center'), word(5, 'zero'));
+  M.show(label(c, '4,000 Hz', 960 - 560, 860, 'lbl s', 'center'), word(5, 'four'));
+  const keys = []; const a = word(5, 'put'), b = word(5, 'four') + 20;
+  for (let k = 0; k <= 16; k++) keys.push([Math.round(a + (b - a) * k / 16), 4000 * k / 16]);
+  movingDot(c, g.at, keys, a);
+  M.show(g.zero([-1, 0]), word(5, 'special'));
+  M.show(label(c, 'zero', 960 - 560 + 44, 740, 'lbl acc'), word(5, 'zero', 1));
+}
+{
+  const c = cam(6), n = sceneStart(6), cx = 960, cy = 820, R = 560, g = circleScene(c, { cx, cy, R });
+  M.show(g.arc, n); M.show(g.zero([-1, 0]), n);
+  const z = g.at([-1, 0]), a = word(6, 'far'), b = word(6, 'nothing') + 10;
+  const steps = 24, keys = [];
+  for (let k = 0; k <= steps; k++) keys.push([Math.round(a + (b - a) * k / steps), 4000 * k / steps]);
+  const line = el('div', { id: 'D' + (++uid), class: 'dashline' }, c); line.style.left = z[0] + 'px'; line.style.top = z[1] + 'px';
+  M.kf('#' + line.id, 'width', keys.map(([f, hz]) => { const p = g.at(pointOf(hz)); return [f, Math.hypot(p[0] - z[0], p[1] - z[1])]; }), { fmt: v => v + 'px' });
+  M.kf('#' + line.id, 'rotation', keys.map(([f, hz]) => { const p = g.at(pointOf(hz)); return [f, Math.atan2(p[1] - z[1], p[0] - z[0]) * 180 / Math.PI]; }));
+  M.show('#' + line.id, a);
+  movingDot(c, g.at, keys, n);
+  const marks = []; for (let k = 0; k <= 16; k++) marks.push([250 * k, Math.round(a + (b - a) * k / 16)]);
+  marks.forEach(([hz, f], i) => { const t = label(c, `passes ${Math.round(avgPasses(hz) * 100)}%`, 1760, 120, hz === 4000 ? 'lbl acc' : 'lbl', 'right'); M.show(t, i === 0 ? n : f, i < marks.length - 1 ? marks[i + 1][1] : undefined); });
+}
+{
+  const c = cam(7), n = sceneStart(7), g = circleScene(c, { cx: 960, cy: 560, R: 400, full: true });
+  M.show(g.arc, n);
+  movingDot(c, g.at, [[n, 4000], [word(7, 'moves'), 4000], [word(7, 'moves') + 12, 2000, 'whip']], n);
+  M.show(label(c, '2,000 Hz', 960, 80, 'lbl', 'center'), word(7, 'two'));
+  M.show(g.zero([0, 1]), word(7, 'zero')); M.show(g.zero([0, -1], 0.45), word(7, 'mirror'));
+  M.show(label(c, 'mirror twin', 1000, 970, 'lbl s'), word(7, 'mirror'));
+}
+function chart(c, curves, { x0 = 260, x1 = 1660, y0 = 260, y1 = 880 } = {}) {
+  const X = f => x0 + f / 4000 * (x1 - x0), Y = g => y1 - Math.min(g, 1.05) * (y1 - y0);
+  const frame = layer(c, `<rect x="${X(300)}" y="${y0}" width="${X(3400) - X(300)}" height="${y1 - y0}" fill="${C.paper2}"/>` +
+    [0, 0.5, 1].map(g => `<line x1="${x0}" y1="${Y(g)}" x2="${x1}" y2="${Y(g)}" stroke="${C.rule}" stroke-width="3"/>`).join('') +
+    [0, 1000, 2000, 3000, 4000].map(f => `<text x="${X(f)}" y="${y1 + 56}" text-anchor="middle" font-family="Geist Mono, monospace" font-size="34" fill="${C.soft}">${f.toLocaleString('en-US')}</text>`).join('') +
+    [0, 50, 100].map(v => `<text x="${x0 - 20}" y="${Y(v / 100) + 12}" text-anchor="end" font-family="Geist Mono, monospace" font-size="34" fill="${C.soft}">${v}%</text>`).join('') +
+    `<text x="${X(1850)}" y="${y0 + 50}" text-anchor="middle" font-family="Geist Mono, monospace" font-size="34" fill="${C.soft}">voice</text>`);
+  const ids = curves.map(F => { const pts = []; for (let i = 0; i <= 500; i++) { const f = 4000 * i / 500; pts.push([X(f), Y(passes(f, F))]); } return layer(c, `<path d="${path(pts)}" fill="none" stroke="${C.ink}" stroke-width="6"/>`, [x0, x1]); });
+  return { frame, ids, X, Y };
+}
+{
+  const c = cam(8), n = sceneStart(8), u = word(8, 'unroll');
+  const g = circleScene(c, { cx: 960, cy: 560, R: 400, full: true });
+  M.show(g.arc, n, u); M.show(g.zero([0, 1]), n, u); M.show(g.zero([0, -1], 0.45), n, u);
+  const k = chart(c, [notch(2000, 0)]);
+  M.show(k.frame, u); reveal(k.ids[0], u, u + 30, 'softLand');
+  M.show(label(c, 'tone (Hz)', 1660, 960, 'lbl s', 'right'), u);
+  M.show(label(c, 'passes', 260, 160, 'lbl s'), u);
+  M.show(layer(c, `<circle cx="${k.X(1500)}" cy="${k.Y(passes(1500, notch(2000, 0)))}" r="16" fill="${C.ink}"/>`), word(8, 'dull'));
+  M.show(label(c, '1,500 Hz: 38%', 1660, 110, 'lbl', 'right'), word(8, 'dull'));
+}
+{
+  const c = cam(9), n = sceneStart(9), cx = 960, cy = 560, R = 400, g = circleScene(c, { cx, cy, R, full: true });
+  M.show(g.arc, n); M.show(g.zero([0, 1]), n); M.show(g.zero([0, -1], 0.45), n);
+  const a = word(9, 'put'), b = word(9, 'beside') + 20;
+  [1, -1].forEach(side => {
+    const d = el('div', { id: 'D' + (++uid), class: 'layer' }, c);
+    d.innerHTML = `<svg viewBox="0 0 1920 1080"><g opacity="${side > 0 ? 1 : 0.45}" stroke="${C.accent}" stroke-width="8" stroke-linecap="round"><line x1="${cx - 18}" y1="-18" x2="${cx + 18}" y2="18"/><line x1="${cx + 18}" y1="-18" x2="${cx - 18}" y2="18"/></g></svg>`;
+    M.kf('#' + d.id, 'y', [[0, cy], [a, cy], [b, cy - side * R * 0.9, 'softLand']]);
+    M.show('#' + d.id, word(9, 'poles'));
+  });
+  M.show(label(c, 'zero', cx + 40, cy - R - 60, 'lbl acc'), n);
+  M.show(label(c, 'pole', cx + 40, cy - R * 0.9 - 10, 'lbl acc'), b);
+  M.show(label(c, 'feedback', 160, 960, 'lbl s'), word(9, 'feedback'));
+  M.drift('#s9cam', { prop: 'scale', from: 1, to: 1.025, start: n, end: sceneEnd(9) });
+}
+{
+  const c = cam(10), n = sceneStart(10), rs = [0, 0.4, 0.7, 0.85, 0.9];
+  const k = chart(c, rs.map(r => notch(2000, r)));
+  M.show(k.frame, n);
+  M.show(label(c, 'tone (Hz)', 1660, 960, 'lbl s', 'right'), n);
+  M.show(label(c, 'passes', 260, 160, 'lbl s'), n);
+  const a = n + 6, b = word(10, 'cancel') + 24;
+  rs.forEach((r, i) => { const on = i === 0 ? n : Math.round(a + (b - a) * i / (rs.length - 1)); const off = i < rs.length - 1 ? Math.round(a + (b - a) * (i + 1) / (rs.length - 1)) : undefined; document.querySelector(k.ids[i]).style.setProperty('--p', 1); M.show(k.ids[i], on, off); });
+  const dot = el('div', { id: 'D' + (++uid), class: 'dotm' }, c); dot.style.left = k.X(1500) + 'px';
+  M.kf('#' + dot.id, 'top', rs.map((r, i) => [i === 0 ? n : Math.round(a + (b - a) * i / (rs.length - 1)), k.Y(passes(1500, notch(2000, r)))]), { fmt: v => v + 'px' });
+  M.show('#' + dot.id, n);
+  M.show(label(c, '1,500 Hz: 38% → 97%', 1660, 110, 'lbl', 'right'), b);
+  M.show(layer(c, `<circle cx="${k.X(2000)}" cy="${k.Y(0)}" r="16" fill="${C.accent}"/>`), word(10, 'removed'));
+  M.show(label(c, 'whine 0%', k.X(2000) + 30, k.Y(0) - 70, 'lbl acc'), word(10, 'removed'));
+}
+{
+  const c = cam(11), n = sceneStart(11), base = 820, x0 = 220, push = word(11, 'push');
+  const g = circleScene(c, { cx: 1580, cy: 620, R: 230 });
+  M.show(g.arc, n); M.show(g.zero([0, 1]), n);
+  const pole = el('div', { id: 'D' + (++uid), class: 'layer' }, c);
+  pole.innerHTML = `<svg viewBox="0 0 1920 1080"><g stroke="${C.accent}" stroke-width="7" stroke-linecap="round"><line x1="1566" y1="-14" x2="1594" y2="14"/><line x1="1594" y1="-14" x2="1566" y2="14"/></g></svg>`;
+  M.kf('#' + pole.id, 'y', [[0, 620 - 230 * 0.9], [push, 620 - 230 * 0.9], [push + 18, 620 - 230 * 1.1, 'softLand']]);
+  M.show('#' + pole.id, n);
+  M.show(label(c, 'pole at 0.9', 1580, 680, 'lbl s', 'center'), n, push + 18);
+  M.show(label(c, 'pole at 1.1', 1580, 680, 'lbl s', 'center'), push + 18);
+  M.show(label(c, '× 0.9 per sample', 1760, 110, 'lbl', 'right'), word(11, 'keeps'), push + 18);
+  M.show(label(c, '× 1.1 per sample', 1760, 110, 'lbl acc', 'right'), push + 18);
+  M.show(layer(c, `<line x1="${x0 - 30}" y1="${base}" x2="${x0 + 18 * 62}" y2="${base}" stroke="${C.rule}" stroke-width="3"/>`), n);
+  M.show(label(c, 'one click', x0 - 20, base + 30, 'lbl s'), n);
+  const inside = word(11, 'inside');
+  for (let i = 0; i < 18; i++) {
+    const x = x0 + i * 62, fade = 480 * Math.pow(0.9, 2 * i), grow = 16 * Math.pow(1.1, 2 * i);
+    const stem = (hgt, color) => `<line x1="${x}" y1="${base}" x2="${x}" y2="${base - hgt}" stroke="${color}" stroke-width="10" stroke-linecap="round"/><circle cx="${x}" cy="${base - hgt}" r="12" fill="${color}"/>`;
+    M.show(layer(c, stem(fade, C.ink)), i === 0 ? n : inside + i * 2, push);
+    M.show(layer(c, stem(grow, i ? C.accent : C.ink)), push + 18 + i * 3);
+  }
+}
+{
+  const c = cam(12), n = sceneStart(12), g = circleScene(c, { cx: 960, cy: 600, R: 420, full: true });
+  M.show(g.arc, n);
+  [[0, 1], [0, -1]].forEach((z, i) => M.show(g.zero(z, i ? 0.45 : 1), n));
+  [[0, 0.9], [0, -0.9]].forEach((p, i) => M.show(g.pole(p, i ? 0.45 : 1), n));
+  M.show(label(c, 'zero', 1000, 120, 'lbl acc'), n);
+  M.show(label(c, 'pole', 1000, 196, 'lbl acc'), n);
+  const top = g.at([0, 1]), ring = word(12, 'faint');
+  for (let k = 0; k < 4; k++) {
+    const r = layer(c, `<circle cx="${top[0]}" cy="${top[1]}" r="40" fill="none" stroke="${C.accent}" stroke-width="5"/>`);
+    const s0 = k < 3 ? ring + k * 14 : sceneEnd(12) - 50;
+    M.kf(r, 'opacity', [[0, 0], [s0, 0], [s0, 0.9], [s0 + 70, 0, 'glide']]);
+    M.kf(r, 'scale', [[0, 1], [s0, 1], [s0 + 70, 4.5, 'glide']]);
+    document.querySelector(r).style.transformOrigin = `${top[0]}px ${top[1]}px`;
+  }
+  M.show(label(c, 'next: the ring', 960, 960, 'lbl', 'center'), word(12, 'next'));
+  M.drift('#s12cam', { prop: 'scale', from: 1.04, to: 1, start: n, end: sceneEnd(12) });
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

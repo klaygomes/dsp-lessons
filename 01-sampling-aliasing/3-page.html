@@ -1,0 +1,325 @@
+<title>Sampling and Aliasing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.fold { width: 100%; min-width: 640px; display: block; }
+.fold .bg { fill: var(--paper); }
+.fold .zone { fill: var(--paper-2); }
+.fold .grid { stroke: var(--rule); stroke-width: 1; }
+.fold .axis { stroke: var(--ink); stroke-width: 1.2; }
+.fold .safe { stroke: var(--ink); stroke-width: 2.4; fill: none; }
+.fold .fold-line { stroke: var(--accent); stroke-width: 2.4; fill: none; stroke-dasharray: 10 5; }
+.fold .limit { stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.fold .mirror { stroke: var(--accent); stroke-width: 1.4; fill: none; }
+.fold .dot-true { fill: var(--ink); }
+.fold .dot-rec { fill: var(--paper); stroke: var(--accent); stroke-width: 2.4; }
+.fold .mask { fill: var(--paper); }
+.fold .zmask { fill: var(--paper-2); }
+.fold .tick, .fold .cap, .fold .lbl { font-family: var(--font-mono); fill: var(--ink-soft); }
+.fold .tick { font-size: 11px; }
+.fold .cap { font-size: 11px; letter-spacing: 0.14em; }
+.fold .lbl { font-size: 12px; letter-spacing: 0.08em; fill: var(--ink); }
+.fold .zone-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.fold .note { font-family: var(--font-title); font-style: italic; font-size: 15px; fill: var(--ink-soft); }
+.key i { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 2px solid; }
+.key .k-true { border-color: var(--ink-soft); border-top-width: 1px; }
+.key .k-rec { border-color: var(--accent); }
+.key .k-pin { border-color: var(--input); border-top-style: dashed; }
+.key .k-dot { width: 8px; height: 8px; border: 0; border-radius: 50%; background: var(--ink); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · chapter 3</p>
+    <h1>Sampling and Aliasing</h1>
+    <p class="question">A phone measures sound 8,000 times per second. You whistle at 5,000 Hz. What does the phone store?</p>
+  </header>
+
+  <section>
+    <h2>Try it before you read</h2>
+    <p>The faint line is your whistle. The dots are what the phone measures. Pick what you think the phone keeps.</p>
+    <div class="lab">
+      <div class="ask">
+        <p>At 5,000 Hz, which tone does the phone store?</p>
+        <div class="row" role="group" aria-label="Your prediction">
+          <button type="button" id="guess-5000" data-guess="5000">5,000 Hz</button>
+          <button type="button" id="guess-3000" data-guess="3000">3,000 Hz</button>
+          <button type="button" id="guess-1000" data-guess="1000">1,000 Hz</button>
+          <button type="button" id="skip" class="quiet">Skip to free play</button>
+        </div>
+      </div>
+
+      <canvas id="scope" class="stage" role="img" aria-label="A 5,000 Hz wave with the points the phone measures."></canvas>
+      <div class="key">
+        <span><i class="k-true"></i>your whistle (the true tone)</span>
+        <span><i class="k-dot"></i>what the phone measures</span>
+        <span id="key-rec" hidden><i class="k-rec"></i>what the phone stores</span>
+        <span id="key-pin" hidden><i class="k-pin"></i>pinned tone</span>
+      </div>
+
+      <div class="readout" aria-live="polite">
+        <div class="result" id="nums">True tone 5,000 Hz</div>
+        <p id="why">Make your guess first. Then you see the answer.</p>
+        <p class="compare" id="compare" hidden></p>
+      </div>
+
+      <div class="control">
+        <label for="freq">True tone: <output id="freq-out" for="freq">5,000 Hz</output></label>
+        <input id="freq" type="range" min="100" max="8000" step="100" value="5000" disabled>
+      </div>
+      <div class="row">
+        <button type="button" id="pin" disabled>Pin this tone</button>
+        <button type="button" id="motion" class="quiet" aria-pressed="false">Pause motion</button>
+        <button type="button" id="reset" class="quiet">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The rule</h2>
+    <p>Below half the sampling rate, a tone is stored as it is. Above it, the tone folds back, like a mirror.</p>
+    <figure>
+      <div class="diagram">
+<svg class="fold" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="frequency-folding-title frequency-folding-desc">
+        <title id="frequency-folding-title">Above half the sampling rate, frequencies fold back</title>
+        <desc id="frequency-folding-desc">At 8,000 samples per second, a true frequency up to 4,000 Hz is stored as itself, and a higher true frequency is stored as 8,000 Hz minus that frequency, so a 5,000 Hz tone is stored as 3,000 Hz.</desc>
+
+        <rect class="bg" width="1000" height="520"/>
+        <rect class="zone" x="500" y="80" width="420" height="340"/>
+
+        <line class="grid" x1="80" y1="335" x2="920" y2="335"/>
+        <line class="grid" x1="80" y1="250" x2="920" y2="250"/>
+        <line class="grid" x1="80" y1="165" x2="920" y2="165"/>
+        <line class="grid" x1="80" y1="80" x2="920" y2="80"/>
+
+        <line class="axis" x1="80" y1="420" x2="920" y2="420"/>
+        <line class="axis" x1="80" y1="80" x2="80" y2="420"/>
+        <line class="limit" x1="500" y1="56" x2="500" y2="420"/>
+
+        <path class="mirror" d="M 395 165 L 605 165"/>
+
+        <polyline class="safe" points="80,420 500,80"/>
+        <polyline class="fold-line" points="500,80 920,420"/>
+
+        <circle class="dot-rec" cx="395" cy="165" r="6"/>
+        <circle class="dot-true" cx="605" cy="165" r="6"/>
+
+        <rect class="mask" x="356" y="36" width="288" height="18"/>
+        <text class="lbl" x="500" y="49" text-anchor="middle">LIMIT: HALF THE SAMPLING RATE</text>
+
+        <text class="zone-name" x="112" y="112">Safe</text>
+        <text class="note" x="112" y="132">stored as it is</text>
+        <text class="zone-name" x="888" y="112" text-anchor="end">Folds back</text>
+        <text class="note" x="888" y="132" text-anchor="end">stored as an alias</text>
+
+        <rect class="zmask" x="672" y="178" width="148" height="34"/>
+        <text class="lbl" x="680" y="192">TRUE 5,000 Hz</text>
+        <text class="note" x="680" y="208">a phone whistle</text>
+        <rect class="mask" x="160" y="178" width="164" height="34"/>
+        <text class="lbl" x="316" y="192" text-anchor="end">STORED 3,000 Hz</text>
+        <text class="note" x="316" y="208" text-anchor="end">what the phone stores</text>
+
+        <text class="tick" x="80" y="440" text-anchor="middle">0</text>
+        <text class="tick" x="290" y="440" text-anchor="middle">2,000</text>
+        <text class="tick" x="500" y="440" text-anchor="middle">4,000</text>
+        <text class="tick" x="710" y="440" text-anchor="middle">6,000</text>
+        <text class="tick" x="920" y="440" text-anchor="middle">8,000</text>
+        <text class="cap" x="500" y="462" text-anchor="middle">TRUE FREQUENCY (Hz)</text>
+
+        <text class="tick" x="68" y="424" text-anchor="end">0</text>
+        <text class="tick" x="68" y="339" text-anchor="end">1,000</text>
+        <text class="tick" x="68" y="254" text-anchor="end">2,000</text>
+        <text class="tick" x="68" y="169" text-anchor="end">3,000</text>
+        <text class="tick" x="68" y="84" text-anchor="end">4,000</text>
+        <text class="cap" x="24" y="66">STORED FREQUENCY (Hz)</text>
+
+        <line class="grid" x1="80" y1="482" x2="920" y2="482"/>
+        <line class="safe" x1="80" y1="502" x2="112" y2="502"/>
+        <text class="tick" x="120" y="506">stored = true</text>
+        <line class="fold-line" x1="300" y1="502" x2="332" y2="502"/>
+        <text class="tick" x="340" y="506">stored = 8,000 − true</text>
+        <line class="mirror" x1="560" y1="502" x2="592" y2="502"/>
+        <text class="tick" x="600" y="506">same distance from the limit, mirrored</text>
+      </svg>
+      </div>
+      <figcaption>At 8,000 samples per second, the stored tone is the true tone, or 8,000 minus it.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>How it happens</h2>
+    <p>The phone cannot store a wave. It stores a list of numbers.</p>
+    <ol class="steps">
+      <li><div><b>It measures at fixed moments</b><span>Each measurement is a sample. The phone takes one every 0.125 ms.</span></div></li>
+      <li><div><b>It knows nothing in between</b><span>Many waves pass through the same dots.</span></div></li>
+      <li><div><b>It keeps the slowest wave that fits</b><span>Below 4,000 Hz that is your tone. Above it, a slower wave fits too, and the phone stores that one. This false tone is an alias.</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The same thing as a table</h2>
+    <p>The sampling rate is 8,000 samples per second, so the limit is 4,000 Hz.</p>
+    <div class="table">
+      <table class="alt">
+        <thead><tr><th scope="col">You whistle</th><th scope="col">The phone stores</th><th scope="col">Why</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1,000 Hz</td><td class="num">1,000 Hz</td><td>Below the limit. Kept.</td></tr>
+          <tr><td class="num">3,000 Hz</td><td class="num">3,000 Hz</td><td>Below the limit. Kept.</td></tr>
+          <tr><td class="num">4,000 Hz</td><td class="num">4,000 Hz</td><td>Exactly the limit: two samples per cycle.</td></tr>
+          <tr><td class="num">5,000 Hz</td><td class="num changed">3,000 Hz</td><td>1,000 above the limit, so 1,000 below it.</td></tr>
+          <tr><td class="num">7,000 Hz</td><td class="num changed">1,000 Hz</td><td>3,000 above the limit, so 3,000 below it.</td></tr>
+          <tr><td class="num">8,000 Hz</td><td class="num changed">0 Hz</td><td>One sample per cycle. Every dot is the same, so it sounds like silence.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>What people get wrong</h2>
+    <div class="myth">
+      <p><b>"Too few samples make the sound blurry."</b></p>
+      <p>They do not. They make a different sound, and it looks as clean as a real one.</p>
+      <p>You cannot fix an alias after sampling, because the dots are identical. So the phone network removes everything above about 3,400 Hz before it samples. Your whistle disappears instead of changing.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recap</h2>
+    <ol class="steps">
+      <li><div><b>Sampling sees only dots</b><span>8,000 per second on a phone.</span></div></li>
+      <li><div><b>Half the sampling rate is the limit</b><span>4,000 Hz on a phone. Below it, the dots describe your tone.</span></div></li>
+      <li><div><b>Above the limit, the tone folds back</b><span>So filter high tones out before you sample.</span></div></li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Source: Oppenheim and Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, chapter 3.</span>
+    <span>Sample drawing adapted from the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> study "Sample Hold Ladder", MIT license.</span>
+  </footer>
+</div>
+
+<script>
+/* Sample-and-hold drawing adapted from iwrzwr visual archive, Sample Hold Ladder. MIT License, Copyright (c) kaganin. */
+(() => {
+  const FS = 8000, LIMIT = FS / 2, WINDOW = 0.002, N = Math.round(WINDOW * FS);
+  const $ = id => document.getElementById(id);
+  const canvas = $('scope'), ctx = canvas.getContext('2d');
+  const freq = $('freq'), freqOut = $('freq-out'), nums = $('nums'), why = $('why'), compare = $('compare');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const fmt = n => n.toLocaleString('en-US');
+  const state = { f: 5000, revealed: false, pinned: null, paused: reduced.matches, cursor: 0 };
+  let colors = {}, w = 0, h = 240, dpr = 1, raf = 0, last = 0, visible = true;
+
+  const aliasOf = f => { const r = f % FS; return r <= LIMIT ? r : FS - r; };
+  const sampleAt = (f, n) => Math.cos(2 * Math.PI * f * n / FS);
+
+  function readColors() {
+    const s = getComputedStyle(document.documentElement), v = k => s.getPropertyValue(k).trim();
+    colors = { ink: v('--ink'), soft: v('--ink-soft'), accent: v('--accent'), input: v('--input'), rule: v('--rule') };
+  }
+
+  const pad = 14;
+  const xAt = t => pad + (t / WINDOW) * (w - 2 * pad);
+  const yAt = v => h / 2 - v * (h / 2 - 24);
+
+  function wave(f, color, width, dash = []) {
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash); ctx.beginPath();
+    const steps = Math.max(200, Math.ceil(w * 2));
+    for (let i = 0; i <= steps; i++) { const t = WINDOW * i / steps, x = xAt(t), y = yAt(Math.cos(2 * Math.PI * f * t)); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalAlpha = 1; ctx.strokeStyle = colors.rule; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad, h / 2); ctx.lineTo(w - pad, h / 2); ctx.stroke();
+
+    ctx.globalAlpha = 0.6; wave(state.f, colors.soft, 1); ctx.globalAlpha = 1;
+    if (state.pinned !== null && state.pinned !== state.f) wave(state.pinned, colors.input, 1.6, [6, 4]);
+
+    const shown = state.paused ? N : Math.min(N, state.cursor);
+    let previous;
+    for (let n = 0; n <= shown; n++) {
+      const x = xAt(n / FS), y = yAt(sampleAt(state.f, n)), next = n < N ? xAt((n + 1) / FS) : x;
+      ctx.strokeStyle = colors.ink;
+      if (previous) { ctx.globalAlpha = 0.2; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, previous.y); ctx.lineTo(x, y); ctx.stroke(); }
+      ctx.globalAlpha = n === shown && !state.paused ? 1 : 0.6; ctx.lineWidth = 1.5;
+      if (n < N) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(next, y); ctx.stroke(); }
+      ctx.globalAlpha = 1; ctx.fillStyle = colors.ink; ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+      if (n === shown && !state.paused) { ctx.strokeStyle = colors.input; ctx.lineWidth = 1.5; ctx.strokeRect(x - 6, y - 6, 12, 12); ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, 12); ctx.stroke(); }
+      previous = { y };
+    }
+    if (state.revealed) wave(aliasOf(state.f), colors.accent, 2.2);
+  }
+
+  function explain(f) {
+    const a = aliasOf(f), over = f - LIMIT;
+    if (f < LIMIT) return 'Below the limit. The dots follow your tone, so the phone stores it as it is.';
+    if (f === LIMIT) return 'Exactly the limit: two samples per cycle. This is the fastest tone the phone can keep.';
+    if (f === FS) return 'One sample per cycle. Every dot lands at the same height, so the phone stores a flat line: silence.';
+    return `${fmt(over)} Hz above the limit, so it folds to ${fmt(LIMIT)} − ${fmt(over)} = ${fmt(a)} Hz. A slower wave fits the same dots.`;
+  }
+
+  function render() {
+    const f = state.f, a = aliasOf(f);
+    freq.value = f; freqOut.textContent = `${fmt(f)} Hz`;
+    canvas.setAttribute('aria-label', `A ${fmt(f)} Hz wave with the ${N + 1} points the phone measures.` + (state.revealed ? ` The phone stores ${fmt(a)} Hz.` : ''));
+    $('key-rec').hidden = !state.revealed;
+    $('key-pin').hidden = state.pinned === null;
+    if (state.revealed) {
+      nums.textContent = `True tone ${fmt(f)} Hz · stored `;
+      const r = document.createElement('span'); if (a !== f) r.className = 'changed'; r.textContent = `${fmt(a)} Hz`;
+      nums.append(r);
+      why.textContent = (state.guess !== undefined && f === 5000 ? (state.guess === 3000 ? 'Right. ' : `Not ${fmt(state.guess)} Hz. `) : '') + explain(f);
+    } else {
+      nums.textContent = `True tone ${fmt(f)} Hz`;
+      why.textContent = 'Make your guess first. Then you see the answer.';
+    }
+    if (state.pinned === null) { compare.hidden = true; }
+    else {
+      compare.hidden = false;
+      const p = state.pinned, pa = aliasOf(p);
+      compare.textContent = p === f ? `Pinned ${fmt(p)} Hz. Move the slider to compare.`
+        : pa === a ? `Pinned ${fmt(p)} Hz and now ${fmt(f)} Hz give the same dots. After sampling, nobody can tell them apart.`
+        : `Different dots: ${fmt(p)} Hz is stored as ${fmt(pa)} Hz, ${fmt(f)} Hz as ${fmt(a)} Hz.`;
+    }
+    freq.disabled = !state.revealed; $('pin').disabled = !state.revealed;
+    document.querySelectorAll('[data-guess]').forEach(b => { b.setAttribute('aria-pressed', String(Number(b.dataset.guess) === state.guess)); b.disabled = state.revealed; });
+    $('skip').disabled = state.revealed;
+    $('motion').setAttribute('aria-pressed', String(state.paused)); $('motion').textContent = state.paused ? 'Play motion' : 'Pause motion';
+    draw(); schedule();
+  }
+
+  function reveal(guess) { state.guess = guess; state.revealed = true; render(); }
+
+  function resize() {
+    w = Math.max(1, canvas.getBoundingClientRect().width); dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+  }
+
+  function schedule() { if (!raf && !state.paused && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } }
+  function frame(now) {
+    raf = 0; if (state.paused || !visible || document.hidden) return;
+    if (!last) last = now;
+    if (now - last >= 1000 / 7) { state.cursor = state.cursor >= N + 6 ? 0 : state.cursor + 1; last = now; draw(); }
+    raf = requestAnimationFrame(frame);
+  }
+
+  document.querySelectorAll('[data-guess]').forEach(b => b.addEventListener('click', () => reveal(Number(b.dataset.guess))));
+  $('skip').addEventListener('click', () => reveal(undefined));
+  freq.addEventListener('input', () => { state.f = Number(freq.value); state.cursor = 0; render(); });
+  $('pin').addEventListener('click', () => { state.pinned = state.f; render(); });
+  $('motion').addEventListener('click', () => { state.paused = !state.paused; render(); });
+  $('reset').addEventListener('click', () => { Object.assign(state, { f: 5000, revealed: false, pinned: null, guess: undefined, cursor: 0, paused: reduced.matches }); render(); $('guess-5000').focus(); });
+  reduced.addEventListener('change', () => { state.paused = reduced.matches; render(); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); draw(); });
+  new MutationObserver(() => { readColors(); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  document.addEventListener('visibilitychange', schedule);
+  new ResizeObserver(resize).observe(canvas);
+  new IntersectionObserver(entries => { visible = entries[entries.length - 1].isIntersecting; schedule(); }).observe(canvas);
+  readColors(); resize(); render();
+})();
+</script>
