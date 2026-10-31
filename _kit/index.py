@@ -22,20 +22,25 @@ def lessons():
             "n": n,
             "title": m.group(2).strip(),
             "bug": m.group(3).strip(),
-            "page": page.relative_to(ROOT).as_posix() if page and page.exists() and "page ready" in status else None,
-            "video": video.relative_to(ROOT).as_posix() if video and video.exists() and "video ready" in status else None,
+            "page": page.relative_to(ROOT).as_posix() if page and page.exists() else None,
+            "page_ready": "page ready" in status,
+            "video": video.relative_to(ROOT).as_posix() if video and video.exists() else None,
+            "video_ready": "video ready" in status,
         })
     return rows
 
 
-def link(href, label):
-    return f'<a href="{html.escape(href)}">{label}</a>' if href else '<span class="soon">in progress</span>'
+def link(href, label, ready):
+    if not href:
+        return '<span class="soon">in progress</span>'
+    draft = "" if ready else ' <span class="soon">(draft)</span>'
+    return f'<a href="{html.escape(href)}">{label}</a>{draft}'
 
 
 def build():
     items = "\n".join(
         f'<li><span class="n">{r["n"]}</span><div><h2>{html.escape(r["title"])}</h2>'
-        f'<p>{html.escape(r["bug"])}</p><p class="links">{link(r["page"], "Open the lesson")} · {link(r["video"], "Watch the video")}</p></div></li>'
+        f'<p>{html.escape(r["bug"])}</p><p class="links">{link(r["page"], "Open the lesson", r["page_ready"])} · {link(r["video"], "Watch the video", r["video_ready"])}</p></div></li>'
         for r in lessons()
     )
     page = f"""<!doctype html>
