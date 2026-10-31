@@ -131,20 +131,20 @@
       const x4k = xOnRuler(G, 4000);
       pen.rect(x4k, G.rulerY - 9, G.rx1 - x4k, 9, c.paper2);
       pen.line([[G.rx0, G.rulerY], [G.rx1, G.rulerY]], c.ink, 1.5);
-      const ticks = G.phone ? [[0, '0'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
+      const ticks = G.phone ? [[0, '0'], [100, '100'], [1000, '1,000'], [10000, '10,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
       ticks.forEach(([t, lab]) => {
         const x = xOnRuler(G, t);
         pen.line([[x, G.rulerY], [x, G.rulerY + 5]], c.soft, 1);
         pen.text(lab, x, G.rulerY + 18, { color: c.soft, size: 10, align: t === 0 ? 'left' : t === RULER_MAX ? 'right' : 'center' });
       });
       pen.line([[x4k, G.rulerY - 9], [x4k, G.rulerY + 5]], c.soft, 2);
-      pen.text(G.phone ? 'the analog ruler F, log scale' : 'the analog ruler: frequency F, log scale', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
+      pen.text(G.phone ? 'the analog ruler F, log scale, to 100,000 Hz' : 'the analog ruler: frequency F, log scale', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
 
       if (!explore) {
         const [tx, ty] = onCircle(G, X());
         pen.ring(tx, ty, 7, c.ink, 2);
-        const [lx, ly] = onCircle(G, X(), 22);
-        pen.text(`exchange: ${hz(X())}`, lx - 4, ly, { color: c.ink, size: 11, align: 'right' });
+        pen.ring(G.rx0 + 6, 34, 5, c.ink, 2);
+        pen.text(`the exchange's 71% point: ${hz(X())} Hz`, G.rx0 + 16, 38, { color: c.ink, size: 11, align: 'left' });
       }
       if (explore && state.pinned !== null) {
         const xp = xOnRuler(G, state.pinned), [px, py] = onCircle(G, warp(state.pinned));
@@ -196,12 +196,8 @@
         const fc = warp(state.C), xe = P.X(X()), xc = P.X(fc), y71 = P.Y(Math.SQRT1_2);
         pen.ring(xe, y71, 7, c.ink, 2);
         pen.dot(xc, y71, 5.5, c.accent);
-        const close = Math.abs(X() - fc) < 15;
-        if (close) pen.text(`both at ${hz(fc)}`, Math.min(xe, xc) - 10, y71 + 20, { color: c.accentInk, size: 11, align: 'right' });
-        else {
-          pen.text(`copy: ${hz(fc)}`, xc + (xc < xe ? -8 : 8), y71 + 20, { color: c.accentInk, size: 11, align: xc < xe ? 'right' : 'left' });
-          pen.text(`exchange: ${hz(X())}`, xe + (xc < xe ? 8 : -8), y71 - 12, { color: c.ink, size: 11, align: xc < xe ? 'left' : 'right' });
-        }
+        pen.text(G.phone ? `ring: exchange, ${hz(X())} Hz` : `ring: the exchange's 71% point, ${hz(X())} Hz`, P.x0 + 10, P.y1 - 30, { color: c.ink, size: 11, align: 'left' });
+        pen.text(G.phone ? `dot: your copy, ${hz(fc)} Hz` : `dot: your copy's 71% point, ${hz(fc)} Hz`, P.x0 + 10, P.y1 - 12, { color: c.accentInk, size: 11, align: 'left' });
       }
     }, { height: w => (w < 560 ? 550 : 530) });
 

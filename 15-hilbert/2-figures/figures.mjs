@@ -259,7 +259,7 @@ export default k => {
       polar(cx, cy, r, 45, 'top'), circle(tx, ty, 5, { cls: 'k-dot' }),
       line(tx, ty, tx, cy, { cls: 'k-guide' }), line(tx, ty, cx, ty, { cls: 'k-guide' }),
       sq(tx, cy), sq(cx, ty, 9, 'h-shadow-soft'),
-      text(tx + (ph ? 0 : 8), ty - 12, 'the dot, n = 1', { anchor: ph ? 'middle' : 'start', cls: 'k-label' }),
+      text(tx + 8, ty - (ph ? 6 : 12), ph ? 'n = 1' : 'the dot, n = 1', { anchor: 'start', cls: 'k-label' }),
       text(cx - 10, ty + 4, '0.707', { anchor: 'end', cls: 'k-num' }),
       text(tx - 8, cy - 8, '0.707', { anchor: 'end', cls: 'k-num' }),
       text(cx, under, 'dashed: the dot a quarter turn behind;', { cls: 'k-label' }),

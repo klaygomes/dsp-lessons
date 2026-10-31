@@ -1,0 +1,47 @@
+<div class="lab" id="lab">
+  <h3>Lab: shift a tone, follow its arrows</h3>
+  <div id="a1-ask"></div>
+  <canvas id="a1-stage" class="stage" role="img" aria-label="The wheel with the call tone's arrows, and the spectrum of what the line carries."></canvas>
+  <div class="key">
+    <span><i class="h-k-top"></i>top arrow</span>
+    <span><i class="h-k-mirror"></i>mirror arrow</span>
+    <span><i class="h-k-ghostarrow"></i>arrows that make the ghost</span>
+    <span><i class="h-k-call"></i>the call tone (dashed)</span>
+    <span><i class="h-k-wanted"></i>wanted copy</span>
+    <span><i class="h-k-ghost"></i>ghost</span>
+    <span id="a1-key-pin" hidden><i class="h-k-pin"></i>pinned</span>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" id="a1-result"></div>
+    <p id="a1-why"></p>
+    <p class="compare" id="a1-compare" hidden></p>
+  </div>
+  <div class="controls">
+    <div class="control">
+      <label for="a1-tone">Call tone: <output id="a1-tone-out">1,000 Hz</output></label>
+      <input id="a1-tone" type="range" min="100" max="3400" step="50" value="1000" disabled>
+    </div>
+    <div class="control">
+      <label for="a1-shift">Shift: <output id="a1-shift-out">+300 Hz</output></label>
+      <input id="a1-shift" type="range" min="-500" max="500" step="25" value="300" disabled>
+    </div>
+  </div>
+  <div class="row" role="group" aria-label="The multiplier">
+    <button type="button" data-mode="tone" aria-pressed="true" disabled>× a tone (two arrows)</button>
+    <button type="button" data-mode="arrow" aria-pressed="false" disabled>× one arrow (no mirror)</button>
+    <button type="button" data-mode="analytic" aria-pressed="false" disabled>Remove the call’s mirror arrows</button>
+  </div>
+  <div class="row" role="group" aria-label="What to play">
+    <button type="button" data-src="tone" aria-pressed="true">The tone</button>
+    <button type="button" data-src="voice" aria-pressed="false">A recorded voice</button>
+  </div>
+  <div class="row">
+    <button type="button" id="a1-play" disabled>Play</button>
+    <button type="button" id="a1-raw" class="k-toggle" aria-pressed="false" disabled>Hear it unshifted</button>
+    <button type="button" id="a1-pause" class="k-toggle" aria-pressed="false">Pause the arrows</button>
+    <button type="button" id="a1-pin" disabled>Pin this</button>
+    <button type="button" id="a1-reset">Reset</button>
+  </div>
+  <p class="k-now" id="a1-now" aria-live="polite">Not playing.</p>
+  <p class="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</div>

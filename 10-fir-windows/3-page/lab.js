@@ -90,7 +90,7 @@
           const x0 = Math.max(x, X(S)), x1 = Math.min(x + R.h, X(8000));
           if (x1 > x0) pen.line([[x0, R.y + R.h - (x0 - x)], [x1, R.y + R.h - (x1 - x)]], c.rule, 1);
         }
-        pen.text('pass', (X(0) + X(J.P)) / 2, R.y + 14, { color: c.input, size: 12, font: 'body', weight: 600 });
+        pen.text('pass', (X(0) + X(J.P)) / 2, R.y + R.h - 8, { color: c.input, size: 12, font: 'body', weight: 600 });
         pen.text('remove', (X(S) + X(8000)) / 2, R.y + 14, { color: c.soft, size: 12, font: 'body', weight: 600 });
       }
       const ticks = st.db ? [[0, '0'], [-20, `${MINUS}20`], [-40, `${MINUS}40`], [-60, `${MINUS}60`], [-80, `${MINUS}80 dB`]] : [[0, '0'], [0.5, '0.5'], [1, '1']];
@@ -100,11 +100,10 @@
       pen.text('input tone, 16,000 samples per second', R.x, R.y + R.h + 32, { align: 'left', color: c.soft, size: 10 });
       if (st.db) {
         pen.line([[X(4000), toY(-40)], [X(8000), toY(-40)]], c.soft, 1, [4, 4]);
-        pen.text(`${MINUS}40 dB = 1%`, X(8000) - 4, toY(-40) - 5, { align: 'right', color: c.soft, size: 10 });
       } else {
         pen.line([[X(0), Y(1)], [X(4000), Y(1)], [X(4000), Y(0)], [X(8000), Y(0)]], c.soft, 1.5, [6, 5]);
       }
-      if (explore && !st.db) pen.line([[X(4600), R.y], [X(4600), R.y + R.h]], c.rule, 1);
+      if (explore && !st.db) { pen.line([[X(4600), R.y], [X(4600), R.y + R.h]], c.rule, 1); pen.text('4,600', X(4600) + 4, R.y + R.h - 6, { align: 'left', color: c.soft, size: 10 }); }
       if (st.pinned) {
         const p = analyse(st.pinned.kind, st.pinned.N, J.P);
         pen.line(Array.from(p.curve, (v, i) => [X(i * 8), Y(v)]), c.input, 1.8, [5, 4]);
@@ -122,7 +121,7 @@
       }
 
       const GX = t => G.x + t / 10 * G.w, GY = f => G.y + G.h - f / 4000 * G.h;
-      pen.text('the ghost on your side, 8,000 samples per second: thicker is louder', G.x, G.y - 10, { align: 'left', color: c.ink, size: phone ? 10 : 11 });
+      pen.text(phone ? 'the ghost on your side (thicker: louder)' : 'the ghost on your side, 8,000 samples per second: thicker is louder', G.x, G.y - 10, { align: 'left', color: c.ink, size: phone ? 10 : 11 });
       pen.rect(G.x, GY(J.P), G.w, GY(0) - GY(J.P), c.paper2);
       pen.line([[G.x, G.y + G.h], [G.x + G.w, G.y + G.h]], c.soft, 1);
       pen.text('4,000', G.x - 6, GY(4000) + 4, { align: 'right', color: c.soft, size: 10 });
@@ -131,12 +130,14 @@
       pen.text(J.band.toLowerCase(), G.x + 6, GY(0) - 6, { align: 'left', color: c.soft, size: 10 });
       [0, 5, 10].forEach(t => pen.text(t === 10 ? '10 s' : String(t), Math.min(GX(t), G.x + G.w - 10), G.y + G.h + 14, { color: c.soft, size: 10 }));
       if (locked) return;
+      const half = t => { const g = st.on ? Math.abs(a.at(4000 + 400 * t)) : 1; return [g, Math.min(8, 9 * Math.pow(g, 0.6))]; };
       for (let i = 0; i < 500; i++) {
-        const t0 = i / 50, t1 = (i + 1) / 50, fin = 4000 + 400 * (t0 + t1) / 2, g = st.on ? Math.abs(a.curve[Math.round(fin / 8)]) : 1;
-        const fo = 8000 - fin, wdt = Math.min(14, 18 * Math.pow(g, 0.6));
-        if (wdt < 0.4) continue;
-        const loud = g > 0.01 && fo < J.P;
-        pen.line([[GX(t0), GY(8000 - 4000 - 400 * t0)], [GX(t1), GY(8000 - 4000 - 400 * t1)]], loud ? c.accent : c.soft, Math.max(1, wdt), [], loud ? 1 : 0.6);
+        const t0 = i / 50, t1 = (i + 1) / 50, [g0, w0] = half(t0), [g1, w1] = half(t1), g = Math.max(g0, g1);
+        if (Math.max(w0, w1) < 0.3) continue;
+        const loud = g > 0.01 && 4000 - 400 * t0 < J.P, y0 = GY(4000 - 400 * t0), y1 = GY(4000 - 400 * t1);
+        s.ctx.globalAlpha = loud ? 1 : 0.6; s.ctx.fillStyle = loud ? c.accent : c.soft;
+        s.ctx.beginPath(); s.ctx.moveTo(GX(t0), y0 - w0 - 0.4); s.ctx.lineTo(GX(t1), y1 - w1 - 0.4); s.ctx.lineTo(GX(t1), y1 + w1 + 0.4); s.ctx.lineTo(GX(t0), y0 + w0 + 0.4); s.ctx.closePath(); s.ctx.fill();
+        s.ctx.globalAlpha = 1;
       }
       if (st.t !== null) pen.line([[GX(st.t), G.y], [GX(st.t), G.y + G.h]], c.input, 2);
     }
@@ -185,7 +186,7 @@
       if (st.caseIx === 1) {
         return `Fixed. ${tail} The engineer runs her sweep again. The first moment still leaks, fading below 1% by ${hz(a.edgeHi)} Hz, but it all lands in the empty margin. After that: nothing. No ghost in the voice band, and a wideband voice at 3,500 Hz now comes out at ${f3(a.at(3500))} instead of 1.090.`;
       }
-      if (st.caseIx === 0) return `Fixed for the second bridge. ${tail} Its slope had only ${slope} to live in, so the band and the ghost both settle within 1% only with enough coefficients.`;
+      if (st.caseIx === 0) return `Fixed for the second bridge. ${tail} Its slope had only ${slope} to live in, and a narrower slope takes a longer window. Next, your own line.`;
       return `Fixed. ${tail} The ghost no longer reaches this line’s band.`;
     }
 
@@ -202,7 +203,7 @@
       const locked = !st.unlocked;
       slider.disabled = locked; $('play').disabled = locked; $('pin').disabled = locked; $('db').disabled = locked;
       host.querySelectorAll('[data-window]').forEach(b => { b.disabled = locked; b.setAttribute('aria-pressed', String(b.dataset.window === st.kind)); });
-      $('db').setAttribute('aria-pressed', String(st.db)); $('on').setAttribute('aria-pressed', String(st.on));
+      $('db').setAttribute('aria-pressed', String(st.db)); $('key-db').hidden = !st.db; $('key-step').hidden = st.db || !explore; $('on').setAttribute('aria-pressed', String(st.on));
       $('on').textContent = st.on ? 'Filter on' : 'Filter off';
       if (explore) {
         $('result').textContent = locked ? `${st.N} coefficients, lesson 5’s filter · bump ${f3(a.peak)} at ${hz(a.peakF)} Hz`

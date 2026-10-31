@@ -22,6 +22,11 @@
 .k-meter.k-ok .fill { background: var(--input); }
 .k-meter.k-ok output { color: var(--input); }
 .meters { display: grid; gap: 12px; }
+.meters .k-meter { grid-template-columns: 1fr auto; }
+.meters .k-meter > span:first-child { grid-column: 1 / -1; }
+.meters .k-meter .bar { grid-column: 1; grid-row: 2; }
+.meters .k-meter output { grid-column: 2; grid-row: 2; }
+.meters .k-meter .scale { grid-column: 1; grid-row: 3; }
 .act2 { display: grid; }
 </style>
 
@@ -59,6 +64,7 @@
     <span data-k="key-step"><i class="k-ideal"></i>the ideal step</span>
     <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
     <span><i class="k-ghost-mark"></i>ghost in the band, over 1%</span>
+    <span data-k="key-db" hidden><i class="k-ideal"></i>in dB: the −40 dB line, 1%</span>
   </div>
   <div class="meters" data-k="meters" hidden>
     <div class="k-meter" data-k="m-band">

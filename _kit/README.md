@@ -96,6 +96,13 @@ Every lesson uses the same marks for the same meaning, so a reader who learned t
 - A meter says its full scale (`0%` to `40%` under the bar) and says "past the bar" when the value is beyond it.
 - A static figure never looks like a control: no slider tracks, handles or button-shaped boxes. Show a setting as a label and value.
 - When the prose says a figure does something ("the curve fades"), the animation does exactly that.
+- Series never differ by color alone: each gets its own marker shape and line style, and every figure still reads in grayscale.
+- One meaning per mark across the lesson; say in a label or legend what dashed means. Coral is never also "the problem".
+- One precision per quantity across all figures and the page, matching the prose (a gain is 0.70 or 70% everywhere, not both).
+- Labels never sit on lines; legends draw marks exactly as plotted; every axis states its unit and where it starts.
+- At most about seven primary elements; split a figure that carries two ideas. Use the lesson's defined words, not synonyms.
+- An animation's reduced-motion still shows the claim (faint copies, a curved arrow, before and after ghosts).
+- Time-aligned rows at different sample rates line up in time (sample n above m = 2n).
 
 ## Questions in a lab
 

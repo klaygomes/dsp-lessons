@@ -23,3 +23,11 @@
 .l13-meter .fill { border-radius: 5px 0 0 5px; }
 .l13-meter .budget { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 2px dashed var(--ink); }
 .ask-inline { border-left: 3px solid var(--input); padding-left: 16px; }
+.k-meter.l13-meter { grid-template-columns: minmax(0, 1fr); }
+.k-meter.l13-meter > span:first-child { grid-column: 1; grid-row: 1; }
+.k-meter.l13-meter .bar { grid-column: 1; grid-row: 2; }
+.k-meter.l13-meter .scale { grid-column: 1; grid-row: 3; position: relative; display: block; height: 16px; }
+.k-meter.l13-meter .scale span { position: absolute; top: 0; white-space: nowrap; }
+.k-meter.l13-meter output { grid-column: 1; grid-row: 4; text-align: left; }
+.lab .readout .result { font-size: 16px; line-height: 1.5; }
+table.worked td, table.worked th { white-space: normal; }

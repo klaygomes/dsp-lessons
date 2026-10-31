@@ -1,0 +1,77 @@
+<template id="spectrum-lab">
+  <h3 data-k="title">Lab: one tone, every bin</h3>
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div data-k="ask2"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key" data-k="key1">
+    <span><i class="k-own"></i>nearest bins</span>
+    <span><i class="k-leak"></i>leakage</span>
+    <span><i class="k-tone"></i>the tone</span>
+    <span><i class="k-long"></i>counter-clockwise chain</span>
+    <span><i class="k-mirror"></i>mirror chain</span>
+    <span><i class="k-total"></i>joined: the match</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
+  </div>
+  <div class="key" data-k="key2" hidden>
+    <span><i class="k-own"></i>the key's own bins</span>
+    <span><i class="k-leak"></i>leakage into other bins</span>
+    <span><i class="k-bar"></i>the bar</span>
+    <span><i class="k-leakmark">&#9660;</i>worst loud leak</span>
+    <span><i class="k-faintmark">&#9632;</i>weakest rural key</span>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div data-k="explore-controls">
+    <div class="row" role="group" aria-label="Block length" data-k="lengths">
+      <span class="lab-label">Block:</span>
+      <button type="button" data-n="8" aria-pressed="false">8 samples</button>
+      <button type="button" data-n="16" aria-pressed="true">16</button>
+      <button type="button" data-n="32" aria-pressed="false">32</button>
+      <button type="button" data-n="256" aria-pressed="false">256</button>
+    </div>
+    <div class="control">
+      <label data-for="tone">Tone: <output data-k="tone-out"></output></label>
+      <input data-k="tone" type="range" min="0" max="4000" step="62.5" value="1250" disabled>
+      <div class="row"><button type="button" data-k="t770" class="quiet" disabled>The keypad's 770 Hz at 256 samples, bin 27</button></div>
+    </div>
+    <div class="control">
+      <label data-for="start">Start, where the dot begins: <output data-k="start-out">0°</output></label>
+      <input data-k="start" type="range" min="0" max="355" step="5" value="0" disabled>
+    </div>
+    <div class="control">
+      <label data-for="bin">Chains for bin: <output data-k="bin-out"></output></label>
+      <input data-k="bin" type="range" min="0" max="8" step="1" value="3" disabled>
+    </div>
+  </div>
+  <div data-k="fix-controls" hidden>
+    <div class="row" role="group" aria-label="Window">
+      <span class="lab-label">Window:</span>
+      <button type="button" data-win="none" aria-pressed="true">No window</button>
+      <button type="button" data-win="hann" aria-pressed="false">Hann window</button>
+    </div>
+    <div class="control">
+      <label data-for="len">Block length: <output data-k="len-out"></output></label>
+      <input data-k="len" type="range" min="64" max="512" step="8" value="256" disabled>
+      <p class="note">The shortest key press is 40 ms, 320 samples.</p>
+    </div>
+    <div class="control">
+      <label data-for="bar">The bar: <output data-k="bar-out"></output></label>
+      <input data-k="bar" type="range" min="0" max="20" step="0.1" value="12" disabled>
+    </div>
+    <div class="pads" data-k="pads"></div>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play">Play the block on repeat</button>
+    <button type="button" data-k="steady" class="k-toggle" aria-pressed="false">Steady tone instead</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another line</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite"></p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

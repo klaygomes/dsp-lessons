@@ -107,7 +107,7 @@ You can also read the curve the other way: start at a digital tone, go across to
 
 \[ F = \frac{8000}{\pi}\tan\!\left(\frac{\pi f}{8000}\right) \]
 
-Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives \(F = 2546.5 \times \tan(1.1781) = 2546.5 \times 2.4142 = 6{,}148\) Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's the second row of her table.
+Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives \(F = 2546.5 \times \tan(1.1781)\) \(= 2546.5 \times 2.4142 = 6{,}148\) Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's the second row of her table.
 
 Now drag a mark along the analog ruler yourself and watch where it lands on the circle.
 

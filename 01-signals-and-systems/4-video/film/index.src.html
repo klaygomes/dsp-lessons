@@ -166,31 +166,37 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drift(2);
 }
 {
-  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 520, A: 260 });
+  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 450, A: 220 });
   const ns = [0, 1, 2, 3, 4, 5, 6, 7, 8], vals = ns.map(k => cosd(45 * k));
   axis(c, P, 180, 1740);
-  const s = word(3, 'steps');
+  const s = word(3, 'step');
   const faint = layer(c, `<path d="${curve(k => cosd(45 * k), -0.2, 8.2, P)}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="14 12"/>`, [P.X(-0.2), P.X(8.2)]);
   M.kf(faint, '--p', [[0, 1]]);
   M.show(label(c, 'a tone', P.X(4), P.base + 40, 'lbl s', 'center'), n, s);
+  const run = el('div', { id: 's3run', class: 'dot' }, c);
+  Object.assign(run.style, { left: '-16px', top: '-16px', width: '32px', height: '32px', background: C.input });
+  const runKeys = []; for (let f = n, i = 0; f <= s; f += 2, i++) { const u = -0.2 + ((i * 0.12) % 8.4); runKeys.push([f, u]); }
+  M.kf('#s3run', 'x', runKeys.map(([f, u]) => [f, P.X(u)]));
+  M.kf('#s3run', 'y', runKeys.map(([f, u]) => [f, P.Y(cosd(45 * u))]));
+  M.show('#s3run', n, s);
   const S = ns.map(k => stem(c, P.X(k), P, k === 8 ? C.soft : C.ink));
   S.forEach((st, i) => { const at = s + i * 6; [st.bar, st.dot].forEach(sel => M.show(sel, at)); });
   drive(S, P, [[0, vals]]);
   ns.forEach((k, i) => {
     const at = s + i * 6, val = vals[i];
-    M.show(label(c, fmt(val), P.X(k), 820, 'lbl s', 'center'), at);
-    M.show(label(c, (45 * k) + '°', P.X(k), 900, 'lbl s', 'center'), at);
+    M.show(label(c, fmt(val), P.X(k), 700, 'lbl s', 'center'), at);
+    M.show(label(c, (45 * k) + '°', P.X(k), 770, 'lbl s', 'center'), at);
   });
   M.show(label(c, 'pitch: 1,000 Hz, repeats per second', 960, 40, 'lbl', 'center'), word(3, 'hertz'));
-  M.show(label(c, '360° × 1,000 ÷ 8,000 = 45° per sample', 960, 110, 'lbl ok', 'center'), word(3, 'angle'));
-  const rep = word(3, 'after');
-  M.show(layer(c, `<path d="M ${P.X(0)} 960 L ${P.X(0)} 980 L ${P.X(8)} 980 L ${P.X(8)} 960" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
-  M.show(label(c, '8 samples, then it starts over', P.X(4), 995, 'lbl', 'center'), rep, sceneEnd(3));
+  M.show(label(c, '360° × 1,000 ÷ 8,000 = 45° per sample', 960, 110, 'lbl ok', 'center'), word(3, 'degrees'));
+  const rep = word(3, 'eight');
+  M.show(layer(c, `<path d="M ${P.X(0)} 835 L ${P.X(0)} 855 L ${P.X(8)} 855 L ${P.X(8)} 835" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
+  M.show(label(c, '8 samples: one full turn', P.X(4), 862, 'lbl', 'center'), rep, sceneEnd(3));
   drift(3);
 }
 {
   const c = cam(4), n = sceneStart(4), P = plot({ x0: 960, dx: 0, base: 640, A: 200 });
-  const chip = word(4, 'chip'), sys = word(4, 'system'), rule = word(4, 'rule', 1);
+  const chip = word(4, 'chip'), sys = word(4, 'system'), rule = word(4, 'rule');
   M.show(label(c, 'output[n] = 4 * input[n]', 960, 100, 'lbl big', 'center'), rule);
   const row = el('div', { id: 's4row', class: 'layer' }, c);
   M.show('#s4row', n, chip);
@@ -226,7 +232,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   label(strip, 'quiet caller: 0.2 × 4', 270, 80, 'lbl');
   label(strip, 'loud caller: 0.5 × 4', 1920 + 270, 80, 'lbl');
   const q = stems(strip, P, ns, C.ink), l = stems(strip, Q, ns, C.ink);
-  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced'), pan = word(5, 'loud', 1);
+  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced'), pan = word(5, 'loud', 1), pan0 = word(5, 'loud'), back = word(5, 'quiet', 1);
   drive(q, P, [[0, ns.map(k => 0.2 * cosd(45 * k))], [grow, ns.map(k => 0.2 * cosd(45 * k))], [grow + 16, ns.map(k => 0.8 * cosd(45 * k)), 'softLand']]);
   M.show(label(strip, 'peak 0.80', 1720 - 280, 180, 'lbl ok'), grow + 16);
   M.show(tick(strip, 1720 - 350, 205), grow + 16);
@@ -235,8 +241,8 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   const clipped = ns.filter(k => Math.abs(big[k]) > 1.001);
   tint(l, clipped, sliced, C.ink, C.accent);
   M.show(ghosts(strip, Q, clipped.map(k => [Q.X(k), big[k]])), sliced);
-  M.show(label(strip, '1, 1, 0, −1, −1, −1, 0, 1', 1920 + 995, 985, 'lbl acc', 'center'), word(5, 'flat'));
-  M.camera('#s5strip', [[0, { x: 0 }], [pan, { x: 0 }], [pan + 14, { x: -1920 }, 'whip']]);
+  M.show(label(strip, '1, 1, 0, −1, −1, −1, 0, 1', 1920 + 1720, 80, 'lbl acc', 'right'), word(5, 'flat'));
+  M.camera('#s5strip', [[0, { x: 0 }], [pan0, { x: 0 }], [pan0 + 14, { x: -1920 }, 'whip'], [back, { x: -1920 }], [back + 14, { x: 0 }, 'whip'], [pan, { x: 0 }], [pan + 14, { x: -1920 }, 'whip']]);
 }
 {
   const c = cam(6), n = sceneStart(6), P = plot({ x0: 300, dx: 190, base: 680, A: 300 });
@@ -257,13 +263,13 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.kf('#' + scaled.id, 'scaleY', [[0, 1.414 * cosd(45)], [fail, 1.414 * cosd(45)], [fail + 8, 1.414, 'softLand']]);
   M.show(label(c, 'left + right', 1080, 720, 'lbl s', 'center'), nb);
   M.show(label(c, '1.414 × middle', 1560, 720, 'lbl s', 'center'), word(6, 'middle'));
-  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 830, 'lbl', 'center'), nb, fail);
-  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 900, 'lbl', 'center'), word(6, 'fixed'), fail);
-  M.show(tick(c, 1330, 1000), word(6, 'clean'), fail);
-  M.show(label(c, '1 + 0 = 1', 960, 830, 'lbl', 'center'), fail);
-  M.show(label(c, '1.414 × 1 = 1.414', 960, 900, 'lbl acc', 'center'), fail);
-  M.show(cross(c, 1330, 1000), fail + 8);
-  M.show(label(c, 'the neighbor rule', 960, 70, 'lbl s', 'center'), word(6, 'pencil'));
+  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 780, 'lbl', 'center'), nb, fail);
+  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 850, 'lbl', 'center'), word(6, 'fixed'), fail);
+  M.show(tick(c, 1270, 885), word(6, 'clean'), fail);
+  M.show(label(c, '1 + 0 = 1', 960, 780, 'lbl', 'center'), fail);
+  M.show(label(c, '1.414 × 1 = 1.414', 960, 850, 'lbl acc', 'center'), fail);
+  M.show(cross(c, 1250, 881), fail + 8);
+  M.show(label(c, 'the neighbor rule', 960, 70, 'lbl s', 'center'), word(6, 'neighbor'));
   drift(6);
 }
 {
@@ -274,7 +280,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drive(S, P, [[0, cut]]);
   const big = k => 1.207 * cosd(45 * k), buzz = k => 0.207 * cosd(135 * k);
   const a = -0.35, b = 7.35, span = [P.X(a) - 10, P.X(b) + 10];
-  const t1 = word(7, 'one'), t3 = word(7, 'three'), land = word(7, 'lands');
+  const t1 = word(7, 'one'), t3 = word(7, 'three'), land = word(7, 'second');
   const w1 = layer(c, `<path d="${curve(big, a, b, P)}" fill="none" stroke="${C.soft}" stroke-width="5" stroke-dasharray="18 12"/>`, span);
   reveal(w1, t1, t1 + 26);
   const w3 = layer(c, `<path d="${curve(buzz, a, b, P)}" fill="none" stroke="${C.accent}" stroke-width="6" stroke-dasharray="3 12" stroke-linecap="round"/>`, span);
@@ -293,7 +299,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   const c = cam(8), n = sceneStart(8), P = plot({ x0: 0, dx: 1, base: 600, A: 200 });
   M.show(band(c, P, 300, 1620), n);
   const A1 = stem(c, 620, P, C.ink, 14, 20), A2 = stem(c, 1300, P, C.ink, 14, 20);
-  const dbl = word(8, 'doubling'), real = word(8, 'real'), inside = word(8, 'inside');
+  const dbl = word(8, 'doubling'), real = word(8, 'acts'), inside = word(8, 'inside');
   drive([A1], P, [[0, [0.2]], [n + 10, [0.2]], [n + 26, [0.8], 'softLand']]);
   drive([A2], P, [[0, [0.4]], [real - 30, [0.4]], [real - 14, [1.6], 'softLand'], [real, [1.6]], [real + 5, [1], 'crashIn']]);
   showAll([A1], n); showAll([A2], dbl);
@@ -306,7 +312,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(c, 'written: 1.0', 1340, P.Y(1.2) - 31, 'lbl acc'), real);
   M.show(cross(c, 1750, P.Y(1.2)), real + 5);
   M.show(label(c, 'linear', 960, 40, 'lbl', 'center'), word(8, 'linear'));
-  M.show(label(c, 'inside the range: × 4 holds', 960, P.Y(-1) + 50, 'lbl ok', 'center'), inside);
+  M.show(label(c, 'plain × 4 while 4 × input is inside', 960, P.Y(-1) + 30, 'lbl ok', 'center'), inside);
   drift(8);
 }
 {
@@ -324,16 +330,16 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(ghosts(c, P, hot.map(k => [P.X(k), sum[k]])), writes);
   M.show(label(c, '1,000 Hz voice', 230, 60, 'lbl'), n, tog + 18);
   M.show(label(c, '500 Hz voice', 760, 60, 'lbl ok'), n, tog + 18);
-  M.show(label(c, 'each alone: peak 0.80', 230, 950, 'lbl'), word(9, 'alone'), tog + 18);
-  M.show(tick(c, 950, 980), word(9, 'alone'), tog + 18);
+  M.show(label(c, 'each alone: peak 0.80', 230, 830, 'lbl'), word(9, 'alone'), tog + 18);
+  M.show(tick(c, 950, 860), word(9, 'alone'), tog + 18);
   M.show(label(c, 'added: 1.60 asked', 230, 60, 'lbl'), tog + 18);
-  M.show(label(c, '1.00 written', 230, 950, 'lbl acc'), writes);
-  M.show(cross(c, 640, 980), writes + 5);
+  M.show(label(c, '1.00 written', 230, 830, 'lbl acc'), writes);
+  M.show(cross(c, 640, 861), writes + 5);
   M.show(label(c, 'linear?', 1690, 60, 'lbl', 'right'), n);
   drift(9);
 }
 {
-  const c = cam(10), n = sceneStart(10), tg = word(10, 'together'), ns = Array.from({ length: 12 }, (_, k) => k);
+  const c = cam(10), n = sceneStart(10), tg = word(10, 'smoother'), ns = Array.from({ length: 12 }, (_, k) => k);
   const partA = el('div', { id: 's10a', class: 'layer' }, c), partB = el('div', { id: 's10b', class: 'layer' }, c);
   M.show('#s10a', n, tg); M.show('#s10b', tg);
   const Pin = plot({ x0: 420, dx: 110, base: 380, A: 360 }), Pout = plot({ x0: 420, dx: 110, base: 860, A: 180 });
@@ -362,7 +368,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   reveal(ow, tg + 30, tg + 56);
   label(partB, '1,000 Hz in', 372, 790, 'lbl ok', 'center');
   M.show(label(partB, '1,000 Hz out', 1492, 790, 'lbl', 'center'), word(10, 'same'));
-  M.show(label(partB, 'smaller, half a sample later', 1720, 880, 'lbl s', 'right'), word(10, 'bigger'));
+  M.show(label(partB, 'resized and shifted', 1492, 860, 'lbl s', 'center'), word(10, 'resized'));
   M.show(label(partB, 'same pitch, no new tones', 960, 150, 'lbl acc', 'center'), word(10, 'same'));
   drift(10);
 }
@@ -384,9 +390,12 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(c, 'loudest input 0.5', 460, 60, 'lbl'), word(11, 'loudest'));
   M.show(label(c, 'peak 2.00, clipped', 1700, 60, 'lbl acc', 'right'), n, two);
   M.show(label(c, 'peak 1.00, no margin', 1700, 60, 'lbl acc', 'right'), two + 14, six);
-  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 960, 960, 'lbl ok', 'center'), word(11, 'divided'), word(11, 'meter'));
+  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 1080, 800, 'lbl ok', 'center'), word(11, 'over'), meter);
   M.show(label(c, 'headroom: 0.8 to 1', 1700, P.Y(1) - 76, 'lbl acc', 'right'), word(11, 'headroom'));
-  M.show(label(c, 'buzz meter 0%: loud 0.80 · quiet 0.32 · pair 0.64', 960, 960, 'lbl', 'center'), meter);
+  M.show(label(c, 'peaks: loud 0.80 · quiet 0.32 · pair 0.64', 1080, 800, 'lbl', 'center'), meter);
+  M.show(label(c, 'buzz meter', 90, 640, 'lbl s'), meter);
+  M.show(layer(c, `<rect x="90" y="712" width="300" height="34" fill="${C.paper}" stroke="${C.ink}" stroke-width="3" rx="4"/><text x="90" y="800" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">0%</text><text x="390" y="800" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">40%</text>`), meter);
+  M.show(label(c, 'reads 0%', 90, 830, 'lbl ok'), meter);
   drift(11);
 }
 {
@@ -406,7 +415,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(echo, '...hello', 1320, 340, 'note', 'center'), back + 24);
   M.show(layer(echo, `<path d="M 200 760 L 200 790 L 1040 790 L 1040 760" fill="none" stroke="${C.ink}" stroke-width="4"/>`), word(12, 'quarter'));
   M.show(label(echo, '0.25 s later', 620, 810, 'lbl', 'center'), word(12, 'quarter'));
-  M.show(label(echo, 'next: the echo', 960, 940, 'lbl acc', 'center'), word(12, 'next'));
+  M.show(label(echo, 'next: the echo', 960, 80, 'lbl acc', 'center'), word(12, 'next'));
   M.drift('#s12cam', { prop: 'scale', from: 1.03, to: 1, start: tk, end: END });
 }
 SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });

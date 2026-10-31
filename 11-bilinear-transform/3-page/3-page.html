@@ -236,7 +236,7 @@ button.k-toggle[aria-pressed="true"]::before { content: "\2713\00a0"; }
 <p>And here is the rule that makes the whole thing usable. The bilinear transform never changes a gain; it only moves gains to new tones. The digital filter's response at a tone f is exactly the analog prototype's response at the frequency F that lands on f. Not roughly. Exactly. So the copy passes 71% wherever 3,400 Hz landed, at 2,363 Hz.</p>
 <p>You can also read the curve the other way: start at a digital tone, go across to the curve and down, and you get the analog frequency that lands there. In numbers, that's the same formula run backward, with tan in place of arctan:</p>
 <div class="display-math"><math display="block" class="tml-display" style="display:block math;"><semantics><mrow><mi>F</mi><mo>=</mo><mfrac><mn>8000</mn><mi>π</mi></mfrac><mrow><mi>tan</mi><mo>⁡</mo><mspace width="0.1667em"></mspace></mrow><mrow style="margin-left:-0.1667em;"></mrow><mrow><mo fence="true" form="prefix" stretchy="true">(</mo><mfrac><mrow><mi>π</mi><mi>f</mi></mrow><mn>8000</mn></mfrac><mo fence="true" form="postfix" stretchy="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">F = \frac{8000}{\pi}\tan\!\left(\frac{\pi f}{8000}\right)</annotation></semantics></math></div>
-<p>Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives <math><semantics><mrow><mi>F</mi><mo>=</mo><mn>2546.5</mn><mo>×</mo><mrow><mi>tan</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1.1781</mn><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><mn>2546.5</mn><mo>×</mo><mn>2.4142</mn><mo>=</mo><mn>6,148</mn></mrow><annotation encoding="application/x-tex">F = 2546.5 \times \tan(1.1781) = 2546.5 \times 2.4142 = 6{,}148</annotation></semantics></math> Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's the second row of her table.</p>
+<p>Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives <math><semantics><mrow><mi>F</mi><mo>=</mo><mn>2546.5</mn><mo>×</mo><mrow><mi>tan</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1.1781</mn><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">F = 2546.5 \times \tan(1.1781)</annotation></semantics></math> <math><semantics><mrow><mo>=</mo><mn>2546.5</mn><mo>×</mo><mn>2.4142</mn><mo>=</mo><mn>6,148</mn></mrow><annotation encoding="application/x-tex">= 2546.5 \times 2.4142 = 6{,}148</annotation></semantics></math> Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's the second row of her table.</p>
 <p>Now drag a mark along the analog ruler yourself and watch where it lands on the circle.</p>
 <template id="ruler-lab">
   <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
@@ -768,20 +768,20 @@ window.Kit = (() => {
       const x4k = xOnRuler(G, 4000);
       pen.rect(x4k, G.rulerY - 9, G.rx1 - x4k, 9, c.paper2);
       pen.line([[G.rx0, G.rulerY], [G.rx1, G.rulerY]], c.ink, 1.5);
-      const ticks = G.phone ? [[0, '0'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
+      const ticks = G.phone ? [[0, '0'], [100, '100'], [1000, '1,000'], [10000, '10,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
       ticks.forEach(([t, lab]) => {
         const x = xOnRuler(G, t);
         pen.line([[x, G.rulerY], [x, G.rulerY + 5]], c.soft, 1);
         pen.text(lab, x, G.rulerY + 18, { color: c.soft, size: 10, align: t === 0 ? 'left' : t === RULER_MAX ? 'right' : 'center' });
       });
       pen.line([[x4k, G.rulerY - 9], [x4k, G.rulerY + 5]], c.soft, 2);
-      pen.text(G.phone ? 'the analog ruler F, log scale' : 'the analog ruler: frequency F, log scale', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
+      pen.text(G.phone ? 'the analog ruler F, log scale, to 100,000 Hz' : 'the analog ruler: frequency F, log scale', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
 
       if (!explore) {
         const [tx, ty] = onCircle(G, X());
         pen.ring(tx, ty, 7, c.ink, 2);
-        const [lx, ly] = onCircle(G, X(), 22);
-        pen.text(`exchange: ${hz(X())}`, lx - 4, ly, { color: c.ink, size: 11, align: 'right' });
+        pen.ring(G.rx0 + 6, 34, 5, c.ink, 2);
+        pen.text(`the exchange's 71% point: ${hz(X())} Hz`, G.rx0 + 16, 38, { color: c.ink, size: 11, align: 'left' });
       }
       if (explore && state.pinned !== null) {
         const xp = xOnRuler(G, state.pinned), [px, py] = onCircle(G, warp(state.pinned));
@@ -833,12 +833,8 @@ window.Kit = (() => {
         const fc = warp(state.C), xe = P.X(X()), xc = P.X(fc), y71 = P.Y(Math.SQRT1_2);
         pen.ring(xe, y71, 7, c.ink, 2);
         pen.dot(xc, y71, 5.5, c.accent);
-        const close = Math.abs(X() - fc) < 15;
-        if (close) pen.text(`both at ${hz(fc)}`, Math.min(xe, xc) - 10, y71 + 20, { color: c.accentInk, size: 11, align: 'right' });
-        else {
-          pen.text(`copy: ${hz(fc)}`, xc + (xc < xe ? -8 : 8), y71 + 20, { color: c.accentInk, size: 11, align: xc < xe ? 'right' : 'left' });
-          pen.text(`exchange: ${hz(X())}`, xe + (xc < xe ? 8 : -8), y71 - 12, { color: c.ink, size: 11, align: xc < xe ? 'left' : 'right' });
-        }
+        pen.text(G.phone ? `ring: exchange, ${hz(X())} Hz` : `ring: the exchange's 71% point, ${hz(X())} Hz`, P.x0 + 10, P.y1 - 30, { color: c.ink, size: 11, align: 'left' });
+        pen.text(G.phone ? `dot: your copy, ${hz(fc)} Hz` : `dot: your copy's 71% point, ${hz(fc)} Hz`, P.x0 + 10, P.y1 - 12, { color: c.accentInk, size: 11, align: 'left' });
       }
     }, { height: w => (w < 560 ? 550 : 530) });
 

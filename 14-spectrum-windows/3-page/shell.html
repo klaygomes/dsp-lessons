@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Keys That Blur</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; font-style: normal; }
+.key .k-own { width: 12px; height: 12px; background: var(--ink); }
+.key .k-leak { width: 12px; height: 12px; background: repeating-linear-gradient(135deg, var(--accent) 0 1.5px, var(--accent-soft) 1.5px 4px); border: 1px solid var(--accent); }
+.key .k-tone { width: 0; height: 14px; border-left: 2px solid var(--input); }
+.key .k-long { width: 22px; border-top: 2px solid var(--ink); }
+.key .k-mirror { width: 22px; border-top: 2px dotted var(--ink-soft); }
+.key .k-total { width: 22px; border-top: 2.5px solid var(--accent); }
+.key .k-pin { width: 16px; border-top: 2px dashed var(--input); }
+.key .k-bar { width: 22px; border-top: 2.5px solid var(--input); }
+.key .k-leakmark { color: var(--accent); font-size: 12px; }
+.key .k-faintmark { color: var(--ink); font-size: 13px; }
+.lab .lab-label { font-weight: 600; margin-right: 4px; }
+.lab canvas.stage { cursor: default; }
+.act2 { display: grid; }
+.pads { display: flex; flex-wrap: wrap; gap: 18px 28px; }
+.pad { display: grid; gap: 6px; }
+.pad-title { font-weight: 600; font-size: 15px; }
+.pad-grid { display: grid; grid-template-columns: repeat(4, minmax(44px, 1fr)); gap: 6px; }
+.pad-key { font-family: var(--font-mono); font-size: 15px; padding: 9px 6px; min-width: 44px; }
+.pad-key.k-ok { border-color: var(--input); }
+.pad-key.k-thrown { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-soft); }
+.pad-key.k-unheard { border-color: var(--rule); color: var(--ink-soft); border-style: dashed; }
+.pad-key.k-wrong { border-color: var(--accent); border-style: dotted; }
+.pad-key.sel { outline: 2px solid var(--ink); outline-offset: 2px; }
+.pad-key[aria-pressed="true"] { background: inherit; }
+.pad-key.k-thrown[aria-pressed="true"] { background: var(--accent-soft); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 14 · chapter 10</p>
+    <h1>The Keys That Blur</h1>
+    <p class="question">A loud 4 lights up the bin that belongs to 7, and a faint key never clears the bar at all. The bins are 31.25 Hz apart and the keypad tones 73 Hz or more. So where does a tone's sound go?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 10.</span>
+    <span>Next lesson: the Hilbert transform, where a voice shifted up 300 Hz grows a ghost underneath.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+  </footer>
+</div>
+
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

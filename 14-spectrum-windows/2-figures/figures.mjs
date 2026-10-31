@@ -95,7 +95,7 @@ export default k => {
 
   const fig = (name, size, title, desc, caption, body, steps = 0) => ({
     name, w: 720, h: size[0], phone: { w: 360, h: size[1] }, title, desc, caption, steps, css, eyebrow: 'Lesson 14 · spectrum analysis with windows',
-    body: (kk, L) => [heads(L.slug), body(L)],
+    body: (kk, L) => [heads(L.slug), body(L)].flat(Infinity),
   });
 
   const ROWS = [697, 770, 852, 941], COLS = [1209, 1336, 1477, 1633];

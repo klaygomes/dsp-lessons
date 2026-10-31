@@ -37,6 +37,8 @@ The matches at the five bins are 0%, 100%, 0%, 0%, 0%. One tone, one bin, everyt
 
 Now move the tone halfway between two bins, to 1,500 Hz. Before you look, guess. Will the 1,000 and 2,000 Hz bins split it, half each, and the rest stay at zero?
 
+[[predict-split]]
+
 | n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|---|
 | 1,500 Hz | 1.00 | 0.38 | −0.71 | −0.92 | 0.00 | 0.92 | 0.71 | −0.38 |
@@ -234,9 +236,11 @@ The window paid for its low side lobes with a fatter main lobe. Look at where it
 
 [[diagram:effective-length]]
 
-In fact it's exactly twice. The window's cosine is two mirror arrows, one bin's turn each way. So the Hann chain is built from three plain chains, added as arrows before any rescaling: half the plain chain at the tone, minus a quarter of the plain chain shifted one bin each way. Each plain curve is zero at every whole bin except its own centre. Add the three as arrows, and the Hann curve is zero at every whole bin except the tone's own and the two next to it. Its first zero is two bins out.
+In fact it's exactly twice. The window's cosine is two mirror arrows, one bin's turn each way. So the Hann chain is built from three plain chains, added as arrows before any rescaling. It's half the plain chain at the tone, minus a quarter of the plain chain shifted one bin each way. Each plain curve is zero at every whole bin except its own centre. Add the three as arrows, and the Hann curve is zero at every whole bin except the tone's own and the two next to it. Its first zero is two bins out.
 
-[[diagram:hann-three-curves]] At 128 samples that's 125 Hz on each side of the tone, and 770 Hz is only 73 Hz from 697. The neighbor isn't catching a side lobe anymore. It's standing inside the main lobe.
+[[diagram:hann-three-curves]]
+
+At 128 samples that's 125 Hz on each side of the tone, and 770 Hz is only 73 Hz from 697. The neighbor isn't catching a side lobe anymore. It's standing inside the main lobe.
 
 [[diagram:window-trade]]
 
