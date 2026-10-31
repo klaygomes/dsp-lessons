@@ -31,8 +31,8 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 9 | Finite precision | fixed after judge 1, judge 2 running | to build |
 | 10 | FIR windows | built, learner judge running | to build |
 | 11 | Bilinear transform | built, learner judge running | to build |
-| 12 | DFT | builder running | to build |
-| 13 | FFT | builder running | to build |
+| 12 | DFT | built, learner judge running | to build |
+| 13 | FFT | built, learner judge running | to build |
 | 14 | Spectrum windows | builder running | to build |
 | 15 | Hilbert | builder running | to build |
 | 16 | Cepstrum | builder running | to build |
@@ -45,6 +45,8 @@ Rules the builders learned the hard way (they live in the builder brief):
 - [ ] Lesson 6: decide whether to rebuild the reused `2-machine` figure with a dash-dot pole cord (dashed means input elsewhere); add "The voice meter averages how much of each tone from 300 to 3,400 Hz passes" to "Your turn".
 - [ ] Lesson 10 sheet: act 2 prediction and cases changed (second bridge 3,500/4,500 Hz first, then your own line).
 - [ ] Lesson 11 sheet: act 1 and act 2 designs changed (hidden aged-rack cases); add one prose sentence naming the aged rack; unify 0.707-style and %-style gains.
+- [ ] Lesson 12: builder changed the mirror-arrow wording (two half arrows laid tip to tail land on the sample, not halfway between tips); check lesson 6 and series.md use the same picture. Sheet act 1 predictions changed (half turn, N = 16). Add "presses arrive at different loudness" to the act 2 task.
+- [ ] Lesson 13 sheet: goertzel-final value is (-129.3, 91.8), not (-129.4, 91.0); act 1 first prediction moved inline before the odd-walk figure.
 - [ ] Read-aloud long-sentence fixes for lessons 1, 2, 4 and 5 (reports in each `read-aloud-final/report.json`, ignored by git).
 - [ ] Videos for lessons 2 to 16, after lesson 1's video passes so they reuse its fixes.
 - [ ] Cross-lesson verification (`references/verification.md`): one mental model across prose, figures, page and video.
