@@ -26,6 +26,8 @@ The delay here is 4 samples. The echo's **strength** is 0.5: how big the copy is
 
 Before you look, guess. The echo adds half a copy of every tone. Does every tone come out 1.5 times as loud?
 
+[[predict-every-tone]]
+
 Start with 2,000 Hz, the tone that goes 1, 0, −1, 0 and repeats every four samples:
 
 | n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
@@ -76,7 +78,7 @@ Every 1,000 Hz you climb adds 45° to each step, so it adds 4 × 45° = 180° to
 
 > An echo D samples late puts a ripple in the gain that repeats every 8,000 ÷ D Hz.
 
-For our tiny echo, 8,000 ÷ 4 = 2,000 Hz. Make the delay 40 samples and the ripple repeats every 200 Hz, ten times tighter. For the lesson 2 echo, 2,000 samples late, it's 8,000 ÷ 2,000 = 4 Hz: a ripple so fine it peaks 1,000 times between 0 Hz and the limit.
+For our tiny echo, 8,000 ÷ 4 = 2,000 Hz. Make the delay 40 samples and the ripple repeats every 200 Hz, ten times tighter. For the lesson 2 echo, 2,000 samples late, it's 8,000 ÷ 2,000 = 4 Hz: a ripple so fine it peaks 1,000 times between 0 Hz and the limit, 4,000 Hz.
 
 The figure draws the 4-sample and 40-sample ripples on one axis: between 0 and 4,000 Hz, two wide humps against twenty narrow ones.
 

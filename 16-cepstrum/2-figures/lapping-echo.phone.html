@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The echo laps the tone D times</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-lapping-echo-style">
+.k-fig .c-copy { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 4 3; fill: none; }
+.k-fig .c-copy-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .c-dash { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-dot-line { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .c-dashdot { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 8 3 1.5 3; fill: none; }
+.k-fig .c-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-orig { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.k-fig .c-echo { stroke: var(--ink); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.k-fig .c-sum { stroke: var(--accent); stroke-width: 2.8; stroke-linecap: round; }
+.k-fig .c-head { fill: var(--ink); }
+.k-fig .c-head-open { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+.k-fig .c-head-accent { fill: var(--accent); }
+.k-fig .c-shade { fill: var(--paper-2); }
+.k-fig .c-ring { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .c-tone-dot { fill: var(--ink); }
+.k-fig .c-echo-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .c-block { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.k-fig .c-bar-ref { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 2; }
+.k-fig .c-env { fill: var(--ink); stroke: var(--ink); stroke-width: 0.6; }
+.k-fig .c-env-line { stroke: var(--ink); stroke-width: 1; fill: none; }
+.k-fig .c-bracket { stroke: var(--ink-soft); stroke-width: 1.3; fill: none; }
+.k-fig .c-bracket-accent { stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.k-fig .c-tick { stroke: var(--ink); stroke-width: 1.3; }
+.k-fig .c-arc { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .c-small { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 16 · the cepstrum</p>
+<h1>The echo laps the tone D times</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-lapping-echo-phone" viewBox="0 0 360 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lapping-echo-phone-title lapping-echo-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="4"><title id="lapping-echo-phone-title">The echo laps the tone D times</title><desc id="lapping-echo-phone-desc">Left: the unit circle. As the tone climbs from 0 to 8,000 Hz its dot goes once round, a quarter every 2,000 Hz; the echo’s dot, 4 per-sample steps behind, laps it 4 times, back at the start every 2,000 Hz. Right: the log of the gain draws one bump per lap, 4 bumps. Below, five stops at 0, 2,000, 4,000, 6,000 and 8,000 Hz with 0 to 4 laps.</desc><defs><marker id="lapping-echo-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="lapping-echo-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="lapping-echo-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="lapping-echo-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="700"/><line class="k-axis" x1="80" y1="140" x2="280" y2="140"/><circle class="c-ring" cx="180" cy="140" r="86"/><text class="k-label" x="180" y="252" text-anchor="middle">the tone goes once round</text><text class="k-label" x="180" y="270" text-anchor="middle">the echo laps it 4 times</text><text class="k-name" x="10" y="312" text-anchor="start">log of the gain, delay 4</text><g ><line class="k-axis" x1="50" y1="384" x2="336" y2="384"/><text class="k-tick" x="42" y="347" text-anchor="end">0.41</text><text class="k-tick" x="42" y="388" text-anchor="end">0</text><text class="k-tick" x="42" y="457" text-anchor="end">−0.69</text><text class="k-tick" x="50" y="482" text-anchor="middle">0</text><text class="k-tick" x="193" y="482" text-anchor="middle">4,000</text><text class="k-tick" x="336" y="482" text-anchor="middle">8,000</text></g><text class="k-tick" x="336" y="500" text-anchor="end">tone (Hz), once round</text><g data-motion-item="" data-step="1" aria-label="2,000 Hz: the tone's dot has gone 1 quarter round; the echo's dot has lapped it 1 time and is back at the start"><g class="k-a-in" style="--d:0;--len:0.3"><g class="k-faint k-a-fade" style="--o0:1;--d:2;--len:0.4"><g class="k-a-turn" style="--r0:90deg;--steps:24;--d:0;--len:1.8;transform-origin:180px 140px"><circle class="c-tone-dot" cx="180" cy="54" r="6"/></g><g class="k-a-turn" style="--r0:-360deg;--steps:24;--d:0;--len:1.8;transform-origin:180px 140px"><circle class="c-echo-dot" cx="266" cy="140" r="7"/></g></g></g></g>,<g data-motion-item="" data-step="1" aria-label="the log of the gain from 0 to 2,000 Hz: one bump, lap 1"><g ><path class="k-curve k-a-draw" style="--d:0;--len:1.8" d="M50 343.45L50.89 343.52L51.79 343.73L52.68 344.07L53.58 344.55L54.47 345.17L55.36 345.94L56.26 346.84L57.15 347.89L58.04 349.08L58.94 350.43L59.83 351.92L60.73 353.57L61.62 355.38L62.51 357.35L63.41 359.49L64.3 361.8L65.19 364.28L66.09 366.95L66.98 369.8L67.88 372.84L68.77 376.08L69.66 379.53L70.56 383.18L71.45 387.04L72.34 391.12L73.24 395.41L74.13 399.91L75.03 404.61L75.92 409.5L76.81 414.54L77.71 419.71L78.6 424.94L79.49 430.15L80.39 435.22L81.28 440.02L82.18 444.38L83.07 448.07L83.96 450.91L84.86 452.7L85.75 453.31L86.64 452.7L87.54 450.91L88.43 448.07L89.33 444.38L90.22 440.02L91.11 435.22L92.01 430.15L92.9 424.94L93.79 419.71L94.69 414.54L95.58 409.5L96.48 404.61L97.37 399.91L98.26 395.41L99.16 391.12L100.05 387.04L100.94 383.18L101.84 379.53L102.73 376.08L103.63 372.84L104.52 369.8L105.41 366.95L106.31 364.28L107.2 361.8L108.09 359.49L108.99 357.35L109.88 355.38L110.78 353.57L111.67 351.92L112.56 350.43L113.46 349.08L114.35 347.89L115.24 346.84L116.14 345.94L117.03 345.17L117.93 344.55L118.82 344.07L119.71 343.73L120.61 343.52L121.5 343.45" fill="none" pathLength="1"/><g class="k-a-in" style="--d:1.6;--len:0.4"><text class="k-num-accent" x="85.75" y="330" text-anchor="middle">lap 1</text></g></g></g>,<g data-motion-item="" data-step="2" aria-label="4,000 Hz: the tone's dot has gone 2 quarters round; the echo's dot has lapped it 2 times and is back at the start"><g class="k-a-in" style="--d:2;--len:0.3"><g class="k-faint k-a-fade" style="--o0:1;--d:4;--len:0.4"><g class="k-a-turn" style="--r0:90deg;--steps:24;--d:2;--len:1.8;transform-origin:180px 140px"><circle class="c-tone-dot" cx="94" cy="140" r="6"/></g><g class="k-a-turn" style="--r0:-360deg;--steps:24;--d:2;--len:1.8;transform-origin:180px 140px"><circle class="c-echo-dot" cx="266" cy="140" r="7"/></g></g></g></g>,<g data-motion-item="" data-step="2" aria-label="the log of the gain from 2,000 to 4,000 Hz: one bump, lap 2"><g ><path class="k-curve k-a-draw" style="--d:2;--len:1.8" d="M121.5 343.45L122.39 343.52L123.29 343.73L124.18 344.07L125.08 344.55L125.97 345.17L126.86 345.94L127.76 346.84L128.65 347.89L129.54 349.08L130.44 350.43L131.33 351.92L132.23 353.57L133.12 355.38L134.01 357.35L134.91 359.49L135.8 361.8L136.69 364.28L137.59 366.95L138.48 369.8L139.38 372.84L140.27 376.08L141.16 379.53L142.06 383.18L142.95 387.04L143.84 391.12L144.74 395.41L145.63 399.91L146.53 404.61L147.42 409.5L148.31 414.54L149.21 419.71L150.1 424.94L150.99 430.15L151.89 435.22L152.78 440.02L153.68 444.38L154.57 448.07L155.46 450.91L156.36 452.7L157.25 453.31L158.14 452.7L159.04 450.91L159.93 448.07L160.82 444.38L161.72 440.02L162.61 435.22L163.51 430.15L164.4 424.94L165.29 419.71L166.19 414.54L167.08 409.5L167.98 404.61L168.87 399.91L169.76 395.41L170.66 391.12L171.55 387.04L172.44 383.18L173.34 379.53L174.23 376.08L175.13 372.84L176.02 369.8L176.91 366.95L177.81 364.28L178.7 361.8L179.59 359.49L180.49 357.35L181.38 355.38L182.28 353.57L183.17 351.92L184.06 350.43L184.96 349.08L185.85 347.89L186.74 346.84L187.64 345.94L188.53 345.17L189.43 344.55L190.32 344.07L191.21 343.73L192.11 343.52L193 343.45" fill="none" pathLength="1"/><g class="k-a-in" style="--d:3.6;--len:0.4"><text class="k-num-accent" x="157.25" y="330" text-anchor="middle">lap 2</text></g></g></g>,<g data-motion-item="" data-step="3" aria-label="6,000 Hz: the tone's dot has gone 3 quarters round; the echo's dot has lapped it 3 times and is back at the start"><g class="k-a-in" style="--d:4;--len:0.3"><g class="k-faint k-a-fade" style="--o0:1;--d:6;--len:0.4"><g class="k-a-turn" style="--r0:90deg;--steps:24;--d:4;--len:1.8;transform-origin:180px 140px"><circle class="c-tone-dot" cx="180" cy="226" r="6"/></g><g class="k-a-turn" style="--r0:-360deg;--steps:24;--d:4;--len:1.8;transform-origin:180px 140px"><circle class="c-echo-dot" cx="266" cy="140" r="7"/></g></g></g></g>,<g data-motion-item="" data-step="3" aria-label="the log of the gain from 4,000 to 6,000 Hz: one bump, lap 3"><g ><path class="k-curve k-a-draw" style="--d:4;--len:1.8" d="M193 343.45L193.89 343.52L194.79 343.73L195.68 344.07L196.58 344.55L197.47 345.17L198.36 345.94L199.26 346.84L200.15 347.89L201.04 349.08L201.94 350.43L202.83 351.92L203.73 353.57L204.62 355.38L205.51 357.35L206.41 359.49L207.3 361.8L208.19 364.28L209.09 366.95L209.98 369.8L210.88 372.84L211.77 376.08L212.66 379.53L213.56 383.18L214.45 387.04L215.34 391.12L216.24 395.41L217.13 399.91L218.03 404.61L218.92 409.5L219.81 414.54L220.71 419.71L221.6 424.94L222.49 430.15L223.39 435.22L224.28 440.02L225.18 444.38L226.07 448.07L226.96 450.91L227.86 452.7L228.75 453.31L229.64 452.7L230.54 450.91L231.43 448.07L232.33 444.38L233.22 440.02L234.11 435.22L235.01 430.15L235.9 424.94L236.79 419.71L237.69 414.54L238.58 409.5L239.48 404.61L240.37 399.91L241.26 395.41L242.16 391.12L243.05 387.04L243.94 383.18L244.84 379.53L245.73 376.08L246.63 372.84L247.52 369.8L248.41 366.95L249.31 364.28L250.2 361.8L251.09 359.49L251.99 357.35L252.88 355.38L253.78 353.57L254.67 351.92L255.56 350.43L256.46 349.08L257.35 347.89L258.24 346.84L259.14 345.94L260.03 345.17L260.93 344.55L261.82 344.07L262.71 343.73L263.61 343.52L264.5 343.45" fill="none" pathLength="1"/><g class="k-a-in" style="--d:5.6;--len:0.4"><text class="k-num-accent" x="228.75" y="330" text-anchor="middle">lap 3</text></g></g></g>,<g data-motion-item="" data-step="4" aria-label="8,000 Hz: the tone's dot has gone 4 quarters round; the echo's dot has lapped it 4 times and is back at the start"><g class="k-a-in" style="--d:6;--len:0.3"><g ><g class="k-a-turn" style="--r0:90deg;--steps:24;--d:6;--len:1.8;transform-origin:180px 140px"><circle class="c-tone-dot" cx="266" cy="140" r="6"/></g><g class="k-a-turn" style="--r0:-360deg;--steps:24;--d:6;--len:1.8;transform-origin:180px 140px"><circle class="c-echo-dot" cx="266" cy="140" r="7"/></g></g></g></g>,<g data-motion-item="" data-step="4" aria-label="the log of the gain from 6,000 to 8,000 Hz: one bump, lap 4"><g ><path class="k-curve k-a-draw" style="--d:6;--len:1.8" d="M264.5 343.45L265.39 343.52L266.29 343.73L267.18 344.07L268.08 344.55L268.97 345.17L269.86 345.94L270.76 346.84L271.65 347.89L272.54 349.08L273.44 350.43L274.33 351.92L275.23 353.57L276.12 355.38L277.01 357.35L277.91 359.49L278.8 361.8L279.69 364.28L280.59 366.95L281.48 369.8L282.38 372.84L283.27 376.08L284.16 379.53L285.06 383.18L285.95 387.04L286.84 391.12L287.74 395.41L288.63 399.91L289.52 404.61L290.42 409.5L291.31 414.54L292.21 419.71L293.1 424.94L293.99 430.15L294.89 435.22L295.78 440.02L296.68 444.38L297.57 448.07L298.46 450.91L299.36 452.7L300.25 453.31L301.14 452.7L302.04 450.91L302.93 448.07L303.83 444.38L304.72 440.02L305.61 435.22L306.51 430.15L307.4 424.94L308.29 419.71L309.19 414.54L310.08 409.5L310.97 404.61L311.87 399.91L312.76 395.41L313.66 391.12L314.55 387.04L315.44 383.18L316.34 379.53L317.23 376.08L318.13 372.84L319.02 369.8L319.91 366.95L320.81 364.28L321.7 361.8L322.59 359.49L323.49 357.35L324.38 355.38L325.28 353.57L326.17 351.92L327.06 350.43L327.96 349.08L328.85 347.89L329.74 346.84L330.64 345.94L331.53 345.17L332.43 344.55L333.32 344.07L334.21 343.73L335.11 343.52L336 343.45" fill="none" pathLength="1"/><g class="k-a-in" style="--d:7.6;--len:0.4"><text class="k-num-accent" x="300.25" y="330" text-anchor="middle">lap 4</text></g></g></g><text class="k-label" x="180" y="542" text-anchor="middle">every 2,000 Hz: back on the start</text><g ><circle class="c-ring" cx="36" cy="600" r="22"/><circle class="c-echo-dot" cx="58" cy="600" r="5"/><circle class="c-tone-dot" cx="58" cy="600" r="3.5"/><text class="c-small" x="36" y="568" text-anchor="middle">0 Hz</text><text class="k-num" x="36" y="640" text-anchor="middle">0 laps</text></g>,<g ><circle class="c-ring" cx="108" cy="600" r="22"/><circle class="c-echo-dot" cx="130" cy="600" r="5"/><circle class="c-tone-dot" cx="108" cy="578" r="3.5"/><text class="c-small" x="108" y="568" text-anchor="middle">2,000 Hz</text><text class="k-num" x="108" y="640" text-anchor="middle">1 lap</text></g>,<g ><circle class="c-ring" cx="180" cy="600" r="22"/><circle class="c-echo-dot" cx="202" cy="600" r="5"/><circle class="c-tone-dot" cx="158" cy="600" r="3.5"/><text class="c-small" x="180" y="568" text-anchor="middle">4,000 Hz</text><text class="k-num" x="180" y="640" text-anchor="middle">2 laps</text></g>,<g ><circle class="c-ring" cx="252" cy="600" r="22"/><circle class="c-echo-dot" cx="274" cy="600" r="5"/><circle class="c-tone-dot" cx="252" cy="622" r="3.5"/><text class="c-small" x="252" y="568" text-anchor="middle">6,000 Hz</text><text class="k-num" x="252" y="640" text-anchor="middle">3 laps</text></g>,<g ><circle class="c-ring" cx="324" cy="600" r="22"/><circle class="c-echo-dot" cx="346" cy="600" r="5"/><circle class="c-tone-dot" cx="346" cy="600" r="3.5"/><text class="c-small" x="324" y="568" text-anchor="middle">8,000 Hz</text><text class="k-num" x="324" y="640" text-anchor="middle">4 laps</text></g><g ><g ><circle class="c-tone-dot" cx="29" cy="672" r="5"/><text class="k-label" x="46" y="676" text-anchor="start">the tone</text></g><g ><circle class="c-echo-dot" cx="159" cy="672" r="5"/><text class="k-label" x="176" y="676" text-anchor="start">the echo, 4 samples back</text></g></g></svg></div>
+</div>
+</body>
+</html>

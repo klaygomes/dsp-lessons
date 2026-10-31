@@ -1,0 +1,80 @@
+{
+  "echo-samples": {
+    "title": "Same echo, louder here, quieter there",
+    "caption": "The echo is half a copy of each tone, 4 samples late. For 2,000 Hz it lands on top of the tone; for 1,000 Hz it pulls against it.",
+    "animated": false,
+    "phone": true
+  },
+  "gain-ripple": {
+    "title": "The echo’s gain ripples",
+    "caption": "The gain of the 4-sample echo at every tone from 0 to 4,000 Hz, with the six values from the table as dots. It peaks every 2,000 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "echo-wheel": {
+    "title": "The echo arrow swings round",
+    "caption": "At each tone the echo arrow sits 4 per-sample steps behind the original: 90° at 500 Hz, 180° at 1,000 Hz, a full lap at 2,000 Hz. The sum arrow’s length is the gain.",
+    "animated": true,
+    "phone": true
+  },
+  "delay-vs-ripple": {
+    "title": "A longer delay makes a finer ripple",
+    "caption": "Two wide humps against twenty narrow ones. Ten times the delay, a ripple ten times tighter.",
+    "animated": false,
+    "phone": true
+  },
+  "log-spectrum": {
+    "title": "The log makes the ripple the same height",
+    "caption": "Top: the echo’s ripple is huge on the voice’s hump and invisible in its valley. Bottom: after the log, the same ripple has the same height everywhere.",
+    "animated": false,
+    "phone": true
+  },
+  "tone-circle": {
+    "title": "Sixteen tones round the circle",
+    "caption": "The echo’s gain is sampled at these 16 tones: no voice, no recording. Each tone below the line mirrors one above it and has the same gain.",
+    "animated": false,
+    "phone": true
+  },
+  "list-dft": {
+    "title": "The list’s FFT lights up bin 4",
+    "caption": "The list repeats every 4 bins, so it goes round 4 times across all 16, and the FFT lights up bin 4: the delay. Bin 12 is its mirror.",
+    "animated": false,
+    "phone": true
+  },
+  "lapping-echo": {
+    "title": "The echo laps the tone D times",
+    "caption": "Once round the circle, the 4-sample echo laps the tone 4 times, so the log ripple has 4 bumps and the match lands on bin 4.",
+    "animated": true,
+    "phone": true
+  },
+  "cepstrum": {
+    "title": "The cepstrum: a spectrum of a spectrum",
+    "caption": "The recipe at a glance.",
+    "animated": false,
+    "phone": true
+  },
+  "bins-vs-ripple": {
+    "title": "The record must hold more than 2D samples",
+    "caption": "More than two bins per ripple, or the peak lands at a false quefrency: 176 and 848 for records too short, 1,200 for 8,192 samples.",
+    "animated": false,
+    "phone": true
+  },
+  "real-cepstrum": {
+    "title": "The cepstrum of the real call",
+    "caption": "Everything below 100 is the voice’s shape; the bumps at 64 and its multiples are its pitch. Beyond that, the tallest peak is the echo, with its dip at twice the delay.",
+    "animated": false,
+    "phone": true
+  },
+  "lopsided-log": {
+    "title": "The lopsided ripple",
+    "caption": "The log squashes the peaks and stretches the dips. Describing that lopsided ripple takes cosines at two and three times the speed: the smaller spikes at 2D and 3D.",
+    "animated": false,
+    "phone": true
+  },
+  "canceller": {
+    "title": "Two cancellers",
+    "caption": "Subtract a shifted copy of heard and the echo’s own echo is left, −0.25 at 2D. Subtract a shifted copy of clean and nothing is left.",
+    "animated": false,
+    "phone": true
+  }
+}

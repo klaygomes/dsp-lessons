@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The cepstrum of the real call</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-real-cepstrum-style">
+.k-fig .c-copy { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 4 3; fill: none; }
+.k-fig .c-copy-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .c-dash { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-dot-line { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .c-dashdot { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 8 3 1.5 3; fill: none; }
+.k-fig .c-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-orig { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.k-fig .c-echo { stroke: var(--ink); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.k-fig .c-sum { stroke: var(--accent); stroke-width: 2.8; stroke-linecap: round; }
+.k-fig .c-head { fill: var(--ink); }
+.k-fig .c-head-open { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+.k-fig .c-head-accent { fill: var(--accent); }
+.k-fig .c-shade { fill: var(--paper-2); }
+.k-fig .c-ring { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .c-tone-dot { fill: var(--ink); }
+.k-fig .c-echo-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .c-block { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.k-fig .c-bar-ref { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 2; }
+.k-fig .c-env { fill: var(--ink); stroke: var(--ink); stroke-width: 0.6; }
+.k-fig .c-env-line { stroke: var(--ink); stroke-width: 1; fill: none; }
+.k-fig .c-bracket { stroke: var(--ink-soft); stroke-width: 1.3; fill: none; }
+.k-fig .c-bracket-accent { stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.k-fig .c-tick { stroke: var(--ink); stroke-width: 1.3; }
+.k-fig .c-arc { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .c-small { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 16 · the cepstrum</p>
+<h1>The cepstrum of the real call</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-real-cepstrum" viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="real-cepstrum-title real-cepstrum-desc"><title id="real-cepstrum-title">The cepstrum of the real call</title><desc id="real-cepstrum-desc">The cepstrum of a voice with an echo 1,200 samples late at strength 0.5, from quefrency 0 to 2,500 samples. Near 0 the voice’s shape runs off the top; pitch bumps sit at 64 and its multiples; a dashed line marks the cutoff at 100; the echo’s peak is at 1,200, 0.20 tall; a dip at 2,400 reads −0.04; the voice’s other bumps stay under about 0.08.</desc><defs><marker id="real-cepstrum-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="real-cepstrum-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="real-cepstrum-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="real-cepstrum-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="380"/><g ><line class="k-axis" x1="80" y1="252.5" x2="690" y2="252.5"/><text class="k-tick" x="72" y="141.5" text-anchor="end">0.20</text><text class="k-tick" x="72" y="210.5" text-anchor="end">0.08</text><text class="k-tick" x="72" y="256.5" text-anchor="end">0</text><text class="k-tick" x="72" y="279.5" text-anchor="end">−0.04</text><text class="k-tick" x="80" y="328" text-anchor="middle">0</text><text class="k-tick" x="104.4" y="328" text-anchor="middle">100</text><text class="k-tick" x="202" y="328" text-anchor="middle">500</text><text class="k-tick" x="324" y="328" text-anchor="middle">1,000</text><text class="k-tick" x="372.8" y="328" text-anchor="middle">1,200</text><text class="k-tick" x="446" y="328" text-anchor="middle">1,500</text><text class="k-tick" x="568" y="328" text-anchor="middle">2,000</text><text class="k-tick" x="665.6" y="328" text-anchor="middle">2,400</text></g><text class="k-tick" x="690" y="346" text-anchor="end">quefrency (samples)</text><line class="k-guide" x1="80" y1="206.5" x2="690" y2="206.5"/><rect class="c-shade" x="80" y="80" width="24.4" height="230"/><path class="c-env" d="M80 80L81 269.06L82 246.15L83 215L84 260.38L85 241.5L86 246.19L87 245.82L88 244.14L89 244.06L90 246.82L91 247.44L92 250.1L93 250.06L94 248.92L95 240.25L96 219.7L97 248.45L98 245.77L99 250.54L100 250.34L101 246.08L102 244.18L103 245.87L104 246.15L105 249.52L106 247.85L107 246.07L108 248.02L109 248.47L110 243.93L111 216.65L112 244.7L113 244.39L114 250.05L115 244.96L116 245.88L117 251.12L118 239.86L119 244.09L120 250.26L121 249.57L122 243.89L123 250.15L124 249.92L125 250.54L126 248.73L127 208.37L128 252.44L129 242.71L130 244.11L131 244.25L132 251.98L133 245.57L134 249L135 247.12L136 247.11L137 247.12L138 247.59L139 249.34L140 251.97L141 249.28L142 215.97L143 249.36L144 249.82L145 247.26L146 253.74L147 249.22L148 247.67L149 247.34L150 246.57L151 244.96L152 253.06L153 245.15L154 244.92L155 249.38L156 243.25L157 242.54L158 211.27L159 243.67L160 247.15L161 245.39L162 245.18L163 248.56L164 247.91L165 250.41L166 250.03L167 246.71L168 247.4L169 248.65L170 246.28L171 244.85L172 245.21L173 248.9L174 217.63L175 249.85L176 247.28L177 245.17L178 242.63L179 249.71L180 242.49L181 244.17L182 242.73L183 246.45L184 250.8L185 245.05L186 242.72L187 249.14L188 252.01L189 211.5L190 247.2L191 239.02L192 243.09L193 246.5L194 250.75L195 246.36L196 244.32L197 254.74L198 250.45L199 247.53L200 239.9L201 245.93L202 244.52L203 250.99L204 248.5L205 205.94L206 248.07L207 241.64L208 248.55L209 248.87L210 247.82L211 246.28L212 246.52L213 252.01L214 244.81L215 252.13L216 244.1L217 246.5L218 244.12L219 246.09L220 244.86L221 218.76L222 247.74L223 240.52L224 251.85L225 249.44L226 243.9L227 253.44L228 243.99L229 244.85L230 250.99L231 246.42L232 248.53L233 240.86L234 244L235 246.86L236 210.77L237 247.09L238 254.15L239 251.01L240 243.04L241 244.29L242 238.15L243 239.78L244 243.04L245 248.91L246 238.62L247 254.8L248 248.53L249 245.03L250 254.02L251 249.71L252 217.98L253 243.4L254 247.58L255 246.21L256 245.01L257 246.04L258 244.11L259 255.99L260 251.3L261 254.82L262 245.74L263 248.95L264 248.16L265 253.14L266 246.61L267 207.41L268 249.32L269 243.19L270 244.69L271 243.05L272 246.19L273 249.33L274 244.95L275 247.8L276 246.12L277 251.39L278 249.8L279 249.22L280 246.8L281 247.82L282 250.78L283 220.94L284 246.57L285 248.01L286 250.36L287 246.6L288 249.71L289 253.12L290 248.01L291 245.18L292 247.52L293 244.43L294 246.92L295 249.84L296 242.63L297 246.74L298 244.99L299 212.33L300 246.93L301 246.58L302 244.2L303 245.59L304 248.23L305 246.2L306 254.27L307 245.04L308 247.25L309 245.93L310 252.92L311 246.95L312 253.12L313 251.67L314 223.44L315 244.78L316 250.36L317 246.03L318 245.14L319 247.04L320 242.53L321 247.76L322 244.95L323 251.63L324 244.61L325 252L326 249.77L327 245.54L328 244.12L329 249.83L330 214.49L331 247.93L332 249.99L333 248.31L334 243.11L335 244.18L336 247.54L337 243.31L338 247.45L339 250.52L340 251.51L341 249.29L342 256.77L343 245.09L344 240.91L345 223.56L346 245.59L347 252.6L348 249.24L349 250.02L350 249.22L351 251.43L352 250.14L353 247.01L354 250.2L355 245.08L356 248.65L357 247.65L358 244.83L359 250.52L360 249.9L361 217.12L362 247.33L363 247.65L364 243.25L365 246.1L366 251.89L367 250.09L368 243.13L369 244.98L370 243.2L371 238.95L372 246.24L373 137.91L374 250.03L375 250.01L376 245.74L377 220.63L378 249.25L379 245.99L380 250.84L381 244.89L382 241.98L383 253.18L384 252.82L385 250.48L386 247.79L387 246.24L388 243.32L389 237.41L390 243.16L391 247.62L392 222.19L393 250.25L394 251.15L395 247.5L396 250.42L397 244.47L398 242.8L399 245.82L400 246.04L401 245.73L402 248.83L403 250.01L404 248.34L405 245.21L406 247.6L407 249.92L408 223.82L409 243.3L410 248.38L411 252.2L412 249.52L413 251.81L414 248.76L415 251.12L416 252.29L417 249.56L418 246.05L419 248.5L420 249.15L421 244.8L422 246.88L423 241.9L424 222L425 245.95L426 248.23L427 253.23L428 242.38L429 249.93L430 249.99L431 245.57L432 249.56L433 248.54L434 247.28L435 245.88L436 248.37L437 256.36L438 248.08L439 220.56L440 249.04L441 249.76L442 245.01L443 245.86L444 250.93L445 250.86L446 245.21L447 246.94L448 256.37L449 248.1L450 246.84L451 248.39L452 248.48L453 249.17L454 246.8L455 221.25L456 246.08L457 245.91L458 251.53L459 249.47L460 247.05L461 246.24L462 245.96L463 243.26L464 245.42L465 248.1L466 244.54L467 246.28L468 250.17L469 252.53L470 227.42L471 249.39L472 247.36L473 244.62L474 249.35L475 245.19L476 245.82L477 246.46L478 247.59L479 245.69L480 252.9L481 247.18L482 249.63L483 245.52L484 247.93L485 248.36L486 227.46L487 246.44L488 251.49L489 244.7L490 247.33L491 244.1L492 248.54L493 250.84L494 243.78L495 241.29L496 247.39L497 250.86L498 245.91L499 249.79L500 249.32L501 250.49L502 230.6L503 249.68L504 248.76L505 250.63L506 250.02L507 251.88L508 248.43L509 252.05L510 245.3L511 250.28L512 250.68L513 247.08L514 248.02L515 249.67L516 246.39L517 231.8L518 248.83L519 247.48L520 245.4L521 249.83L522 248.74L523 250.78L524 247.5L525 253.65L526 248.26L527 242.4L528 254.35L529 249.82L530 244.74L531 247.88L532 247.2L533 232.72L534 249.37L535 253.49L536 249.02L537 243.74L538 244.17L539 245.35L540 248.51L541 252.9L542 248.5L543 253.63L544 247.8L545 248.86L546 252.86L547 245.37L548 236.8L549 247.75L550 247.01L551 250.19L552 248.56L553 251.68L554 248.08L555 247.12L556 248.74L557 248.98L558 246.19L559 254.93L560 251.56L561 249.6L562 249.55L563 245.18L564 235.69L565 249.55L566 248.41L567 247.3L568 245.5L569 248.51L570 247.54L571 250.29L572 253.49L573 247.94L574 247.55L575 247.32L576 247.5L577 250.25L578 249.52L579 249.13L580 241.75L581 250.02L582 246.27L583 245.95L584 248.25L585 250.89L586 249.7L587 250.75L588 242.84L589 245.66L590 251.82L591 252.72L592 249.45L593 239.84L594 246.9L595 234.67L596 249.44L597 248.95L598 251.61L599 246.82L600 247.62L601 246.39L602 250.93L603 251.06L604 254.72L605 249.28L606 247.48L607 246.56L608 248.22L609 252.7L610 252.16L611 244.19L612 247.08L613 246.83L614 249.19L615 247.49L616 244.36L617 251.11L618 249.14L619 246.93L620 250.03L621 248.85L622 245.07L623 245.94L624 244.22L625 242.59L626 250.01L627 235.85L628 243.18L629 248.99L630 250.24L631 247.12L632 250.16L633 251.16L634 249.24L635 251.41L636 247.18L637 249.78L638 250.8L639 250.41L640 247.51L641 248.31L642 240.06L643 248.04L644 251.06L645 249.64L646 248.35L647 249.85L648 248.63L649 249.38L650 244.42L651 249.18L652 247.5L653 250.37L654 251.52L655 248.11L656 243.2L657 249.33L658 245.7L659 250.08L660 246.74L661 250.27L662 250.33L663 250.95L664 248.02L665 249.34L666 245.21L667 249.52L668 245.9L669 249.13L670 249.33L671 251.49L672 250.36L673 247.91L674 251.48L675 247.16L676 246.58L677 252.68L678 249.59L679 250.3L680 248.04L681 251.03L682 250.71L683 248.75L684 247.35L685 248.83L686 250.93L687 252.25L688 246.58L689 242.05L690 249.93L690 258.44L689 256.18L688 256.87L687 257.6L686 257.47L685 257.24L684 253.4L683 260.17L682 259.25L681 257.55L680 253.39L679 259.91L678 258.12L677 261.61L676 257.64L675 255.99L674 254.79L673 254.87L672 257.43L671 256.34L670 258.3L669 256.46L668 253.41L667 256.49L666 277.84L665 257.07L664 257.23L663 253.67L662 258.08L661 256.82L660 258.51L659 256.8L658 256.93L657 254.64L656 258.31L655 253.81L654 258.36L653 253.5L652 250.61L651 260.29L650 255.73L649 263.02L648 253.65L647 253.45L646 253.96L645 257.13L644 258.58L643 254.69L642 256.49L641 253.04L640 256.97L639 260.06L638 255.79L637 257.3L636 253.97L635 258.19L634 256.56L633 256.78L632 254.35L631 259.1L630 261.52L629 256.07L628 259.56L627 253.51L626 256.27L625 255.23L624 253.01L623 257.2L622 255.23L621 262.33L620 257.9L619 256.28L618 253.66L617 257.13L616 258.78L615 258.73L614 255.39L613 253.87L612 253.97L611 253.97L610 257.44L609 261.31L608 256.93L607 256.52L606 252.46L605 256.62L604 259.03L603 254.01L602 255.68L601 253.37L600 252.43L599 258.02L598 255.59L597 255.98L596 258.1L595 259.55L594 254.17L593 257.03L592 255.87L591 264.01L590 256.41L589 254.2L588 256.19L587 255L586 258.96L585 257.46L584 262.56L583 258.47L582 260.38L581 256.32L580 250.84L579 254.91L578 256.38L577 256.75L576 261.97L575 258.16L574 261.3L573 259.78L572 254.92L571 263.61L570 258.25L569 258.96L568 257.78L567 256.61L566 256.73L565 258.84L564 260.65L563 256.7L562 255.73L561 254.96L560 257.8L559 260.49L558 256.37L557 253.38L556 255.3L555 257.84L554 253.84L553 261.41L552 259.39L551 253.49L550 255.78L549 262.97L548 256.35L547 254.65L546 260.41L545 252.27L544 254.42L543 256.81L542 254.69L541 258.97L540 260.27L539 249.96L538 257.46L537 252.92L536 257.63L535 257L534 259.07L533 255.13L532 259.09L531 257.07L530 260.56L529 253.01L528 257.7L527 257.33L526 253.33L525 257.46L524 254.9L523 258.96L522 258.73L521 254.08L520 256.91L519 258.96L518 255.68L517 255.29L516 258.67L515 256.88L514 258.11L513 253.69L512 257.55L511 261.76L510 256.95L509 254.97L508 255.74L507 261.93L506 257.46L505 256.15L504 258.48L503 258.15L502 257.73L501 266.25L500 254.7L499 260.05L498 257.6L497 255.97L496 258.79L495 254.89L494 262.22L493 259.16L492 255.39L491 255.45L490 264.69L489 256.57L488 256.45L487 264.14L486 251.59L485 254.83L484 256.42L483 258.67L482 258.29L481 251.83L480 256.34L479 258.99L478 251.01L477 259.95L476 253.09L475 258.09L474 254.88L473 256.01L472 254.79L471 260.74L470 253.5L469 260.67L468 254.99L467 254.51L466 261.59L465 258.77L464 253.85L463 261.07L462 254.38L461 253.42L460 255.48L459 259.75L458 260.06L457 257.8L456 259.81L455 254.09L454 255.37L453 261.06L452 259.75L451 258.66L450 254.03L449 260.56L448 257.79L447 258.51L446 259.33L445 253.97L444 255.27L443 256.81L442 256.7L441 256.22L440 252.64L439 257.17L438 256.41L437 262.06L436 260.8L435 254.24L434 258.7L433 262.18L432 257.38L431 254.56L430 256.4L429 255.79L428 259.08L427 256.45L426 264.14L425 255.4L424 259.36L423 255.72L422 252.82L421 252.13L420 258.9L419 258.49L418 262.2L417 255.55L416 259.89L415 259.06L414 259.28L413 254.06L412 261.23L411 260.16L410 259.84L409 257.97L408 255.24L407 256.61L406 259.02L405 259.03L404 255.21L403 263.7L402 259.07L401 259.08L400 260.24L399 252.64L398 253.45L397 252.07L396 253.1L395 256.55L394 263.22L393 258.67L392 252.97L391 252.71L390 263.32L389 254.36L388 254.28L387 255.03L386 257.05L385 256.58L384 256.12L383 260.01L382 259.43L381 255.24L380 264.96L379 263.2L378 259.7L377 251.43L376 253.07L375 263.89L374 256.34L373 258.01L372 257.3L371 262.54L370 258.25L369 257.39L368 255.65L367 260.07L366 261.68L365 262.42L364 254.62L363 262.83L362 257.78L361 265L360 256.03L359 255.56L358 255.46L357 255.06L356 260.03L355 256.01L354 259.83L353 261.25L352 259.83L351 256.23L350 257.17L349 257.71L348 257.22L347 256.73L346 256.44L345 258.8L344 262.32L343 254.43L342 265.72L341 256.19L340 257.16L339 254.02L338 255.06L337 257.96L336 259.55L335 260.83L334 262L333 256.68L332 258.85L331 259.53L330 255.56L329 252.22L328 254.57L327 255.85L326 254.24L325 257.33L324 257.01L323 258.65L322 253.47L321 260.4L320 260.65L319 254.74L318 257.42L317 258.54L316 270.23L315 255.67L314 259.53L313 257.21L312 257.98L311 256.49L310 264.09L309 254.33L308 261.42L307 259.55L306 256.39L305 262.02L304 257.3L303 261.21L302 251.87L301 258.52L300 254.36L299 257.86L298 257.57L297 259.77L296 257.82L295 256.87L294 262.85L293 264.56L292 260.68L291 255.85L290 259.61L289 255.69L288 256.08L287 264.14L286 260.28L285 258.7L284 260.07L283 255.08L282 259.8L281 256.63L280 257.15L279 259.81L278 257.76L277 262.16L276 262.31L275 256.87L274 260.07L273 260.79L272 261.62L271 250.13L270 255.42L269 255.69L268 255.72L267 255.24L266 261.59L265 260.41L264 262.22L263 257.09L262 252.85L261 264.84L260 255.23L259 262.21L258 256.08L257 255.07L256 259.27L255 254.43L254 257.16L253 255.86L252 257.19L251 262.39L250 265.12L249 258.7L248 261L247 259.59L246 256.59L245 252.17L244 256.51L243 256.08L242 253.68L241 258.15L240 262.2L239 258.58L238 263.07L237 259.11L236 260.01L235 258.4L234 258.05L233 251.45L232 260.65L231 258.17L230 253.53L229 263.5L228 259.41L227 257.92L226 256.89L225 258.39L224 261.97L223 254.44L222 255.52L221 249.25L220 262.52L219 259.87L218 252.5L217 253.54L216 263.51L215 260.36L214 261.14L213 259.55L212 255.61L211 257.88L210 264.22L209 255.02L208 256.65L207 259.65L206 256.25L205 259.57L204 255.01L203 259.06L202 256.53L201 263.89L200 253.22L199 257.38L198 263.52L197 259.45L196 249.89L195 258.65L194 258.16L193 254.38L192 261.31L191 258.84L190 260.57L189 256.01L188 256.69L187 256.39L186 259.31L185 253.36L184 255.28L183 261.18L182 263.01L181 265.19L180 256.19L179 263.93L178 260.59L177 265.47L176 256.02L175 262L174 258.96L173 261.12L172 254.05L171 260.74L170 256.1L169 256.89L168 267.54L167 251.19L166 260.6L165 259L164 251.67L163 257.18L162 253.9L161 256.12L160 260.56L159 255.79L158 256.6L157 259.92L156 260.08L155 258.12L154 254.61L153 258.59L152 262.03L151 266.31L150 255.99L149 261.39L148 258.64L147 256.78L146 256.25L145 254.2L144 257.2L143 261.23L142 255.77L141 258.8L140 256.13L139 254.18L138 261.79L137 254.85L136 257.44L135 256.52L134 265.31L133 266.04L132 261.2L131 257.82L130 264.46L129 258.46L128 258.66L127 254.47L126 252.24L125 261.76L124 256.44L123 252.22L122 263.44L121 262.32L120 261.97L119 258.78L118 252.47L117 256.33L116 257.4L115 255.29L114 258.02L113 252.47L112 260.54L111 257.09L110 254.35L109 259.37L108 255.96L107 259.64L106 251.98L105 258.51L104 259.37L103 255.79L102 257.41L101 263.71L100 256.95L99 261.84L98 259.8L97 257.49L96 256.47L95 256.6L94 258.73L93 258.87L92 260.56L91 254.42L90 255.5L89 252.98L88 255.76L87 258.86L86 259.24L85 252.85L84 281.29L83 243.59L82 270.4L81 310.6L80 219.91Z" fill="none"/><line class="c-dash" x1="104.4" y1="74" x2="104.4" y2="310"/><text class="k-tick" x="110.4" y="92" text-anchor="start">cutoff: quefrency 100</text><text class="k-label" x="80" y="66" text-anchor="start">voice shape (slow wobble): runs off the top near 0</text><path class="c-head" d="M95.62 183.5l-4 -8h8z" fill="none"/>,<path class="c-head" d="M111.23 183.5l-4 -8h8z" fill="none"/>,<path class="c-head" d="M126.85 183.5l-4 -8h8z" fill="none"/>,<path class="c-head" d="M142.46 183.5l-4 -8h8z" fill="none"/><text class="k-label" x="150.46" y="183.5" text-anchor="start">pitch: 64 and its multiples</text><circle class="k-dot" cx="372.8" cy="137.91" r="5"/><g ><rect class="k-mask" x="378.8" y="130.91" width="134.48" height="14"/><text class="k-num-accent" x="382.8" y="141.91" text-anchor="start">echo: 1,200, 0.20</text></g><circle class="c-echo-dot" cx="665.6" cy="277.24" r="4"/><g ><rect class="k-mask" x="406.08" y="292.24" width="253.52" height="14"/><text class="k-num" x="655.6" y="303.24" text-anchor="end">lopsided-ripple dip: 2,400, −0.04</text></g><text class="k-tick" x="690" y="200.5" text-anchor="end">the voice’s own bumps stay under about 0.08</text></svg></div>
+</div>
+</body>
+</html>

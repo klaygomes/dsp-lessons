@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A longer delay makes a finer ripple</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-delay-vs-ripple-style">
+.k-fig .c-copy { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 4 3; fill: none; }
+.k-fig .c-copy-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .c-dash { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-dot-line { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .c-dashdot { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 8 3 1.5 3; fill: none; }
+.k-fig .c-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.k-fig .c-orig { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.k-fig .c-echo { stroke: var(--ink); stroke-width: 2.2; stroke-dasharray: 5 3; }
+.k-fig .c-sum { stroke: var(--accent); stroke-width: 2.8; stroke-linecap: round; }
+.k-fig .c-head { fill: var(--ink); }
+.k-fig .c-head-open { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+.k-fig .c-head-accent { fill: var(--accent); }
+.k-fig .c-shade { fill: var(--paper-2); }
+.k-fig .c-ring { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .c-tone-dot { fill: var(--ink); }
+.k-fig .c-echo-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .c-block { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.k-fig .c-bar-ref { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 2; }
+.k-fig .c-env { fill: var(--ink); stroke: var(--ink); stroke-width: 0.6; }
+.k-fig .c-env-line { stroke: var(--ink); stroke-width: 1; fill: none; }
+.k-fig .c-bracket { stroke: var(--ink-soft); stroke-width: 1.3; fill: none; }
+.k-fig .c-bracket-accent { stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.k-fig .c-tick { stroke: var(--ink); stroke-width: 1.3; }
+.k-fig .c-arc { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .c-small { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 16 · the cepstrum</p>
+<h1>A longer delay makes a finer ripple</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-delay-vs-ripple-phone" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="delay-vs-ripple-phone-title delay-vs-ripple-phone-desc"><title id="delay-vs-ripple-phone-title">A longer delay makes a finer ripple</title><desc id="delay-vs-ripple-phone-desc">Two gain curves from 0 to 4,000 Hz at strength 0.5: delay 4, solid, with a peak every 2,000 Hz, two wide humps; delay 40, dashed, with a peak every 200 Hz, twenty narrow humps.</desc><defs><marker id="delay-vs-ripple-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="delay-vs-ripple-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="delay-vs-ripple-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="delay-vs-ripple-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="360"/><g ><line class="k-axis" x1="50" y1="240" x2="336" y2="240"/><text class="k-tick" x="42" y="189.71" text-anchor="end">0.5</text><text class="k-tick" x="42" y="135.43" text-anchor="end">1</text><text class="k-tick" x="42" y="81.14" text-anchor="end">1.5</text><text class="k-tick" x="50" y="258" text-anchor="middle">0</text><text class="k-tick" x="193" y="258" text-anchor="middle">2,000</text><text class="k-tick" x="336" y="258" text-anchor="middle">4,000</text><text class="k-tick" x="50" y="40" text-anchor="start">gain</text></g><text class="k-tick" x="336" y="276" text-anchor="end">tone (Hz)</text><path class="c-dash" d="M50 77.14L50.18 77.25L50.36 77.59L50.54 78.15L50.72 78.92L50.89 79.92L51.07 81.14L51.25 82.57L51.43 84.21L51.61 86.06L51.79 88.11L51.97 90.37L52.15 92.82L52.32 95.45L52.5 98.27L52.68 101.27L52.86 104.44L53.04 107.76L53.22 111.24L53.4 114.86L53.58 118.61L53.75 122.48L53.93 126.46L54.11 130.53L54.29 134.68L54.47 138.89L54.65 143.13L54.83 147.4L55.01 151.65L55.18 155.86L55.36 160L55.54 164.03L55.72 167.9L55.9 171.56L56.08 174.95L56.26 178L56.44 180.64L56.61 182.79L56.79 184.39L56.97 185.38L57.15 185.71L57.33 185.38L57.51 184.39L57.69 182.79L57.87 180.64L58.04 178L58.22 174.95L58.4 171.56L58.58 167.9L58.76 164.03L58.94 160L59.12 155.86L59.3 151.65L59.47 147.4L59.65 143.13L59.83 138.89L60.01 134.68L60.19 130.53L60.37 126.46L60.55 122.48L60.73 118.61L60.9 114.86L61.08 111.24L61.26 107.76L61.44 104.44L61.62 101.27L61.8 98.27L61.98 95.45L62.16 92.82L62.33 90.37L62.51 88.11L62.69 86.06L62.87 84.21L63.05 82.57L63.23 81.14L63.41 79.92L63.59 78.92L63.76 78.15L63.94 77.59L64.12 77.25L64.3 77.14L64.48 77.25L64.66 77.59L64.84 78.15L65.02 78.92L65.19 79.92L65.37 81.14L65.55 82.57L65.73 84.21L65.91 86.06L66.09 88.11L66.27 90.37L66.44 92.82L66.62 95.45L66.8 98.27L66.98 101.27L67.16 104.44L67.34 107.76L67.52 111.24L67.7 114.86L67.88 118.61L68.05 122.48L68.23 126.46L68.41 130.53L68.59 134.68L68.77 138.89L68.95 143.13L69.13 147.4L69.31 151.65L69.48 155.86L69.66 160L69.84 164.03L70.02 167.9L70.2 171.56L70.38 174.95L70.56 178L70.74 180.64L70.91 182.79L71.09 184.39L71.27 185.38L71.45 185.71L71.63 185.38L71.81 184.39L71.99 182.79L72.16 180.64L72.34 178L72.52 174.95L72.7 171.56L72.88 167.9L73.06 164.03L73.24 160L73.42 155.86L73.6 151.65L73.77 147.4L73.95 143.13L74.13 138.89L74.31 134.68L74.49 130.53L74.67 126.46L74.85 122.48L75.03 118.61L75.2 114.86L75.38 111.24L75.56 107.76L75.74 104.44L75.92 101.27L76.1 98.27L76.28 95.45L76.46 92.82L76.63 90.37L76.81 88.11L76.99 86.06L77.17 84.21L77.35 82.57L77.53 81.14L77.71 79.92L77.89 78.92L78.06 78.15L78.24 77.59L78.42 77.25L78.6 77.14L78.78 77.25L78.96 77.59L79.14 78.15L79.32 78.92L79.49 79.92L79.67 81.14L79.85 82.57L80.03 84.21L80.21 86.06L80.39 88.11L80.57 90.37L80.75 92.82L80.92 95.45L81.1 98.27L81.28 101.27L81.46 104.44L81.64 107.76L81.82 111.24L82 114.86L82.18 118.61L82.35 122.48L82.53 126.46L82.71 130.53L82.89 134.68L83.07 138.89L83.25 143.13L83.43 147.4L83.6 151.65L83.78 155.86L83.96 160L84.14 164.03L84.32 167.9L84.5 171.56L84.68 174.95L84.86 178L85.04 180.64L85.21 182.79L85.39 184.39L85.57 185.38L85.75 185.71L85.93 185.38L86.11 184.39L86.29 182.79L86.47 180.64L86.64 178L86.82 174.95L87 171.56L87.18 167.9L87.36 164.03L87.54 160L87.72 155.86L87.9 151.65L88.07 147.4L88.25 143.13L88.43 138.89L88.61 134.68L88.79 130.53L88.97 126.46L89.15 122.48L89.33 118.61L89.5 114.86L89.68 111.24L89.86 107.76L90.04 104.44L90.22 101.27L90.4 98.27L90.58 95.45L90.76 92.82L90.93 90.37L91.11 88.11L91.29 86.06L91.47 84.21L91.65 82.57L91.83 81.14L92.01 79.92L92.19 78.92L92.36 78.15L92.54 77.59L92.72 77.25L92.9 77.14L93.08 77.25L93.26 77.59L93.44 78.15L93.62 78.92L93.79 79.92L93.97 81.14L94.15 82.57L94.33 84.21L94.51 86.06L94.69 88.11L94.87 90.37L95.05 92.82L95.22 95.45L95.4 98.27L95.58 101.27L95.76 104.44L95.94 107.76L96.12 111.24L96.3 114.86L96.48 118.61L96.65 122.48L96.83 126.46L97.01 130.53L97.19 134.68L97.37 138.89L97.55 143.13L97.73 147.4L97.91 151.65L98.08 155.86L98.26 160L98.44 164.03L98.62 167.9L98.8 171.56L98.98 174.95L99.16 178L99.34 180.64L99.51 182.79L99.69 184.39L99.87 185.38L100.05 185.71L100.23 185.38L100.41 184.39L100.59 182.79L100.77 180.64L100.94 178L101.12 174.95L101.3 171.56L101.48 167.9L101.66 164.03L101.84 160L102.02 155.86L102.2 151.65L102.37 147.4L102.55 143.13L102.73 138.89L102.91 134.68L103.09 130.53L103.27 126.46L103.45 122.48L103.63 118.61L103.8 114.86L103.98 111.24L104.16 107.76L104.34 104.44L104.52 101.27L104.7 98.27L104.88 95.45L105.06 92.82L105.23 90.37L105.41 88.11L105.59 86.06L105.77 84.21L105.95 82.57L106.13 81.14L106.31 79.92L106.49 78.92L106.66 78.15L106.84 77.59L107.02 77.25L107.2 77.14L107.38 77.25L107.56 77.59L107.74 78.15L107.92 78.92L108.09 79.92L108.27 81.14L108.45 82.57L108.63 84.21L108.81 86.06L108.99 88.11L109.17 90.37L109.35 92.82L109.52 95.45L109.7 98.27L109.88 101.27L110.06 104.44L110.24 107.76L110.42 111.24L110.6 114.86L110.78 118.61L110.95 122.48L111.13 126.46L111.31 130.53L111.49 134.68L111.67 138.89L111.85 143.13L112.03 147.4L112.21 151.65L112.38 155.86L112.56 160L112.74 164.03L112.92 167.9L113.1 171.56L113.28 174.95L113.46 178L113.64 180.64L113.81 182.79L113.99 184.39L114.17 185.38L114.35 185.71L114.53 185.38L114.71 184.39L114.89 182.79L115.07 180.64L115.24 178L115.42 174.95L115.6 171.56L115.78 167.9L115.96 164.03L116.14 160L116.32 155.86L116.5 151.65L116.67 147.4L116.85 143.13L117.03 138.89L117.21 134.68L117.39 130.53L117.57 126.46L117.75 122.48L117.93 118.61L118.1 114.86L118.28 111.24L118.46 107.76L118.64 104.44L118.82 101.27L119 98.27L119.18 95.45L119.36 92.82L119.53 90.37L119.71 88.11L119.89 86.06L120.07 84.21L120.25 82.57L120.43 81.14L120.61 79.92L120.79 78.92L120.96 78.15L121.14 77.59L121.32 77.25L121.5 77.14L121.68 77.25L121.86 77.59L122.04 78.15L122.22 78.92L122.39 79.92L122.57 81.14L122.75 82.57L122.93 84.21L123.11 86.06L123.29 88.11L123.47 90.37L123.65 92.82L123.82 95.45L124 98.27L124.18 101.27L124.36 104.44L124.54 107.76L124.72 111.24L124.9 114.86L125.08 118.61L125.25 122.48L125.43 126.46L125.61 130.53L125.79 134.68L125.97 138.89L126.15 143.13L126.33 147.4L126.51 151.65L126.68 155.86L126.86 160L127.04 164.03L127.22 167.9L127.4 171.56L127.58 174.95L127.76 178L127.94 180.64L128.11 182.79L128.29 184.39L128.47 185.38L128.65 185.71L128.83 185.38L129.01 184.39L129.19 182.79L129.37 180.64L129.54 178L129.72 174.95L129.9 171.56L130.08 167.9L130.26 164.03L130.44 160L130.62 155.86L130.79 151.65L130.97 147.4L131.15 143.13L131.33 138.89L131.51 134.68L131.69 130.53L131.87 126.46L132.05 122.48L132.23 118.61L132.4 114.86L132.58 111.24L132.76 107.76L132.94 104.44L133.12 101.27L133.3 98.27L133.48 95.45L133.66 92.82L133.83 90.37L134.01 88.11L134.19 86.06L134.37 84.21L134.55 82.57L134.73 81.14L134.91 79.92L135.08 78.92L135.26 78.15L135.44 77.59L135.62 77.25L135.8 77.14L135.98 77.25L136.16 77.59L136.34 78.15L136.51 78.92L136.69 79.92L136.87 81.14L137.05 82.57L137.23 84.21L137.41 86.06L137.59 88.11L137.77 90.37L137.95 92.82L138.12 95.45L138.3 98.27L138.48 101.27L138.66 104.44L138.84 107.76L139.02 111.24L139.2 114.86L139.38 118.61L139.55 122.48L139.73 126.46L139.91 130.53L140.09 134.68L140.27 138.89L140.45 143.13L140.63 147.4L140.81 151.65L140.98 155.86L141.16 160L141.34 164.03L141.52 167.9L141.7 171.56L141.88 174.95L142.06 178L142.24 180.64L142.41 182.79L142.59 184.39L142.77 185.38L142.95 185.71L143.13 185.38L143.31 184.39L143.49 182.79L143.67 180.64L143.84 178L144.02 174.95L144.2 171.56L144.38 167.9L144.56 164.03L144.74 160L144.92 155.86L145.1 151.65L145.27 147.4L145.45 143.13L145.63 138.89L145.81 134.68L145.99 130.53L146.17 126.46L146.35 122.48L146.53 118.61L146.7 114.86L146.88 111.24L147.06 107.76L147.24 104.44L147.42 101.27L147.6 98.27L147.78 95.45L147.96 92.82L148.13 90.37L148.31 88.11L148.49 86.06L148.67 84.21L148.85 82.57L149.03 81.14L149.21 79.92L149.39 78.92L149.56 78.15L149.74 77.59L149.92 77.25L150.1 77.14L150.28 77.25L150.46 77.59L150.64 78.15L150.82 78.92L150.99 79.92L151.17 81.14L151.35 82.57L151.53 84.21L151.71 86.06L151.89 88.11L152.07 90.37L152.25 92.82L152.42 95.45L152.6 98.27L152.78 101.27L152.96 104.44L153.14 107.76L153.32 111.24L153.5 114.86L153.68 118.61L153.85 122.48L154.03 126.46L154.21 130.53L154.39 134.68L154.57 138.89L154.75 143.13L154.93 147.4L155.11 151.65L155.28 155.86L155.46 160L155.64 164.03L155.82 167.9L156 171.56L156.18 174.95L156.36 178L156.54 180.64L156.71 182.79L156.89 184.39L157.07 185.38L157.25 185.71L157.43 185.38L157.61 184.39L157.79 182.79L157.97 180.64L158.14 178L158.32 174.95L158.5 171.56L158.68 167.9L158.86 164.03L159.04 160L159.22 155.86L159.39 151.65L159.57 147.4L159.75 143.13L159.93 138.89L160.11 134.68L160.29 130.53L160.47 126.46L160.65 122.48L160.82 118.61L161 114.86L161.18 111.24L161.36 107.76L161.54 104.44L161.72 101.27L161.9 98.27L162.08 95.45L162.26 92.82L162.43 90.37L162.61 88.11L162.79 86.06L162.97 84.21L163.15 82.57L163.33 81.14L163.51 79.92L163.69 78.92L163.86 78.15L164.04 77.59L164.22 77.25L164.4 77.14L164.58 77.25L164.76 77.59L164.94 78.15L165.12 78.92L165.29 79.92L165.47 81.14L165.65 82.57L165.83 84.21L166.01 86.06L166.19 88.11L166.37 90.37L166.55 92.82L166.72 95.45L166.9 98.27L167.08 101.27L167.26 104.44L167.44 107.76L167.62 111.24L167.8 114.86L167.98 118.61L168.15 122.48L168.33 126.46L168.51 130.53L168.69 134.68L168.87 138.89L169.05 143.13L169.23 147.4L169.41 151.65L169.58 155.86L169.76 160L169.94 164.03L170.12 167.9L170.3 171.56L170.48 174.95L170.66 178L170.83 180.64L171.01 182.79L171.19 184.39L171.37 185.38L171.55 185.71L171.73 185.38L171.91 184.39L172.09 182.79L172.27 180.64L172.44 178L172.62 174.95L172.8 171.56L172.98 167.9L173.16 164.03L173.34 160L173.52 155.86L173.7 151.65L173.87 147.4L174.05 143.13L174.23 138.89L174.41 134.68L174.59 130.53L174.77 126.46L174.95 122.48L175.13 118.61L175.3 114.86L175.48 111.24L175.66 107.76L175.84 104.44L176.02 101.27L176.2 98.27L176.38 95.45L176.56 92.82L176.73 90.37L176.91 88.11L177.09 86.06L177.27 84.21L177.45 82.57L177.63 81.14L177.81 79.92L177.99 78.92L178.16 78.15L178.34 77.59L178.52 77.25L178.7 77.14L178.88 77.25L179.06 77.59L179.24 78.15L179.42 78.92L179.59 79.92L179.77 81.14L179.95 82.57L180.13 84.21L180.31 86.06L180.49 88.11L180.67 90.37L180.85 92.82L181.02 95.45L181.2 98.27L181.38 101.27L181.56 104.44L181.74 107.76L181.92 111.24L182.1 114.86L182.28 118.61L182.45 122.48L182.63 126.46L182.81 130.53L182.99 134.68L183.17 138.89L183.35 143.13L183.53 147.4L183.71 151.65L183.88 155.86L184.06 160L184.24 164.03L184.42 167.9L184.6 171.56L184.78 174.95L184.96 178L185.14 180.64L185.31 182.79L185.49 184.39L185.67 185.38L185.85 185.71L186.03 185.38L186.21 184.39L186.39 182.79L186.57 180.64L186.74 178L186.92 174.95L187.1 171.56L187.28 167.9L187.46 164.03L187.64 160L187.82 155.86L188 151.65L188.17 147.4L188.35 143.13L188.53 138.89L188.71 134.68L188.89 130.53L189.07 126.46L189.25 122.48L189.43 118.61L189.6 114.86L189.78 111.24L189.96 107.76L190.14 104.44L190.32 101.27L190.5 98.27L190.68 95.45L190.86 92.82L191.03 90.37L191.21 88.11L191.39 86.06L191.57 84.21L191.75 82.57L191.93 81.14L192.11 79.92L192.29 78.92L192.46 78.15L192.64 77.59L192.82 77.25L193 77.14L193.18 77.25L193.36 77.59L193.54 78.15L193.71 78.92L193.89 79.92L194.07 81.14L194.25 82.57L194.43 84.21L194.61 86.06L194.79 88.11L194.97 90.37L195.15 92.82L195.32 95.45L195.5 98.27L195.68 101.27L195.86 104.44L196.04 107.76L196.22 111.24L196.4 114.86L196.58 118.61L196.75 122.48L196.93 126.46L197.11 130.53L197.29 134.68L197.47 138.89L197.65 143.13L197.83 147.4L198.01 151.65L198.18 155.86L198.36 160L198.54 164.03L198.72 167.9L198.9 171.56L199.08 174.95L199.26 178L199.44 180.64L199.61 182.79L199.79 184.39L199.97 185.38L200.15 185.71L200.33 185.38L200.51 184.39L200.69 182.79L200.86 180.64L201.04 178L201.22 174.95L201.4 171.56L201.58 167.9L201.76 164.03L201.94 160L202.12 155.86L202.3 151.65L202.47 147.4L202.65 143.13L202.83 138.89L203.01 134.68L203.19 130.53L203.37 126.46L203.55 122.48L203.73 118.61L203.9 114.86L204.08 111.24L204.26 107.76L204.44 104.44L204.62 101.27L204.8 98.27L204.98 95.45L205.16 92.82L205.33 90.37L205.51 88.11L205.69 86.06L205.87 84.21L206.05 82.57L206.23 81.14L206.41 79.92L206.59 78.92L206.76 78.15L206.94 77.59L207.12 77.25L207.3 77.14L207.48 77.25L207.66 77.59L207.84 78.15L208.02 78.92L208.19 79.92L208.37 81.14L208.55 82.57L208.73 84.21L208.91 86.06L209.09 88.11L209.27 90.37L209.45 92.82L209.62 95.45L209.8 98.27L209.98 101.27L210.16 104.44L210.34 107.76L210.52 111.24L210.7 114.86L210.88 118.61L211.05 122.48L211.23 126.46L211.41 130.53L211.59 134.68L211.77 138.89L211.95 143.13L212.13 147.4L212.31 151.65L212.48 155.86L212.66 160L212.84 164.03L213.02 167.9L213.2 171.56L213.38 174.95L213.56 178L213.74 180.64L213.91 182.79L214.09 184.39L214.27 185.38L214.45 185.71L214.63 185.38L214.81 184.39L214.99 182.79L215.17 180.64L215.34 178L215.52 174.95L215.7 171.56L215.88 167.9L216.06 164.03L216.24 160L216.42 155.86L216.6 151.65L216.77 147.4L216.95 143.13L217.13 138.89L217.31 134.68L217.49 130.53L217.67 126.46L217.85 122.48L218.03 118.61L218.2 114.86L218.38 111.24L218.56 107.76L218.74 104.44L218.92 101.27L219.1 98.27L219.28 95.45L219.46 92.82L219.63 90.37L219.81 88.11L219.99 86.06L220.17 84.21L220.35 82.57L220.53 81.14L220.71 79.92L220.89 78.92L221.06 78.15L221.24 77.59L221.42 77.25L221.6 77.14L221.78 77.25L221.96 77.59L222.14 78.15L222.32 78.92L222.49 79.92L222.67 81.14L222.85 82.57L223.03 84.21L223.21 86.06L223.39 88.11L223.57 90.37L223.75 92.82L223.92 95.45L224.1 98.27L224.28 101.27L224.46 104.44L224.64 107.76L224.82 111.24L225 114.86L225.18 118.61L225.35 122.48L225.53 126.46L225.71 130.53L225.89 134.68L226.07 138.89L226.25 143.13L226.43 147.4L226.61 151.65L226.78 155.86L226.96 160L227.14 164.03L227.32 167.9L227.5 171.56L227.68 174.95L227.86 178L228.04 180.64L228.21 182.79L228.39 184.39L228.57 185.38L228.75 185.71L228.93 185.38L229.11 184.39L229.29 182.79L229.46 180.64L229.64 178L229.82 174.95L230 171.56L230.18 167.9L230.36 164.03L230.54 160L230.72 155.86L230.9 151.65L231.07 147.4L231.25 143.13L231.43 138.89L231.61 134.68L231.79 130.53L231.97 126.46L232.15 122.48L232.33 118.61L232.5 114.86L232.68 111.24L232.86 107.76L233.04 104.44L233.22 101.27L233.4 98.27L233.58 95.45L233.76 92.82L233.93 90.37L234.11 88.11L234.29 86.06L234.47 84.21L234.65 82.57L234.83 81.14L235.01 79.92L235.19 78.92L235.36 78.15L235.54 77.59L235.72 77.25L235.9 77.14L236.08 77.25L236.26 77.59L236.44 78.15L236.61 78.92L236.79 79.92L236.97 81.14L237.15 82.57L237.33 84.21L237.51 86.06L237.69 88.11L237.87 90.37L238.05 92.82L238.22 95.45L238.4 98.27L238.58 101.27L238.76 104.44L238.94 107.76L239.12 111.24L239.3 114.86L239.48 118.61L239.65 122.48L239.83 126.46L240.01 130.53L240.19 134.68L240.37 138.89L240.55 143.13L240.73 147.4L240.91 151.65L241.08 155.86L241.26 160L241.44 164.03L241.62 167.9L241.8 171.56L241.98 174.95L242.16 178L242.34 180.64L242.51 182.79L242.69 184.39L242.87 185.38L243.05 185.71L243.23 185.38L243.41 184.39L243.59 182.79L243.77 180.64L243.94 178L244.12 174.95L244.3 171.56L244.48 167.9L244.66 164.03L244.84 160L245.02 155.86L245.2 151.65L245.37 147.4L245.55 143.13L245.73 138.89L245.91 134.68L246.09 130.53L246.27 126.46L246.45 122.48L246.63 118.61L246.8 114.86L246.98 111.24L247.16 107.76L247.34 104.44L247.52 101.27L247.7 98.27L247.88 95.45L248.06 92.82L248.23 90.37L248.41 88.11L248.59 86.06L248.77 84.21L248.95 82.57L249.13 81.14L249.31 79.92L249.49 78.92L249.66 78.15L249.84 77.59L250.02 77.25L250.2 77.14L250.38 77.25L250.56 77.59L250.74 78.15L250.92 78.92L251.09 79.92L251.27 81.14L251.45 82.57L251.63 84.21L251.81 86.06L251.99 88.11L252.17 90.37L252.35 92.82L252.52 95.45L252.7 98.27L252.88 101.27L253.06 104.44L253.24 107.76L253.42 111.24L253.6 114.86L253.78 118.61L253.95 122.48L254.13 126.46L254.31 130.53L254.49 134.68L254.67 138.89L254.85 143.13L255.03 147.4L255.21 151.65L255.38 155.86L255.56 160L255.74 164.03L255.92 167.9L256.1 171.56L256.28 174.95L256.46 178L256.64 180.64L256.81 182.79L256.99 184.39L257.17 185.38L257.35 185.71L257.53 185.38L257.71 184.39L257.89 182.79L258.07 180.64L258.24 178L258.42 174.95L258.6 171.56L258.78 167.9L258.96 164.03L259.14 160L259.32 155.86L259.5 151.65L259.67 147.4L259.85 143.13L260.03 138.89L260.21 134.68L260.39 130.53L260.57 126.46L260.75 122.48L260.93 118.61L261.1 114.86L261.28 111.24L261.46 107.76L261.64 104.44L261.82 101.27L262 98.27L262.18 95.45L262.36 92.82L262.53 90.37L262.71 88.11L262.89 86.06L263.07 84.21L263.25 82.57L263.43 81.14L263.61 79.92L263.79 78.92L263.96 78.15L264.14 77.59L264.32 77.25L264.5 77.14L264.68 77.25L264.86 77.59L265.04 78.15L265.21 78.92L265.39 79.92L265.57 81.14L265.75 82.57L265.93 84.21L266.11 86.06L266.29 88.11L266.47 90.37L266.65 92.82L266.82 95.45L267 98.27L267.18 101.27L267.36 104.44L267.54 107.76L267.72 111.24L267.9 114.86L268.08 118.61L268.25 122.48L268.43 126.46L268.61 130.53L268.79 134.68L268.97 138.89L269.15 143.13L269.33 147.4L269.51 151.65L269.68 155.86L269.86 160L270.04 164.03L270.22 167.9L270.4 171.56L270.58 174.95L270.76 178L270.94 180.64L271.11 182.79L271.29 184.39L271.47 185.38L271.65 185.71L271.83 185.38L272.01 184.39L272.19 182.79L272.37 180.64L272.54 178L272.72 174.95L272.9 171.56L273.08 167.9L273.26 164.03L273.44 160L273.62 155.86L273.79 151.65L273.97 147.4L274.15 143.13L274.33 138.89L274.51 134.68L274.69 130.53L274.87 126.46L275.05 122.48L275.23 118.61L275.4 114.86L275.58 111.24L275.76 107.76L275.94 104.44L276.12 101.27L276.3 98.27L276.48 95.45L276.65 92.82L276.83 90.37L277.01 88.11L277.19 86.06L277.37 84.21L277.55 82.57L277.73 81.14L277.91 79.92L278.09 78.92L278.26 78.15L278.44 77.59L278.62 77.25L278.8 77.14L278.98 77.25L279.16 77.59L279.34 78.15L279.52 78.92L279.69 79.92L279.87 81.14L280.05 82.57L280.23 84.21L280.41 86.06L280.59 88.11L280.77 90.37L280.95 92.82L281.12 95.45L281.3 98.27L281.48 101.27L281.66 104.44L281.84 107.76L282.02 111.24L282.2 114.86L282.38 118.61L282.55 122.48L282.73 126.46L282.91 130.53L283.09 134.68L283.27 138.89L283.45 143.13L283.63 147.4L283.81 151.65L283.98 155.86L284.16 160L284.34 164.03L284.52 167.9L284.7 171.56L284.88 174.95L285.06 178L285.24 180.64L285.41 182.79L285.59 184.39L285.77 185.38L285.95 185.71L286.13 185.38L286.31 184.39L286.49 182.79L286.66 180.64L286.84 178L287.02 174.95L287.2 171.56L287.38 167.9L287.56 164.03L287.74 160L287.92 155.86L288.1 151.65L288.27 147.4L288.45 143.13L288.63 138.89L288.81 134.68L288.99 130.53L289.17 126.46L289.35 122.48L289.52 118.61L289.7 114.86L289.88 111.24L290.06 107.76L290.24 104.44L290.42 101.27L290.6 98.27L290.78 95.45L290.96 92.82L291.13 90.37L291.31 88.11L291.49 86.06L291.67 84.21L291.85 82.57L292.03 81.14L292.21 79.92L292.39 78.92L292.56 78.15L292.74 77.59L292.92 77.25L293.1 77.14L293.28 77.25L293.46 77.59L293.64 78.15L293.82 78.92L293.99 79.92L294.17 81.14L294.35 82.57L294.53 84.21L294.71 86.06L294.89 88.11L295.07 90.37L295.25 92.82L295.42 95.45L295.6 98.27L295.78 101.27L295.96 104.44L296.14 107.76L296.32 111.24L296.5 114.86L296.68 118.61L296.85 122.48L297.03 126.46L297.21 130.53L297.39 134.68L297.57 138.89L297.75 143.13L297.93 147.4L298.11 151.65L298.28 155.86L298.46 160L298.64 164.03L298.82 167.9L299 171.56L299.18 174.95L299.36 178L299.54 180.64L299.71 182.79L299.89 184.39L300.07 185.38L300.25 185.71L300.43 185.38L300.61 184.39L300.79 182.79L300.96 180.64L301.14 178L301.32 174.95L301.5 171.56L301.68 167.9L301.86 164.03L302.04 160L302.22 155.86L302.4 151.65L302.57 147.4L302.75 143.13L302.93 138.89L303.11 134.68L303.29 130.53L303.47 126.46L303.65 122.48L303.83 118.61L304 114.86L304.18 111.24L304.36 107.76L304.54 104.44L304.72 101.27L304.9 98.27L305.08 95.45L305.26 92.82L305.43 90.37L305.61 88.11L305.79 86.06L305.97 84.21L306.15 82.57L306.33 81.14L306.51 79.92L306.69 78.92L306.86 78.15L307.04 77.59L307.22 77.25L307.4 77.14L307.58 77.25L307.76 77.59L307.94 78.15L308.12 78.92L308.29 79.92L308.47 81.14L308.65 82.57L308.83 84.21L309.01 86.06L309.19 88.11L309.37 90.37L309.55 92.82L309.72 95.45L309.9 98.27L310.08 101.27L310.26 104.44L310.44 107.76L310.62 111.24L310.8 114.86L310.97 118.61L311.15 122.48L311.33 126.46L311.51 130.53L311.69 134.68L311.87 138.89L312.05 143.13L312.23 147.4L312.4 151.65L312.58 155.86L312.76 160L312.94 164.03L313.12 167.9L313.3 171.56L313.48 174.95L313.66 178L313.83 180.64L314.01 182.79L314.19 184.39L314.37 185.38L314.55 185.71L314.73 185.38L314.91 184.39L315.09 182.79L315.27 180.64L315.44 178L315.62 174.95L315.8 171.56L315.98 167.9L316.16 164.03L316.34 160L316.52 155.86L316.7 151.65L316.87 147.4L317.05 143.13L317.23 138.89L317.41 134.68L317.59 130.53L317.77 126.46L317.95 122.48L318.13 118.61L318.3 114.86L318.48 111.24L318.66 107.76L318.84 104.44L319.02 101.27L319.2 98.27L319.38 95.45L319.56 92.82L319.73 90.37L319.91 88.11L320.09 86.06L320.27 84.21L320.45 82.57L320.63 81.14L320.81 79.92L320.99 78.92L321.16 78.15L321.34 77.59L321.52 77.25L321.7 77.14L321.88 77.25L322.06 77.59L322.24 78.15L322.42 78.92L322.59 79.92L322.77 81.14L322.95 82.57L323.13 84.21L323.31 86.06L323.49 88.11L323.67 90.37L323.85 92.82L324.02 95.45L324.2 98.27L324.38 101.27L324.56 104.44L324.74 107.76L324.92 111.24L325.1 114.86L325.28 118.61L325.45 122.48L325.63 126.46L325.81 130.53L325.99 134.68L326.17 138.89L326.35 143.13L326.53 147.4L326.71 151.65L326.88 155.86L327.06 160L327.24 164.03L327.42 167.9L327.6 171.56L327.78 174.95L327.96 178L328.14 180.64L328.31 182.79L328.49 184.39L328.67 185.38L328.85 185.71L329.03 185.38L329.21 184.39L329.39 182.79L329.57 180.64L329.74 178L329.92 174.95L330.1 171.56L330.28 167.9L330.46 164.03L330.64 160L330.82 155.86L331 151.65L331.17 147.4L331.35 143.13L331.53 138.89L331.71 134.68L331.89 130.53L332.07 126.46L332.25 122.48L332.43 118.61L332.6 114.86L332.78 111.24L332.96 107.76L333.14 104.44L333.32 101.27L333.5 98.27L333.68 95.45L333.86 92.82L334.03 90.37L334.21 88.11L334.39 86.06L334.57 84.21L334.75 82.57L334.93 81.14L335.11 79.92L335.29 78.92L335.46 78.15L335.64 77.59L335.82 77.25L336 77.14" fill="none"/><path class="k-curve" d="M50 77.14L50.72 77.16L51.43 77.21L52.15 77.3L52.86 77.43L53.58 77.59L54.29 77.79L55.01 78.02L55.72 78.28L56.44 78.59L57.15 78.92L57.87 79.3L58.58 79.7L59.3 80.15L60.01 80.62L60.73 81.14L61.44 81.68L62.16 82.26L62.87 82.88L63.59 83.53L64.3 84.21L65.02 84.92L65.73 85.67L66.44 86.45L67.16 87.27L67.88 88.11L68.59 88.99L69.31 89.9L70.02 90.84L70.74 91.81L71.45 92.82L72.16 93.85L72.88 94.91L73.6 96L74.31 97.12L75.03 98.27L75.74 99.45L76.46 100.66L77.17 101.89L77.89 103.15L78.6 104.44L79.32 105.75L80.03 107.09L80.75 108.45L81.46 109.83L82.18 111.24L82.89 112.67L83.6 114.13L84.32 115.6L85.04 117.1L85.75 118.61L86.47 120.15L87.18 121.7L87.9 123.27L88.61 124.86L89.33 126.46L90.04 128.08L90.76 129.71L91.47 131.36L92.19 133.01L92.9 134.68L93.62 136.36L94.33 138.04L95.05 139.73L95.76 141.43L96.48 143.13L97.19 144.84L97.91 146.54L98.62 148.25L99.34 149.95L100.05 151.65L100.77 153.34L101.48 155.02L102.2 156.7L102.91 158.36L103.63 160L104.34 161.63L105.06 163.24L105.77 164.82L106.49 166.38L107.2 167.9L107.92 169.39L108.63 170.85L109.35 172.26L110.06 173.63L110.78 174.95L111.49 176.21L112.21 177.42L112.92 178.56L113.64 179.64L114.35 180.64L115.07 181.56L115.78 182.4L116.5 183.16L117.21 183.82L117.93 184.39L118.64 184.86L119.36 185.23L120.07 185.5L120.79 185.66L121.5 185.71L122.22 185.66L122.93 185.5L123.65 185.23L124.36 184.86L125.08 184.39L125.79 183.82L126.51 183.16L127.22 182.4L127.94 181.56L128.65 180.64L129.37 179.64L130.08 178.56L130.79 177.42L131.51 176.21L132.23 174.95L132.94 173.63L133.66 172.26L134.37 170.85L135.08 169.39L135.8 167.9L136.51 166.38L137.23 164.82L137.95 163.24L138.66 161.63L139.38 160L140.09 158.36L140.81 156.7L141.52 155.02L142.24 153.34L142.95 151.65L143.67 149.95L144.38 148.25L145.1 146.54L145.81 144.84L146.53 143.13L147.24 141.43L147.96 139.73L148.67 138.04L149.39 136.36L150.1 134.68L150.82 133.01L151.53 131.36L152.25 129.71L152.96 128.08L153.68 126.46L154.39 124.86L155.11 123.27L155.82 121.7L156.54 120.15L157.25 118.61L157.97 117.1L158.68 115.6L159.39 114.13L160.11 112.67L160.82 111.24L161.54 109.83L162.26 108.45L162.97 107.09L163.69 105.75L164.4 104.44L165.12 103.15L165.83 101.89L166.55 100.66L167.26 99.45L167.98 98.27L168.69 97.12L169.41 96L170.12 94.91L170.83 93.85L171.55 92.82L172.27 91.81L172.98 90.84L173.7 89.9L174.41 88.99L175.13 88.11L175.84 87.27L176.56 86.45L177.27 85.67L177.99 84.92L178.7 84.21L179.42 83.53L180.13 82.88L180.85 82.26L181.56 81.68L182.28 81.14L182.99 80.62L183.71 80.15L184.42 79.7L185.14 79.3L185.85 78.92L186.57 78.59L187.28 78.28L188 78.02L188.71 77.79L189.43 77.59L190.14 77.43L190.86 77.3L191.57 77.21L192.29 77.16L193 77.14L193.71 77.16L194.43 77.21L195.15 77.3L195.86 77.43L196.58 77.59L197.29 77.79L198.01 78.02L198.72 78.28L199.44 78.59L200.15 78.92L200.86 79.3L201.58 79.7L202.3 80.15L203.01 80.62L203.73 81.14L204.44 81.68L205.16 82.26L205.87 82.88L206.59 83.53L207.3 84.21L208.02 84.92L208.73 85.67L209.45 86.45L210.16 87.27L210.88 88.11L211.59 88.99L212.31 89.9L213.02 90.84L213.74 91.81L214.45 92.82L215.17 93.85L215.88 94.91L216.6 96L217.31 97.12L218.03 98.27L218.74 99.45L219.46 100.66L220.17 101.89L220.89 103.15L221.6 104.44L222.32 105.75L223.03 107.09L223.75 108.45L224.46 109.83L225.18 111.24L225.89 112.67L226.61 114.13L227.32 115.6L228.04 117.1L228.75 118.61L229.46 120.15L230.18 121.7L230.9 123.27L231.61 124.86L232.33 126.46L233.04 128.08L233.76 129.71L234.47 131.36L235.19 133.01L235.9 134.68L236.61 136.36L237.33 138.04L238.05 139.73L238.76 141.43L239.48 143.13L240.19 144.84L240.91 146.54L241.62 148.25L242.34 149.95L243.05 151.65L243.77 153.34L244.48 155.02L245.2 156.7L245.91 158.36L246.63 160L247.34 161.63L248.06 163.24L248.77 164.82L249.49 166.38L250.2 167.9L250.92 169.39L251.63 170.85L252.35 172.26L253.06 173.63L253.78 174.95L254.49 176.21L255.21 177.42L255.92 178.56L256.64 179.64L257.35 180.64L258.07 181.56L258.78 182.4L259.5 183.16L260.21 183.82L260.93 184.39L261.64 184.86L262.36 185.23L263.07 185.5L263.79 185.66L264.5 185.71L265.21 185.66L265.93 185.5L266.65 185.23L267.36 184.86L268.08 184.39L268.79 183.82L269.51 183.16L270.22 182.4L270.94 181.56L271.65 180.64L272.37 179.64L273.08 178.56L273.79 177.42L274.51 176.21L275.23 174.95L275.94 173.63L276.65 172.26L277.37 170.85L278.09 169.39L278.8 167.9L279.52 166.38L280.23 164.82L280.95 163.24L281.66 161.63L282.38 160L283.09 158.36L283.81 156.7L284.52 155.02L285.24 153.34L285.95 151.65L286.66 149.95L287.38 148.25L288.1 146.54L288.81 144.84L289.52 143.13L290.24 141.43L290.96 139.73L291.67 138.04L292.39 136.36L293.1 134.68L293.82 133.01L294.53 131.36L295.25 129.71L295.96 128.08L296.68 126.46L297.39 124.86L298.11 123.27L298.82 121.7L299.54 120.15L300.25 118.61L300.96 117.1L301.68 115.6L302.4 114.13L303.11 112.67L303.83 111.24L304.54 109.83L305.26 108.45L305.97 107.09L306.69 105.75L307.4 104.44L308.12 103.15L308.83 101.89L309.55 100.66L310.26 99.45L310.97 98.27L311.69 97.12L312.4 96L313.12 94.91L313.83 93.85L314.55 92.82L315.27 91.81L315.98 90.84L316.7 89.9L317.41 88.99L318.13 88.11L318.84 87.27L319.56 86.45L320.27 85.67L320.99 84.92L321.7 84.21L322.42 83.53L323.13 82.88L323.85 82.26L324.56 81.68L325.28 81.14L325.99 80.62L326.71 80.15L327.42 79.7L328.14 79.3L328.85 78.92L329.57 78.59L330.28 78.28L331 78.02L331.71 77.79L332.43 77.59L333.14 77.43L333.86 77.3L334.57 77.21L335.29 77.16L336 77.14" fill="none"/><g ><g ><line class="k-curve" x1="20" y1="312" x2="46" y2="312"/><text class="k-label" x="54" y="316" text-anchor="start">delay 4: a peak every 2,000 Hz</text></g><g ><line class="c-dash" x1="20" y1="336" x2="46" y2="336"/><text class="k-label" x="54" y="340" text-anchor="start">delay 40: a peak every 200 Hz</text></g></g></svg></div>
+</div>
+</body>
+</html>

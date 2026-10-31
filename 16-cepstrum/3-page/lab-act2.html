@@ -1,0 +1,46 @@
+<div class="act2" id="act2-mount">
+  <button type="button" id="start-act2">Fix the bug</button>
+  <div class="lab" id="lab2" hidden>
+    <h3>Lab: cancel an echo nobody told you about</h3>
+    <div class="task"><p id="a2-task"></p></div>
+    <div id="a2-ask"></div>
+    <canvas id="a2-stage" class="stage" role="img" aria-label="The cepstrum of the canceller's output."></canvas>
+    <div class="key">
+      <span><i class="c-k-curve"></i>cepstrum of what the canceller lets through</span>
+      <span><i class="c-k-line"></i>your canceller's delay</span>
+      <span><i class="c-k-shade"></i>below quefrency 100: the voice's shape, skip it</span>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div class="result" id="a2-result"></div>
+      <p id="a2-why"></p>
+    </div>
+    <div class="controls">
+      <div class="control">
+        <label for="a2-delay">Canceller delay: <output id="a2-delay-out">2,000 samples</output></label>
+        <input id="a2-delay" type="range" min="1" max="3000" step="1" value="2000" disabled>
+        <div class="row">
+          <button type="button" id="a2-minus" aria-label="One sample shorter" disabled>−1</button>
+          <button type="button" id="a2-plus" aria-label="One sample longer" disabled>+1</button>
+        </div>
+      </div>
+      <div class="control">
+        <label for="a2-strength">Canceller strength: <output id="a2-strength-out">0.00</output></label>
+        <input id="a2-strength" type="range" min="0" max="0.9" step="0.01" value="0" disabled>
+      </div>
+    </div>
+    <div class="row" role="group" aria-label="What the canceller subtracts">
+      <button type="button" data-mode="feedback" aria-pressed="true" disabled>Subtract a shifted copy of clean</button>
+      <button type="button" data-mode="feedforward" aria-pressed="false" disabled>Subtract a shifted copy of heard</button>
+    </div>
+    <div class="row" role="group" aria-label="What to play">
+      <button type="button" data-out="clean" aria-pressed="true">Your canceller's output</button>
+      <button type="button" data-out="heard" aria-pressed="false">The call as heard</button>
+    </div>
+    <div class="row">
+      <button type="button" id="a2-play" disabled>Play</button>
+      <button type="button" id="a2-another" hidden>Try another call</button>
+      <button type="button" id="a2-reset">Reset</button>
+    </div>
+    <p class="k-now" id="a2-now" aria-live="polite">Not playing.</p>
+  </div>
+</div>
