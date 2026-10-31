@@ -1,0 +1,98 @@
+{
+  "click": {
+    "title": "The click test on the east route",
+    "caption": "The route’s impulse response: the click comes back smeared over three samples, most of it one sample late.",
+    "animated": false,
+    "phone": true
+  },
+  "convolution": {
+    "title": "Each output is a weighted sum of three inputs",
+    "caption": "The click rule as a sliding window: under each output, add 0.15 of the newest input, 0.70 of the one before and 0.15 of the one before that. Before n = 0 the line is silent.",
+    "animated": true,
+    "phone": true
+  },
+  "tone-in-out": {
+    "title": "The 2,000 Hz tone comes out as itself",
+    "caption": "Dashed: the 2,000 Hz tone going in. Solid: what the route gives back. Same pattern, 0.70 as tall, one sample late. Small dots: samples that are 0.",
+    "animated": false,
+    "phone": true
+  },
+  "wheel": {
+    "title": "Every tone turns a wheel",
+    "caption": "Each dot turns counter-clockwise by 360° × tone ÷ 8,000 per sample. The numbers on each wheel say where the dot sits at each sample; the strip under it is the dot’s left-right position, sample by sample.",
+    "animated": true,
+    "phone": true
+  },
+  "phase": {
+    "title": "Phase: how far the output dot trails",
+    "caption": "The route’s 2,000 Hz output is the same dot, smaller and one sample behind. One sample at 2,000 Hz is 90°: that gap is the phase.",
+    "animated": true,
+    "phone": true
+  },
+  "arrows-turning": {
+    "title": "Copies of a turning wheel turn together",
+    "caption": "Left: the three copies the route blends. Right: the same copies as arrows scaled by their weights and added tip to tail. When the turning stops, the faint halos and the faint sum show one sample later: everything has turned the same 45°, so the sum turns at the tone’s own speed.",
+    "animated": true,
+    "phone": true
+  },
+  "response": {
+    "title": "The east route’s frequency response",
+    "caption": "Top: how much of each tone the route keeps. Bottom: how far behind it comes out. The consonant edges sit where the gain is lowest.",
+    "animated": false,
+    "phone": true
+  },
+  "same-delay": {
+    "title": "One sample of delay, in degrees",
+    "caption": "The route delays every tone by one sample. A faster dot covers more degrees in that one sample, so the phase grows with the tone.",
+    "animated": true,
+    "phone": true
+  },
+  "parts-sum": {
+    "title": "Two parts add up to the click rule",
+    "caption": "Circles and squares: the two predicted parts. Solid: the parts added. Rings: the click rule’s output. The solid line runs through every ring.",
+    "animated": true,
+    "phone": true
+  },
+  "two-tones": {
+    "title": "The swell survives, the edge is halved",
+    "caption": "Each row puts the input next to the output, shifted back one sample to undo the route’s delay. The vowel row barely changes; the consonant row is cut in half; the sum shows both.",
+    "animated": false,
+    "phone": true
+  },
+  "volume": {
+    "title": "The volume knob keeps the wall",
+    "caption": "Turning everything up keeps the recipe muffled, and the loudest sample of the call goes past the line’s range and clips.",
+    "animated": false,
+    "phone": true
+  },
+  "point": {
+    "title": "Read the angle off the end point",
+    "caption": "The chain of arrows for two tones. The end point’s distance from the center is the gain G; how far clockwise it sits is the phase φ.",
+    "animated": false,
+    "phone": true
+  },
+  "arrows": {
+    "title": "The arrows curl as the tone rises",
+    "caption": "Each chain is the click’s three arrows for one tone. The coral arrow to the end point is the gain and phase you would measure.",
+    "animated": true,
+    "phone": true
+  },
+  "tone-bars": {
+    "title": "Every tone out went in",
+    "caption": "An example voice before and after the route. Nothing new appears, nothing moves: each tone is only scaled.",
+    "animated": true,
+    "phone": true
+  },
+  "cascade": {
+    "title": "A boost undoes the wall, a volume knob does not",
+    "caption": "Gains multiply. A boost that rises exactly where the route falls flattens it; turning everything up keeps the slope.",
+    "animated": false,
+    "phone": true
+  },
+  "bands": {
+    "title": "The seven bands of the boost",
+    "caption": "One knob per band. For the east route, each band’s boost is 1 ÷ what the route keeps at its middle tone.",
+    "animated": false,
+    "phone": true
+  }
+}

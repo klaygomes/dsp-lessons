@@ -1,0 +1,92 @@
+{
+  "meter": {
+    "title": "The meter after the click",
+    "caption": "A click should light every tone a little. Right after it, the meter showed one thin spike, at the one tone the notch removes.",
+    "animated": false,
+    "phone": true
+  },
+  "split-zero": {
+    "title": "Sample 0 is the click plus the ring",
+    "caption": "The first output sample is two things added: the click passing straight through and the very start of the ring. After that, only the ring is left.",
+    "animated": false,
+    "phone": true
+  },
+  "click-ring": {
+    "title": "One click, and the notch rings",
+    "caption": "After the click the output never quite stops: up, nothing, down, nothing, at 2,000 Hz, each swing 0.9 of the one before per sample.",
+    "animated": true,
+    "phone": true
+  },
+  "spiral": {
+    "title": "A pole pair in time is a spiral",
+    "caption": "The turn per sample is the ring’s pitch, the shrink per sample is its decay. After one sample the dot sits exactly on the pole.",
+    "animated": true,
+    "phone": true
+  },
+  "decay-time": {
+    "title": "Decay time: down to 1%",
+    "caption": "The decay time is how long the ring takes to fall to 1% of where it started. At radius 0.9 that is 43.7 samples, 5.5 ms.",
+    "animated": false,
+    "phone": true
+  },
+  "pole-gaps": {
+    "title": "Halve the gap, double the ring",
+    "caption": "Each time the pole halves its gap to the circle, its ring lasts twice as long.",
+    "animated": false,
+    "phone": true
+  },
+  "whine-on": {
+    "title": "The whine switching on rings too",
+    "caption": "From n = 2 on the zero pair cancels the whine exactly. The first sample had nothing to cancel against, and the feedback carries it on as a fading ring.",
+    "animated": true,
+    "phone": true
+  },
+  "bandwidth": {
+    "title": "Bandwidth: the notch’s width at 71%",
+    "caption": "The bandwidth is the distance between the two tones where the notch passes 71%. Poles closer to the circle make it narrower.",
+    "animated": false,
+    "phone": true
+  },
+  "trade-off": {
+    "title": "Every notch sits on one curve",
+    "caption": "Pick a pole radius and you pick a point on this curve. A short ring means a wide notch, a narrow notch means a long ring.",
+    "animated": false,
+    "phone": true
+  },
+  "half-turn": {
+    "title": "Two samples back: half a turn, a little farther out",
+    "caption": "Two samples is half a turn, which flips the shadow’s sign, and two shrinks of 0.9, which is 0.81. Together: × −0.81, exactly the feedback rule.",
+    "animated": true,
+    "phone": true
+  },
+  "click-minus-ring": {
+    "title": "The notch is a click minus a ring",
+    "caption": "A click is every tone at once. Take away the ring, a narrow peak at 2,000 Hz, and what is left is the notch.",
+    "animated": true,
+    "phone": true
+  },
+  "triangle": {
+    "title": "Near the top, a right triangle",
+    "caption": "Near the whine only two distances matter: to the top zero, about a, and to the top pole, the triangle’s long side.",
+    "animated": false,
+    "phone": true
+  },
+  "drift": {
+    "title": "Telling close tones apart takes time",
+    "caption": "Two tones 50 Hz apart look alike at first. Only after 10 ms are they half a cycle apart.",
+    "animated": true,
+    "phone": true
+  },
+  "ninety": {
+    "title": "Where the notch gets back to 90%",
+    "caption": "For this notch a tone gets back to 90% about one bandwidth away from the whine.",
+    "animated": false,
+    "phone": true
+  },
+  "radius-strip": {
+    "title": "The window of radii",
+    "caption": "The first request and the second never meet. The first and the third overlap in a short window.",
+    "animated": false,
+    "phone": true
+  }
+}

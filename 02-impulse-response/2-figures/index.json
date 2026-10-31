@@ -1,0 +1,92 @@
+{
+  "the-line": {
+    "title": "Where the echo is made",
+    "caption": "Who talks, who hears, and where the echo is made: the box on the street corner leaks part of the caller’s voice back down the line.",
+    "animated": false,
+    "phone": true
+  },
+  "impulse": {
+    "title": "The impulse, moved and scaled",
+    "caption": "Top: the impulse δ[n]. Middle: δ[n − 3], the same click 3 samples later. Bottom: 0.8 δ[n], the same click scaled. Small hollow circles are samples that are 0.",
+    "animated": false,
+    "phone": true
+  },
+  "impulse-response": {
+    "title": "One click in, h out",
+    "caption": "The click goes into the box you cannot open. What comes back is the impulse response: 2,000 zeros, then 0.4 and 0.2.",
+    "animated": true,
+    "phone": true
+  },
+  "word-as-clicks": {
+    "title": "A word is four clicks",
+    "caption": "Each sample of the word is a click of its own size at its own place. Add the four rows and you get the word back.",
+    "animated": true,
+    "phone": true
+  },
+  "copies": {
+    "title": "Each click launches a copy of h",
+    "caption": "Each click launches a two-bar copy of h, scaled by the click and shifted to start 2,000 samples after it. Add the copies column by column and you get the echo.",
+    "animated": true,
+    "phone": true
+  },
+  "convolution-rule": {
+    "title": "The convolution sum, piece by piece",
+    "caption": "The same badge number marks the same piece in the formula and in the code. In the formula, x * h names the whole loop, not a product.",
+    "animated": false,
+    "phone": true
+  },
+  "flip-slide": {
+    "title": "Flip h, slide it, multiply, add",
+    "caption": "One output sample at a time: flip h, slide it under the word, multiply each pair, add. Each row is one more step to the right.",
+    "animated": true,
+    "phone": true
+  },
+  "smoother-response": {
+    "title": "The smoother, unmasked",
+    "caption": "First, the smoother’s impulse response: 0.5 and 0.5. Then the tone (dots on a faint curve) and its convolution with 0.5, 0.5 (solid stems). The circled first output is the one lesson 1 left blank.",
+    "animated": false,
+    "phone": true
+  },
+  "booster-fails": {
+    "title": "The clipping booster breaks the rule",
+    "caption": "The old booster’s answer to one click does not predict its answer to another. It is not linear, so convolution does not apply.",
+    "animated": false,
+    "phone": true
+  },
+  "pile-of-clicks": {
+    "title": "Why one click is enough",
+    "caption": "The derivation as a chain. Each arrow names the property it uses.",
+    "animated": false,
+    "phone": true
+  },
+  "two-readings": {
+    "title": "Two ways to build the same echo",
+    "caption": "Four copies of h, or two copies of the word: the same echo either way, because x * h = h * x.",
+    "animated": false,
+    "phone": true
+  },
+  "canceller": {
+    "title": "The echo canceller",
+    "caption": "Follow a word along both paths. The echo and the canceller’s guess reach the minus sign together and cancel, and the far voice passes on.",
+    "animated": true,
+    "phone": true
+  },
+  "off-by-one": {
+    "title": "A one-sample slip on “hi”",
+    "caption": "The echo, the guess one sample late (dashed), and what is left. On “hi” the leftover is bigger than the echo itself.",
+    "animated": false,
+    "phone": true
+  },
+  "slip-tones": {
+    "title": "A one-sample slip, tone by tone",
+    "caption": "The higher the pitch, the more a one-sample slip costs. Above the dashed line, the canceller makes the echo worse.",
+    "animated": false,
+    "phone": true
+  },
+  "pointwise": {
+    "title": "Multiplying sample by sample predicts nothing",
+    "caption": "x[n] × h[n] has a zero in every product. Convolution launches a copy of h from every sample instead, and that is the echo.",
+    "animated": false,
+    "phone": true
+  }
+}

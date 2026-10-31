@@ -1,0 +1,58 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Whine on Line Two</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .k-fresh { width: 10px; height: 10px; border-radius: 50%; background: var(--input); }
+.key .k-old { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink); }
+.key .k-mid { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.key .k-zero { width: 12px; height: 12px; border-radius: 50%; border: 2.5px solid var(--input); }
+.key .k-pole { width: 12px; height: 12px; background: linear-gradient(45deg, transparent 42%, var(--input) 42%, var(--input) 58%, transparent 58%), linear-gradient(-45deg, transparent 42%, var(--input) 42%, var(--input) 58%, transparent 58%); }
+.key .k-curve { width: 22px; border-top: 2px solid var(--ink); }
+.key .k-spike { width: 3px; height: 14px; background: var(--ink-soft); }
+.key .k-pin { width: 22px; border-top: 2px dashed var(--input); }
+.key .k-band { width: 16px; height: 12px; background: var(--paper-2); border: 1px solid var(--rule); }
+.act2 { display: grid; }
+.lab .typed { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 15px; }
+.lab .typed input { font: 500 16px var(--font-mono); width: 7em; padding: 8px 10px; border: 1.5px solid var(--input); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.lab .typed .bad { color: var(--accent-ink); }
+.lab .readout { min-height: 6.5em; }
+.lab .meters { display: grid; gap: 10px; }
+.rule-quote { border-left: 3px solid var(--rule); padding-left: 16px; }
+.tb-machine { overflow-x: auto; }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 6 · chapter 4</p>
+    <h1>The Whine on Line Two</h1>
+    <p class="question">Every call on your line now carries a thin, high whine. Can a few lines of code remove it, and leave the voice alone?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 4.</span>
+    <span>Next lesson: how long a filter rings, where every call leaves a faint bell behind it at 2,000 Hz.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT). Test bench figure made with <a href="https://github.com/wheresryan22/anatomy">anatomy</a> (MIT).</span>
+    <span>The recorded caller was generated with OmniVoice (k2-fsa), whose weights are CC-BY-NC: non-commercial use only. Built with Higgs Materials licensed from Boson AI USA, Inc., and Meta Llama 3, licensed under the Meta Llama 3 Community License.</span>
+  </footer>
+</div>
+
+<script>window.LESSON_CALL = "<!--BASE64:call-8k.wav-->";</script>
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

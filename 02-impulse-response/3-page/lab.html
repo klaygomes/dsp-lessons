@@ -1,0 +1,83 @@
+<template id="echo-lab">
+  <div class="task" data-k="task" hidden><p class="story" data-k="task-text"></p></div>
+  <div class="row">
+    <button type="button" data-k="click">Send a click</button>
+    <span class="state" data-k="line-state" aria-live="polite"></span>
+  </div>
+  <div class="control" data-k="clicksize-control">
+    <label data-for="clicksize">Click size: <output data-k="clicksize-out">0.10</output></label>
+    <input data-k="clicksize" type="range" min="0" max="1" step="0.05" value="0.1">
+  </div>
+  <canvas data-k="hstage" class="stage small" role="img"></canvas>
+  <p class="note" data-k="hwhy" aria-live="polite"></p>
+  <div data-k="ask"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key" data-k="key">
+    <span data-k="key-in"><i class="k-in"></i>the word you control</span>
+    <span data-k="key-copy"><i class="k-out"></i>a copy of h</span>
+    <span data-k="key-soft" hidden><i class="k-soft"></i>the guess</span>
+    <span><i class="k-sum"></i><b data-k="key-sum-text" style="font-weight:400">the echo, the sum</b></span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned echo</span>
+  </div>
+  <div class="k-meter" data-k="meter" hidden>
+    <span>Echo meter</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>200%</span></div>
+  </div>
+  <div class="k-meter" data-k="far-meter" hidden>
+    <span>Far voice, clean</span>
+    <div class="bar" aria-hidden="true"><div class="fill" style="background: var(--input)"></div></div>
+    <output aria-live="polite">100%</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div data-k="explore-controls">
+    <p class="note">Once you have answered the three questions above, drag the word’s samples on the plot, or use the sliders.</p>
+    <div class="grid" role="group" aria-label="The word's four samples">
+      <div class="control"><label data-for="x0">x[0]: <output data-k="x0-out"></output></label><input data-k="x0" data-x="0" type="range" min="-1" max="1" step="0.1"></div>
+      <div class="control"><label data-for="x1">x[1]: <output data-k="x1-out"></output></label><input data-k="x1" data-x="1" type="range" min="-1" max="1" step="0.1"></div>
+      <div class="control"><label data-for="x2">x[2]: <output data-k="x2-out"></output></label><input data-k="x2" data-x="2" type="range" min="-1" max="1" step="0.1"></div>
+      <div class="control"><label data-for="x3">x[3]: <output data-k="x3-out"></output></label><input data-k="x3" data-x="3" type="range" min="-1" max="1" step="0.1"></div>
+    </div>
+    <div class="grid" role="group" aria-label="The impulse response h">
+      <div class="control"><label data-for="h0">h[2,000]: <output data-k="h0-out"></output></label><input data-k="h0" type="range" min="0" max="0.8" step="0.05"></div>
+      <div class="control"><label data-for="h1">h[2,001], the spill: <output data-k="h1-out"></output></label><input data-k="h1" type="range" min="-0.4" max="0.4" step="0.05"></div>
+    </div>
+    <div class="row" role="group" aria-label="How to read the sum">
+      <button type="button" data-k="view-rows" aria-pressed="true">Rows of copies</button>
+      <button type="button" data-k="view-column" aria-pressed="false">One output sample</button>
+    </div>
+    <div class="control" data-k="col-control" hidden>
+      <label data-for="col">Output sample n: <output data-k="col-out">2,002</output></label>
+      <input data-k="col" type="range" min="2000" max="2005" step="1" value="2002">
+    </div>
+  </div>
+  <div data-k="fix-controls" hidden>
+    <div class="fields" role="group" aria-label="The echo canceller">
+      <label>Delay, in samples<input data-k="delay" type="text" inputmode="numeric" autocomplete="off" value="0"></label>
+      <label>First size<input data-k="s1" type="text" inputmode="decimal" autocomplete="off" value="0"></label>
+      <label>Second size<input data-k="s2" type="text" inputmode="decimal" autocomplete="off" value="0"></label>
+    </div>
+    <div class="row" role="group" aria-label="What the echo meter measures">
+      <button type="button" data-sig="call" aria-pressed="true">Meter on the call</button>
+      <button type="button" data-sig="hi" aria-pressed="false">On “hi”</button>
+      <button type="button" data-sig="tone" aria-pressed="false">On the 1,000 Hz tone</button>
+    </div>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="cancel" class="k-toggle" aria-pressed="true" hidden>Canceller on</button>
+    <button type="button" data-k="own" class="k-toggle" aria-pressed="true" hidden>Hear your own voice too</button>
+    <button type="button" data-k="pin" disabled>Pin this echo</button>
+    <button type="button" data-k="another" hidden>Try another line</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite"></p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

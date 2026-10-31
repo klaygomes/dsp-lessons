@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How much a bin picks up</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-spill-style">
+.k-fig .l12-head-ink { fill: var(--ink); }
+.k-fig .l12-head-accent { fill: var(--accent); }
+.k-fig .l12-head-soft { fill: var(--ink-soft); }
+.k-fig .l12-head-open { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.4; }
+.k-fig .l12-vec { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l12-vec-thin { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .l12-vec-accent { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l12-vec-soft { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l12-mirror { stroke: var(--ink-soft); stroke-width: 2.2; stroke-dasharray: 0.1 4.5; stroke-linecap: round; fill: none; }
+.k-fig .l12-ref { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 6 4; fill: none; }
+.k-fig .l12-bad { stroke: var(--ink); stroke-width: 2.2; fill: none; stroke-linecap: round; }
+.k-fig .l12-tint { fill: var(--paper-2); }
+.k-fig .l12-faint-bar { fill: var(--ink-soft); opacity: 0.32; }
+.k-fig .l12-square { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l12-ring { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l12-ring-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.3; }
+.k-fig .l12-dot { fill: var(--ink); }
+.k-fig .l12-dot-accent { fill: var(--accent); }
+.k-fig .l12-dot-soft { fill: var(--ink-soft); }
+.k-fig .l12-rim { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .l12-trace { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.k-fig .l12-hatch-bar { stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l12-hatch-bg { fill: var(--paper-2); }
+.k-fig .l12-hatch { stroke: var(--ink); stroke-width: 1.4; }
+.k-fig .l12-small { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">figure</p>
+<h1>How much a bin picks up</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-spill" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="spill-title spill-desc"><title id="spill-title">How much a bin picks up</title><desc id="spill-desc">A curve of the share a bin picks up against its distance from the tone, 0 to 3 bins: 100% at 0, about 63% at half a bin, about 21% at 1.5 bins, about 13% at 2.5 bins, and 0% at whole-bin distances. Shaded zones: the own bin, at most half a bin away, and a rival past an empty bin, at least 1.5 bins away.</desc><defs><marker id="spill-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="spill-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="spill-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="spill-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="340"/><rect class="l12-tint" x="90" y="74" width="93.33" height="210"/><rect class="l12-tint" x="370" y="74" width="280" height="210"/><text class="k-label" x="90" y="44" text-anchor="start">own bin: at most half a bin away</text><text class="k-label" x="650" y="62" text-anchor="end">rival past an empty bin: at least 1.5 bins away</text><g ><line class="k-axis" x1="90" y1="284" x2="650" y2="284"/><text class="k-tick" x="82" y="288" text-anchor="end">0%</text><text class="k-tick" x="82" y="188" text-anchor="end">50%</text><text class="k-tick" x="82" y="88" text-anchor="end">100%</text><text class="k-tick" x="90" y="302" text-anchor="middle">0</text><text class="k-tick" x="183.33" y="302" text-anchor="middle">0.5</text><text class="k-tick" x="276.67" y="302" text-anchor="middle">1</text><text class="k-tick" x="370" y="302" text-anchor="middle">1.5</text><text class="k-tick" x="463.33" y="302" text-anchor="middle">2</text><text class="k-tick" x="556.67" y="302" text-anchor="middle">2.5</text><text class="k-tick" x="650" y="302" text-anchor="middle">3</text></g><text class="k-tick" x="650" y="320" text-anchor="end">distance from the tone, bins</text><text class="k-tick" x="82" y="24" text-anchor="start">share the bin gets</text><path class="k-curve" d="M90 84L91.87 84.03L93.73 84.13L95.6 84.3L97.47 84.53L99.33 84.82L101.2 85.18L103.07 85.61L104.93 86.1L106.8 86.65L108.67 87.27L110.53 87.96L112.4 88.7L114.27 89.51L116.13 90.39L118 91.32L119.87 92.32L121.73 93.37L123.6 94.49L125.47 95.67L127.33 96.9L129.2 98.2L131.07 99.55L132.93 100.95L134.8 102.42L136.67 103.94L138.53 105.51L140.4 107.13L142.27 108.81L144.13 110.54L146 112.32L147.87 114.15L149.73 116.03L151.6 117.95L153.47 119.92L155.33 121.93L157.2 123.99L159.07 126.09L160.93 128.23L162.8 130.41L164.67 132.63L166.53 134.89L168.4 137.19L170.27 139.51L172.13 141.88L174 144.27L175.87 146.7L177.73 149.15L179.6 151.63L181.47 154.14L183.33 156.68L185.2 159.23L187.07 161.81L188.93 164.42L190.8 167.04L192.67 169.68L194.53 172.33L196.4 175L198.27 177.69L200.13 180.38L202 183.09L203.87 185.81L205.73 188.53L207.6 191.26L209.47 194L211.33 196.73L213.2 199.47L215.07 202.21L216.93 204.95L218.8 207.69L220.67 210.42L222.53 213.15L224.4 215.87L226.27 218.58L228.13 221.29L230 223.98L231.87 226.66L233.73 229.32L235.6 231.97L237.47 234.61L239.33 237.23L241.2 239.82L243.07 242.4L244.93 244.96L246.8 247.49L248.67 250L250.53 252.48L252.4 254.94L254.27 257.37L256.13 259.77L258 262.14L259.87 264.48L261.73 266.79L263.6 269.07L265.47 271.31L267.33 273.52L269.2 275.69L271.07 277.82L272.93 279.92L274.8 281.98L276.67 284L278.53 282.02L280.4 280.08L282.27 278.18L284.13 276.33L286 274.52L287.87 272.75L289.73 271.02L291.6 269.34L293.47 267.71L295.33 266.12L297.2 264.57L299.07 263.08L300.93 261.63L302.8 260.22L304.67 258.87L306.53 257.56L308.4 256.3L310.27 255.09L312.13 253.93L314 252.82L315.87 251.75L317.73 250.74L319.6 249.77L321.47 248.86L323.33 247.99L325.2 247.17L327.07 246.4L328.93 245.68L330.8 245.01L332.67 244.38L334.53 243.81L336.4 243.28L338.27 242.8L340.13 242.37L342 241.98L343.87 241.64L345.73 241.35L347.6 241.11L349.47 240.91L351.33 240.75L353.2 240.64L355.07 240.58L356.93 240.55L358.8 240.57L360.67 240.64L362.53 240.74L364.4 240.88L366.27 241.07L368.13 241.29L370 241.56L371.87 241.86L373.73 242.2L375.6 242.58L377.47 242.99L379.33 243.43L381.2 243.91L383.07 244.43L384.93 244.97L386.8 245.55L388.67 246.16L390.53 246.8L392.4 247.46L394.27 248.16L396.13 248.88L398 249.62L399.87 250.39L401.73 251.19L403.6 252.01L405.47 252.84L407.33 253.7L409.2 254.58L411.07 255.48L412.93 256.4L414.8 257.33L416.67 258.28L418.53 259.24L420.4 260.21L422.27 261.2L424.13 262.2L426 263.21L427.87 264.23L429.73 265.26L431.6 266.29L433.47 267.33L435.33 268.38L437.2 269.43L439.07 270.48L440.93 271.53L442.8 272.59L444.67 273.65L446.53 274.7L448.4 275.75L450.27 276.8L452.13 277.85L454 278.89L455.87 279.93L457.73 280.96L459.6 281.98L461.47 283L463.33 284L465.2 283.01L467.07 282.02L468.93 281.05L470.8 280.09L472.67 279.14L474.53 278.21L476.4 277.29L478.27 276.39L480.13 275.5L482 274.63L483.87 273.78L485.73 272.95L487.6 272.13L489.47 271.33L491.33 270.56L493.2 269.8L495.07 269.07L496.93 268.35L498.8 267.66L500.67 266.99L502.53 266.34L504.4 265.72L506.27 265.12L508.13 264.54L510 263.99L511.87 263.47L513.73 262.96L515.6 262.49L517.47 262.03L519.33 261.61L521.2 261.21L523.07 260.83L524.93 260.48L526.8 260.16L528.67 259.86L530.53 259.59L532.4 259.35L534.27 259.13L536.13 258.94L538 258.77L539.87 258.63L541.73 258.52L543.6 258.43L545.47 258.37L547.33 258.34L549.2 258.33L551.07 258.34L552.93 258.38L554.8 258.45L556.67 258.54L558.53 258.65L560.4 258.79L562.27 258.95L564.13 259.13L566 259.34L567.87 259.57L569.73 259.83L571.6 260.1L573.47 260.4L575.33 260.71L577.2 261.05L579.07 261.41L580.93 261.78L582.8 262.18L584.67 262.6L586.53 263.03L588.4 263.48L590.27 263.94L592.13 264.43L594 264.92L595.87 265.44L597.73 265.97L599.6 266.51L601.47 267.06L603.33 267.63L605.2 268.21L607.07 268.8L608.93 269.4L610.8 270.01L612.67 270.64L614.53 271.27L616.4 271.9L618.27 272.55L620.13 273.2L622 273.86L623.87 274.52L625.73 275.19L627.6 275.86L629.47 276.54L631.33 277.22L633.2 277.9L635.07 278.58L636.93 279.26L638.8 279.94L640.67 280.62L642.53 281.3L644.4 281.98L646.27 282.66L648.13 283.33L650 284" fill="none"/><circle class="l12-ring-soft" cx="276.67" cy="284" r="4"/>,<circle class="l12-ring-soft" cx="463.33" cy="284" r="4"/>,<circle class="l12-ring-soft" cx="650" cy="284" r="4"/><g ><circle class="l12-dot-accent" cx="90" cy="84" r="5.5"/><text class="k-num" x="100" y="74" text-anchor="start">100%</text></g>,<g ><circle class="l12-dot" cx="183.33" cy="156.68" r="5.5"/><text class="k-num-accent" x="191.33" y="146.68" text-anchor="start">about 63%</text></g>,<g ><circle class="l12-dot" cx="370" cy="241.56" r="5.5"/><text class="k-num" x="378" y="231.56" text-anchor="start">about 21%</text></g>,<g ><circle class="l12-dot" cx="556.67" cy="258.54" r="5.5"/><text class="k-num" x="564.67" y="248.54" text-anchor="start">about 13%</text></g><text class="k-tick" x="90" y="320" text-anchor="start">hollow: 0% at whole bins</text></svg></div>
+</div>
+</body>
+</html>

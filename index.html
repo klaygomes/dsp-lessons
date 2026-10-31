@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Phone Line</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+.course { list-style: none; padding: 0; display: grid; gap: 18px; }
+.course li { display: grid; grid-template-columns: 3rem 1fr; gap: 12px; border-top: 1px solid var(--rule); padding-top: 14px; }
+.course .n { font-family: var(--font-mono, monospace); font-size: 1.4rem; color: var(--ink-soft); }
+.course h2 { margin: 0 0 4px; font-size: 1.15rem; }
+.course p { margin: 0 0 4px; }
+.soon { color: var(--ink-soft); }
+</style>
+<div class="wrap">
+<header>
+<p class="topic">Discrete-Time Signal Processing</p>
+<h1>The Phone Line</h1>
+<p class="question">You are building a digital phone line. Every lesson opens on a bug your customers can hear, and ends when you fix it yourself in a lab. Sixteen lessons, in the order of Oppenheim and Schafer's book (1989).</p>
+</header>
+<ol class="course">
+<li><span class="n">1</span><div><h2>Signals and systems (ch. 2)</h2><p>loud callers come out with a harsh buzz, quiet callers are fine</p><p class="links"><a href="01-signals-and-systems/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">2</span><div><h2>Impulse response and convolution (ch. 2)</h2><p>callers hear their own voice come back 0.25 s later</p><p class="links"><a href="02-impulse-response/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">3</span><div><h2>Frequency response (ch. 2)</h2><p>calls sound muffled, as if through a wall</p><p class="links"><a href="03-frequency-response/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">4</span><div><h2>Sampling and aliasing (ch. 3)</h2><p>a 5,000 Hz whistle comes out at 3,000 Hz</p><p class="links"><a href="04-sampling-aliasing/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">5</span><div><h2>Changing the sampling rate (ch. 3)</h2><p>joining a 16,000 samples/s wideband line puts ghost copies of every voice above 4,000 Hz</p><p class="links"><a href="05-changing-the-rate/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">6</span><div><h2>Zeros and poles (ch. 4)</h2><p>calls carry a whine, first at 4,000 Hz, then at 2,000 Hz</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">7</span><div><h2>How long a filter rings (ch. 5)</h2><p>every time a call starts, a faint ring at 2,000 Hz is left behind like a bell</p><p class="links"><a href="07-ringing/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">8</span><div><h2>Phase and delay (ch. 5)</h2><p>a fax modem&#x27;s tones arrive smeared (delays spread 2.9 samples across its band) though every tone is loud enough</p><p class="links"><a href="08-phase-and-delay/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">9</span><div><h2>Finite precision (ch. 6)</h2><p>the whine hops between 1,900, 2,000 and 2,100 Hz; three notches multiplied into one rule work on the laptop but hum and blow up on the cheap 8-bit chip</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">10</span><div><h2>FIR design by windows (ch. 7)</h2><p>the anti-aliasing filter from lesson 5 lets a ripple of high tones through: a 4,000 to 8,000 Hz sweep comes out as a ghost gliding down the voice band</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">11</span><div><h2>IIR design by the bilinear transform (ch. 7)</h2><p>copying the old analog exchange filter puts its cutoff at the wrong frequency</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">12</span><div><h2>The DFT (ch. 8)</h2><p>the line must tell which keypad key was pressed from its two tones</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">13</span><div><h2>The FFT (ch. 9)</h2><p>the key detector is too slow to run live on the chip</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">14</span><div><h2>Spectrum analysis with windows (ch. 10)</h2><p>the detector sometimes rejects a 4 as two keys at once and misses faint keys</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">15</span><div><h2>The Hilbert transform (ch. 11)</h2><p>shifting every call up 300 Hz to disguise tip-line callers also creates a ghost voice 300 Hz below the original</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">16</span><div><h2>The cepstrum (ch. 12)</h2><p>an echo of unknown delay; lesson 2&#x27;s fix needs the delay</p><p class="links"><span class="soon">in progress</span> · <span class="soon">in progress</span></p></div></li>
+</ol>
+<footer><span>Lesson text, figures, pages and videos: CC BY-NC 4.0. Code: MIT. See NOTICE.</span></footer>
+</div>
+</html>

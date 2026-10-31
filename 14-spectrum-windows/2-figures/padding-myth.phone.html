@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Padding does not narrow the hump</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-padding-myth-style">
+.k-fig .l-plain { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l-hann { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 7 4; fill: none; }
+.k-fig .l-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .l-ref { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; opacity: 0.55; }
+.k-fig .l-bar { stroke: var(--input); stroke-width: 2.2; fill: none; }
+.k-fig .l-total { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-shade { fill: var(--paper-2); }
+.k-fig .l-tint { fill: var(--input-soft); }
+.k-fig .l-dot { fill: var(--ink); }
+.k-fig .l-dot-accent { fill: var(--accent); }
+.k-fig .l-sq { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l-ring { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l-ring-accent { fill: none; stroke: var(--accent); stroke-width: 2; }
+.k-fig .l-pad { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-tri { fill: var(--ink-soft); }
+.k-fig .l-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l-vec-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; }
+.k-fig .l-vec-col { stroke: var(--ink-soft); stroke-width: 2; }
+.k-fig .l-vec-total { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l-head-ink { fill: var(--ink); }
+.k-fig .l-head-soft { fill: var(--ink-soft); }
+.k-fig .l-head-accent { fill: var(--accent); }
+.k-fig .l-circle { stroke: var(--rule); stroke-width: 1.5; fill: none; }
+.k-fig .l-in-bar { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-out-bar { fill: var(--accent); }
+.k-fig .l-band-faint { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-grey { opacity: 0.35; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 14 · spectrum analysis with windows</p>
+<h1>Padding does not narrow the hump</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-padding-myth-phone" viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="padding-myth-phone-title padding-myth-phone-desc"><title id="padding-myth-phone-title">Padding does not narrow the hump</title><desc id="padding-myth-phone-desc">The 128-sample Hann hump of 697 Hz, once with its own bins and once with far finer padded bins: the same curve, reading 38% at 770 Hz both times.</desc><defs><marker id="padding-myth-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="padding-myth-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="padding-myth-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="padding-myth-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="560"/><defs><marker id="padding-myth-phone-hi" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-ink" points="0 0, 8 3, 0 6"/></marker><marker id="padding-myth-phone-hs" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-soft" points="0 0, 8 3, 0 6"/></marker><marker id="padding-myth-phone-ha" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-accent" points="0 0, 8 3, 0 6"/></marker></defs><g ><text class="k-name" x="6" y="46" text-anchor="start">128 samples, Hann</text><g ><line class="k-axis" x1="46" y1="230" x2="342" y2="230"/><text class="k-tick" x="38" y="234" text-anchor="end">0%</text><text class="k-tick" x="38" y="154" text-anchor="end">50%</text><text class="k-tick" x="38" y="74" text-anchor="end">100%</text><text class="k-tick" x="46" y="248" text-anchor="middle">550 Hz</text><text class="k-tick" x="191.04" y="248" text-anchor="middle">697</text><text class="k-tick" x="342" y="248" text-anchor="middle">850</text></g><path class="l-hann" d="M46 225.73L46.99 225.74L47.97 225.77L48.96 225.81L49.95 225.87L50.93 225.94L51.92 226.02L52.91 226.13L53.89 226.24L54.88 226.38L55.87 226.53L56.85 226.71L57.84 226.9L58.83 227.11L59.81 227.34L60.8 227.6L61.79 227.87L62.77 228.17L63.76 228.49L64.75 228.83L65.73 229.19L66.72 229.58L67.71 230L68.69 229.56L69.68 229.1L70.67 228.61L71.65 228.09L72.64 227.55L73.63 226.98L74.61 226.38L75.6 225.75L76.59 225.1L77.57 224.41L78.56 223.7L79.55 222.96L80.53 222.19L81.52 221.39L82.51 220.56L83.49 219.7L84.48 218.81L85.47 217.89L86.45 216.94L87.44 215.96L88.43 214.95L89.41 213.9L90.4 212.83L91.39 211.73L92.37 210.6L93.36 209.43L94.35 208.24L95.33 207.02L96.32 205.77L97.31 204.48L98.29 203.17L99.28 201.83L100.27 200.46L101.25 199.07L102.24 197.64L103.23 196.19L104.21 194.71L105.2 193.21L106.19 191.67L107.17 190.12L108.16 188.54L109.15 186.93L110.13 185.3L111.12 183.65L112.11 181.98L113.09 180.28L114.08 178.57L115.07 176.83L116.05 175.08L117.04 173.3L118.03 171.51L119.01 169.71L120 167.88L120.99 166.05L121.97 164.2L122.96 162.34L123.95 160.46L124.93 158.58L125.92 156.68L126.91 154.78L127.89 152.87L128.88 150.96L129.87 149.04L130.85 147.11L131.84 145.19L132.83 143.26L133.81 141.33L134.8 139.4L135.79 137.48L136.77 135.56L137.76 133.64L138.75 131.73L139.73 129.83L140.72 127.94L141.71 126.05L142.69 124.18L143.68 122.32L144.67 120.47L145.65 118.64L146.64 116.83L147.63 115.03L148.61 113.25L149.6 111.49L150.59 109.75L151.57 108.04L152.56 106.35L153.55 104.68L154.53 103.04L155.52 101.43L156.51 99.85L157.49 98.29L158.48 96.77L159.47 95.28L160.45 93.83L161.44 92.4L162.43 91.02L163.41 89.66L164.4 88.35L165.39 87.08L166.37 85.84L167.36 84.65L168.35 83.49L169.33 82.38L170.32 81.31L171.31 80.29L172.29 79.31L173.28 78.38L174.27 77.49L175.25 76.65L176.24 75.86L177.23 75.11L178.21 74.42L179.2 73.77L180.19 73.17L181.17 72.63L182.16 72.13L183.15 71.68L184.13 71.29L185.12 70.95L186.11 70.66L187.09 70.42L188.08 70.24L189.07 70.11L190.05 70.03L191.04 70L192.03 70.03L193.01 70.11L194 70.24L194.99 70.42L195.97 70.66L196.96 70.95L197.95 71.29L198.93 71.69L199.92 72.13L200.91 72.63L201.89 73.17L202.88 73.77L203.87 74.42L204.85 75.11L205.84 75.86L206.83 76.65L207.81 77.49L208.8 78.38L209.79 79.31L210.77 80.29L211.76 81.32L212.75 82.39L213.73 83.5L214.72 84.65L215.71 85.84L216.69 87.08L217.68 88.35L218.67 89.67L219.65 91.02L220.64 92.41L221.63 93.83L222.61 95.29L223.6 96.78L224.59 98.3L225.57 99.85L226.56 101.43L227.55 103.05L228.53 104.69L229.52 106.35L230.51 108.04L231.49 109.76L232.48 111.49L233.47 113.25L234.45 115.03L235.44 116.83L236.43 118.65L237.41 120.48L238.4 122.32L239.39 124.18L240.37 126.06L241.36 127.94L242.35 129.83L243.33 131.74L244.32 133.65L245.31 135.56L246.29 137.48L247.28 139.41L248.27 141.33L249.25 143.26L250.24 145.19L251.23 147.11L252.21 149.04L253.2 150.96L254.19 152.87L255.17 154.78L256.16 156.68L257.15 158.58L258.13 160.46L259.12 162.33L260.11 164.2L261.09 166.05L262.08 167.88L263.07 169.71L264.05 171.51L265.04 173.3L266.03 175.07L267.01 176.83L268 178.56L268.99 180.28L269.97 181.98L270.96 183.65L271.95 185.3L272.93 186.93L273.92 188.53L274.91 190.12L275.89 191.67L276.88 193.2L277.87 194.71L278.85 196.19L279.84 197.64L280.83 199.06L281.81 200.46L282.8 201.83L283.79 203.17L284.77 204.48L285.76 205.76L286.75 207.01L287.73 208.24L288.72 209.43L289.71 210.59L290.69 211.73L291.68 212.83L292.67 213.9L293.65 214.94L294.64 215.95L295.63 216.94L296.61 217.89L297.6 218.81L298.59 219.7L299.57 220.56L300.56 221.39L301.55 222.19L302.53 222.96L303.52 223.7L304.51 224.41L305.49 225.09L306.48 225.75L307.47 226.38L308.45 226.97L309.44 227.55L310.43 228.09L311.41 228.61L312.4 229.1L313.39 229.56L314.37 230L315.36 229.58L316.35 229.19L317.33 228.83L318.32 228.49L319.31 228.17L320.29 227.87L321.28 227.6L322.27 227.34L323.25 227.11L324.24 226.9L325.23 226.71L326.21 226.53L327.2 226.38L328.19 226.24L329.17 226.12L330.16 226.02L331.15 225.94L332.13 225.87L333.12 225.81L334.11 225.77L335.09 225.74L336.08 225.73L337.07 225.73L338.05 225.74L339.04 225.76L340.03 225.79L341.01 225.83L342 225.89" fill="none"/><rect class="l-sq" x="54.33" y="223" width="8" height="8"/><rect class="l-sq" x="116" y="163.88" width="8" height="8"/><rect class="l-sq" x="177.67" y="68.37" width="8" height="8"/><rect class="l-sq" x="239.33" y="127.74" width="8" height="8"/><rect class="l-sq" x="301" y="220.76" width="8" height="8"/><line class="l-ref" x1="263.07" y1="70" x2="263.07" y2="230"/><circle class="l-ring-accent" cx="263.07" cy="169.71" r="6"/><text class="k-num-accent" x="273.07" y="163.71" text-anchor="start">770 Hz: 38%</text></g>,<g ><text class="k-name" x="6" y="316" text-anchor="start">padded to 2,048: bins 3.9 Hz apart</text><g ><line class="k-axis" x1="46" y1="500" x2="342" y2="500"/><text class="k-tick" x="38" y="504" text-anchor="end">0%</text><text class="k-tick" x="38" y="424" text-anchor="end">50%</text><text class="k-tick" x="38" y="344" text-anchor="end">100%</text><text class="k-tick" x="46" y="518" text-anchor="middle">550 Hz</text><text class="k-tick" x="191.04" y="518" text-anchor="middle">697</text><text class="k-tick" x="342" y="518" text-anchor="middle">850</text></g><path class="l-hann" d="M46 495.73L46.99 495.74L47.97 495.77L48.96 495.81L49.95 495.87L50.93 495.94L51.92 496.02L52.91 496.13L53.89 496.24L54.88 496.38L55.87 496.53L56.85 496.71L57.84 496.9L58.83 497.11L59.81 497.34L60.8 497.6L61.79 497.87L62.77 498.17L63.76 498.49L64.75 498.83L65.73 499.19L66.72 499.58L67.71 500L68.69 499.56L69.68 499.1L70.67 498.61L71.65 498.09L72.64 497.55L73.63 496.98L74.61 496.38L75.6 495.75L76.59 495.1L77.57 494.41L78.56 493.7L79.55 492.96L80.53 492.19L81.52 491.39L82.51 490.56L83.49 489.7L84.48 488.81L85.47 487.89L86.45 486.94L87.44 485.96L88.43 484.95L89.41 483.9L90.4 482.83L91.39 481.73L92.37 480.6L93.36 479.43L94.35 478.24L95.33 477.02L96.32 475.77L97.31 474.48L98.29 473.17L99.28 471.83L100.27 470.46L101.25 469.07L102.24 467.64L103.23 466.19L104.21 464.71L105.2 463.21L106.19 461.67L107.17 460.12L108.16 458.54L109.15 456.93L110.13 455.3L111.12 453.65L112.11 451.98L113.09 450.28L114.08 448.57L115.07 446.83L116.05 445.08L117.04 443.3L118.03 441.51L119.01 439.71L120 437.88L120.99 436.05L121.97 434.2L122.96 432.34L123.95 430.46L124.93 428.58L125.92 426.68L126.91 424.78L127.89 422.87L128.88 420.96L129.87 419.04L130.85 417.11L131.84 415.19L132.83 413.26L133.81 411.33L134.8 409.4L135.79 407.48L136.77 405.56L137.76 403.64L138.75 401.73L139.73 399.83L140.72 397.94L141.71 396.05L142.69 394.18L143.68 392.32L144.67 390.47L145.65 388.64L146.64 386.83L147.63 385.03L148.61 383.25L149.6 381.49L150.59 379.75L151.57 378.04L152.56 376.35L153.55 374.68L154.53 373.04L155.52 371.43L156.51 369.85L157.49 368.29L158.48 366.77L159.47 365.28L160.45 363.83L161.44 362.4L162.43 361.02L163.41 359.66L164.4 358.35L165.39 357.08L166.37 355.84L167.36 354.65L168.35 353.49L169.33 352.38L170.32 351.31L171.31 350.29L172.29 349.31L173.28 348.38L174.27 347.49L175.25 346.65L176.24 345.86L177.23 345.11L178.21 344.42L179.2 343.77L180.19 343.17L181.17 342.63L182.16 342.13L183.15 341.68L184.13 341.29L185.12 340.95L186.11 340.66L187.09 340.42L188.08 340.24L189.07 340.11L190.05 340.03L191.04 340L192.03 340.03L193.01 340.11L194 340.24L194.99 340.42L195.97 340.66L196.96 340.95L197.95 341.29L198.93 341.69L199.92 342.13L200.91 342.63L201.89 343.17L202.88 343.77L203.87 344.42L204.85 345.11L205.84 345.86L206.83 346.65L207.81 347.49L208.8 348.38L209.79 349.31L210.77 350.29L211.76 351.32L212.75 352.39L213.73 353.5L214.72 354.65L215.71 355.84L216.69 357.08L217.68 358.35L218.67 359.67L219.65 361.02L220.64 362.41L221.63 363.83L222.61 365.29L223.6 366.78L224.59 368.3L225.57 369.85L226.56 371.43L227.55 373.05L228.53 374.69L229.52 376.35L230.51 378.04L231.49 379.76L232.48 381.49L233.47 383.25L234.45 385.03L235.44 386.83L236.43 388.65L237.41 390.48L238.4 392.32L239.39 394.18L240.37 396.06L241.36 397.94L242.35 399.83L243.33 401.74L244.32 403.65L245.31 405.56L246.29 407.48L247.28 409.41L248.27 411.33L249.25 413.26L250.24 415.19L251.23 417.11L252.21 419.04L253.2 420.96L254.19 422.87L255.17 424.78L256.16 426.68L257.15 428.58L258.13 430.46L259.12 432.33L260.11 434.2L261.09 436.05L262.08 437.88L263.07 439.71L264.05 441.51L265.04 443.3L266.03 445.07L267.01 446.83L268 448.56L268.99 450.28L269.97 451.98L270.96 453.65L271.95 455.3L272.93 456.93L273.92 458.53L274.91 460.12L275.89 461.67L276.88 463.2L277.87 464.71L278.85 466.19L279.84 467.64L280.83 469.06L281.81 470.46L282.8 471.83L283.79 473.17L284.77 474.48L285.76 475.76L286.75 477.01L287.73 478.24L288.72 479.43L289.71 480.59L290.69 481.73L291.68 482.83L292.67 483.9L293.65 484.94L294.64 485.95L295.63 486.94L296.61 487.89L297.6 488.81L298.59 489.7L299.57 490.56L300.56 491.39L301.55 492.19L302.53 492.96L303.52 493.7L304.51 494.41L305.49 495.09L306.48 495.75L307.47 496.38L308.45 496.97L309.44 497.55L310.43 498.09L311.41 498.61L312.4 499.1L313.39 499.56L314.37 500L315.36 499.58L316.35 499.19L317.33 498.83L318.32 498.49L319.31 498.17L320.29 497.87L321.28 497.6L322.27 497.34L323.25 497.11L324.24 496.9L325.23 496.71L326.21 496.53L327.2 496.38L328.19 496.24L329.17 496.12L330.16 496.02L331.15 495.94L332.13 495.87L333.12 495.81L334.11 495.77L335.09 495.74L336.08 495.73L337.07 495.73L338.05 495.74L339.04 495.76L340.03 495.79L341.01 495.83L342 495.89" fill="none"/><rect class="l-sq" x="44.77" y="493.74" width="4" height="4"/><rect class="l-sq" x="48.63" y="493.91" width="4" height="4"/><rect class="l-sq" x="52.48" y="494.32" width="4" height="4"/><rect class="l-sq" x="56.33" y="495" width="4" height="4"/><rect class="l-sq" x="60.19" y="495.99" width="4" height="4"/><rect class="l-sq" x="64.04" y="497.31" width="4" height="4"/><rect class="l-sq" x="67.9" y="496.99" width="4" height="4"/><rect class="l-sq" x="71.75" y="494.9" width="4" height="4"/><rect class="l-sq" x="75.6" y="492.39" width="4" height="4"/><rect class="l-sq" x="79.46" y="489.44" width="4" height="4"/><rect class="l-sq" x="83.31" y="486.04" width="4" height="4"/><rect class="l-sq" x="87.17" y="482.17" width="4" height="4"/><rect class="l-sq" x="91.02" y="477.84" width="4" height="4"/><rect class="l-sq" x="94.88" y="473.05" width="4" height="4"/><rect class="l-sq" x="98.73" y="467.81" width="4" height="4"/><rect class="l-sq" x="102.58" y="462.15" width="4" height="4"/><rect class="l-sq" x="106.44" y="456.09" width="4" height="4"/><rect class="l-sq" x="110.29" y="449.66" width="4" height="4"/><rect class="l-sq" x="114.15" y="442.91" width="4" height="4"/><rect class="l-sq" x="118" y="435.88" width="4" height="4"/><rect class="l-sq" x="121.85" y="428.64" width="4" height="4"/><rect class="l-sq" x="125.71" y="421.23" width="4" height="4"/><rect class="l-sq" x="129.56" y="413.73" width="4" height="4"/><rect class="l-sq" x="133.42" y="406.2" width="4" height="4"/><rect class="l-sq" x="137.27" y="398.72" width="4" height="4"/><rect class="l-sq" x="141.13" y="391.37" width="4" height="4"/><rect class="l-sq" x="144.98" y="384.21" width="4" height="4"/><rect class="l-sq" x="148.83" y="377.32" width="4" height="4"/><rect class="l-sq" x="152.69" y="370.79" width="4" height="4"/><rect class="l-sq" x="156.54" y="364.68" width="4" height="4"/><rect class="l-sq" x="160.4" y="359.06" width="4" height="4"/><rect class="l-sq" x="164.25" y="353.99" width="4" height="4"/><rect class="l-sq" x="168.1" y="349.54" width="4" height="4"/><rect class="l-sq" x="171.96" y="345.76" width="4" height="4"/><rect class="l-sq" x="175.81" y="342.69" width="4" height="4"/><rect class="l-sq" x="179.67" y="340.37" width="4" height="4"/><rect class="l-sq" x="183.52" y="338.83" width="4" height="4"/><rect class="l-sq" x="187.38" y="338.08" width="4" height="4"/><rect class="l-sq" x="191.23" y="338.13" width="4" height="4"/><rect class="l-sq" x="195.08" y="338.99" width="4" height="4"/><rect class="l-sq" x="198.94" y="340.64" width="4" height="4"/><rect class="l-sq" x="202.79" y="343.07" width="4" height="4"/><rect class="l-sq" x="206.65" y="346.24" width="4" height="4"/><rect class="l-sq" x="210.5" y="350.11" width="4" height="4"/><rect class="l-sq" x="214.35" y="354.65" width="4" height="4"/><rect class="l-sq" x="218.21" y="359.79" width="4" height="4"/><rect class="l-sq" x="222.06" y="365.49" width="4" height="4"/><rect class="l-sq" x="225.92" y="371.66" width="4" height="4"/><rect class="l-sq" x="229.77" y="378.24" width="4" height="4"/><rect class="l-sq" x="233.63" y="385.17" width="4" height="4"/><rect class="l-sq" x="237.48" y="392.36" width="4" height="4"/><rect class="l-sq" x="241.33" y="399.74" width="4" height="4"/><rect class="l-sq" x="245.19" y="407.23" width="4" height="4"/><rect class="l-sq" x="249.04" y="414.75" width="4" height="4"/><rect class="l-sq" x="252.9" y="422.25" width="4" height="4"/><rect class="l-sq" x="256.75" y="429.63" width="4" height="4"/><rect class="l-sq" x="260.6" y="436.85" width="4" height="4"/><rect class="l-sq" x="264.46" y="443.84" width="4" height="4"/><rect class="l-sq" x="268.31" y="450.55" width="4" height="4"/><rect class="l-sq" x="272.17" y="456.93" width="4" height="4"/><rect class="l-sq" x="276.02" y="462.94" width="4" height="4"/><rect class="l-sq" x="279.88" y="468.55" width="4" height="4"/><rect class="l-sq" x="283.73" y="473.72" width="4" height="4"/><rect class="l-sq" x="287.58" y="478.45" width="4" height="4"/><rect class="l-sq" x="291.44" y="482.72" width="4" height="4"/><rect class="l-sq" x="295.29" y="486.52" width="4" height="4"/><rect class="l-sq" x="299.15" y="489.87" width="4" height="4"/><rect class="l-sq" x="303" y="492.76" width="4" height="4"/><rect class="l-sq" x="306.85" y="495.21" width="4" height="4"/><rect class="l-sq" x="310.71" y="497.25" width="4" height="4"/><rect class="l-sq" x="314.56" y="497.11" width="4" height="4"/><rect class="l-sq" x="318.42" y="495.84" width="4" height="4"/><rect class="l-sq" x="322.27" y="494.89" width="4" height="4"/><rect class="l-sq" x="326.13" y="494.25" width="4" height="4"/><rect class="l-sq" x="329.98" y="493.88" width="4" height="4"/><rect class="l-sq" x="333.83" y="493.73" width="4" height="4"/><rect class="l-sq" x="337.69" y="493.78" width="4" height="4"/><line class="l-ref" x1="263.07" y1="340" x2="263.07" y2="500"/><circle class="l-ring-accent" cx="263.07" cy="439.71" r="6"/><text class="k-num-accent" x="273.07" y="433.71" text-anchor="start">770 Hz: 38%</text></g>,<text class="k-note" x="180" y="544" text-anchor="middle">same curve both times: the hump is just as wide</text></svg></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "keypad": {
+    "title": "A key is a row tone plus a column tone",
+    "caption": "Each row has a low tone and each column a high tone. Key 5 plays its row tone, 770 Hz, and its column tone, 1,336 Hz, together.",
+    "animated": false,
+    "phone": true
+  },
+  "test-tone": {
+    "title": "Multiply by a test tone and add",
+    "caption": "Top row: the recording. Middle: the test tone. Bottom: their product at each sample. Against 2,000 Hz every product is positive or zero and the sum is 4. Against 1,000 Hz the +1 at sample 0 meets the −1 at sample 4, and the sum is 0.",
+    "animated": true,
+    "phone": true
+  },
+  "hidden-tone": {
+    "title": "The tone that hid",
+    "caption": "The same 2,000 Hz tone, a quarter turn behind, against the 2,000 Hz test tone. At every sample one of the two dots sits at the top or bottom of the wheel, where its left-right shadow is zero, so every product is zero.",
+    "animated": false,
+    "phone": true
+  },
+  "shadows": {
+    "title": "The two sums make an arrow of length 4",
+    "caption": "Wherever the dot starts, the arrow made by the two sums points there, and its length stays 4. Faint: the arrows for a start at the right and 45° below it.",
+    "animated": true,
+    "phone": true
+  },
+  "sample-arrow": {
+    "title": "One sample's arrow",
+    "caption": "The test wheel sets the direction, the sample sets the length, and a negative sample flips the arrow to the opposite side.",
+    "animated": false,
+    "phone": true
+  },
+  "unspin": {
+    "title": "Pile up or curl away",
+    "caption": "Left: at the tone's speed the forward half's arrows line up into one walk of N ÷ 2 = 4, while the mirror half goes back and forth and ends at the start. Right: at another speed the arrows curl back to the start. The match is the length of the walk.",
+    "animated": true,
+    "phone": true
+  },
+  "mirror-arrows": {
+    "title": "A real tone is two half arrows",
+    "caption": "Each moment shows the forward half arrow (solid) and its mirror half (dotted) laid tip to tail. They always land on the horizontal line, and the spot where they land is the sample: 1.00, 0.71, 0.00, tracing the cosine below.",
+    "animated": true,
+    "phone": true
+  },
+  "polygon": {
+    "title": "Whole turns cancel exactly",
+    "caption": "Left: one whole turn of difference, so the eight arrows close an octagon and the walk ends at the start. Right: 2,500 Hz against the 2,000 Hz wheel is not a whole number of turns, and the walk stops 2.80 from where it began.",
+    "animated": false,
+    "phone": true
+  },
+  "bin-wheels": {
+    "title": "Test wheels that make whole turns",
+    "caption": "For N = 8, the wheels that make 0 to 4 whole turns in the block. The numbers say which samples land on each stop. At sample 8 every dot is back where it began.",
+    "animated": true,
+    "phone": true
+  },
+  "dft-bars": {
+    "title": "The DFT of the 2,000 Hz recording",
+    "caption": "All eight matches. Bin 2 holds the tone; bin 6 (hatched) holds its mirror, because turning back 270° a sample lands in the same spot as turning forward 90°.",
+    "animated": false,
+    "phone": true
+  },
+  "bins": {
+    "title": "Longer blocks put the bins closer together",
+    "caption": "Each line is one row of the table: bins as ticks, the four row tones joined to their nearest bin. Only at 205 samples does every row tone get its own bin with an empty bin (shaded) on each side.",
+    "animated": false,
+    "phone": true
+  },
+  "spill": {
+    "title": "How much a bin picks up",
+    "caption": "A tone's own bin is at most half a bin away, so it gets at least about 63%. A rival past an empty bin is at least 1.5 bins away and gets about 21% at most.",
+    "animated": false,
+    "phone": true
+  },
+  "key5-bars": {
+    "title": "Decoding the key 5",
+    "caption": "The key 5 as samples and as bins. Of the eight keypad bins (solid), only 20 and 34 clear the 25% bar. Faint bars are bins the detector never checks.",
+    "animated": false,
+    "phone": true
+  },
+  "circle-bins": {
+    "title": "The bins sit on the unit circle",
+    "caption": "The DFT reads the z-transform at N evenly spaced points on the unit circle, bin k at 360° × k ÷ N.",
+    "animated": false,
+    "phone": true
+  }
+}

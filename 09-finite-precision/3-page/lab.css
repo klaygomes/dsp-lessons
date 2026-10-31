@@ -1,0 +1,26 @@
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .k-lpole { width: 14px; height: 14px; border-radius: 50%; border: 1.5px dashed var(--ink-soft); background: linear-gradient(45deg, transparent 44%, var(--ink-soft) 44%, var(--ink-soft) 56%, transparent 56%), linear-gradient(-45deg, transparent 44%, var(--ink-soft) 44%, var(--ink-soft) 56%, transparent 56%); }
+.key .k-cpole { width: 12px; height: 12px; background: linear-gradient(45deg, transparent 40%, var(--ink) 40%, var(--ink) 60%, transparent 60%), linear-gradient(-45deg, transparent 40%, var(--ink) 40%, var(--ink) 60%, transparent 60%); }
+.key .k-zero { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.key .k-ldash { width: 22px; border-top: 2px dashed var(--ink-soft); }
+.key .k-csolid { width: 22px; border-top: 2px solid var(--ink); }
+.key .k-pin { width: 22px; border-top: 2px dashed var(--input); }
+.key .k-cpole-out { width: 16px; height: 16px; border: 1.6px solid var(--accent); background: linear-gradient(45deg, transparent 40%, var(--accent) 40%, var(--accent) 60%, transparent 60%), linear-gradient(-45deg, transparent 40%, var(--accent) 40%, var(--accent) 60%, transparent 60%); background-size: 10px 10px; background-position: center; background-repeat: no-repeat; }
+.spec { display: grid; gap: 10px; }
+.spec-title { font-weight: 600; }
+canvas.spec-stage { cursor: zoom-in; }
+.lab input[type="range"] { margin: 0; min-width: 0; }
+.lab button { max-width: 100%; line-height: 1.25; text-align: left; }
+.lab .control, .lab .sec, .lab .sec > * { min-width: 0; }
+.act2 { display: grid; }
+.sections { display: grid; gap: 12px; }
+.sec { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center; border-top: 1px solid var(--rule); padding-top: 10px; }
+.sec h4 { margin: 0; grid-column: 1 / -1; font-size: 16px; font-weight: 600; }
+.sec label { font-weight: 500; font-size: 16px; }
+.sec input[type="text"] { font: 16px var(--font-mono); width: 7em; padding: 8px 10px; border: 1.5px solid var(--input); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.sec .field { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sec .err { color: var(--accent-ink); font-size: 15px; }
+.sec output { font-family: var(--font-mono); color: var(--input); }
+.sec .chipnote { grid-column: 1 / -1; font-size: 15px; color: var(--ink-soft); font-family: var(--font-mono); }
+@media (max-width: 520px) { .sec { grid-template-columns: 1fr; } }
+.lab .task p:focus { outline: none; }

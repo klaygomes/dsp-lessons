@@ -1,0 +1,110 @@
+{
+  "average": {
+    "title": "Averaging neighbors removes the whine",
+    "caption": "Each output is the average of a sample and the one before it. The whine’s neighbors cancel to 0; the slow 500 Hz tone barely changes.",
+    "animated": true,
+    "phone": true
+  },
+  "wheel": {
+    "title": "Every tone turns a wheel",
+    "caption": "A tone is a dot turning 360° × tone ÷ 8,000 per sample. Its left-right position at each stop is the sample.",
+    "animated": true,
+    "phone": true
+  },
+  "midpoint": {
+    "title": "The average is a midpoint",
+    "caption": "Zoomed in on the rim: the average of two dots is the midpoint of the chord between them, 0.98 from the center. The short gap to the rim is the 2% the average loses at 500 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "radians": {
+    "title": "Radians: a turn measured by the walk",
+    "caption": "Lay the walk along the rim flat on a ruler: a full turn of a radius-1 wheel is 2π, about 6.28.",
+    "animated": true,
+    "phone": true
+  },
+  "unit-circle": {
+    "title": "The unit circle: one spot per tone",
+    "caption": "Every tone gets a fixed spot: where its dot lands after one sample. The angle in radians is ω.",
+    "animated": true,
+    "phone": true
+  },
+  "zero": {
+    "title": "The average has one zero",
+    "caption": "How much of a tone passes is its distance to the zero, compared with 2, the distance of 0 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "j-turn": {
+    "title": "j is a quarter turn",
+    "caption": "Times j turns an arrow a quarter turn counter-clockwise. Two quarter turns make a flip: j × j = −1.",
+    "animated": true,
+    "phone": true
+  },
+  "multiply": {
+    "title": "Multiplying points: sizes multiply, angles add",
+    "caption": "Dashed arrows go in; the solid arrow is the product. The angles stack end to end while the lengths multiply.",
+    "animated": true,
+    "phone": true
+  },
+  "spinning-arrow": {
+    "title": "The tone is a turning arrow",
+    "caption": "The arrow’s left-right shadow is the sample you have read off the wheel since lesson 3. Times j adds 90° to its angle.",
+    "animated": true,
+    "phone": true
+  },
+  "delay": {
+    "title": "A delay turns the dot back",
+    "caption": "The copy one sample old sits ω clockwise behind the fresh dot: multiplying by z⁻¹ turns a point ω clockwise.",
+    "animated": true,
+    "phone": true
+  },
+  "mirror-arrow": {
+    "title": "A real tone is two arrows",
+    "caption": "Left: an arrow and its mirror arrow add up to a real tone. Right: a zero on one arrow removes only that half.",
+    "animated": true,
+    "phone": true
+  },
+  "dull": {
+    "title": "Zeros at ±j dull 1,500 Hz",
+    "caption": "Multiply the distances to both zeros, then compare with 0 Hz: 1,500 Hz keeps only 38%.",
+    "animated": false,
+    "phone": true
+  },
+  "zero-pair": {
+    "title": "A zero pair at any angle",
+    "caption": "Put the pair at the whine’s angle θ and its mirror. The middle weight of the program is −2cos θ.",
+    "animated": false,
+    "phone": true
+  },
+  "z-plane": {
+    "title": "The size of H over the whole plane",
+    "caption": "A relief map of the size of H, its front edge cut through the zero at j. Tones only walk the rim; the height under a tone is how much of it passes.",
+    "animated": true,
+    "phone": true
+  },
+  "feedback": {
+    "title": "Feedback: the filter listens to itself",
+    "caption": "The loop on the right is the feedback: each output is fed back, two samples later, times −0.81.",
+    "animated": true,
+    "phone": true
+  },
+  "notch": {
+    "title": "A pole beside the zero saves the voice",
+    "caption": "Up close: far from the notch, a tone’s distances to the zero and the pole nearly cancel. Only close to 2,000 Hz does the zero win.",
+    "animated": false,
+    "phone": true
+  },
+  "gain-curves": {
+    "title": "Three filters, three gain curves",
+    "caption": "The notch removes 2,000 Hz and keeps almost everything else; the two-back filter takes the middle of the voice with it.",
+    "animated": false,
+    "phone": true
+  },
+  "echo": {
+    "title": "A pole’s radius: how much an echo keeps",
+    "caption": "The feedback loop alone, no zeros. Each echo is the last one times −r²; only poles inside the circle let it die out.",
+    "animated": true,
+    "phone": true
+  }
+}

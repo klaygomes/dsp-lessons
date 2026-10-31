@@ -1,0 +1,61 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Quarter Second Late</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .k-in { width: 3px; height: 14px; background: var(--input); }
+.key .k-out { width: 3px; height: 14px; background: var(--ink); }
+.key .k-sum { width: 3px; height: 14px; background: var(--accent); }
+.key .k-soft { width: 0; height: 14px; border-left: 2px dashed var(--ink-soft); }
+.key .k-pin { width: 0; height: 14px; border-left: 2px dashed var(--input); }
+.lab canvas.small { height: 170px; }
+.lab .grid { display: grid; gap: 10px 18px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.lab .grid .control { gap: 2px; }
+.lab .grid .control label { font-weight: 500; font-size: 15px; }
+.lab .fields { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; }
+.lab .fields label { display: grid; gap: 4px; font-size: 15px; font-weight: 500; }
+.lab .fields input { font: 500 17px var(--font-mono); width: 8.5em; padding: 8px 10px; border: 1.5px solid var(--input); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.lab .state { font-family: var(--font-mono); font-size: 15px; }
+.lab .state.k-busy { color: var(--accent-ink); }
+.lab .story { font-weight: 500; }
+.act2 { display: grid; }
+.lab .fields { margin-bottom: 6px; }
+.lab .k-meter output { padding-right: 4px; }
+@media (max-width: 520px) { .lab .k-meter { grid-template-columns: 1fr auto; } .lab .k-meter > span { grid-column: 1; grid-row: 1; } .lab .k-meter output { grid-column: 2; grid-row: 1; } .lab .k-meter .bar { grid-column: 1 / -1; grid-row: 2; } .lab .k-meter .scale { grid-column: 1 / -1; grid-row: 3; } }
+.k-predict { display: grid; gap: 10px; border-left: 3px solid var(--input); padding-left: 16px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 2 · chapter 2</p>
+    <h1>Your Own Voice, a Quarter Second Late</h1>
+    <p class="question">Every word a caller says comes back to them, faint, a quarter of a second later. You can’t open the box that makes the echo. Can you still predict it exactly, and take it away?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 2.</span>
+    <span>Next lesson: frequency response, where every call sounds muffled, as if through a wall.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+    <span>The recorded caller was generated with OmniVoice (k2-fsa), whose weights are CC-BY-NC: non-commercial use only. Built with Higgs Materials licensed from Boson AI USA, Inc., and Meta Llama 3, licensed under the Meta Llama 3 Community License.</span>
+  </footer>
+</div>
+
+<script>window.LESSON_CALL = "<!--BASE64:call-8k.wav-->";</script>
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

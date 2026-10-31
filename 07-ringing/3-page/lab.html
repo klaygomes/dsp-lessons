@@ -1,0 +1,38 @@
+<template id="ring-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div data-k="ask2"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key" data-k="key-explore">
+    <span><i class="r7-k-ring"></i>the ring, as a share of its start</span>
+    <span><i class="r7-k-env"></i>its size: radius to the power n</span>
+    <span><i class="r7-k-mark"></i>where it reaches 1%</span>
+    <span data-k="key-pin" hidden><i class="r7-k-pin"></i>pinned</span>
+  </div>
+  <div class="key" data-k="key-fix" hidden>
+    <span><i class="r7-k-dot"></i>your notch</span>
+    <span><i class="r7-k-limit"></i>the request's limits</span>
+  </div>
+  <div class="r7-meters" data-k="meters"></div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control">
+    <label data-for="radius">Pole radius: <output data-k="radius-out">0.90</output></label>
+    <input data-k="radius" type="range" min="0.7" max="0.995" step="0.005" value="0.9" disabled>
+    <div class="row" data-k="fine" hidden><span class="note">Fine adjust:</span><button type="button" data-nudge="-0.001" aria-label="Pole radius down by 0.001">−0.001</button><button type="button" data-nudge="0.001" aria-label="Pole radius up by 0.001">+0.001</button></div>
+  </div>
+  <div class="row">
+    <button type="button" data-k="click">Click</button>
+    <button type="button" data-k="play">Play a call connecting</button>
+    <button type="button" data-k="filter" class="k-toggle" aria-pressed="true">Notch on</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another exchange</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing.</p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

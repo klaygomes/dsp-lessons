@@ -1,0 +1,128 @@
+{
+  "wheel16k": {
+    "title": "The wheel at 16,000 samples per second",
+    "caption": "On the wideband side a tone turns 360° × tone ÷ 16,000 per sample, so 4,000 Hz is a quarter turn. The filter should pass the top-right quarter and remove the top-left.",
+    "animated": true,
+    "phone": true
+  },
+  "cutoff": {
+    "title": "The filter we want: a step",
+    "caption": "The wanted response: keep everything below 4,000 Hz whole, remove everything above. The cutoff sits halfway down the cliff.",
+    "animated": false,
+    "phone": true
+  },
+  "fir": {
+    "title": "An FIR filter answers a click with its coefficients",
+    "caption": "With no feedback, a click comes out as the coefficient list, one number per sample, and then it stops. These five numbers are only an example.",
+    "animated": true,
+    "phone": true
+  },
+  "ideal": {
+    "title": "The ideal low-pass’s coefficients never end",
+    "caption": "The ideal list runs both ways from the middle and never ends. It produces the perfect step.",
+    "animated": false,
+    "phone": true
+  },
+  "truncation": {
+    "title": "Cutting the list: the 0 Hz gain overshoots and settles",
+    "caption": "Each pair of coefficients adds a step. The total overshoots to 1.1366, dives, and swings around 1, ending at 0.9802 with 31 kept.",
+    "animated": true,
+    "phone": true
+  },
+  "pair-cosine": {
+    "title": "A pair of equal coefficients makes a flat number",
+    "caption": "Coefficient h[m] sees the arrow turned back m steps, h[−m] the arrow turned forward. Their sum is flat: 2 h[m] cos(m × turn). At 90°, as for 4,000 Hz with odd m, it is zero.",
+    "animated": true,
+    "phone": true
+  },
+  "pair-bars": {
+    "title": "A negative gain, built from its parts",
+    "caption": "At 4,500 Hz every pair pulls the gain down, and together they land on −0.090: 9% of the tone gets out, upside down.",
+    "animated": false,
+    "phone": true
+  },
+  "sweep-ghost": {
+    "title": "The sweep and its ghost, in time",
+    "caption": "The rising sweep comes out as a falling ghost that swells and vanishes every 500 Hz or so, deep inside the voice band.",
+    "animated": false,
+    "phone": true
+  },
+  "gibbs": {
+    "title": "Longer cuts: the bump narrows, its height stays",
+    "caption": "More coefficients squeeze the ripple toward the cliff, but every bump still reaches 1.09.",
+    "animated": true,
+    "phone": true
+  },
+  "decibels": {
+    "title": "Percent and decibels",
+    "caption": "Each factor of ten is 20 dB. The Gibbs leak, 9%, is about −21 dB; the target, 1%, is −40 dB.",
+    "animated": false,
+    "phone": true
+  },
+  "wiggles": {
+    "title": "The curve is a sum of wiggles",
+    "caption": "Each coefficient pair sets the size of one wiggle. Three wiggles and the middle coefficient already lean toward the step.",
+    "animated": false,
+    "phone": true
+  },
+  "average": {
+    "title": "Different wiggles average to zero",
+    "caption": "Two different wiggles multiplied average to zero over all the tones; a wiggle times itself averages to one half.",
+    "animated": true,
+    "phone": true
+  },
+  "gibbs-build": {
+    "title": "Adding pairs builds the cliff, and the overshoot stays",
+    "caption": "Each pair sharpens the cliff and moves the bump closer to it, but the bump never drops below about 1.09.",
+    "animated": true,
+    "phone": true
+  },
+  "window": {
+    "title": "Truncation is multiplying by a rectangle",
+    "caption": "Keeping 31 coefficients is the same as multiplying the ideal list by a rectangle of ones.",
+    "animated": false,
+    "phone": true
+  },
+  "rect-response": {
+    "title": "A window has a response of its own",
+    "caption": "The rectangle’s sharp edges give its response side lobes; the first is −22% of the hump. Hamming’s soft edges leave a wider hump and almost no side lobes.",
+    "animated": false,
+    "phone": true
+  },
+  "smear": {
+    "title": "Sliding the hump along the cliff",
+    "caption": "The cut filter’s gain at each tone is the share of the hump’s area still on the pass side. The rectangle’s left-out side lobes are worth −9%, so 109% remains.",
+    "animated": true,
+    "phone": true
+  },
+  "spec": {
+    "title": "The honest job, and where each band lands",
+    "caption": "Anything above 4,600 Hz lands in the voice band and must go. The slope may live between 3,400 and 4,600 Hz, because it lands in the empty margin.",
+    "animated": true,
+    "phone": true
+  },
+  "taper": {
+    "title": "The Hamming taper over the ideal list",
+    "caption": "Hamming barely touches the big middle coefficients and squashes the small outer ones.",
+    "animated": false,
+    "phone": true
+  },
+  "transition-band": {
+    "title": "The transition band of the Hamming filter",
+    "caption": "Between 3,458 and 4,542 Hz the filter is neither within 1% of whole nor below 1%: that stretch is its transition band.",
+    "animated": false,
+    "phone": true
+  },
+  "trade": {
+    "title": "The window trade: shape sets the ripple",
+    "caption": "Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −54 dB.",
+    "animated": false,
+    "phone": true
+  },
+  "done": {
+    "title": "What done looks like",
+    "caption": "Hamming, 45 coefficients: the voice band within 0.24%, the ghost below 0.24%, and the slope only in the margin.",
+    "animated": false,
+    "phone": true
+  }
+}

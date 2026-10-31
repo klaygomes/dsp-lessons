@@ -1,0 +1,61 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sampling and Aliasing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .k-true { width: 22px; border-top: 2px dashed var(--ink-soft); }
+.key .k-sample { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+.key .k-stored { width: 22px; border-top: 2.5px solid var(--accent); }
+.key .k-pin { width: 22px; border-top: 2px dashed var(--input); }
+.key .k-voice { width: 16px; height: 12px; background: var(--paper-2); border-top: 2px solid var(--ink); }
+.key .k-alias { width: 3px; height: 14px; background: var(--accent); }
+.key .k-gain { width: 22px; border-top: 2px solid var(--input); }
+.key .k-ring { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); }
+.key .k-n { font-style: normal; font-family: var(--font-mono); font-size: 12px; }
+.key .k-gone { width: 11px; height: 11px; border-radius: 50%; border: 1.5px dashed var(--ink-soft); }
+.lab.mini { gap: 10px; }
+.lab .readout { min-height: 7em; }
+.act2 { display: grid; }
+.lab [data-k="meter2"] .fill { background: var(--input); }
+table.alt.worked { width: auto; }
+table.alt.worked td, table.alt.worked th { min-width: 3.6em; padding: 6px 12px 6px 0; text-align: right; }
+table.alt.worked td:first-child, table.alt.worked th:first-child { min-width: 6em; text-align: left; }
+.table, .display-math { background: linear-gradient(to right, var(--paper) 30%, transparent), linear-gradient(to left, var(--paper) 30%, transparent) 100% 0, radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--ink) 22%, transparent), transparent), radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--ink) 22%, transparent), transparent) 100% 0; background-repeat: no-repeat; background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%; background-attachment: local, local, scroll, scroll; }
+.scroll-hint { font-size: 14px; color: var(--ink-soft); margin-top: -10px; }
+@media (max-width: 520px) { .display-math math { font-size: 0.85em; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 4 · chapter 3</p>
+    <h1>The Whistle That Changed Its Mind</h1>
+    <p class="question">A hearing clinic plays a 5,000 Hz test whistle down your line. Every patient hears a clean, steady 3,000 Hz. Nothing is broken, nothing is noisy. So where did the whistle go?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 3.</span>
+    <span>Next lesson: changing the sampling rate, where every voice brings a ghost above 4,000 Hz.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+    <span>The recorded caller was generated with OmniVoice (k2-fsa), whose weights are CC-BY-NC: non-commercial use only. Built with Higgs Materials licensed from Boson AI USA, Inc., and Meta Llama 3, licensed under the Meta Llama 3 Community License.</span>
+  </footer>
+</div>
+
+<script>window.LESSON_CALL = "<!--BASE64:call-8k.wav-->";</script>
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

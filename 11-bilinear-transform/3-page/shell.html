@@ -1,0 +1,57 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Exchange That Moved</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .k-ex { width: 26px; border-top: 2.5px solid var(--ink); position: relative; }
+.key .k-ex::after { content: ""; position: absolute; left: 8px; top: -6px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+.key .k-cp { width: 26px; border-top: 2px dashed var(--ink); position: relative; }
+.key .k-cp::after { content: ""; position: absolute; left: 8px; top: -6px; width: 7px; height: 7px; border: 1.8px solid var(--ink); }
+.key .k-mark { width: 12px; height: 12px; background: var(--input); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.key .k-land { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.key .k-pin { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--input); }
+.key .k-target { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink); }
+.key .k-beyond { width: 16px; height: 12px; background: var(--paper-2); border: 1px solid var(--rule); }
+.lab canvas.stage { touch-action: none; cursor: pointer; }
+.lab .typed { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lab .typed input { font: 500 16px/1 var(--font-mono); width: 9em; padding: 9px 10px; border: 1.5px solid var(--ink); border-radius: 6px; background: var(--paper); color: var(--ink); }
+.lab .typed label { font-weight: 600; }
+.lab .bad { color: var(--accent-ink); }
+.act2 { display: grid; }
+.myth-check { font-size: 16px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 11 · chapter 7</p>
+    <h1>The Exchange That Moved</h1>
+    <p class="question">You copied the old exchange's filter into the new line with the textbook recipe, using the manual's own numbers. The low tones match. So why does the copy's cutoff come out a thousand hertz too low?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 7.</span>
+    <span>Next lesson: the DFT, where the line must tell which key a caller pressed from its two tones.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+    <span>The caller's voice was generated with OmniVoice (k2-fsa), whose weights are CC-BY-NC: non-commercial use only. Built with Higgs Materials licensed from Boson AI USA, Inc., and Meta Llama 3, licensed under the Meta Llama 3 Community License.</span>
+  </footer>
+</div>
+
+<script>window.LESSON_CALL = "<!--BASE64:call-8k.wav-->";</script>
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

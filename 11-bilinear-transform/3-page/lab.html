@@ -1,0 +1,65 @@
+<template id="ruler-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div data-k="ask2"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key">
+    <span><i class="k-mark"></i><span data-k="key-mark">your mark on the analog ruler</span></span>
+    <span><i class="k-land"></i>where it lands on the half circle</span>
+    <span data-k="key-target" hidden><i class="k-target"></i>the exchange's 71% point</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
+    <span><i class="k-beyond"></i>beyond 4,000 Hz: not on your line</span>
+    <span><i class="k-ex"></i><span data-k="key-ex">the exchange</span></span>
+    <span><i class="k-cp"></i><span data-k="key-cp">your copy, from the script</span></span>
+  </div>
+  <div class="k-meter" data-k="meter" hidden>
+    <span data-k="meter-label">The technician's meter: your copy at the exchange's cutoff</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="F-control">
+    <label data-for="F">Mark on the analog ruler: <output data-k="F-out">3,400 Hz</output></label>
+    <input data-k="F" type="range" min="0" max="1000" step="1" disabled aria-valuetext="3,400 Hz">
+  </div>
+  <div class="row" data-k="presets" role="group" aria-label="Jump the mark to">
+    <button type="button" data-hz="500" disabled>500 Hz</button>
+    <button type="button" data-hz="3400" disabled>3,400 Hz</button>
+    <button type="button" data-hz="10000" disabled>10,000 Hz</button>
+    <button type="button" data-hz="100000" disabled>100,000 Hz</button>
+  </div>
+  <div class="control" data-k="C-control" hidden>
+    <label data-for="C">The analog prototype's cutoff: <output data-k="C-out">3,400 Hz</output></label>
+    <input data-k="C" type="range" min="0" max="1000" step="1" disabled>
+    <div class="typed">
+      <label data-for="C-typed">Or type it, in Hz</label>
+      <input data-k="C-typed" type="text" inputmode="numeric" autocomplete="off" disabled>
+      <button type="button" data-k="C-set" disabled>Set the knob</button>
+    </div>
+    <p class="note" data-k="C-msg" aria-live="polite"></p>
+  </div>
+  <div class="row" data-k="source" role="group" aria-label="What to play">
+    <button type="button" data-source="tone" aria-pressed="true">A tone at the landing point</button>
+    <button type="button" data-source="voice" aria-pressed="false">The recorded voice</button>
+  </div>
+  <div class="row" data-k="through" role="group" aria-label="Played through">
+    <button type="button" data-through="ex" aria-pressed="false">Through the exchange</button>
+    <button type="button" data-through="cp" aria-pressed="true">Through your copy</button>
+    <button type="button" data-through="off" aria-pressed="false">No filter</button>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play" disabled>Play</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another exchange</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing.</p>
+  <p class="myth-check" data-k="myth" hidden></p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

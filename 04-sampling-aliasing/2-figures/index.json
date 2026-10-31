@@ -1,0 +1,74 @@
+{
+  "sampler": {
+    "title": "What the phone stores",
+    "caption": "The dashed wave is the true tone. Every 125 µs the phone takes one sample, a dot; in the shaded gaps it sees nothing. The numbers underneath are all it keeps.",
+    "animated": true,
+    "phone": true
+  },
+  "same-dots": {
+    "title": "Two waves, the same nine dots",
+    "caption": "The solid coral wave is 3,000 Hz, the dashed grey wave the 5,000 Hz whistle. Both go through exactly the same dots (each rings briefly as the whistle passes it), and the phone stores only the dots.",
+    "animated": true,
+    "phone": true
+  },
+  "wheel": {
+    "title": "Mirror spots on the wheel",
+    "caption": "Two wheels after one sample. On the whistle’s wheel, the ring marks where 3,000 Hz lands: the mirror spot across the dashed line, straight above, so the left-right readings, the samples, are equal.",
+    "animated": true,
+    "phone": true
+  },
+  "cinema": {
+    "title": "The cinema wheel",
+    "caption": "Film pictures in a row. Between pictures the wheel spins 345° forwards, counter-clockwise; on screen the spoke creeps 15° backwards, clockwise, each time.",
+    "animated": true,
+    "phone": true
+  },
+  "mirror": {
+    "title": "Every sample stays mirrored",
+    "caption": "Two samples are tied: at n = 1 and n = 3, the 3,000 Hz dot (hollow) and the 5,000 Hz dot (filled) sit on mirror spots across the dashed line. The table checks all eight readings.",
+    "animated": true,
+    "phone": true
+  },
+  "turn-round": {
+    "title": "The stored tone turns round",
+    "caption": "What the lab shows, in one picture: the stored tone climbs with the true tone up to 4,000 Hz, then turns round and falls.",
+    "animated": false,
+    "phone": true
+  },
+  "fold": {
+    "title": "Fold the strip at the limit",
+    "caption": "The part of the strip above the limit folds back under, running back to 8,000 Hz. Each tone above 4,000 Hz ends up directly beneath the tone it is stored as.",
+    "animated": true,
+    "phone": true
+  },
+  "zigzag": {
+    "title": "Past the fold: a zigzag",
+    "caption": "The tent repeats forever. However high the true tone, the stored tone lands between 0 and 4,000 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "knife-edge": {
+    "title": "A tone right at the limit",
+    "caption": "The same 4,000 Hz tone three times, started at different moments. How much of it the phone stores depends only on timing.",
+    "animated": true,
+    "phone": true
+  },
+  "full-lap": {
+    "title": "A full turn is invisible",
+    "caption": "Between two looks the faster dot runs one extra lap, drawn dashed. It ends exactly where the slower dot ends.",
+    "animated": true,
+    "phone": true
+  },
+  "voice-aliases": {
+    "title": "The aliases land inside the voice",
+    "caption": "What the phone stores for the incoming call: the voice up to 3,400 Hz, with the two aliases, hatched, inside it.",
+    "animated": false,
+    "phone": true
+  },
+  "filter-first": {
+    "title": "Filter first",
+    "caption": "Top: the filter’s gain, flat to 3,400 Hz, then falling to about 0 by 4,600 Hz. The squeal and the whistle, crossed out, never reach the sampler. Below: the same filter after the sampler, too late.",
+    "animated": false,
+    "phone": true
+  }
+}

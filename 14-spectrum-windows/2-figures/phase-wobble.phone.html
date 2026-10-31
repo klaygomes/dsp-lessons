@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why only sometimes</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-phase-wobble-style">
+.k-fig .l-plain { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l-hann { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 7 4; fill: none; }
+.k-fig .l-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .l-ref { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; opacity: 0.55; }
+.k-fig .l-bar { stroke: var(--input); stroke-width: 2.2; fill: none; }
+.k-fig .l-total { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-shade { fill: var(--paper-2); }
+.k-fig .l-tint { fill: var(--input-soft); }
+.k-fig .l-dot { fill: var(--ink); }
+.k-fig .l-dot-accent { fill: var(--accent); }
+.k-fig .l-sq { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l-ring { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l-ring-accent { fill: none; stroke: var(--accent); stroke-width: 2; }
+.k-fig .l-pad { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-tri { fill: var(--ink-soft); }
+.k-fig .l-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l-vec-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; }
+.k-fig .l-vec-col { stroke: var(--ink-soft); stroke-width: 2; }
+.k-fig .l-vec-total { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l-head-ink { fill: var(--ink); }
+.k-fig .l-head-soft { fill: var(--ink-soft); }
+.k-fig .l-head-accent { fill: var(--accent); }
+.k-fig .l-circle { stroke: var(--rule); stroke-width: 1.5; fill: none; }
+.k-fig .l-in-bar { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-out-bar { fill: var(--accent); }
+.k-fig .l-band-faint { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-grey { opacity: 0.35; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 14 · spectrum analysis with windows</p>
+<h1>Why only sometimes</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-phase-wobble-phone" viewBox="0 0 360 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="phase-wobble-phone-title phase-wobble-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="4"><title id="phase-wobble-phone-title">Why only sometimes</title><desc id="phase-wobble-phone-desc">The 7's bin as joined chains for a loud 4: the 770 Hz chain, 12.2%, plus its mirror and the 1,209 Hz column tone's chains; over 256 pairs of starts the total runs 8.9% to 14.6%, and 144 pass the 12% bar.</desc><defs><marker id="phase-wobble-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="phase-wobble-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="phase-wobble-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="phase-wobble-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="700"/><defs><marker id="phase-wobble-phone-hi" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-ink" points="0 0, 8 3, 0 6"/></marker><marker id="phase-wobble-phone-hs" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-soft" points="0 0, 8 3, 0 6"/></marker><marker id="phase-wobble-phone-ha" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-accent" points="0 0, 8 3, 0 6"/></marker></defs><text class="k-name" x="24" y="30" text-anchor="start">a loud 4 in the 7's bin</text>,<text class="k-tick" x="24" y="50" text-anchor="start">bin 27, 256 pairs of starts</text>,<path class="l-bar" d="M220.1 226.23L221.05 222.8L221.94 219.35L222.77 215.89L223.54 212.41L224.25 208.93L224.9 205.42L225.49 201.91L226.01 198.39L226.48 194.86L226.88 191.32L227.22 187.78L227.5 184.23L227.72 180.68L227.88 177.12L227.97 173.56L228 170L227.97 166.44L227.88 162.88L227.72 159.32L227.5 155.77L227.22 152.22L226.88 148.68L226.48 145.14L226.01 141.61L225.49 138.09L224.9 134.58L224.25 131.07L223.54 127.59L222.77 124.11L221.94 120.65L221.05 117.2L220.1 113.77" fill="none"/>,<text class="k-num-input" x="224.1" y="242.23" text-anchor="start">bar 12%</text>,<g data-motion-item="" data-step="1" aria-label="the 770 Hz tone's long chain into bin 27: 12.2%"><g class="k-a-in" style="--d:0"><line class="spoke l-vec" x1="24" y1="170" x2="231.5" y2="170" marker-end="url(#phase-wobble-phone-hi)"/><text class="k-num" x="30" y="192" text-anchor="start">770 Hz chain 12.2%</text></g></g>,<g data-motion-item="" data-step="2" aria-label="its mirror chain, 0.6%, and the 1,209 Hz column tone, 2.3%, joined end to end"><g class="k-a-in" style="--d:1"><line class="spoke l-vec-mirror" x1="231.5" y1="170" x2="241.26" y2="172.75" marker-end="url(#phase-wobble-phone-hs)"/><line class="spoke l-vec-col" x1="241.26" y1="172.75" x2="279.84" y2="173.59" marker-end="url(#phase-wobble-phone-hs)"/><line class="spoke l-vec-mirror" x1="279.84" y1="173.59" x2="272.44" y2="171.67" marker-end="url(#phase-wobble-phone-hs)"/></g></g>,<g data-motion-item="" data-step="3" aria-label="each pair of starts puts the end somewhere else: 256 ends, filled where they pass the bar"><g class="k-a-in" style="--d:2;--len:1.6"><circle class="l-pad" cx="210.09" cy="173.84" r="2.4"/><circle class="l-pad" cx="211.41" cy="191.35" r="2.4"/><circle class="l-pad" cx="217.27" cy="206.03" r="2.4"/><circle class="l-dot-accent" cx="226.79" cy="215.65" r="2.6"/><circle class="l-dot-accent" cx="238.52" cy="218.73" r="2.6"/><circle class="l-dot-accent" cx="250.66" cy="214.82" r="2.6"/><circle class="l-dot-accent" cx="261.37" cy="204.5" r="2.6"/><circle class="l-dot-accent" cx="269.02" cy="189.35" r="2.6"/><circle class="l-dot-accent" cx="272.44" cy="171.67" r="2.6"/><circle class="l-dot-accent" cx="271.12" cy="154.16" r="2.6"/><circle class="l-dot-accent" cx="265.25" cy="139.48" r="2.6"/><circle class="l-dot-accent" cx="255.73" cy="129.86" r="2.6"/><circle class="l-dot-accent" cx="244.01" cy="126.78" r="2.6"/><circle class="l-dot-accent" cx="231.87" cy="130.69" r="2.6"/><circle class="l-pad" cx="221.16" cy="141.01" r="2.4"/><circle class="l-pad" cx="213.51" cy="156.16" r="2.4"/><circle class="l-pad" cx="207.24" cy="167.92" r="2.4"/><circle class="l-pad" cx="201.76" cy="184.61" r="2.4"/><circle class="l-pad" cx="201.56" cy="200.42" r="2.4"/><circle class="l-pad" cx="206.67" cy="212.94" r="2.4"/><circle class="l-pad" cx="216.32" cy="220.28" r="2.4"/><circle class="l-dot-accent" cx="229.04" cy="221.31" r="2.6"/><circle class="l-dot-accent" cx="242.88" cy="215.88" r="2.6"/><circle class="l-dot-accent" cx="255.75" cy="204.81" r="2.6"/><circle class="l-dot-accent" cx="265.67" cy="189.78" r="2.6"/><circle class="l-dot-accent" cx="271.16" cy="173.1" r="2.6"/><circle class="l-dot-accent" cx="271.35" cy="157.29" r="2.6"/><circle class="l-dot-accent" cx="266.24" cy="144.76" r="2.6"/><circle class="l-dot-accent" cx="256.59" cy="137.43" r="2.6"/><circle class="l-dot-accent" cx="243.88" cy="136.4" r="2.6"/><circle class="l-dot-accent" cx="230.03" cy="141.83" r="2.6"/><circle class="l-pad" cx="217.17" cy="152.9" r="2.4"/><circle class="l-pad" cx="205.93" cy="158.49" r="2.4"/><circle class="l-pad" cx="194.48" cy="171.8" r="2.4"/><circle class="l-pad" cx="188.25" cy="186.33" r="2.4"/><circle class="l-pad" cx="188.18" cy="199.86" r="2.4"/><circle class="l-pad" cx="194.29" cy="210.33" r="2.4"/><circle class="l-pad" cx="205.64" cy="216.15" r="2.4"/><circle class="l-pad" cx="220.51" cy="216.43" r="2.4"/><circle class="l-dot-accent" cx="236.63" cy="211.12" r="2.6"/><circle class="l-dot-accent" cx="251.55" cy="201.05" r="2.6"/><circle class="l-dot-accent" cx="263" cy="187.73" r="2.6"/><circle class="l-dot-accent" cx="269.24" cy="173.2" r="2.6"/><circle class="l-dot-accent" cx="269.3" cy="159.67" r="2.6"/><circle class="l-dot-accent" cx="263.2" cy="149.2" r="2.6"/><circle class="l-dot-accent" cx="251.85" cy="143.38" r="2.6"/><circle class="l-dot-accent" cx="236.98" cy="143.1" r="2.6"/><circle class="l-pad" cx="220.85" cy="148.41" r="2.4"/><circle class="l-pad" cx="209.71" cy="146.57" r="2.4"/><circle class="l-pad" cx="194.04" cy="154.49" r="2.4"/><circle class="l-pad" cx="182.72" cy="165.53" r="2.4"/><circle class="l-pad" cx="177.48" cy="178" r="2.4"/><circle class="l-pad" cx="179.11" cy="190.01" r="2.4"/><circle class="l-pad" cx="187.38" cy="199.73" r="2.4"/><circle class="l-pad" cx="201.01" cy="205.68" r="2.4"/><circle class="l-pad" cx="217.93" cy="206.95" r="2.4"/><circle class="l-dot-accent" cx="235.58" cy="203.35" r="2.6"/><circle class="l-dot-accent" cx="251.25" cy="195.43" r="2.6"/><circle class="l-dot-accent" cx="262.57" cy="184.39" r="2.6"/><circle class="l-dot-accent" cx="267.81" cy="171.91" r="2.6"/><circle class="l-dot-accent" cx="266.17" cy="159.9" r="2.6"/><circle class="l-dot-accent" cx="257.91" cy="150.18" r="2.6"/><circle class="l-dot-accent" cx="244.28" cy="144.24" r="2.6"/><circle class="l-dot-accent" cx="227.36" cy="142.97" r="2.6"/><circle class="l-pad" cx="220.65" cy="136.07" r="2.4"/><circle class="l-pad" cx="203.14" cy="137.39" r="2.4"/><circle class="l-pad" cx="188.46" cy="143.26" r="2.4"/><circle class="l-pad" cx="178.84" cy="152.77" r="2.4"/><circle class="l-pad" cx="175.75" cy="164.5" r="2.4"/><circle class="l-pad" cx="179.67" cy="176.64" r="2.4"/><circle class="l-pad" cx="189.99" cy="187.35" r="2.4"/><circle class="l-pad" cx="205.14" cy="195" r="2.4"/><circle class="l-pad" cx="222.81" cy="198.42" r="2.4"/><circle class="l-dot-accent" cx="240.33" cy="197.1" r="2.6"/><circle class="l-dot-accent" cx="255.01" cy="191.24" r="2.6"/><circle class="l-dot-accent" cx="264.62" cy="181.72" r="2.6"/><circle class="l-dot-accent" cx="267.71" cy="169.99" r="2.6"/><circle class="l-dot-accent" cx="263.8" cy="157.85" r="2.6"/><circle class="l-dot-accent" cx="253.48" cy="147.14" r="2.6"/><circle class="l-dot-accent" cx="238.33" cy="139.49" r="2.6"/><circle class="l-dot-accent" cx="237.47" cy="131.93" r="2.6"/><circle class="l-pad" cx="220.79" cy="126.45" r="2.4"/><circle class="l-pad" cx="204.98" cy="126.25" r="2.4"/><circle class="l-pad" cx="192.45" cy="131.36" r="2.4"/><circle class="l-pad" cx="185.11" cy="141.01" r="2.4"/><circle class="l-pad" cx="184.08" cy="153.73" r="2.4"/><circle class="l-pad" cx="189.52" cy="167.57" r="2.4"/><circle class="l-pad" cx="200.59" cy="180.44" r="2.4"/><circle class="l-pad" cx="215.61" cy="190.37" r="2.4"/><circle class="l-dot-accent" cx="232.29" cy="195.85" r="2.6"/><circle class="l-dot-accent" cx="248.1" cy="196.04" r="2.6"/><circle class="l-dot-accent" cx="260.63" cy="190.93" r="2.6"/><circle class="l-dot-accent" cx="267.97" cy="181.28" r="2.6"/><circle class="l-dot-accent" cx="269" cy="168.57" r="2.6"/><circle class="l-dot-accent" cx="263.56" cy="154.72" r="2.6"/><circle class="l-dot-accent" cx="252.49" cy="141.86" r="2.6"/><circle class="l-dot-accent" cx="255.53" cy="137.42" r="2.6"/><circle class="l-dot-accent" cx="242.22" cy="125.97" r="2.6"/><circle class="l-dot-accent" cx="227.69" cy="119.74" r="2.6"/><circle class="l-pad" cx="214.16" cy="119.67" r="2.4"/><circle class="l-pad" cx="203.68" cy="125.78" r="2.4"/><circle class="l-pad" cx="197.87" cy="137.13" r="2.4"/><circle class="l-pad" cx="197.59" cy="152" r="2.4"/><circle class="l-pad" cx="202.89" cy="168.12" r="2.4"/><circle class="l-pad" cx="212.97" cy="183.05" r="2.4"/><circle class="l-pad" cx="226.29" cy="194.49" r="2.4"/><circle class="l-dot-accent" cx="240.82" cy="200.73" r="2.6"/><circle class="l-dot-accent" cx="254.35" cy="200.8" r="2.6"/><circle class="l-dot-accent" cx="264.82" cy="194.69" r="2.6"/><circle class="l-dot-accent" cx="270.64" cy="183.34" r="2.6"/><circle class="l-dot-accent" cx="270.91" cy="168.47" r="2.6"/><circle class="l-dot-accent" cx="265.61" cy="152.34" r="2.6"/><circle class="l-dot-accent" cx="268.74" cy="152.11" r="2.6"/><circle class="l-dot-accent" cx="260.82" cy="136.44" r="2.6"/><circle class="l-dot-accent" cx="249.78" cy="125.12" r="2.6"/><circle class="l-dot-accent" cx="237.31" cy="119.88" r="2.6"/><circle class="l-dot-accent" cx="225.3" cy="121.51" r="2.6"/><circle class="l-pad" cx="215.58" cy="129.77" r="2.4"/><circle class="l-pad" cx="209.63" cy="143.41" r="2.4"/><circle class="l-pad" cx="208.36" cy="160.33" r="2.4"/><circle class="l-pad" cx="211.96" cy="177.97" r="2.4"/><circle class="l-pad" cx="219.88" cy="193.65" r="2.4"/><circle class="l-dot-accent" cx="230.92" cy="204.97" r="2.6"/><circle class="l-dot-accent" cx="243.4" cy="210.21" r="2.6"/><circle class="l-dot-accent" cx="255.41" cy="208.57" r="2.6"/><circle class="l-dot-accent" cx="265.13" cy="200.31" r="2.6"/><circle class="l-dot-accent" cx="271.07" cy="186.68" r="2.6"/><circle class="l-dot-accent" cx="272.34" cy="169.75" r="2.6"/><circle class="l-dot-accent" cx="272.44" cy="171.67" r="2.6"/><circle class="l-dot-accent" cx="271.12" cy="154.16" r="2.6"/><circle class="l-dot-accent" cx="265.25" cy="139.48" r="2.6"/><circle class="l-dot-accent" cx="255.73" cy="129.86" r="2.6"/><circle class="l-dot-accent" cx="244.01" cy="126.78" r="2.6"/><circle class="l-dot-accent" cx="231.87" cy="130.69" r="2.6"/><circle class="l-pad" cx="221.16" cy="141.01" r="2.4"/><circle class="l-pad" cx="213.51" cy="156.16" r="2.4"/><circle class="l-pad" cx="210.09" cy="173.84" r="2.4"/><circle class="l-pad" cx="211.41" cy="191.35" r="2.4"/><circle class="l-pad" cx="217.27" cy="206.03" r="2.4"/><circle class="l-dot-accent" cx="226.79" cy="215.65" r="2.6"/><circle class="l-dot-accent" cx="238.52" cy="218.73" r="2.6"/><circle class="l-dot-accent" cx="250.66" cy="214.82" r="2.6"/><circle class="l-dot-accent" cx="261.37" cy="204.5" r="2.6"/><circle class="l-dot-accent" cx="269.02" cy="189.35" r="2.6"/><circle class="l-dot-accent" cx="265.67" cy="189.78" r="2.6"/><circle class="l-dot-accent" cx="271.16" cy="173.1" r="2.6"/><circle class="l-dot-accent" cx="271.35" cy="157.29" r="2.6"/><circle class="l-dot-accent" cx="266.24" cy="144.76" r="2.6"/><circle class="l-dot-accent" cx="256.59" cy="137.43" r="2.6"/><circle class="l-dot-accent" cx="243.88" cy="136.4" r="2.6"/><circle class="l-dot-accent" cx="230.03" cy="141.83" r="2.6"/><circle class="l-pad" cx="217.17" cy="152.9" r="2.4"/><circle class="l-pad" cx="207.24" cy="167.92" r="2.4"/><circle class="l-pad" cx="201.76" cy="184.61" r="2.4"/><circle class="l-pad" cx="201.56" cy="200.42" r="2.4"/><circle class="l-pad" cx="206.67" cy="212.94" r="2.4"/><circle class="l-pad" cx="216.32" cy="220.28" r="2.4"/><circle class="l-dot-accent" cx="229.04" cy="221.31" r="2.6"/><circle class="l-dot-accent" cx="242.88" cy="215.88" r="2.6"/><circle class="l-dot-accent" cx="255.75" cy="204.81" r="2.6"/><circle class="l-dot-accent" cx="251.55" cy="201.05" r="2.6"/><circle class="l-dot-accent" cx="263" cy="187.73" r="2.6"/><circle class="l-dot-accent" cx="269.24" cy="173.2" r="2.6"/><circle class="l-dot-accent" cx="269.3" cy="159.67" r="2.6"/><circle class="l-dot-accent" cx="263.2" cy="149.2" r="2.6"/><circle class="l-dot-accent" cx="251.85" cy="143.38" r="2.6"/><circle class="l-dot-accent" cx="236.98" cy="143.1" r="2.6"/><circle class="l-pad" cx="220.85" cy="148.41" r="2.4"/><circle class="l-pad" cx="205.93" cy="158.49" r="2.4"/><circle class="l-pad" cx="194.48" cy="171.8" r="2.4"/><circle class="l-pad" cx="188.25" cy="186.33" r="2.4"/><circle class="l-pad" cx="188.18" cy="199.86" r="2.4"/><circle class="l-pad" cx="194.29" cy="210.33" r="2.4"/><circle class="l-pad" cx="205.64" cy="216.15" r="2.4"/><circle class="l-pad" cx="220.51" cy="216.43" r="2.4"/><circle class="l-dot-accent" cx="236.63" cy="211.12" r="2.6"/><circle class="l-dot-accent" cx="235.58" cy="203.35" r="2.6"/><circle class="l-dot-accent" cx="251.25" cy="195.43" r="2.6"/><circle class="l-dot-accent" cx="262.57" cy="184.39" r="2.6"/><circle class="l-dot-accent" cx="267.81" cy="171.91" r="2.6"/><circle class="l-dot-accent" cx="266.17" cy="159.9" r="2.6"/><circle class="l-dot-accent" cx="257.91" cy="150.18" r="2.6"/><circle class="l-dot-accent" cx="244.28" cy="144.24" r="2.6"/><circle class="l-dot-accent" cx="227.36" cy="142.97" r="2.6"/><circle class="l-pad" cx="209.71" cy="146.57" r="2.4"/><circle class="l-pad" cx="194.04" cy="154.49" r="2.4"/><circle class="l-pad" cx="182.72" cy="165.53" r="2.4"/><circle class="l-pad" cx="177.48" cy="178" r="2.4"/><circle class="l-pad" cx="179.11" cy="190.01" r="2.4"/><circle class="l-pad" cx="187.38" cy="199.73" r="2.4"/><circle class="l-pad" cx="201.01" cy="205.68" r="2.4"/><circle class="l-pad" cx="217.93" cy="206.95" r="2.4"/><circle class="l-pad" cx="222.81" cy="198.42" r="2.4"/><circle class="l-dot-accent" cx="240.33" cy="197.1" r="2.6"/><circle class="l-dot-accent" cx="255.01" cy="191.24" r="2.6"/><circle class="l-dot-accent" cx="264.62" cy="181.72" r="2.6"/><circle class="l-dot-accent" cx="267.71" cy="169.99" r="2.6"/><circle class="l-dot-accent" cx="263.8" cy="157.85" r="2.6"/><circle class="l-dot-accent" cx="253.48" cy="147.14" r="2.6"/><circle class="l-dot-accent" cx="238.33" cy="139.49" r="2.6"/><circle class="l-pad" cx="220.65" cy="136.07" r="2.4"/><circle class="l-pad" cx="203.14" cy="137.39" r="2.4"/><circle class="l-pad" cx="188.46" cy="143.26" r="2.4"/><circle class="l-pad" cx="178.84" cy="152.77" r="2.4"/><circle class="l-pad" cx="175.75" cy="164.5" r="2.4"/><circle class="l-pad" cx="179.67" cy="176.64" r="2.4"/><circle class="l-pad" cx="189.99" cy="187.35" r="2.4"/><circle class="l-pad" cx="205.14" cy="195" r="2.4"/><circle class="l-pad" cx="215.61" cy="190.37" r="2.4"/><circle class="l-dot-accent" cx="232.29" cy="195.85" r="2.6"/><circle class="l-dot-accent" cx="248.1" cy="196.04" r="2.6"/><circle class="l-dot-accent" cx="260.63" cy="190.93" r="2.6"/><circle class="l-dot-accent" cx="267.97" cy="181.28" r="2.6"/><circle class="l-dot-accent" cx="269" cy="168.57" r="2.6"/><circle class="l-dot-accent" cx="263.56" cy="154.72" r="2.6"/><circle class="l-dot-accent" cx="252.49" cy="141.86" r="2.6"/><circle class="l-dot-accent" cx="237.47" cy="131.93" r="2.6"/><circle class="l-pad" cx="220.79" cy="126.45" r="2.4"/><circle class="l-pad" cx="204.98" cy="126.25" r="2.4"/><circle class="l-pad" cx="192.45" cy="131.36" r="2.4"/><circle class="l-pad" cx="185.11" cy="141.01" r="2.4"/><circle class="l-pad" cx="184.08" cy="153.73" r="2.4"/><circle class="l-pad" cx="189.52" cy="167.57" r="2.4"/><circle class="l-pad" cx="200.59" cy="180.44" r="2.4"/><circle class="l-pad" cx="212.97" cy="183.05" r="2.4"/><circle class="l-pad" cx="226.29" cy="194.49" r="2.4"/><circle class="l-dot-accent" cx="240.82" cy="200.73" r="2.6"/><circle class="l-dot-accent" cx="254.35" cy="200.8" r="2.6"/><circle class="l-dot-accent" cx="264.82" cy="194.69" r="2.6"/><circle class="l-dot-accent" cx="270.64" cy="183.34" r="2.6"/><circle class="l-dot-accent" cx="270.91" cy="168.47" r="2.6"/><circle class="l-dot-accent" cx="265.61" cy="152.34" r="2.6"/><circle class="l-dot-accent" cx="255.53" cy="137.42" r="2.6"/><circle class="l-dot-accent" cx="242.22" cy="125.97" r="2.6"/><circle class="l-dot-accent" cx="227.69" cy="119.74" r="2.6"/><circle class="l-pad" cx="214.16" cy="119.67" r="2.4"/><circle class="l-pad" cx="203.68" cy="125.78" r="2.4"/><circle class="l-pad" cx="197.87" cy="137.13" r="2.4"/><circle class="l-pad" cx="197.59" cy="152" r="2.4"/><circle class="l-pad" cx="202.89" cy="168.12" r="2.4"/><circle class="l-pad" cx="211.96" cy="177.97" r="2.4"/><circle class="l-pad" cx="219.88" cy="193.65" r="2.4"/><circle class="l-dot-accent" cx="230.92" cy="204.97" r="2.6"/><circle class="l-dot-accent" cx="243.4" cy="210.21" r="2.6"/><circle class="l-dot-accent" cx="255.41" cy="208.57" r="2.6"/><circle class="l-dot-accent" cx="265.13" cy="200.31" r="2.6"/><circle class="l-dot-accent" cx="271.07" cy="186.68" r="2.6"/><circle class="l-dot-accent" cx="272.34" cy="169.75" r="2.6"/><circle class="l-dot-accent" cx="268.74" cy="152.11" r="2.6"/><circle class="l-dot-accent" cx="260.82" cy="136.44" r="2.6"/><circle class="l-dot-accent" cx="249.78" cy="125.12" r="2.6"/><circle class="l-dot-accent" cx="237.31" cy="119.88" r="2.6"/><circle class="l-dot-accent" cx="225.3" cy="121.51" r="2.6"/><circle class="l-pad" cx="215.58" cy="129.77" r="2.4"/><circle class="l-pad" cx="209.63" cy="143.41" r="2.4"/><circle class="l-pad" cx="208.36" cy="160.33" r="2.4"/></g></g>,<g data-motion-item="" data-step="4" aria-label="the match ranges from 8.9% to 14.6%; 144 of 256 pairs of starts pass the 12% bar"><g class="k-a-in" style="--d:3.6"><line class="k-axis" x1="70" y1="440" x2="70" y2="610"/><text class="k-tick" x="62" y="614" text-anchor="end">0%</text><text class="k-tick" x="62" y="571.5" text-anchor="end">4%</text><text class="k-tick" x="62" y="529" text-anchor="end">8%</text><text class="k-tick" x="62" y="486.5" text-anchor="end">12%</text><text class="k-tick" x="62" y="444" text-anchor="end">16%</text><rect class="l-band-faint" x="80" y="454.72" width="26" height="60.37"/><line class="l-bar" x1="70" y1="482.5" x2="118" y2="482.5"/><text class="k-num" x="114" y="458.72" text-anchor="start">up to 14.6%</text><text class="k-num" x="114" y="519.09" text-anchor="start">down to 8.9%</text><text class="k-num-input" x="122" y="486.5" text-anchor="start">bar 12%</text><text class="k-num-accent" x="36" y="636" text-anchor="start">144 of 256</text><text class="k-num-accent" x="36" y="654" text-anchor="start">thrown out</text><text class="k-tick" x="36" y="424" text-anchor="start">match in the 7's bin</text></g></g>,<g ><g ><line class="l-vec" x1="24" y1="296" x2="50" y2="296" marker-end="url(#phase-wobble-phone-hi)"/><text class="k-label" x="58" y="300" text-anchor="start">770 Hz chain</text></g><g ><line class="l-vec-mirror" x1="24" y1="318" x2="50" y2="318" marker-end="url(#phase-wobble-phone-hs)"/><text class="k-label" x="58" y="322" text-anchor="start">mirror chains</text></g><g ><line class="l-vec-col" x1="24" y1="340" x2="50" y2="340" marker-end="url(#phase-wobble-phone-hs)"/><text class="k-label" x="58" y="344" text-anchor="start">1,209 Hz chain, 2.3%</text></g><g ><circle class="l-dot-accent" cx="37" cy="362" r="3.5"/><text class="k-label" x="58" y="366" text-anchor="start">end past the bar</text></g><g ><circle class="l-pad" cx="37" cy="384" r="2.6"/><text class="k-label" x="58" y="388" text-anchor="start">end inside the bar</text></g></g></svg></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{
+  "overlay-bug": {
+    "title": "The copy falls apart up high",
+    "caption": "The technician’s two rows as curves. Low tones match; the higher the tone, the further the copy falls below the exchange.",
+    "animated": false,
+    "phone": true
+  },
+  "analog": {
+    "title": "Analog and digital filters",
+    "caption": "An analog filter works on the voltage itself, every instant, and has a response at every frequency. A digital filter works on samples and stops at 4,000 Hz.",
+    "animated": true,
+    "phone": true
+  },
+  "prototype": {
+    "title": "The exchange’s gain, past the wall",
+    "caption": "The analog prototype: the exchange’s filter. It has a response far beyond 4,000 Hz, where your line cannot follow.",
+    "animated": false,
+    "phone": true
+  },
+  "wrap-vs-squeeze": {
+    "title": "Wrap it, or squeeze it",
+    "caption": "Wrapping lays the ruler round and round, so different frequencies share a spot. Squeezing bends it on once, so every frequency gets its own spot.",
+    "animated": true,
+    "phone": true
+  },
+  "arctan": {
+    "title": "The shape of arctan",
+    "caption": "Small inputs come back almost unchanged; big ones crowd under the ceiling.",
+    "animated": false,
+    "phone": true
+  },
+  "warping": {
+    "title": "The warping curve",
+    "caption": "Read up from the analog axis to find where a frequency lands; read across from the digital axis to find what lands there.",
+    "animated": false,
+    "phone": true
+  },
+  "arrows": {
+    "title": "An arrow and its mirror",
+    "caption": "Add an arrow and its mirror and the up-down parts cancel. Subtract them and the left-right parts cancel.",
+    "animated": true,
+    "phone": true
+  },
+  "two-radians": {
+    "title": "Two kinds of radian",
+    "caption": "Digital tones count turns per sample and stop at π. Analog frequencies count turns per second and never stop.",
+    "animated": false,
+    "phone": true
+  },
+  "s-line": {
+    "title": "Climbing the analog ruler",
+    "caption": "Walk up the ruler and read the size of H: it is the manual’s gain formula. At 3,400 Hz the bottom of H points straight up.",
+    "animated": true,
+    "phone": true
+  },
+  "bilinear": {
+    "title": "The bilinear transform as a machine",
+    "caption": "One substitution turns a formula in s into five numbers you can run, sample by sample.",
+    "animated": true,
+    "phone": true
+  },
+  "zplane": {
+    "title": "The script’s filter on the circle",
+    "caption": "The double zero sits on 4,000 Hz, where infinity landed. The poles sit well inside the circle: the filter is stable.",
+    "animated": true,
+    "phone": true
+  },
+  "prewarp": {
+    "title": "Prewarping: read the curve backward",
+    "caption": "Start where you want the cutoff to land, and read back to the analog frequency that lands there.",
+    "animated": true,
+    "phone": true
+  },
+  "echo": {
+    "title": "The prewarped copy’s echo",
+    "caption": "The echo flips sign every sample because the new poles sit near the far left of the circle. Both pairs are inside it: stable.",
+    "animated": false,
+    "phone": true
+  },
+  "squeezed-prototype": {
+    "title": "The prototype, squeezed onto the line",
+    "caption": "The whole nearly flat stretch of the prototype lands below 3,400 Hz. That is why the prewarped copy is flatter than the exchange.",
+    "animated": true,
+    "phone": true
+  },
+  "overlay": {
+    "title": "Three curves, one pinned point",
+    "caption": "Prewarping pins one point. Below it the prewarped copy is flatter than the exchange, above it steeper.",
+    "animated": false,
+    "phone": true
+  }
+}

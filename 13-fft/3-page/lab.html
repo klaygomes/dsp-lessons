@@ -1,0 +1,47 @@
+<div class="lab" id="lab">
+  <h3>Lab: split eight samples</h3>
+  <p class="note">Edit the recording or pick a bin. The lab splits the samples into even and odd, computes bin k from the two parts, and asks you for its partner, bin k + 4, before it shows you.</p>
+  <fieldset class="rec">
+    <legend>The recording, eight whole numbers from −5 to 5</legend>
+    <div class="rec-cells" id="lab-rec"></div>
+  </fieldset>
+  <p class="err" id="lab-err" aria-live="polite"></p>
+  <div class="row" role="group" aria-label="Recording presets">
+    <button type="button" data-preset="tone">Rough 1,000 Hz tone</button>
+    <button type="button" data-preset="click">A click at n = 1</button>
+    <button type="button" data-preset="random">Random whole numbers</button>
+  </div>
+  <div class="row" role="group" aria-label="Which bin k">
+    <span class="label">Bin k:</span>
+    <button type="button" data-k="0" aria-pressed="false">0 (and 4)</button>
+    <button type="button" data-k="1" aria-pressed="false">1 (and 5)</button>
+    <button type="button" data-k="2" aria-pressed="false">2 (and 6)</button>
+    <button type="button" data-k="3" aria-pressed="true">3 (and 7)</button>
+  </div>
+  <canvas id="lab-stage" class="stage" role="img"></canvas>
+  <div class="key">
+    <span><i class="k-ink"></i>bin k, its arrows and its parts</span>
+    <span><i class="k-acc"></i>bin k + 4: flipped odd arrows, and the bin itself</span>
+    <span><i class="k-faint"></i>odd part before its extra turn</span>
+    <span id="lab-key-pin" hidden><i class="k-pin"></i>pinned bins</span>
+  </div>
+  <div id="lab-ask"></div>
+  <div class="readout" aria-live="polite">
+    <div class="result" id="lab-result"></div>
+    <p id="lab-why"></p>
+    <p class="compare" id="lab-compare" hidden></p>
+  </div>
+  <div class="row" role="group" aria-label="How to compute all eight bins">
+    <span class="label">All eight bins by:</span>
+    <button type="button" data-splits="0" aria-pressed="true">slow DFT</button>
+    <button type="button" data-splits="1" aria-pressed="false">one split</button>
+    <button type="button" data-splits="3" aria-pressed="false">full FFT</button>
+  </div>
+  <p class="bins" id="lab-bins" aria-live="polite"></p>
+  <p class="k-now" id="lab-count" aria-live="polite"></p>
+  <div class="row">
+    <button type="button" id="lab-pin">Pin these bins</button>
+    <button type="button" id="lab-reset">Reset</button>
+  </div>
+  <p class="jump" id="lab-jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</div>

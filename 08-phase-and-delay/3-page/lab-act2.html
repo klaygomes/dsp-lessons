@@ -1,0 +1,52 @@
+<div class="act2" id="act2-mount">
+  <button type="button" id="start-act2">Fix the bug</button>
+</div>
+<template id="act2-lab">
+  <div class="lab" id="lab2">
+    <h3>Fix the fax: an all-pass after the notch</h3>
+    <div class="task"><p id="a2-task"></p></div>
+    <div id="a2-ask"></div>
+    <canvas id="a2-stage" class="stage" role="img" aria-label="The all-pass pole on the unit circle and the line's group delay across the fax band."></canvas>
+    <div class="key">
+      <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-ref"/><circle cx="15" cy="6" r="3.5" class="mk-soft"/></svg>the notch alone</span>
+      <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-ap"/><rect x="11.5" y="2.5" width="7" height="7" class="mk-apdot"/></svg>the all-pass</span>
+      <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-total"/><path d="M15 1.5L19.5 6L15 10.5L10.5 6Z" class="mk-totaldot"/></svg>the whole line</span>
+      <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><rect x="2" y="1" width="26" height="10" class="mk-window"/></svg>the fax’s window</span>
+      <span>× pole, ○ zero; teal: the all-pass you move (its mirror pole follows)</span>
+    </div>
+    <div class="k-meter" id="a2-meter">
+      <span>All-pass gain</span>
+      <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+      <output aria-live="polite">?</output>
+      <div class="scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div class="result" id="a2-result"></div>
+      <p id="a2-why"></p>
+    </div>
+    <div class="a2-side">
+      <pre class="code"><code id="a2-program"></code></pre>
+      <figure class="fax">
+        <canvas id="a2-page" class="fax-page" role="img" aria-label="The test page the far-end fax prints."></canvas>
+        <figcaption id="a2-page-cap">The far-end fax’s test page.</figcaption>
+      </figure>
+    </div>
+    <div class="row">
+      <button type="button" id="a2-on" class="k-toggle" aria-pressed="false" disabled>All-pass on</button>
+    </div>
+    <div class="control">
+      <label for="a2-r">Pole radius: <output id="a2-r-out">0.40</output></label>
+      <input id="a2-r" type="range" min="0.3" max="0.95" step="0.01" value="0.4" disabled>
+    </div>
+    <div class="control">
+      <label for="a2-a">Pole angle: <output id="a2-a-out">400 Hz</output></label>
+      <input id="a2-a" type="range" min="0" max="2000" step="10" value="400" disabled>
+    </div>
+    <div class="row">
+      <button type="button" id="a2-play">Play</button>
+      <button type="button" id="a2-another" hidden>Try another fax</button>
+      <button type="button" id="a2-reset" class="quiet">Reset</button>
+    </div>
+    <p class="k-now" id="a2-now" aria-live="polite">Not playing.</p>
+  </div>
+</template>

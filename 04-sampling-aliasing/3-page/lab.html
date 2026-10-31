@@ -1,0 +1,59 @@
+<template id="tone-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key" data-k="key-explore">
+    <span><i class="k-true"></i>the true tone</span>
+    <span><i class="k-sample"></i>a sample</span>
+    <span><i class="k-stored"></i>the tone the phone stores</span>
+    <span><i class="k-ring"></i>the true dot, turning between samples</span>
+    <span><i class="k-n">0</i>round the wheel: sample number n</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>teal rings and dashed wave: pinned</span>
+  </div>
+  <div class="key" data-k="key-fix" hidden>
+    <span><i class="k-voice"></i>the voice</span>
+    <span><i class="k-alias"></i>a tone or an alias, height: how much is stored</span>
+    <span><i class="k-gain"></i>the filter’s gain: full to 600 Hz below the cutoff, half at the cutoff (dot), none from 600 Hz above</span>
+    <span><i class="k-gone"></i>removed</span>
+  </div>
+  <div class="k-meter" data-k="meter">
+    <span data-k="meter-name">Stored tone</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span data-k="meter-lo">0 Hz</span><span data-k="meter-hi">4,000 Hz</span></div>
+  </div>
+  <div class="k-meter" data-k="meter2" hidden>
+    <span>Voice kept, weakest tone</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="tone-control">
+    <label data-for="tone">True tone: <output data-k="tone-out">5,000 Hz</output></label>
+    <input data-k="tone" type="range" min="0" max="8000" step="100" value="5000" disabled>
+  </div>
+  <div class="row" data-k="place" role="group" aria-label="Where the filter goes" hidden>
+    <button type="button" data-place="none" aria-pressed="true">No filter</button>
+    <button type="button" data-place="after" aria-pressed="false">Filter after the sampler</button>
+    <button type="button" data-place="before" aria-pressed="false">Filter before the sampler</button>
+  </div>
+  <div class="control" data-k="cut-control" hidden>
+    <label data-for="cut">Cutoff: <output data-k="cut-out">4,800 Hz</output></label>
+    <input data-k="cut" type="range" min="1000" max="6000" step="50" value="4800" disabled>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play-true">Play the true tone</button>
+    <button type="button" data-k="play">Play what the phone stores</button>
+    <button type="button" data-k="freeze" class="k-toggle" aria-pressed="false">Freeze the wheel</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another call</button>
+    <button type="button" data-k="reset" class="quiet">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing.</p>
+</template>
+<div class="lab" id="lab"></div>

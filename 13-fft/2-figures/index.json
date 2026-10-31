@@ -1,0 +1,98 @@
+{
+  "multiply-cost": {
+    "title": "What a multiplication buys",
+    "caption": "Each tile is one multiplication. A sample into an arrow costs two; an arrow turned by an arrow costs four.",
+    "animated": false,
+    "phone": true
+  },
+  "work-grid": {
+    "title": "The bill for one block",
+    "caption": "One row per bin, one column per sample. The dashed outline is what the chip finishes before the next block arrives: 25,625 of the 42,230 multiplications.",
+    "animated": true,
+    "phone": true
+  },
+  "back-wheel": {
+    "title": "Turning back, in degrees and radians",
+    "caption": "Back means clockwise. Each turn is written in degrees and in radians, where a full turn is 2π.",
+    "animated": false,
+    "phone": true
+  },
+  "shared-arrows": {
+    "title": "Bins 1 and 5 share their arrows",
+    "caption": "Bin 1 against bin 5, sample by sample. Even samples: the same arrow. Odd samples: flipped, half a turn apart.",
+    "animated": true,
+    "phone": true
+  },
+  "odd-walk": {
+    "title": "The odd part, by hand",
+    "caption": "Left: the odd part laid tip to tail. Middle: turned back the extra 45°. Right: added to the even part for bin 1, subtracted for bin 5.",
+    "animated": true,
+    "phone": true
+  },
+  "butterfly": {
+    "title": "One butterfly",
+    "caption": "The two results enter on the left, the odd one is turned, and the crossing lines add and subtract it.",
+    "animated": false,
+    "phone": true
+  },
+  "split-tree": {
+    "title": "Splitting all the way down",
+    "caption": "Each level splits every block into its even and odd samples. The numbers count the multiplications if you stop splitting at that level.",
+    "animated": true,
+    "phone": true
+  },
+  "butterfly-network": {
+    "title": "The 8-sample FFT",
+    "caption": "Read left to right: three layers of four butterflies, each turn labelled with the arrow it turns by. The highlighted butterfly is the one you computed by hand.",
+    "animated": false,
+    "phone": true
+  },
+  "growth": {
+    "title": "The FFT’s gain grows with N",
+    "caption": "Both axes are on log scales. The gap between the lines is how many times fewer multiplications the FFT needs.",
+    "animated": false,
+    "phone": true
+  },
+  "bit-reverse": {
+    "title": "Bit-reversed order",
+    "caption": "Write each sample number in binary and read it backwards: that is the position it enters the network at.",
+    "animated": false,
+    "phone": true
+  },
+  "bins-256": {
+    "title": "The keypad tones at N = 256",
+    "caption": "Each tone lands on its own bin with at least one empty bin between neighbors. The dashed ticks are the old 205-sample bins.",
+    "animated": false,
+    "phone": true
+  },
+  "budget": {
+    "title": "What each split costs",
+    "caption": "Each bar is one choice of splits. Solid bars fit under the chip’s budget, hollow ones do not; the dotted top of each bar is the butterflies.",
+    "animated": false,
+    "phone": true
+  },
+  "wrap-wheel": {
+    "title": "A 4-sample DFT repeats after 4 bins",
+    "caption": "Bin k turns back k × 90° per sample. Bins 4 to 7 add a full turn, which does not count, so each lands on the bin four below it.",
+    "animated": true,
+    "phone": true
+  },
+  "goertzel-swing": {
+    "title": "Goertzel’s filter, pushed in time",
+    "caption": "Left: the pole pair and their sum, 2 × cos 35.1°. Right: the filter’s output, growing like a swing pushed in time, against a tone at the wrong speed.",
+    "animated": true,
+    "phone": true
+  },
+  "goertzel-final": {
+    "title": "The last step of Goertzel",
+    "caption": "Take the last output, subtract the one before it turned back one step of the test wheel, and the length of the result is the bin’s match.",
+    "animated": false,
+    "phone": true
+  },
+  "crossover": {
+    "title": "Goertzel against the FFT",
+    "caption": "Goertzel pays per bin; the FFT pays once for all of them. Below about 16 bins Goertzel is cheaper.",
+    "animated": false,
+    "phone": true
+  }
+}

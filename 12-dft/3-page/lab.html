@@ -1,0 +1,55 @@
+<template id="dft-lab">
+  <h3 data-k="title">Lab: a tone, a test wheel and the walk</h3>
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div data-k="ask2"></div>
+  <div data-k="ask3"></div>
+  <canvas data-k="walk" class="stage" role="img"></canvas>
+  <div class="row l12-timeline" data-k="timeline" role="group" aria-label="Which block of the recording to show" hidden></div>
+  <canvas data-k="bars" class="stage l12-bars" role="img"></canvas>
+  <p class="note" data-k="bars-note"></p>
+  <div class="key" data-k="key"></div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="tone-control">
+    <label data-for="tone">Tone: <output data-k="tone-out">2,000 Hz</output></label>
+    <input data-k="tone" type="range" min="0" max="4000" step="10" value="2000" disabled>
+  </div>
+  <div class="control" data-k="phase-control">
+    <label data-for="phase">Where its dot starts: <output data-k="phase-out">at the right</output></label>
+    <input data-k="phase" type="range" min="0" max="345" step="15" value="0" disabled>
+  </div>
+  <div class="control" data-k="n-control">
+    <label data-for="n">Block length: <output data-k="n-out">N = 8</output></label>
+    <div class="l12-pair">
+      <input data-k="n" type="range" min="8" max="256" step="1" value="8" disabled>
+      <button type="button" class="l12-step" data-k="n-down" aria-label="One sample shorter" disabled>−1</button>
+      <button type="button" class="l12-step" data-k="n-up" aria-label="One sample longer" disabled>+1</button>
+    </div>
+    <p class="l12-status" data-k="n-status" aria-live="polite"></p>
+  </div>
+  <div class="control" data-k="k-control">
+    <label data-for="k">Test wheel: <output data-k="k-out">2 turns</output></label>
+    <input data-k="k" type="range" min="0" max="4" step="1" value="2" disabled>
+  </div>
+  <div class="l12-picks" data-k="picks" hidden>
+    <p><b>Row bin that clears the bar:</b></p>
+    <div class="row" data-k="rows" role="group" aria-label="Row bin that clears the bar"></div>
+    <p><b>Column bin that clears the bar:</b></p>
+    <div class="row" data-k="cols" role="group" aria-label="Column bin that clears the bar"></div>
+    <p class="l12-feedback" data-k="pick-feedback" tabindex="-1" aria-live="polite"></p>
+    <p>Account number so far: <span class="l12-digits" data-k="digits">_ _ _ _</span></p>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another call</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite"></p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

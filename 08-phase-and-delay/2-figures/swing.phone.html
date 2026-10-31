@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lines swing fastest near the pole</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-swing-style">
+.k-fig .l-pole { stroke: var(--ink); stroke-width: 1.3; fill: none; }
+.k-fig .l-zero { stroke: var(--ink-soft); stroke-width: 2.6; stroke-dasharray: 8 3 2 3; fill: none; }
+.k-fig .l-win { fill: var(--ink-soft); opacity: 0.16; }
+.k-fig .l-win-edge { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .l-sum { stroke: var(--accent); stroke-width: 4; fill: none; }
+.k-fig .l-half { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .l-ink { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l-thin { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.k-fig .l-soft { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
+.k-fig .l-env { stroke: var(--ink-soft); stroke-width: 2.2; fill: none; }
+.k-fig .l-dot { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 5; stroke-linecap: round; fill: none; }
+.k-fig .l-ap { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .l-total { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-arc { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-m-ink { fill: var(--ink); }
+.k-fig .l-m-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l-m-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l-m-ap { fill: var(--input); }
+.k-fig .l-m-total { fill: var(--accent); }
+.k-fig .l-x { stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+.k-fig .l-x-accent { stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.k-fig .l-o { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .l-tri1 { fill: var(--paper-2); }
+.k-fig .l-tri2 { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linejoin: round; }
+.k-fig .l-halo { fill: var(--paper); }
+.k-fig .l-wedge { fill: var(--accent-soft); stroke: none; opacity: 0.8; }
+.k-fig .l-bracket { stroke: var(--accent); stroke-width: 2; fill: none; }
+.k-fig .l-bracket-input { stroke: var(--input); stroke-width: 2; fill: none; }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 8 · phase and delay</p>
+<h1>Lines swing fastest near the pole</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-swing-phone" viewBox="0 0 360 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="swing-phone-title swing-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="2"><title id="swing-phone-title">Lines swing fastest near the pole</title><desc id="swing-phone-desc">Two close-ups of the upper all-pass pole and zero. As the tone moves 100 Hz near 1,200 Hz, the pole line swings 12.8 degrees and the zero line 8.3 degrees the other way. Near 1,800 Hz the same move swings them 7.2 and 2.7 degrees.</desc><defs><marker id="swing-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="swing-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="swing-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="swing-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="760"/><g ><text class="k-name" x="14" y="36" text-anchor="start">near the pole: 1,150 to 1,250 Hz</text><path class="k-wheel" d="M260.51 255L258.29 251.24L256.01 247.52L253.67 243.84L251.26 240.2L248.79 236.61L246.25 233.05L243.66 229.55L241 226.08L238.29 222.67L235.51 219.3L232.68 215.99L229.79 212.72L226.84 209.5L223.83 206.34L220.78 203.22L217.66 200.17L214.5 197.16L211.28 194.21L208.01 191.32L204.7 188.49L201.33 185.71L197.92 183L194.45 180.34L190.95 177.75L187.39 175.21L183.8 172.74L180.16 170.33L176.48 167.99L172.76 165.71L169 163.49L165.2 161.35L161.37 159.26L157.5 157.25L153.59 155.3L149.65 153.42L145.68 151.61L141.68 149.87L137.65 148.2L133.59 146.6L129.51 145.08L125.39 143.62L121.25 142.24L117.09 140.92L112.91 139.68L108.7 138.52L104.48 137.43L100.24 136.41L95.98 135.46L91.7 134.59L87.41 133.8L83.11 133.08L78.79 132.43L74.47 131.86L70.13 131.37L65.79 130.95L61.44 130.61L57.08 130.34L52.72 130.15L48.36 130.04L44 130L39.64 130.04L35.28 130.15L30.92 130.34L26.56 130.61L22.21 130.95L17.87 131.37L13.53 131.86" fill="none"/><g ><line class="l-x" x1="133.52" y1="242.53" x2="145.52" y2="254.53"/><line class="l-x" x1="133.52" y1="254.53" x2="145.52" y2="242.53"/></g><circle class="l-o" cx="270.07" cy="68.84" r="6"/><text class="k-tick" x="151.52" y="252.53" text-anchor="start">pole</text><text class="k-tick" x="282.07" y="72.84" text-anchor="start">zero</text><text class="k-tick" x="251" y="213.66" text-anchor="start">unit circle</text></g><g ><text class="k-name" x="14" y="366" text-anchor="start">far: 1,750 to 1,850 Hz</text><path class="k-wheel" d="M260.51 585L258.29 581.24L256.01 577.52L253.67 573.84L251.26 570.2L248.79 566.61L246.25 563.05L243.66 559.55L241 556.08L238.29 552.67L235.51 549.3L232.68 545.99L229.79 542.72L226.84 539.5L223.83 536.34L220.78 533.22L217.66 530.17L214.5 527.16L211.28 524.21L208.01 521.32L204.7 518.49L201.33 515.71L197.92 513L194.45 510.34L190.95 507.75L187.39 505.21L183.8 502.74L180.16 500.33L176.48 497.99L172.76 495.71L169 493.49L165.2 491.35L161.37 489.26L157.5 487.25L153.59 485.3L149.65 483.42L145.68 481.61L141.68 479.87L137.65 478.2L133.59 476.6L129.51 475.08L125.39 473.62L121.25 472.24L117.09 470.92L112.91 469.68L108.7 468.52L104.48 467.43L100.24 466.41L95.98 465.46L91.7 464.59L87.41 463.8L83.11 463.08L78.79 462.43L74.47 461.86L70.13 461.37L65.79 460.95L61.44 460.61L57.08 460.34L52.72 460.15L48.36 460.04L44 460L39.64 460.04L35.28 460.15L30.92 460.34L26.56 460.61L22.21 460.95L17.87 461.37L13.53 461.86" fill="none"/><g ><line class="l-x" x1="133.52" y1="572.53" x2="145.52" y2="584.53"/><line class="l-x" x1="133.52" y1="584.53" x2="145.52" y2="572.53"/></g><circle class="l-o" cx="270.07" cy="398.84" r="6"/><text class="k-tick" x="151.52" y="582.53" text-anchor="start">pole</text><text class="k-tick" x="282.07" y="402.84" text-anchor="start">zero</text><text class="k-tick" x="218.34" y="511" text-anchor="start">unit circle</text></g><g data-motion-item="" data-step="1" aria-label="near 1,200 Hz, as the tone moves 100 Hz, the pole line swings 12.8 degrees and the zero line 8.3 degrees the other way"><g ><path class="l-wedge" d="M139.52 248.53L198.77 183.67L182.89 172.13Z" fill="none"/><path class="l-wedge" d="M270.07 68.84L198.77 183.67L182.89 172.13Z" fill="none"/><g class="k-ghost k-a-flash" style="--d:1.15;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="248.53" x2="195.67" y2="181.26"/><line class="l-zero" x1="270.07" y1="68.84" x2="195.67" y2="181.26"/></g><g class="k-ghost k-a-flash" style="--d:1.5;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="248.53" x2="192.53" y2="178.91"/><line class="l-zero" x1="270.07" y1="68.84" x2="192.53" y2="178.91"/></g><g class="k-ghost k-a-flash" style="--d:1.8499999999999999;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="248.53" x2="189.35" y2="176.6"/><line class="l-zero" x1="270.07" y1="68.84" x2="189.35" y2="176.6"/></g><g class="k-ghost k-a-flash" style="--d:2.2;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="248.53" x2="186.14" y2="174.34"/><line class="l-zero" x1="270.07" y1="68.84" x2="186.14" y2="174.34"/></g><line class="l-pole" x1="139.52" y1="248.53" x2="198.77" y2="183.67"/><line class="l-pole" x1="139.52" y1="248.53" x2="182.89" y2="172.13"/><line class="l-zero" x1="270.07" y1="68.84" x2="198.77" y2="183.67"/><line class="l-zero" x1="270.07" y1="68.84" x2="182.89" y2="172.13"/><circle class="l-m-hollow" cx="198.77" cy="183.67" r="4.5"/><circle class="l-m-total" cx="182.89" cy="172.13" r="4.5"/><path class="l-arc" d="M186.73 196.85A70 70 0 0 0 174.08 187.66" fill="none"/><path class="l-arc" d="M212.02 137.62A90 90 0 0 0 222.6 145.3" fill="none"/><text class="k-num-accent" x="131.52" y="272.53" text-anchor="start">the pole’s line swings 12.8°</text><text class="k-num-accent" x="244.45" y="123.37" text-anchor="start">zero line: 8.3°,</text><text class="k-num-accent" x="244.45" y="139.37" text-anchor="start">the other way</text></g></g><g data-motion-item="" data-step="2" aria-label="near 1,800 Hz the same 100 Hz swings the pole line only 7.2 degrees and the zero line 2.7 degrees"><g ><path class="l-wedge" d="M139.52 578.53L92.77 464.8L73.38 461.73Z" fill="none"/><path class="l-wedge" d="M270.07 398.84L92.77 464.8L73.38 461.73Z" fill="none"/><g class="k-ghost k-a-flash" style="--d:4.1499999999999995;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="578.53" x2="88.92" y2="464.07"/><line class="l-zero" x1="270.07" y1="398.84" x2="88.92" y2="464.07"/></g><g class="k-ghost k-a-flash" style="--d:4.5;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="578.53" x2="85.05" y2="463.39"/><line class="l-zero" x1="270.07" y1="398.84" x2="85.05" y2="463.39"/></g><g class="k-ghost k-a-flash" style="--d:4.85;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="578.53" x2="81.17" y2="462.78"/><line class="l-zero" x1="270.07" y1="398.84" x2="81.17" y2="462.78"/></g><g class="k-ghost k-a-flash" style="--d:5.199999999999999;--len:0.5" aria-hidden="true"><line class="l-pole" x1="139.52" y1="578.53" x2="77.28" y2="462.23"/><line class="l-zero" x1="270.07" y1="398.84" x2="77.28" y2="462.23"/></g><line class="l-pole" x1="139.52" y1="578.53" x2="92.77" y2="464.8"/><line class="l-pole" x1="139.52" y1="578.53" x2="73.38" y2="461.73"/><line class="l-zero" x1="270.07" y1="398.84" x2="92.77" y2="464.8"/><line class="l-zero" x1="270.07" y1="398.84" x2="73.38" y2="461.73"/><circle class="l-m-hollow" cx="92.77" cy="464.8" r="4.5"/><circle class="l-m-total" cx="73.38" cy="461.73" r="4.5"/><path class="l-arc" d="M112.91 513.79A70 70 0 0 0 105.03 517.62" fill="none"/><path class="l-arc" d="M184.35 426.25A90 90 0 0 0 185.72 430.22" fill="none"/><text class="k-num-accent" x="131.52" y="602.53" text-anchor="start">the pole’s line swings 7.2°</text><text class="k-num-accent" x="14" y="388" text-anchor="start">zero line: 2.7°, the other way</text></g></g><text class="k-note" x="14" y="748" text-anchor="start">close to the pole, the lines whip round</text><g ><g ><circle class="l-m-hollow" cx="28" cy="716" r="4"/><text class="k-label" x="50" y="720" text-anchor="start">the tone</text></g><g ><circle class="l-m-total" cx="178" cy="716" r="4"/><text class="k-label" x="200" y="720" text-anchor="start">100 Hz higher</text></g></g></svg></div>
+</div>
+</body>
+</html>

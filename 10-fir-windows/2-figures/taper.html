@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hamming taper over the ideal list</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-taper-style">.k-fig .w-pass { fill: var(--input-soft); } .k-fig .w-mirror { fill: var(--paper-2); } .k-fig .w-stripe-bg { fill: var(--paper); } .k-fig .w-stripe { stroke: var(--ink-soft); stroke-width: 1.2; opacity: 0.55; } .k-fig .w-tb { fill: var(--paper-2); } .k-fig .w-strip { fill: var(--input-soft); stroke: var(--input); stroke-width: 0.8; } .k-fig .w-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; } .k-fig .w-main { stroke: var(--ink); stroke-width: 2.4; fill: none; } .k-fig .w-thin { stroke: var(--ink); stroke-width: 1.3; fill: none; } .k-fig .w-dot { stroke: var(--ink-soft); stroke-width: 2.4; stroke-dasharray: 0.5 4.5; stroke-linecap: round; fill: none; } .k-fig .w-dashdot { stroke: var(--ink-soft); stroke-width: 1.8; stroke-dasharray: 9 3 2 3; fill: none; } .k-fig .w-win { stroke: var(--input); stroke-width: 2.2; fill: none; } .k-fig .w-m-ink { fill: var(--ink); } .k-fig .w-m-soft { fill: var(--ink-soft); } .k-fig .w-m-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; } .k-fig .w-m-soft-hollow { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; } .k-fig .w-m-accent { fill: var(--accent); } .k-fig .w-ghost { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.4; fill: none; } .k-fig .w-ghost-band { fill: var(--accent); } .k-fig .w-sum { stroke: var(--accent); stroke-width: 3.5; } .k-fig .w-hump { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1.4; } .k-fig .w-left-out { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; } .k-fig .w-cell { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; } .k-fig .w-cell-on { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; } .k-fig .w-bar-accent { fill: var(--accent); } .k-fig .w-bar { fill: var(--ink); } .k-fig .w-bar-soft { fill: var(--ink-soft); } .k-fig .w-out { stroke: var(--accent); stroke-width: 2.4; fill: none; } .k-fig .w-arc { stroke: var(--ink-soft); stroke-width: 1.3; fill: none; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 10 · FIR design by windows</p>
+<h1>The Hamming taper over the ideal list</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-taper" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="taper-title taper-desc"><title id="taper-title">The Hamming taper over the ideal list</title><desc id="taper-desc">The Hamming weights, 1 in the middle and 0.08 at the ends, drawn as a bell over the 45 ideal coefficients from −22 to 22; the new coefficients, ideal times weight, form a second set that barely changes in the middle and shrinks at the ends.</desc><defs><marker id="taper-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="taper-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="taper-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="taper-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="300"/><text class="k-name" x="60" y="30" text-anchor="start">Hamming weights over the 45 ideal coefficients</text><g ><line class="k-axis" x1="60" y1="244.39" x2="480" y2="244.39"/><text class="k-tick" x="52" y="77.66" text-anchor="end">1</text><text class="k-tick" x="52" y="163.02" text-anchor="end">0.5</text><text class="k-tick" x="52" y="248.39" text-anchor="end">0</text><text class="k-tick" x="69.13" y="288" text-anchor="middle">−22</text><text class="k-tick" x="169.57" y="288" text-anchor="middle">−11</text><text class="k-tick" x="270" y="288" text-anchor="middle">n = 0</text><text class="k-tick" x="370.43" y="288" text-anchor="middle">11</text><text class="k-tick" x="470.87" y="288" text-anchor="middle">22</text></g><path class="w-win" d="M69.13 230.73L70.8 230.7L72.48 230.62L74.15 230.49L75.83 230.3L77.5 230.06L79.17 229.76L80.85 229.42L82.52 229.02L84.2 228.56L85.87 228.06L87.54 227.5L89.22 226.89L90.89 226.23L92.57 225.52L94.24 224.75L95.91 223.94L97.59 223.08L99.26 222.17L100.93 221.21L102.61 220.21L104.28 219.16L105.96 218.06L107.63 216.92L109.3 215.73L110.98 214.5L112.65 213.23L114.33 211.91L116 210.56L117.67 209.16L119.35 207.73L121.02 206.26L122.7 204.75L124.37 203.2L126.04 201.62L127.72 200.01L129.39 198.36L131.07 196.68L132.74 194.97L134.41 193.23L136.09 191.46L137.76 189.67L139.43 187.85L141.11 186.01L142.78 184.14L144.46 182.25L146.13 180.34L147.8 178.41L149.48 176.46L151.15 174.5L152.83 172.52L154.5 170.53L156.17 168.52L157.85 166.51L159.52 164.48L161.2 162.45L162.87 160.4L164.54 158.36L166.22 156.31L167.89 154.25L169.57 152.2L171.24 150.14L172.91 148.08L174.59 146.03L176.26 143.99L177.93 141.94L179.61 139.91L181.28 137.88L182.96 135.87L184.63 133.86L186.3 131.87L187.98 129.89L189.65 127.93L191.33 125.98L193 124.05L194.67 122.14L196.35 120.25L198.02 118.38L199.7 116.54L201.37 114.72L203.04 112.93L204.72 111.16L206.39 109.42L208.07 107.71L209.74 106.03L211.41 104.39L213.09 102.77L214.76 101.19L216.43 99.64L218.11 98.13L219.78 96.66L221.46 95.23L223.13 93.83L224.8 92.48L226.48 91.16L228.15 89.89L229.83 88.66L231.5 87.47L233.17 86.33L234.85 85.23L236.52 84.18L238.2 83.18L239.87 82.22L241.54 81.31L243.22 80.45L244.89 79.64L246.57 78.87L248.24 78.16L249.91 77.5L251.59 76.89L253.26 76.33L254.93 75.83L256.61 75.37L258.28 74.97L259.96 74.63L261.63 74.33L263.3 74.09L264.98 73.9L266.65 73.77L268.33 73.69L270 73.66L271.67 73.69L273.35 73.77L275.02 73.9L276.7 74.09L278.37 74.33L280.04 74.63L281.72 74.97L283.39 75.37L285.07 75.83L286.74 76.33L288.41 76.89L290.09 77.5L291.76 78.16L293.43 78.87L295.11 79.64L296.78 80.45L298.46 81.31L300.13 82.22L301.8 83.18L303.48 84.18L305.15 85.23L306.83 86.33L308.5 87.47L310.17 88.66L311.85 89.89L313.52 91.16L315.2 92.48L316.87 93.83L318.54 95.23L320.22 96.66L321.89 98.13L323.57 99.64L325.24 101.19L326.91 102.77L328.59 104.39L330.26 106.03L331.93 107.71L333.61 109.42L335.28 111.16L336.96 112.93L338.63 114.72L340.3 116.54L341.98 118.38L343.65 120.25L345.33 122.14L347 124.05L348.67 125.98L350.35 127.93L352.02 129.89L353.7 131.87L355.37 133.86L357.04 135.87L358.72 137.88L360.39 139.91L362.07 141.94L363.74 143.99L365.41 146.03L367.09 148.08L368.76 150.14L370.43 152.2L372.11 154.25L373.78 156.31L375.46 158.36L377.13 160.4L378.8 162.45L380.48 164.48L382.15 166.51L383.83 168.52L385.5 170.53L387.17 172.52L388.85 174.5L390.52 176.46L392.2 178.41L393.87 180.34L395.54 182.25L397.22 184.14L398.89 186.01L400.57 187.85L402.24 189.67L403.91 191.46L405.59 193.23L407.26 194.97L408.93 196.68L410.61 198.36L412.28 200.01L413.96 201.62L415.63 203.2L417.3 204.75L418.98 206.26L420.65 207.73L422.33 209.16L424 210.56L425.67 211.91L427.35 213.23L429.02 214.5L430.7 215.73L432.37 216.92L434.04 218.06L435.72 219.16L437.39 220.21L439.07 221.21L440.74 222.17L442.41 223.08L444.09 223.94L445.76 224.75L447.43 225.52L449.11 226.23L450.78 226.89L452.46 227.5L454.13 228.06L455.8 228.56L457.48 229.02L459.15 229.42L460.83 229.76L462.5 230.06L464.17 230.3L465.85 230.49L467.52 230.62L469.2 230.7L470.87 230.73" fill="none"/><g ><g ><line class="k-stem-soft" x1="69.13" y1="244.39" x2="69.13" y2="244.39"/><circle class="k-stem-soft-dot" cx="69.13" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="78.26" y1="244.39" x2="78.26" y2="241.8"/><circle class="k-stem-soft-dot" cx="78.26" cy="241.8" r="3"/></g><g ><line class="k-stem-soft" x1="87.39" y1="244.39" x2="87.39" y2="244.39"/><circle class="k-stem-soft-dot" cx="87.39" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="96.52" y1="244.39" x2="96.52" y2="247.25"/><circle class="k-stem-soft-dot" cx="96.52" cy="247.25" r="3"/></g><g ><line class="k-stem-soft" x1="105.65" y1="244.39" x2="105.65" y2="244.39"/><circle class="k-stem-soft-dot" cx="105.65" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="114.78" y1="244.39" x2="114.78" y2="241.19"/><circle class="k-stem-soft-dot" cx="114.78" cy="241.19" r="3"/></g><g ><line class="k-stem-soft" x1="123.91" y1="244.39" x2="123.91" y2="244.39"/><circle class="k-stem-soft-dot" cx="123.91" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="133.04" y1="244.39" x2="133.04" y2="248.01"/><circle class="k-stem-soft-dot" cx="133.04" cy="248.01" r="3"/></g><g ><line class="k-stem-soft" x1="142.17" y1="244.39" x2="142.17" y2="244.39"/><circle class="k-stem-soft-dot" cx="142.17" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="151.3" y1="244.39" x2="151.3" y2="240.21"/><circle class="k-stem-soft-dot" cx="151.3" cy="240.21" r="3"/></g><g ><line class="k-stem-soft" x1="160.43" y1="244.39" x2="160.43" y2="244.39"/><circle class="k-stem-soft-dot" cx="160.43" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="169.57" y1="244.39" x2="169.57" y2="249.33"/><circle class="k-stem-soft-dot" cx="169.57" cy="249.33" r="3"/></g><g ><line class="k-stem-soft" x1="178.7" y1="244.39" x2="178.7" y2="244.39"/><circle class="k-stem-soft-dot" cx="178.7" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="187.83" y1="244.39" x2="187.83" y2="238.35"/><circle class="k-stem-soft-dot" cx="187.83" cy="238.35" r="3"/></g><g ><line class="k-stem-soft" x1="196.96" y1="244.39" x2="196.96" y2="244.39"/><circle class="k-stem-soft-dot" cx="196.96" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="206.09" y1="244.39" x2="206.09" y2="252.15"/><circle class="k-stem-soft-dot" cx="206.09" cy="252.15" r="3"/></g><g ><line class="k-stem-soft" x1="215.22" y1="244.39" x2="215.22" y2="244.39"/><circle class="k-stem-soft-dot" cx="215.22" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="224.35" y1="244.39" x2="224.35" y2="233.52"/><circle class="k-stem-soft-dot" cx="224.35" cy="233.52" r="3"/></g><g ><line class="k-stem-soft" x1="233.48" y1="244.39" x2="233.48" y2="244.39"/><circle class="k-stem-soft-dot" cx="233.48" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="242.61" y1="244.39" x2="242.61" y2="262.51"/><circle class="k-stem-soft-dot" cx="242.61" cy="262.51" r="3"/></g><g ><line class="k-stem-soft" x1="251.74" y1="244.39" x2="251.74" y2="244.39"/><circle class="k-stem-soft-dot" cx="251.74" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="260.87" y1="244.39" x2="260.87" y2="190.04"/><circle class="k-stem-soft-dot" cx="260.87" cy="190.04" r="3"/></g><g ><line class="k-stem-soft" x1="270" y1="244.39" x2="270" y2="159.02"/><circle class="k-stem-soft-dot" cx="270" cy="159.02" r="3"/></g><g ><line class="k-stem-soft" x1="279.13" y1="244.39" x2="279.13" y2="190.04"/><circle class="k-stem-soft-dot" cx="279.13" cy="190.04" r="3"/></g><g ><line class="k-stem-soft" x1="288.26" y1="244.39" x2="288.26" y2="244.39"/><circle class="k-stem-soft-dot" cx="288.26" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="297.39" y1="244.39" x2="297.39" y2="262.51"/><circle class="k-stem-soft-dot" cx="297.39" cy="262.51" r="3"/></g><g ><line class="k-stem-soft" x1="306.52" y1="244.39" x2="306.52" y2="244.39"/><circle class="k-stem-soft-dot" cx="306.52" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="315.65" y1="244.39" x2="315.65" y2="233.52"/><circle class="k-stem-soft-dot" cx="315.65" cy="233.52" r="3"/></g><g ><line class="k-stem-soft" x1="324.78" y1="244.39" x2="324.78" y2="244.39"/><circle class="k-stem-soft-dot" cx="324.78" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="333.91" y1="244.39" x2="333.91" y2="252.15"/><circle class="k-stem-soft-dot" cx="333.91" cy="252.15" r="3"/></g><g ><line class="k-stem-soft" x1="343.04" y1="244.39" x2="343.04" y2="244.39"/><circle class="k-stem-soft-dot" cx="343.04" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="352.17" y1="244.39" x2="352.17" y2="238.35"/><circle class="k-stem-soft-dot" cx="352.17" cy="238.35" r="3"/></g><g ><line class="k-stem-soft" x1="361.3" y1="244.39" x2="361.3" y2="244.39"/><circle class="k-stem-soft-dot" cx="361.3" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="370.43" y1="244.39" x2="370.43" y2="249.33"/><circle class="k-stem-soft-dot" cx="370.43" cy="249.33" r="3"/></g><g ><line class="k-stem-soft" x1="379.57" y1="244.39" x2="379.57" y2="244.39"/><circle class="k-stem-soft-dot" cx="379.57" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="388.7" y1="244.39" x2="388.7" y2="240.21"/><circle class="k-stem-soft-dot" cx="388.7" cy="240.21" r="3"/></g><g ><line class="k-stem-soft" x1="397.83" y1="244.39" x2="397.83" y2="244.39"/><circle class="k-stem-soft-dot" cx="397.83" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="406.96" y1="244.39" x2="406.96" y2="248.01"/><circle class="k-stem-soft-dot" cx="406.96" cy="248.01" r="3"/></g><g ><line class="k-stem-soft" x1="416.09" y1="244.39" x2="416.09" y2="244.39"/><circle class="k-stem-soft-dot" cx="416.09" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="425.22" y1="244.39" x2="425.22" y2="241.19"/><circle class="k-stem-soft-dot" cx="425.22" cy="241.19" r="3"/></g><g ><line class="k-stem-soft" x1="434.35" y1="244.39" x2="434.35" y2="244.39"/><circle class="k-stem-soft-dot" cx="434.35" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="443.48" y1="244.39" x2="443.48" y2="247.25"/><circle class="k-stem-soft-dot" cx="443.48" cy="247.25" r="3"/></g><g ><line class="k-stem-soft" x1="452.61" y1="244.39" x2="452.61" y2="244.39"/><circle class="k-stem-soft-dot" cx="452.61" cy="244.39" r="3"/></g><g ><line class="k-stem-soft" x1="461.74" y1="244.39" x2="461.74" y2="241.8"/><circle class="k-stem-soft-dot" cx="461.74" cy="241.8" r="3"/></g><g ><line class="k-stem-soft" x1="470.87" y1="244.39" x2="470.87" y2="244.39"/><circle class="k-stem-soft-dot" cx="470.87" cy="244.39" r="3"/></g></g><g ><g ><line class="k-stem" x1="69.13" y1="244.39" x2="69.13" y2="244.39"/><circle class="k-stem-dot" cx="69.13" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="78.26" y1="244.39" x2="78.26" y2="244.17"/><circle class="k-stem-dot" cx="78.26" cy="244.17" r="3"/></g><g ><line class="k-stem" x1="87.39" y1="244.39" x2="87.39" y2="244.39"/><circle class="k-stem-dot" cx="87.39" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="96.52" y1="244.39" x2="96.52" y2="244.74"/><circle class="k-stem-dot" cx="96.52" cy="244.74" r="3"/></g><g ><line class="k-stem" x1="105.65" y1="244.39" x2="105.65" y2="244.39"/><circle class="k-stem-dot" cx="105.65" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="114.78" y1="244.39" x2="114.78" y2="243.78"/><circle class="k-stem-dot" cx="114.78" cy="243.78" r="3"/></g><g ><line class="k-stem" x1="123.91" y1="244.39" x2="123.91" y2="244.39"/><circle class="k-stem-dot" cx="123.91" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="133.04" y1="244.39" x2="133.04" y2="245.45"/><circle class="k-stem-dot" cx="133.04" cy="245.45" r="3"/></g><g ><line class="k-stem" x1="142.17" y1="244.39" x2="142.17" y2="244.39"/><circle class="k-stem-dot" cx="142.17" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="151.3" y1="244.39" x2="151.3" y2="242.67"/><circle class="k-stem-dot" cx="151.3" cy="242.67" r="3"/></g><g ><line class="k-stem" x1="160.43" y1="244.39" x2="160.43" y2="244.39"/><circle class="k-stem-dot" cx="160.43" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="169.57" y1="244.39" x2="169.57" y2="247.06"/><circle class="k-stem-dot" cx="169.57" cy="247.06" r="3"/></g><g ><line class="k-stem" x1="178.7" y1="244.39" x2="178.7" y2="244.39"/><circle class="k-stem-dot" cx="178.7" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="187.83" y1="244.39" x2="187.83" y2="240.35"/><circle class="k-stem-dot" cx="187.83" cy="240.35" r="3"/></g><g ><line class="k-stem" x1="196.96" y1="244.39" x2="196.96" y2="244.39"/><circle class="k-stem-dot" cx="196.96" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="206.09" y1="244.39" x2="206.09" y2="250.51"/><circle class="k-stem-dot" cx="206.09" cy="250.51" r="3"/></g><g ><line class="k-stem" x1="215.22" y1="244.39" x2="215.22" y2="244.39"/><circle class="k-stem-dot" cx="215.22" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="224.35" y1="244.39" x2="224.35" y2="234.74"/><circle class="k-stem-dot" cx="224.35" cy="234.74" r="3"/></g><g ><line class="k-stem" x1="233.48" y1="244.39" x2="233.48" y2="244.39"/><circle class="k-stem-dot" cx="233.48" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="242.61" y1="244.39" x2="242.61" y2="261.75"/><circle class="k-stem-dot" cx="242.61" cy="261.75" r="3"/></g><g ><line class="k-stem" x1="251.74" y1="244.39" x2="251.74" y2="244.39"/><circle class="k-stem-dot" cx="251.74" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="260.87" y1="244.39" x2="260.87" y2="190.3"/><circle class="k-stem-dot" cx="260.87" cy="190.3" r="3"/></g><g ><line class="k-stem" x1="270" y1="244.39" x2="270" y2="159.02"/><circle class="k-stem-dot" cx="270" cy="159.02" r="3"/></g><g ><line class="k-stem" x1="279.13" y1="244.39" x2="279.13" y2="190.3"/><circle class="k-stem-dot" cx="279.13" cy="190.3" r="3"/></g><g ><line class="k-stem" x1="288.26" y1="244.39" x2="288.26" y2="244.39"/><circle class="k-stem-dot" cx="288.26" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="297.39" y1="244.39" x2="297.39" y2="261.75"/><circle class="k-stem-dot" cx="297.39" cy="261.75" r="3"/></g><g ><line class="k-stem" x1="306.52" y1="244.39" x2="306.52" y2="244.39"/><circle class="k-stem-dot" cx="306.52" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="315.65" y1="244.39" x2="315.65" y2="234.74"/><circle class="k-stem-dot" cx="315.65" cy="234.74" r="3"/></g><g ><line class="k-stem" x1="324.78" y1="244.39" x2="324.78" y2="244.39"/><circle class="k-stem-dot" cx="324.78" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="333.91" y1="244.39" x2="333.91" y2="250.51"/><circle class="k-stem-dot" cx="333.91" cy="250.51" r="3"/></g><g ><line class="k-stem" x1="343.04" y1="244.39" x2="343.04" y2="244.39"/><circle class="k-stem-dot" cx="343.04" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="352.17" y1="244.39" x2="352.17" y2="240.35"/><circle class="k-stem-dot" cx="352.17" cy="240.35" r="3"/></g><g ><line class="k-stem" x1="361.3" y1="244.39" x2="361.3" y2="244.39"/><circle class="k-stem-dot" cx="361.3" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="370.43" y1="244.39" x2="370.43" y2="247.06"/><circle class="k-stem-dot" cx="370.43" cy="247.06" r="3"/></g><g ><line class="k-stem" x1="379.57" y1="244.39" x2="379.57" y2="244.39"/><circle class="k-stem-dot" cx="379.57" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="388.7" y1="244.39" x2="388.7" y2="242.67"/><circle class="k-stem-dot" cx="388.7" cy="242.67" r="3"/></g><g ><line class="k-stem" x1="397.83" y1="244.39" x2="397.83" y2="244.39"/><circle class="k-stem-dot" cx="397.83" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="406.96" y1="244.39" x2="406.96" y2="245.45"/><circle class="k-stem-dot" cx="406.96" cy="245.45" r="3"/></g><g ><line class="k-stem" x1="416.09" y1="244.39" x2="416.09" y2="244.39"/><circle class="k-stem-dot" cx="416.09" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="425.22" y1="244.39" x2="425.22" y2="243.78"/><circle class="k-stem-dot" cx="425.22" cy="243.78" r="3"/></g><g ><line class="k-stem" x1="434.35" y1="244.39" x2="434.35" y2="244.39"/><circle class="k-stem-dot" cx="434.35" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="443.48" y1="244.39" x2="443.48" y2="244.74"/><circle class="k-stem-dot" cx="443.48" cy="244.74" r="3"/></g><g ><line class="k-stem" x1="452.61" y1="244.39" x2="452.61" y2="244.39"/><circle class="k-stem-dot" cx="452.61" cy="244.39" r="3"/></g><g ><line class="k-stem" x1="461.74" y1="244.39" x2="461.74" y2="244.17"/><circle class="k-stem-dot" cx="461.74" cy="244.17" r="3"/></g><g ><line class="k-stem" x1="470.87" y1="244.39" x2="470.87" y2="244.39"/><circle class="k-stem-dot" cx="470.87" cy="244.39" r="3"/></g></g><text class="k-num-input" x="278" y="67.66" text-anchor="start">1.000</text><text class="k-num-input" x="470.87" y="216.73" text-anchor="middle">0.08</text><text class="k-num-input" x="69.13" y="216.73" text-anchor="middle">0.08</text><g ><g ><line class="w-win" x1="500" y1="106" x2="530" y2="106"/><text class="k-label" x="538" y="110" text-anchor="start">Hamming weight w[n]</text></g><g ><line class="k-stem-soft" x1="500" y1="136" x2="530" y2="136"/><circle class="w-m-soft-hollow" cx="515" cy="136" r="4.5"/><text class="k-label" x="538" y="140" text-anchor="start">ideal, dashed</text></g><g ><line class="w-main" x1="500" y1="166" x2="530" y2="166"/><circle class="w-m-ink" cx="515" cy="166" r="4.5"/><text class="k-label" x="538" y="170" text-anchor="start">new: ideal × weight</text></g></g><text class="k-note" x="500" y="220" text-anchor="start">the middle barely moves;</text><text class="k-note" x="500" y="242" text-anchor="start">the ends are squashed</text></svg></div>
+</div>
+</body>
+</html>

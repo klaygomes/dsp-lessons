@@ -1,0 +1,110 @@
+{
+  "samples": {
+    "title": "A call is a list of samples",
+    "caption": "The line measures the voltage 8,000 times a second and keeps only those dots. The dashed curve is the wave they came from, which carries on between them.",
+    "animated": true,
+    "phone": true
+  },
+  "tone-steps": {
+    "title": "A tone, one 45° step at a time",
+    "caption": "A 1,000 Hz tone: the angle steps 360° × 1,000 ÷ 8,000 = 45° per sample, and the cosine of each angle is one sample.",
+    "animated": true,
+    "phone": true
+  },
+  "system": {
+    "title": "A system: a signal in, a signal out",
+    "caption": "A system is any rule that takes in one signal and gives back another.",
+    "animated": false,
+    "phone": true
+  },
+  "clip": {
+    "title": "The booster clips the loud caller",
+    "caption": "Both callers boosted by 4. The shaded band is all the chip can store; the loud caller’s stems cross its edge and are pushed back onto it.",
+    "animated": true,
+    "phone": true
+  },
+  "neighbor-rule": {
+    "title": "The neighbor rule at n = 1",
+    "caption": "Add the two neighbors and compare with 1.414 times the middle. The clean tone matches; the clipped list does not.",
+    "animated": false,
+    "phone": true
+  },
+  "two-tones": {
+    "title": "The clipped list is two tones",
+    "caption": "Big 1,000 Hz wave minus small 3,000 Hz wave: the result passes through every flat clipped stem. The small wave is the buzz.",
+    "animated": true,
+    "phone": true
+  },
+  "superposition": {
+    "title": "Superposition, run as two paths",
+    "caption": "Add first and then the system, against the system first and then add. A linear system gives the same answer both ways.",
+    "animated": false,
+    "phone": true
+  },
+  "time-invariance": {
+    "title": "Time-invariance: later in, later out",
+    "caption": "The booster does the same thing at every moment: shift the blip three samples and its output shifts three samples, nothing else. The input (0.2 at its top) and the output (0.8) are drawn the same height, so their shapes can be compared.",
+    "animated": false,
+    "phone": true
+  },
+  "speakerphone": {
+    "title": "Two clean voices, one clipped sum",
+    "caption": "Each boosted voice fits in the band on its own. Added together, they poke out and are cut flat. Testing one caller at a time never shows it.",
+    "animated": true,
+    "phone": true
+  },
+  "smoother": {
+    "title": "The smoother keeps the tone a tone",
+    "caption": "Draw the smooth wave through the smoother’s dots: the same tone, a bit smaller and half a sample late.",
+    "animated": false,
+    "phone": true
+  },
+  "fader": {
+    "title": "The fader is not time-invariant",
+    "caption": "The fader multiplies each sample by a ramp, so when an input arrives changes what comes out.",
+    "animated": false,
+    "phone": true
+  },
+  "constant": {
+    "title": "Adding 0.1 adds a 0 Hz tone",
+    "caption": "Add 0.1 to every sample and the centre line moves up. That constant is a 0 Hz tone that was never in the call.",
+    "animated": false,
+    "phone": true
+  },
+  "proof": {
+    "title": "Why an LTI system keeps the tone",
+    "caption": "Read down each column: three copies that add to zero. Time-invariance carries each row through T, linearity carries the sum, so y obeys the same neighbor rule and is the same tone.",
+    "animated": false,
+    "phone": true
+  },
+  "chain": {
+    "title": "Two numbers fix the whole list",
+    "caption": "Like falling dominoes: each new dot is built from the two before it, so the two seeds decide the rest. The arrows show the first one built.",
+    "animated": true,
+    "phone": true
+  },
+  "size-and-start": {
+    "title": "Two knobs hit two dots",
+    "caption": "Change the size and the start until the wave passes through both dots: size 0.924, start −22.5°.",
+    "animated": true,
+    "phone": true
+  },
+  "buzz-bars": {
+    "title": "Clipping makes new tones",
+    "caption": "Tone sizes from 0 to 4,000 Hz. Solid bars were in the call; hatched bars were made by clipping.",
+    "animated": false,
+    "phone": true
+  },
+  "tangled": {
+    "title": "A made tone looks like a said one",
+    "caption": "Once the buzz is in the samples, it is just another tone. The hatching in the chart above is ours; the samples carry none.",
+    "animated": false,
+    "phone": true
+  },
+  "fix": {
+    "title": "Sizing the booster",
+    "caption": "Three settings for the booster, three callers each. Only × 1.6, the shaded row, keeps every caller in the band with room to spare.",
+    "animated": false,
+    "phone": true
+  }
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The east route’s frequency response</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-response-style">
+.k-fig .k-wedge { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+.k-fig .k-dot-in { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 2.5; }
+.k-fig .k-dim { opacity: 0.3; }
+.k-fig .k-halo { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-dot-out { fill: var(--ink); }
+.k-fig .k-dot-old1 { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-dot-old2 { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-spoke-ink { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-wheel-soft { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.k-fig .k-hstem { stroke: var(--ink); stroke-width: 1.6; }
+.k-fig .k-window { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .k-bracket { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-vec-thin { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-vec-sum { stroke: var(--accent); stroke-width: 3; }
+.k-fig .k-tip { fill: var(--ink); }
+.k-fig .k-tip-accent { fill: var(--accent); }
+.k-fig .k-arc-accent { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+.k-fig .k-arc-soft { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .k-accent-band { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+.k-fig .k-region { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-part-a { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.k-fig .k-part-b { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 1.5 3.5; stroke-linecap: round; fill: none; }
+.k-fig .k-parts { opacity: 0.75; }
+.k-fig .k-ring-solid { stroke-dasharray: none; stroke-width: 2; }
+.k-fig .k-cut { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-guide { stroke-dasharray: 1 3; stroke-linecap: round; }
+.k-fig .k-band-a { fill: var(--paper-2); stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-band-b { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-band-off { fill: var(--rule); stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-band-edge { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-a-curl { animation-name: k-curl; animation-timing-function: linear; transform-box: view-box; }
+@keyframes k-curl { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 3 · frequency response</p>
+<h1>The east route’s frequency response</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-response-phone" viewBox="0 0 360 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="response-phone-title response-phone-desc"><title id="response-phone-title">The east route’s frequency response</title><desc id="response-phone-desc">The route keeps 100% at 0 Hz, 70% at 2,000 Hz, 49% at 3,000 Hz and 40% at 4,000 Hz, falling smoothly; the phone band runs 300 to 3,400 Hz, with vowels low and consonant edges from 2,000 to 3,400 Hz where the gain is lowest; the phase climbs in a straight line from 0 to 180 degrees.</desc><defs><marker id="response-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="response-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="response-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="response-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="520"/><rect class="k-region" x="70.7" y="113.27" width="48.3" height="172.73"/><rect class="k-accent-band" x="188" y="113.27" width="96.6" height="172.73"/><text class="k-label" x="94.85" y="274" text-anchor="middle">vowels</text><text class="k-label" style="fill:var(--accent-ink)" x="236.3" y="274" text-anchor="middle">consonants</text><line class="k-line" x1="70.7" y1="66" x2="284.6" y2="66"/><line class="k-line" x1="70.7" y1="61" x2="70.7" y2="71"/><line class="k-line" x1="284.6" y1="61" x2="284.6" y2="71"/><text class="k-tick" x="177.65" y="58" text-anchor="middle">phone band, 300 to 3,400 Hz</text><g ><line class="k-axis" x1="50" y1="286" x2="326" y2="286"/><text class="k-tick" x="42" y="117.27" text-anchor="end">100%</text><text class="k-tick" x="42" y="203.64" text-anchor="end">50%</text><text class="k-tick" x="42" y="290" text-anchor="end">0%</text><text class="k-tick" x="50" y="304" text-anchor="middle">0</text><text class="k-tick" x="188" y="304" text-anchor="middle">2,000 Hz</text><text class="k-tick" x="326" y="304" text-anchor="middle">4,000</text></g><text class="k-name" x="50" y="42" text-anchor="start">gain: how much the route keeps</text><g ><path class="k-curve" d="M50 113.27L51.15 113.28L52.3 113.29L53.45 113.31L54.6 113.34L55.75 113.38L56.9 113.43L58.05 113.49L59.2 113.56L60.35 113.63L61.5 113.72L62.65 113.81L63.8 113.91L64.95 114.02L66.1 114.14L67.25 114.27L68.4 114.41L69.55 114.55L70.7 114.7L71.85 114.87L73 115.04L74.15 115.22L75.3 115.41L76.45 115.6L77.6 115.81L78.75 116.02L79.9 116.24L81.05 116.48L82.2 116.71L83.35 116.96L84.5 117.22L85.65 117.48L86.8 117.75L87.95 118.03L89.1 118.32L90.25 118.62L91.4 118.92L92.55 119.23L93.7 119.55L94.85 119.88L96 120.22L97.15 120.56L98.3 120.91L99.45 121.27L100.6 121.63L101.75 122.01L102.9 122.39L104.05 122.77L105.2 123.17L106.35 123.57L107.5 123.98L108.65 124.4L109.8 124.82L110.95 125.25L112.1 125.69L113.25 126.13L114.4 126.58L115.55 127.04L116.7 127.5L117.85 127.97L119 128.45L120.15 128.93L121.3 129.42L122.45 129.92L123.6 130.42L124.75 130.92L125.9 131.44L127.05 131.96L128.2 132.48L129.35 133.01L130.5 133.55L131.65 134.09L132.8 134.63L133.95 135.18L135.1 135.74L136.25 136.3L137.4 136.87L138.55 137.44L139.7 138.02L140.85 138.6L142 139.18L143.15 139.77L144.3 140.37L145.45 140.96L146.6 141.57L147.75 142.17L148.9 142.78L150.05 143.4L151.2 144.01L152.35 144.64L153.5 145.26L154.65 145.89L155.8 146.52L156.95 147.16L158.1 147.79L159.25 148.43L160.4 149.08L161.55 149.72L162.7 150.37L163.85 151.03L165 151.68L166.15 152.34L167.3 152.99L168.45 153.65L169.6 154.32L170.75 154.98L171.9 155.65L173.05 156.32L174.2 156.98L175.35 157.66L176.5 158.33L177.65 159L178.8 159.67L179.95 160.35L181.1 161.03L182.25 161.7L183.4 162.38L184.55 163.06L185.7 163.73L186.85 164.41L188 165.09L189.15 165.77L190.3 166.45L191.45 167.13L192.6 167.8L193.75 168.48L194.9 169.16L196.05 169.83L197.2 170.51L198.35 171.18L199.5 171.85L200.65 172.53L201.8 173.2L202.95 173.87L204.1 174.53L205.25 175.2L206.4 175.86L207.55 176.53L208.7 177.19L209.85 177.85L211 178.5L212.15 179.16L213.3 179.81L214.45 180.46L215.6 181.1L216.75 181.75L217.9 182.39L219.05 183.03L220.2 183.66L221.35 184.29L222.5 184.92L223.65 185.55L224.8 186.17L225.95 186.79L227.1 187.4L228.25 188.01L229.4 188.62L230.55 189.22L231.7 189.82L232.85 190.41L234 191L235.15 191.59L236.3 192.17L237.45 192.74L238.6 193.31L239.75 193.88L240.9 194.44L242.05 195L243.2 195.55L244.35 196.1L245.5 196.64L246.65 197.17L247.8 197.7L248.95 198.23L250.1 198.74L251.25 199.26L252.4 199.76L253.55 200.27L254.7 200.76L255.85 201.25L257 201.73L258.15 202.21L259.3 202.68L260.45 203.14L261.6 203.6L262.75 204.05L263.9 204.49L265.05 204.93L266.2 205.36L267.35 205.78L268.5 206.2L269.65 206.61L270.8 207.01L271.95 207.41L273.1 207.8L274.25 208.18L275.4 208.55L276.55 208.91L277.7 209.27L278.85 209.62L280 209.97L281.15 210.3L282.3 210.63L283.45 210.95L284.6 211.26L285.75 211.57L286.9 211.86L288.05 212.15L289.2 212.43L290.35 212.7L291.5 212.96L292.65 213.22L293.8 213.47L294.95 213.71L296.1 213.94L297.25 214.16L298.4 214.37L299.55 214.58L300.7 214.78L301.85 214.96L303 215.14L304.15 215.31L305.3 215.48L306.45 215.63L307.6 215.78L308.75 215.91L309.9 216.04L311.05 216.16L312.2 216.27L313.35 216.37L314.5 216.47L315.65 216.55L316.8 216.63L317.95 216.69L319.1 216.75L320.25 216.8L321.4 216.84L322.55 216.87L323.7 216.89L324.85 216.9L326 216.91" fill="none"/></g><g ><circle class="k-stem-dot" cx="188" cy="165.09" r="4"/><text class="k-num" x="196" y="155.09" text-anchor="start">70%</text></g><g ><circle class="k-stem-accent-dot" cx="257" cy="201.73" r="4"/><text class="k-num-accent" x="265" y="189.73" text-anchor="start">“s”: 49%</text></g><g ><circle class="k-stem-dot" cx="326" cy="216.91" r="4"/><text class="k-num" x="318" y="238.91" text-anchor="end">40%</text></g><g ><line class="k-axis" x1="50" y1="440" x2="326" y2="440"/><text class="k-tick" x="42" y="374" text-anchor="end">180°</text><text class="k-tick" x="42" y="409" text-anchor="end">90°</text><text class="k-tick" x="42" y="444" text-anchor="end">0°</text><text class="k-tick" x="50" y="458" text-anchor="middle">0</text><text class="k-tick" x="188" y="458" text-anchor="middle">2,000 Hz</text><text class="k-tick" x="326" y="458" text-anchor="middle">4,000</text></g><text class="k-name" x="50" y="358" text-anchor="start">phase: how far behind, 45° per 1,000 Hz</text><path class="k-curve" d="M50 440L51.15 439.71L52.3 439.42L53.45 439.13L54.6 438.83L55.75 438.54L56.9 438.25L58.05 437.96L59.2 437.67L60.35 437.38L61.5 437.08L62.65 436.79L63.8 436.5L64.95 436.21L66.1 435.92L67.25 435.63L68.4 435.33L69.55 435.04L70.7 434.75L71.85 434.46L73 434.17L74.15 433.88L75.3 433.58L76.45 433.29L77.6 433L78.75 432.71L79.9 432.42L81.05 432.13L82.2 431.83L83.35 431.54L84.5 431.25L85.65 430.96L86.8 430.67L87.95 430.38L89.1 430.08L90.25 429.79L91.4 429.5L92.55 429.21L93.7 428.92L94.85 428.63L96 428.33L97.15 428.04L98.3 427.75L99.45 427.46L100.6 427.17L101.75 426.88L102.9 426.58L104.05 426.29L105.2 426L106.35 425.71L107.5 425.42L108.65 425.13L109.8 424.83L110.95 424.54L112.1 424.25L113.25 423.96L114.4 423.67L115.55 423.38L116.7 423.08L117.85 422.79L119 422.5L120.15 422.21L121.3 421.92L122.45 421.63L123.6 421.33L124.75 421.04L125.9 420.75L127.05 420.46L128.2 420.17L129.35 419.88L130.5 419.58L131.65 419.29L132.8 419L133.95 418.71L135.1 418.42L136.25 418.13L137.4 417.83L138.55 417.54L139.7 417.25L140.85 416.96L142 416.67L143.15 416.38L144.3 416.08L145.45 415.79L146.6 415.5L147.75 415.21L148.9 414.92L150.05 414.63L151.2 414.33L152.35 414.04L153.5 413.75L154.65 413.46L155.8 413.17L156.95 412.88L158.1 412.58L159.25 412.29L160.4 412L161.55 411.71L162.7 411.42L163.85 411.13L165 410.83L166.15 410.54L167.3 410.25L168.45 409.96L169.6 409.67L170.75 409.38L171.9 409.08L173.05 408.79L174.2 408.5L175.35 408.21L176.5 407.92L177.65 407.63L178.8 407.33L179.95 407.04L181.1 406.75L182.25 406.46L183.4 406.17L184.55 405.88L185.7 405.58L186.85 405.29L188 405L189.15 404.71L190.3 404.42L191.45 404.13L192.6 403.83L193.75 403.54L194.9 403.25L196.05 402.96L197.2 402.67L198.35 402.38L199.5 402.08L200.65 401.79L201.8 401.5L202.95 401.21L204.1 400.92L205.25 400.63L206.4 400.33L207.55 400.04L208.7 399.75L209.85 399.46L211 399.17L212.15 398.88L213.3 398.58L214.45 398.29L215.6 398L216.75 397.71L217.9 397.42L219.05 397.13L220.2 396.83L221.35 396.54L222.5 396.25L223.65 395.96L224.8 395.67L225.95 395.38L227.1 395.08L228.25 394.79L229.4 394.5L230.55 394.21L231.7 393.92L232.85 393.63L234 393.33L235.15 393.04L236.3 392.75L237.45 392.46L238.6 392.17L239.75 391.88L240.9 391.58L242.05 391.29L243.2 391L244.35 390.71L245.5 390.42L246.65 390.13L247.8 389.83L248.95 389.54L250.1 389.25L251.25 388.96L252.4 388.67L253.55 388.38L254.7 388.08L255.85 387.79L257 387.5L258.15 387.21L259.3 386.92L260.45 386.63L261.6 386.33L262.75 386.04L263.9 385.75L265.05 385.46L266.2 385.17L267.35 384.88L268.5 384.58L269.65 384.29L270.8 384L271.95 383.71L273.1 383.42L274.25 383.13L275.4 382.83L276.55 382.54L277.7 382.25L278.85 381.96L280 381.67L281.15 381.38L282.3 381.08L283.45 380.79L284.6 380.5L285.75 380.21L286.9 379.92L288.05 379.63L289.2 379.33L290.35 379.04L291.5 378.75L292.65 378.46L293.8 378.17L294.95 377.88L296.1 377.58L297.25 377.29L298.4 377L299.55 376.71L300.7 376.42L301.85 376.13L303 375.83L304.15 375.54L305.3 375.25L306.45 374.96L307.6 374.67L308.75 374.38L309.9 374.08L311.05 373.79L312.2 373.5L313.35 373.21L314.5 372.92L315.65 372.63L316.8 372.33L317.95 372.04L319.1 371.75L320.25 371.46L321.4 371.17L322.55 370.88L323.7 370.58L324.85 370.29L326 370" fill="none"/></svg></div>
+</div>
+</body>
+</html>

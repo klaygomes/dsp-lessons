@@ -1,0 +1,86 @@
+{
+  "split": {
+    "title": "One tone in, two tones out",
+    "caption": "Top: the 1,000 Hz tone splits into two half-size tones. Bottom: a whole voice splits into a wanted copy and a ghost that overlap almost everywhere, so no filter can pull them apart.",
+    "animated": true,
+    "phone": true
+  },
+  "negative-tone": {
+    "title": "Two arrows, one shadow",
+    "caption": "The top arrow is +1,000 Hz, the mirror arrow is the negative tone, −1,000 Hz. Sample by sample they cast the same shadow, so on the line they sound the same.",
+    "animated": true,
+    "phone": true
+  },
+  "chip-boundary": {
+    "title": "Arrows inside, shadows outside",
+    "caption": "Inside the chip a sample can be an arrow, two numbers. Only what goes out on the line has to be a shadow.",
+    "animated": false,
+    "phone": true
+  },
+  "ghost-arrows": {
+    "title": "The mirror arrow is the ghost",
+    "caption": "One arrow turning +300 Hz adds 13.5° per sample to both arrows. The top arrow speeds up to 1,300 Hz; the mirror slows to −700 Hz, and its shadow is the 700 Hz ghost.",
+    "animated": true,
+    "phone": true
+  },
+  "analytic": {
+    "title": "The analytic signal: the dot itself",
+    "caption": "The analytic signal of one tone is the dot: its left-right part is the cosine you store, its up-down part the sine you need. That sine is the left-right part of the dot a quarter turn behind.",
+    "animated": false,
+    "phone": true
+  },
+  "hilbert": {
+    "title": "Two quarter turns cancel the mirror",
+    "caption": "Follow the mirror arrow: the filter turns it a quarter turn forward, j turns it another, and it ends exactly opposite where it started. Added to the original, it cancels; the top arrow doubles.",
+    "animated": true,
+    "phone": true
+  },
+  "delay-vs-quarter-turn": {
+    "title": "A delay is not a quarter turn",
+    "caption": "Top row: a delay turns each tone in proportion to its pitch. Bottom row: the Hilbert transformer turns every tone by the same quarter turn.",
+    "animated": true,
+    "phone": true
+  },
+  "shifter": {
+    "title": "The single-sideband shifter",
+    "caption": "Two multiplications and a subtraction per sample. The delay box keeps the plain path in step with the Hilbert transformer.",
+    "animated": false,
+    "phone": true
+  },
+  "sideband": {
+    "title": "Single sideband keeps one copy",
+    "caption": "A plain multiplication makes both sidebands. Single sideband keeps the upper one, 1,300 Hz, and removes the lower one, the ghost.",
+    "animated": false,
+    "phone": true
+  },
+  "hilbert-response": {
+    "title": "The Hilbert transformer’s response",
+    "caption": "Every positive tone is turned back a quarter turn (−j, down), every negative tone forward (+j, up). The real 31-coefficient filter cannot jump at 0 Hz; it ramps.",
+    "animated": false,
+    "phone": true
+  },
+  "h-sketch": {
+    "title": "Where 2 ÷ (πn) comes from",
+    "caption": "Each coefficient is the average of sin(ωn) from 0 to π. Even n: the half-waves cancel. Odd n: one upward half-wave is left over.",
+    "animated": false,
+    "phone": true
+  },
+  "taps": {
+    "title": "The Hilbert transformer’s coefficients",
+    "caption": "The ideal coefficients shrink like 1 ÷ n and reach backwards. Keep n from −15 to 15, taper them with the Hann window, and delay the list 15 samples.",
+    "animated": false,
+    "phone": true
+  },
+  "delay-catch": {
+    "title": "The missing delay box",
+    "caption": "Without the delay box, the mirror arrow no longer cancels. The ghost depends on the tone, and it is never small for long.",
+    "animated": true,
+    "phone": true
+  },
+  "edges": {
+    "title": "Where a short Hilbert transformer fails",
+    "caption": "Top: the gain of the 31-coefficient Hilbert transformer. Bottom: the ghost it leaves. Both fail near 0 Hz, and at 300 Hz both miss the 5% target.",
+    "animated": false,
+    "phone": true
+  }
+}

@@ -1,0 +1,59 @@
+<template id="chip-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text" tabindex="-1"></p></div>
+  <div class="spec" data-k="spec" hidden>
+    <p class="spec-title">The incoming call: how strong each tone is. Zoom in to read the whine’s pitches.</p>
+    <canvas data-k="spec-stage" class="stage spec-stage" role="img"></canvas>
+    <div class="row" role="group" aria-label="How wide a stretch of tones the chart shows">
+      <button type="button" data-span="2000" aria-pressed="true">1,000 to 3,000 Hz</button>
+      <button type="button" data-span="400" aria-pressed="false">400 Hz wide</button>
+      <button type="button" data-span="100" aria-pressed="false">100 Hz wide</button>
+    </div>
+    <div class="control" data-k="centre-control" hidden>
+      <label data-for="centre">Centred on <output data-k="centre-out">2,000</output> Hz</label>
+      <input data-k="centre" type="range" min="1050" max="2950" step="5" value="2000">
+    </div>
+  </div>
+  <div data-k="ask"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key" data-k="key">
+    <span><i class="k-lpole"></i>pole on the laptop</span>
+    <span><i class="k-cpole"></i>pole on the chip, inside</span>
+    <span><i class="k-cpole-out"></i>pole on the chip, on or past the rim</span>
+    <span><i class="k-zero"></i>zero</span>
+    <span><i class="k-ldash"></i>gain on the laptop</span>
+    <span><i class="k-csolid"></i>gain on the chip</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
+  </div>
+  <div class="k-meter" data-k="meter" hidden>
+    <span>Samples of the call pinned at the chip's limits</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="step-control">
+    <label data-for="step">The chip's step: <output data-k="step-out">1/128</output></label>
+    <input data-k="step" type="range" min="0" max="6" step="1" value="0" disabled aria-valuetext="1/128">
+  </div>
+  <div class="row" data-k="form" role="group" aria-label="How the rule is stored" hidden>
+    <button type="button" data-form="multi" aria-pressed="true">Multiplied-out rule</button>
+    <button type="button" data-form="cascade" aria-pressed="false">Cascade of sections</button>
+  </div>
+  <div data-k="ask2"></div>
+  <div class="sections" data-k="sections" hidden></div>
+  <div class="row">
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="filter" class="k-toggle" aria-pressed="true">Filter on</button>
+    <button type="button" data-k="source">Sound: a call with the whine</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another exchange</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing.</p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

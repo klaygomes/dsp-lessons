@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The swell survives, the edge is halved</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-two-tones-style">
+.k-fig .k-wedge { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+.k-fig .k-dot-in { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 2.5; }
+.k-fig .k-dim { opacity: 0.3; }
+.k-fig .k-halo { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-dot-out { fill: var(--ink); }
+.k-fig .k-dot-old1 { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-dot-old2 { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-spoke-ink { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-wheel-soft { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.k-fig .k-hstem { stroke: var(--ink); stroke-width: 1.6; }
+.k-fig .k-window { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .k-bracket { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-vec-thin { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-vec-sum { stroke: var(--accent); stroke-width: 3; }
+.k-fig .k-tip { fill: var(--ink); }
+.k-fig .k-tip-accent { fill: var(--accent); }
+.k-fig .k-arc-accent { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+.k-fig .k-arc-soft { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .k-accent-band { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+.k-fig .k-region { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-part-a { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.k-fig .k-part-b { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 1.5 3.5; stroke-linecap: round; fill: none; }
+.k-fig .k-parts { opacity: 0.75; }
+.k-fig .k-ring-solid { stroke-dasharray: none; stroke-width: 2; }
+.k-fig .k-cut { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-guide { stroke-dasharray: 1 3; stroke-linecap: round; }
+.k-fig .k-band-a { fill: var(--paper-2); stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-band-b { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-band-off { fill: var(--rule); stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-band-edge { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-a-curl { animation-name: k-curl; animation-timing-function: linear; transform-box: view-box; }
+@keyframes k-curl { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 3 · frequency response</p>
+<h1>The swell survives, the edge is halved</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-two-tones-phone" viewBox="0 0 360 610" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="two-tones-phone-title two-tones-phone-desc"><title id="two-tones-phone-title">The swell survives, the edge is halved</title><desc id="two-tones-phone-desc">Three rows compare input and output lined up one sample later: the 500 Hz part keeps 0.977, the 3,000 Hz part keeps 0.488, and in the sum the pure consonant at n = 4 goes from −0.50 to −0.244 while the pure vowel at n = 6 goes from −0.35 to −0.345.</desc><defs><marker id="two-tones-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="two-tones-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="two-tones-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="two-tones-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="610"/><text class="k-label" x="50" y="44" text-anchor="start">500 Hz part: the route keeps 0.977</text>,<rect class="k-accent-band" x="163.1" y="56" width="27.55" height="70"/>,<rect class="k-region" x="235.6" y="56" width="27.55" height="70"/>,<g ><line class="k-axis" x1="50" y1="91" x2="340" y2="91"/><text class="k-tick" x="42" y="65.83" text-anchor="end">0.5</text><text class="k-tick" x="42" y="124.17" text-anchor="end">−0.5</text><text class="k-tick" x="42" y="95" text-anchor="end">0</text></g>,<g class="k-dim"><g ><g ><line class="k-stem-soft" x1="63.05" y1="91" x2="63.05" y2="64.05"/><circle class="k-stem-soft-dot" cx="63.05" cy="64.05" r="3.5"/></g><g ><line class="k-stem-soft" x1="99.3" y1="91" x2="99.3" y2="70.38"/><circle class="k-stem-soft-dot" cx="99.3" cy="70.38" r="3.5"/></g><g ><line class="k-stem-soft" x1="135.55" y1="91" x2="135.55" y2="79.84"/><circle class="k-stem-soft-dot" cx="135.55" cy="79.84" r="3.5"/></g><g ><line class="k-stem-soft" x1="208.05" y1="91" x2="208.05" y2="102.16"/><circle class="k-stem-soft-dot" cx="208.05" cy="102.16" r="3.5"/></g><g ><line class="k-stem-soft" x1="280.55" y1="91" x2="280.55" y2="117.95"/><circle class="k-stem-soft-dot" cx="280.55" cy="117.95" r="3.5"/></g><g ><line class="k-stem-soft" x1="316.8" y1="91" x2="316.8" y2="120.17"/><circle class="k-stem-soft-dot" cx="316.8" cy="120.17" r="3.5"/></g></g><g ><g ><line class="k-stem" x1="73.2" y1="91" x2="73.2" y2="64.67"/><circle class="k-stem-dot" cx="73.2" cy="64.67" r="4"/></g><g ><line class="k-stem" x1="109.45" y1="91" x2="109.45" y2="70.85"/><circle class="k-stem-dot" cx="109.45" cy="70.85" r="4"/></g><g ><line class="k-stem" x1="145.7" y1="91" x2="145.7" y2="80.09"/><circle class="k-stem-dot" cx="145.7" cy="80.09" r="4"/></g><g ><line class="k-stem" x1="218.2" y1="91" x2="218.2" y2="101.91"/><circle class="k-stem-dot" cx="218.2" cy="101.91" r="4"/></g><g ><line class="k-stem" x1="290.7" y1="91" x2="290.7" y2="117.33"/><circle class="k-stem-dot" cx="290.7" cy="117.33" r="4"/></g><g ><line class="k-stem" x1="326.95" y1="91" x2="326.95" y2="119.5"/><circle class="k-stem-dot" cx="326.95" cy="119.5" r="4"/></g></g><g ></g><g ></g></g>,<g ><g ><g ><line class="k-stem-soft" x1="244.3" y1="91" x2="244.3" y2="111.62"/><circle class="k-stem-soft-dot" cx="244.3" cy="111.62" r="3.5"/></g></g><g ><g ><line class="k-stem" x1="254.45" y1="91" x2="254.45" y2="111.15"/><circle class="k-stem-dot" cx="254.45" cy="111.15" r="4"/></g></g><g ><circle class="k-stop" cx="171.8" cy="91" r="2"/></g><g ><circle class="k-stop" cx="181.95" cy="91" r="2"/></g></g>,<text class="k-tick" x="176.88" y="68" text-anchor="middle">0</text>,<text class="k-label" x="50" y="184" text-anchor="start">3,000 Hz part: the route keeps 0.488</text>,<rect class="k-accent-band" x="163.1" y="196" width="27.55" height="70"/>,<rect class="k-region" x="235.6" y="196" width="27.55" height="70"/>,<g ><line class="k-axis" x1="50" y1="231" x2="340" y2="231"/><text class="k-tick" x="42" y="205.83" text-anchor="end">0.5</text><text class="k-tick" x="42" y="264.17" text-anchor="end">−0.5</text><text class="k-tick" x="42" y="235" text-anchor="end">0</text></g>,<g class="k-dim"><g ><g ><line class="k-stem-soft" x1="63.05" y1="231" x2="63.05" y2="251.62"/><circle class="k-stem-soft-dot" cx="63.05" cy="251.62" r="3.5"/></g><g ><line class="k-stem-soft" x1="135.55" y1="231" x2="135.55" y2="210.38"/><circle class="k-stem-soft-dot" cx="135.55" cy="210.38" r="3.5"/></g><g ><line class="k-stem-soft" x1="208.05" y1="231" x2="208.05" y2="210.38"/><circle class="k-stem-soft-dot" cx="208.05" cy="210.38" r="3.5"/></g><g ><line class="k-stem-soft" x1="280.55" y1="231" x2="280.55" y2="251.62"/><circle class="k-stem-soft-dot" cx="280.55" cy="251.62" r="3.5"/></g><g ><line class="k-stem-soft" x1="316.8" y1="231" x2="316.8" y2="201.83"/><circle class="k-stem-soft-dot" cx="316.8" cy="201.83" r="3.5"/></g></g><g ><g ><line class="k-stem" x1="73.2" y1="231" x2="73.2" y2="241.06"/><circle class="k-stem-dot" cx="73.2" cy="241.06" r="4"/></g><g ><line class="k-stem" x1="145.7" y1="231" x2="145.7" y2="220.94"/><circle class="k-stem-dot" cx="145.7" cy="220.94" r="4"/></g><g ><line class="k-stem" x1="218.2" y1="231" x2="218.2" y2="220.94"/><circle class="k-stem-dot" cx="218.2" cy="220.94" r="4"/></g><g ><line class="k-stem" x1="290.7" y1="231" x2="290.7" y2="241.06"/><circle class="k-stem-dot" cx="290.7" cy="241.06" r="4"/></g><g ><line class="k-stem" x1="326.95" y1="231" x2="326.95" y2="216.77"/><circle class="k-stem-dot" cx="326.95" cy="216.77" r="4"/></g></g><g ><circle class="k-stop" cx="99.3" cy="231" r="2"/></g><g ><circle class="k-stop" cx="109.45" cy="231" r="2"/></g></g>,<g ><g ><g ><line class="k-stem-soft" x1="171.8" y1="231" x2="171.8" y2="260.17"/><circle class="k-stem-soft-dot" cx="171.8" cy="260.17" r="3.5"/></g></g><g ><g ><line class="k-stem" x1="181.95" y1="231" x2="181.95" y2="245.23"/><circle class="k-stem-dot" cx="181.95" cy="245.23" r="4"/></g></g><g ><circle class="k-stop" cx="244.3" cy="231" r="2"/></g><g ><circle class="k-stop" cx="254.45" cy="231" r="2"/></g></g>,<text class="k-tick" x="249.38" y="208" text-anchor="middle">0</text>,<text class="k-name" x="50" y="324" text-anchor="start">the sum: the two-tone voice</text>,<rect class="k-accent-band" x="163.1" y="336" width="27.55" height="150"/>,<rect class="k-region" x="235.6" y="336" width="27.55" height="150"/>,<g ><line class="k-axis" x1="50" y1="411" x2="340" y2="411"/><text class="k-tick" x="42" y="343.57" text-anchor="end">1</text><text class="k-tick" x="42" y="379.29" text-anchor="end">0.5</text><text class="k-tick" x="42" y="450.71" text-anchor="end">−0.5</text><text class="k-tick" x="42" y="486.43" text-anchor="end">−1</text><text class="k-tick" x="42" y="415" text-anchor="end">0</text><text class="k-tick" x="68.13" y="504" text-anchor="middle">n = 1</text><text class="k-tick" x="104.38" y="504" text-anchor="middle">2</text><text class="k-tick" x="140.63" y="504" text-anchor="middle">3</text><text class="k-tick" x="176.88" y="504" text-anchor="middle">4</text><text class="k-tick" x="213.13" y="504" text-anchor="middle">5</text><text class="k-tick" x="249.38" y="504" text-anchor="middle">6</text><text class="k-tick" x="285.63" y="504" text-anchor="middle">7</text><text class="k-tick" x="321.88" y="504" text-anchor="middle">8</text></g>,<g class="k-dim"><g ></g><g ></g><g ></g><g ></g></g>,<g ><g ><g ><line class="k-stem-soft" x1="63.05" y1="411" x2="63.05" y2="403.14"/><circle class="k-stem-soft-dot" cx="63.05" cy="403.14" r="3.5"/></g><g ><line class="k-stem-soft" x1="99.3" y1="411" x2="99.3" y2="386"/><circle class="k-stem-soft-dot" cx="99.3" cy="386" r="3.5"/></g><g ><line class="k-stem-soft" x1="135.55" y1="411" x2="135.55" y2="372.43"/><circle class="k-stem-soft-dot" cx="135.55" cy="372.43" r="3.5"/></g><g ><line class="k-stem-soft" x1="171.8" y1="411" x2="171.8" y2="446.71"/><circle class="k-stem-soft-dot" cx="171.8" cy="446.71" r="3.5"/></g><g ><line class="k-stem-soft" x1="208.05" y1="411" x2="208.05" y2="399.57"/><circle class="k-stem-soft-dot" cx="208.05" cy="399.57" r="3.5"/></g><g ><line class="k-stem-soft" x1="244.3" y1="411" x2="244.3" y2="436"/><circle class="k-stem-soft-dot" cx="244.3" cy="436" r="3.5"/></g><g ><line class="k-stem-soft" x1="280.55" y1="411" x2="280.55" y2="469.57"/><circle class="k-stem-soft-dot" cx="280.55" cy="469.57" r="3.5"/></g></g><g ><g ><line class="k-stem" x1="73.2" y1="411" x2="73.2" y2="391.07"/><circle class="k-stem-dot" cx="73.2" cy="391.07" r="4"/></g><g ><line class="k-stem" x1="109.45" y1="411" x2="109.45" y2="386.36"/><circle class="k-stem-dot" cx="109.45" cy="386.36" r="4"/></g><g ><line class="k-stem" x1="145.7" y1="411" x2="145.7" y2="385.36"/><circle class="k-stem-dot" cx="145.7" cy="385.36" r="4"/></g><g ><line class="k-stem" x1="181.95" y1="411" x2="181.95" y2="428.43"/><circle class="k-stem-dot" cx="181.95" cy="428.43" r="4"/></g><g ><line class="k-stem" x1="218.2" y1="411" x2="218.2" y2="412"/><circle class="k-stem-dot" cx="218.2" cy="412" r="4"/></g><g ><line class="k-stem" x1="254.45" y1="411" x2="254.45" y2="435.64"/><circle class="k-stem-dot" cx="254.45" cy="435.64" r="4"/></g><g ><line class="k-stem" x1="290.7" y1="411" x2="290.7" y2="455.57"/><circle class="k-stem-dot" cx="290.7" cy="455.57" r="4"/></g><g ><line class="k-stem" x1="326.95" y1="411" x2="326.95" y2="428.5"/><circle class="k-stem-dot" cx="326.95" cy="428.5" r="4"/></g></g><g ><circle class="k-stop" cx="316.8" cy="411" r="2"/></g><g ></g></g>,<text class="k-num-accent" x="50" y="530" text-anchor="start">n = 4, consonant: −0.50 to −0.244</text>,<text class="k-num" x="50" y="550" text-anchor="start">n = 6, vowel: −0.35 to −0.345</text><g ><g ><line class="k-stem-soft" x1="30" y1="602" x2="30" y2="588"/><circle class="k-stem-soft-dot" cx="30" cy="588" r="4"/><text class="k-label" x="52" y="599" text-anchor="start">in at n</text></g><g ><line class="k-stem" x1="150" y1="602" x2="150" y2="588"/><circle class="k-stem-dot" cx="150" cy="588" r="4"/><text class="k-label" x="172" y="599" text-anchor="start">out, one sample back</text></g></g></svg></div>
+</div>
+</body>
+</html>

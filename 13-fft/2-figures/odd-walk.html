@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The odd part, by hand</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-odd-walk-style">.k-fig .l13-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l13-vec-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l13-vec-soft { stroke: var(--ink-soft); stroke-width: 1.6; stroke-dasharray: 6 5; }
+.k-fig .l13-vec-soft-solid { stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-vec-faint { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.45; }
+.k-fig .l13-thick .l13-vec { stroke-width: 2.8; }
+.k-fig .l13-head { fill: var(--ink); stroke: none; }
+.k-fig .l13-head-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-head-soft, .k-fig .l13-head-soft-solid { fill: var(--ink-soft); stroke: none; }
+.k-fig .l13-head-faint { fill: var(--ink-soft); opacity: 0.45; stroke: none; }
+.k-fig .l13-arc { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l13-arc-ink { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .l13-ring { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.k-fig .l13-mk { fill: var(--ink); stroke: none; }
+.k-fig .l13-mk-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-mk-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-empty { fill: var(--paper-2); }
+.k-fig .l13-cell { fill: var(--ink-soft); opacity: 0.6; }
+.k-fig .l13-gridline { stroke: var(--paper); stroke-width: 0.7; }
+.k-fig .l13-clock { stroke: var(--ink); stroke-width: 3; }
+.k-fig .l13-budget { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 5; }
+.k-fig .l13-node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-cellbox { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-link { fill: none; stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net-hi { stroke: var(--accent); stroke-width: 2.2; }
+.k-fig .l13-bracket { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-shade { fill: var(--paper-2); }
+.k-fig .l13-leader { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .l13-solid { fill: var(--ink); }
+.k-fig .l13-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-dots-bg { fill: var(--paper); }
+.k-fig .l13-dots-dot { fill: var(--ink); }
+.k-fig .l13-dots-edge { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-pole { stroke: var(--ink); stroke-width: 2.2; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 13 · the FFT</p>
+<h1>The odd part, by hand</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-odd-walk" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="odd-walk-title odd-walk-desc" data-motion-root data-motion-mode="reveal" data-step-count="5"><title id="odd-walk-title">The odd part, by hand</title><desc id="odd-walk-desc">The four odd arrows, right, up, right, up, add to 2.83 at 45 degrees up; turned back 45 degrees it points right; added to the even part 2 it gives bin 1 = 4.83, subtracted it gives bin 5 = −0.83.</desc><defs><marker id="odd-walk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="odd-walk-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="odd-walk-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="odd-walk-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="300"/><text class="k-name" x="24" y="34" text-anchor="start">1. the odd part, tip to tail</text>,<text class="k-tick" x="24" y="54" text-anchor="start">each odd sample turned by the 4-sample wheel</text>,<line class="k-axis" x1="46" y1="270" x2="178" y2="270"/>,<g data-motion-item="" data-step="1" aria-label="the four odd arrows, right, up, right, up, laid tip to tail"><g ><g class="k-a-in" style="--d:0;--len:0.5"><g ><line class="spoke l13-vec" x1="56" y1="270" x2="95.6" y2="270"/><path class="l13-head" d="M102 270L94 266.64L94 273.36Z" fill="none"/></g><text class="k-tick" x="79" y="286" text-anchor="middle">x[1]</text></g><g class="k-a-in" style="--d:0.5;--len:0.5"><g ><line class="spoke l13-vec" x1="102" y1="270" x2="102" y2="230.4"/><path class="l13-head" d="M102 224L98.64 232L105.36 232Z" fill="none"/></g><text class="k-tick" x="110" y="264" text-anchor="start">x[3]</text></g><g class="k-a-in" style="--d:1;--len:0.5"><g ><line class="spoke l13-vec" x1="102" y1="224" x2="141.6" y2="224"/><path class="l13-head" d="M148 224L140 220.64L140 227.36Z" fill="none"/></g><text class="k-tick" x="125" y="240" text-anchor="middle">x[5]</text></g><g class="k-a-in" style="--d:1.5;--len:0.5"><g ><line class="spoke l13-vec" x1="148" y1="224" x2="148" y2="184.4"/><path class="l13-head" d="M148 178L144.64 186L151.36 186Z" fill="none"/></g><text class="k-tick" x="156" y="218" text-anchor="start">x[7]</text></g></g></g>,<g data-motion-item="" data-step="2" aria-label="they add up to 2 right and 2 up: length 2.83, pointing 45 degrees up"><g class="k-a-in" style="--d:2.2"><g class="l13-thick"><line class="spoke l13-vec" x1="56" y1="270" x2="142.34" y2="183.66"/><path class="l13-head" d="M148 178L137.96 182.1L143.9 188.04Z" fill="none"/></g><text class="k-num" x="88" y="210" text-anchor="end">2.83, 45° up</text></g></g><text class="k-name" x="262" y="34" text-anchor="start">2. turned back the extra 45°</text>,<line class="k-axis" x1="266" y1="230" x2="430.09" y2="230"/>,<g ><line class="spoke l13-vec-faint" x1="276" y1="230" x2="362.91" y2="143.09"/><path class="l13-head-faint" d="M368 138L358.96 141.69L364.31 147.04Z" fill="none"/></g>,<text class="k-tick" x="374" y="134" text-anchor="start">before</text>,<g ><path class="l13-arc" d="M350.01 160.98A101.2 101.2 0 0 1 377.06 224.7" fill="none"/><path class="l13-head-soft" d="M377.06 224.7L380 216.54L373.29 216.89Z" fill="none"/></g>,<text class="k-tick" x="377.74" y="180.38" text-anchor="start">45° back</text>,<g data-motion-item="" data-step="3" aria-label="the odd part turns back 45 degrees and points straight right, still 2.83 long"><g class="k-a-turn" style="--r0:-45deg;--steps:8;--d:3.2;--len:1.2;transform-origin:276px 230px"><g ><line class="spoke l13-vec" x1="276" y1="230" x2="398.09" y2="230"/><path class="l13-head" d="M406.09 230L396.09 225.8L396.09 234.2Z" fill="none"/></g></g></g>,<text class="k-num" x="406.09" y="250" text-anchor="end">2.83 right</text><text class="k-name" x="498" y="34" text-anchor="start">3. add to the even part,</text>,<text class="k-name" x="498" y="54" text-anchor="start">and subtract from it</text>,<line class="k-axis" x1="508" y1="250" x2="676" y2="250"/>,<g ><line class="k-axis" x1="508" y1="246" x2="508" y2="254"/><text class="k-tick" x="508" y="268" text-anchor="middle">−1</text></g>,<g ><line class="k-axis" x1="536" y1="246" x2="536" y2="254"/><text class="k-tick" x="536" y="268" text-anchor="middle">0</text></g>,<g ><line class="k-axis" x1="592" y1="246" x2="592" y2="254"/><text class="k-tick" x="592" y="268" text-anchor="middle">2</text></g>,<g ><line class="k-axis" x1="648" y1="246" x2="648" y2="254"/><text class="k-tick" x="648" y="268" text-anchor="middle">4</text></g>,<g ><line class="k-axis" x1="676" y1="246" x2="676" y2="254"/><text class="k-tick" x="676" y="268" text-anchor="middle">5</text></g>,<g data-motion-item="" data-step="4" aria-label="bin 1 = 2 + 2.83 = 4.83"><g class="k-a-in" style="--d:4.6"><g ><text class="k-num" x="508" y="102" text-anchor="start">bin 1 = 2 + 2.83 = 4.83</text><g ><line class="spoke l13-vec-soft-solid" x1="536" y1="120" x2="585.6" y2="120"/><path class="l13-head-soft-solid" d="M592 120L584 116.64L584 123.36Z" fill="none"/></g><g ><line class="spoke l13-vec" x1="592" y1="126" x2="663.98" y2="126"/><path class="l13-head" d="M671.18 126L662.18 122.22L662.18 129.78Z" fill="none"/></g><circle class="l13-mk" cx="671.18" cy="126" r="4"/></g></g></g>,<g data-motion-item="" data-step="5" aria-label="bin 5 = 2 − 2.83 = −0.83"><g class="k-a-in" style="--d:5.6"><g ><text class="k-num-accent" x="508" y="182" text-anchor="start">bin 5 = 2 − 2.83 = −0.83</text><g ><line class="spoke l13-vec-soft-solid" x1="536" y1="200" x2="585.6" y2="200"/><path class="l13-head-soft-solid" d="M592 200L584 196.64L584 203.36Z" fill="none"/></g><g ><line class="spoke l13-vec-accent" x1="592" y1="206" x2="520.02" y2="206"/><path class="l13-head-accent" d="M512.82 206L521.82 209.78L521.82 202.22Z" fill="none"/></g><circle class="l13-mk-accent" cx="512.82" cy="206" r="4"/></g></g></g>,<text class="k-tick" x="564" y="144" text-anchor="middle">even part: 2</text></svg></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The keypad tones at N = 256</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-bins-256-style">.k-fig .l13-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l13-vec-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l13-vec-soft { stroke: var(--ink-soft); stroke-width: 1.6; stroke-dasharray: 6 5; }
+.k-fig .l13-vec-soft-solid { stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-vec-faint { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.45; }
+.k-fig .l13-thick .l13-vec { stroke-width: 2.8; }
+.k-fig .l13-head { fill: var(--ink); stroke: none; }
+.k-fig .l13-head-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-head-soft, .k-fig .l13-head-soft-solid { fill: var(--ink-soft); stroke: none; }
+.k-fig .l13-head-faint { fill: var(--ink-soft); opacity: 0.45; stroke: none; }
+.k-fig .l13-arc { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l13-arc-ink { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .l13-ring { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.k-fig .l13-mk { fill: var(--ink); stroke: none; }
+.k-fig .l13-mk-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-mk-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-empty { fill: var(--paper-2); }
+.k-fig .l13-cell { fill: var(--ink-soft); opacity: 0.6; }
+.k-fig .l13-gridline { stroke: var(--paper); stroke-width: 0.7; }
+.k-fig .l13-clock { stroke: var(--ink); stroke-width: 3; }
+.k-fig .l13-budget { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 5; }
+.k-fig .l13-node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-cellbox { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-link { fill: none; stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net-hi { stroke: var(--accent); stroke-width: 2.2; }
+.k-fig .l13-bracket { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-shade { fill: var(--paper-2); }
+.k-fig .l13-leader { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .l13-solid { fill: var(--ink); }
+.k-fig .l13-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-dots-bg { fill: var(--paper); }
+.k-fig .l13-dots-dot { fill: var(--ink); }
+.k-fig .l13-dots-edge { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-pole { stroke: var(--ink); stroke-width: 2.2; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 13 · the FFT</p>
+<h1>The keypad tones at N = 256</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-bins-256" viewBox="0 0 720 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bins-256-title bins-256-desc"><title id="bins-256-title">The keypad tones at N = 256</title><desc id="bins-256-desc">On a frequency axis from 650 to 1,650 Hz with a bin every 31.25 Hz, the eight keypad tones fall on bins 22, 25, 27, 30, 39, 43, 47 and 52, with an empty bin between neighbors; 770 Hz is 0.36 bin from bin 25; the 205-sample bins, 39.02 Hz apart, are drawn dashed above for comparison.</desc><defs><marker id="bins-256-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="bins-256-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="bins-256-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="bins-256-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="350"/><rect class="l13-shade" x="83.47" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="103.16" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="142.53" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="181.91" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="201.59" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="240.97" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="260.66" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="280.34" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="300.03" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="319.72" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="339.41" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="359.09" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="378.78" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="418.16" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="437.84" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="457.53" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="496.91" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="516.59" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="536.28" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="575.66" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="595.34" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="615.03" y="120" width="19.69" height="80"/>,<rect class="l13-shade" x="634.72" y="120" width="19.69" height="80"/>,<line class="k-curve-soft" x1="58.45" y1="56" x2="58.45" y2="76"/>,<line class="k-curve-soft" x1="83.04" y1="56" x2="83.04" y2="76"/>,<line class="k-curve-soft" x1="107.62" y1="56" x2="107.62" y2="76"/>,<line class="k-curve-soft" x1="132.21" y1="56" x2="132.21" y2="76"/>,<line class="k-curve-soft" x1="156.79" y1="56" x2="156.79" y2="76"/>,<line class="k-curve-soft" x1="181.38" y1="56" x2="181.38" y2="76"/>,<line class="k-curve-soft" x1="205.96" y1="56" x2="205.96" y2="76"/>,<line class="k-curve-soft" x1="230.55" y1="56" x2="230.55" y2="76"/>,<line class="k-curve-soft" x1="255.13" y1="56" x2="255.13" y2="76"/>,<line class="k-curve-soft" x1="279.72" y1="56" x2="279.72" y2="76"/>,<line class="k-curve-soft" x1="304.31" y1="56" x2="304.31" y2="76"/>,<line class="k-curve-soft" x1="328.89" y1="56" x2="328.89" y2="76"/>,<line class="k-curve-soft" x1="353.48" y1="56" x2="353.48" y2="76"/>,<line class="k-curve-soft" x1="378.06" y1="56" x2="378.06" y2="76"/>,<line class="k-curve-soft" x1="402.65" y1="56" x2="402.65" y2="76"/>,<line class="k-curve-soft" x1="427.23" y1="56" x2="427.23" y2="76"/>,<line class="k-curve-soft" x1="451.82" y1="56" x2="451.82" y2="76"/>,<line class="k-curve-soft" x1="476.4" y1="56" x2="476.4" y2="76"/>,<line class="k-curve-soft" x1="500.99" y1="56" x2="500.99" y2="76"/>,<line class="k-curve-soft" x1="525.57" y1="56" x2="525.57" y2="76"/>,<line class="k-curve-soft" x1="550.16" y1="56" x2="550.16" y2="76"/>,<line class="k-curve-soft" x1="574.74" y1="56" x2="574.74" y2="76"/>,<line class="k-curve-soft" x1="599.33" y1="56" x2="599.33" y2="76"/>,<line class="k-curve-soft" x1="623.91" y1="56" x2="623.91" y2="76"/>,<line class="k-curve-soft" x1="648.5" y1="56" x2="648.5" y2="76"/>,<line class="k-curve-soft" x1="673.09" y1="56" x2="673.09" y2="76"/>,<line class="k-grid" x1="50" y1="66" x2="680" y2="66"/>,<line class="k-axis" x1="50" y1="200" x2="680" y2="200"/>,<line class="k-axis" x1="53.94" y1="192" x2="53.94" y2="204"/>,<line class="k-axis" x1="73.63" y1="192" x2="73.63" y2="208"/>,<line class="k-axis" x1="93.31" y1="192" x2="93.31" y2="204"/>,<line class="k-axis" x1="113" y1="192" x2="113" y2="204"/>,<line class="k-axis" x1="132.69" y1="192" x2="132.69" y2="208"/>,<line class="k-axis" x1="152.38" y1="192" x2="152.38" y2="204"/>,<line class="k-axis" x1="172.06" y1="192" x2="172.06" y2="208"/>,<line class="k-axis" x1="191.75" y1="192" x2="191.75" y2="204"/>,<line class="k-axis" x1="211.44" y1="192" x2="211.44" y2="204"/>,<line class="k-axis" x1="231.13" y1="192" x2="231.13" y2="208"/>,<line class="k-axis" x1="250.81" y1="192" x2="250.81" y2="204"/>,<line class="k-axis" x1="270.5" y1="192" x2="270.5" y2="204"/>,<line class="k-axis" x1="290.19" y1="192" x2="290.19" y2="204"/>,<line class="k-axis" x1="309.88" y1="192" x2="309.88" y2="204"/>,<line class="k-axis" x1="329.56" y1="192" x2="329.56" y2="204"/>,<line class="k-axis" x1="349.25" y1="192" x2="349.25" y2="204"/>,<line class="k-axis" x1="368.94" y1="192" x2="368.94" y2="204"/>,<line class="k-axis" x1="388.63" y1="192" x2="388.63" y2="204"/>,<line class="k-axis" x1="408.31" y1="192" x2="408.31" y2="208"/>,<line class="k-axis" x1="428" y1="192" x2="428" y2="204"/>,<line class="k-axis" x1="447.69" y1="192" x2="447.69" y2="204"/>,<line class="k-axis" x1="467.38" y1="192" x2="467.38" y2="204"/>,<line class="k-axis" x1="487.06" y1="192" x2="487.06" y2="208"/>,<line class="k-axis" x1="506.75" y1="192" x2="506.75" y2="204"/>,<line class="k-axis" x1="526.44" y1="192" x2="526.44" y2="204"/>,<line class="k-axis" x1="546.13" y1="192" x2="546.13" y2="204"/>,<line class="k-axis" x1="565.81" y1="192" x2="565.81" y2="208"/>,<line class="k-axis" x1="585.5" y1="192" x2="585.5" y2="204"/>,<line class="k-axis" x1="605.19" y1="192" x2="605.19" y2="204"/>,<line class="k-axis" x1="624.88" y1="192" x2="624.88" y2="204"/>,<line class="k-axis" x1="644.56" y1="192" x2="644.56" y2="204"/>,<line class="k-axis" x1="664.25" y1="192" x2="664.25" y2="208"/>,<line class="l13-leader" x1="79.61" y1="126" x2="73.63" y2="190"/>,<circle class="l13-mk" cx="79.61" cy="120" r="5"/>,<text class="k-num" x="79.61" y="108" text-anchor="middle">697</text>,<text class="k-tick" x="73.63" y="222" text-anchor="middle">22</text>,<line class="l13-leader" x1="125.6" y1="126" x2="132.69" y2="190"/>,<circle class="l13-mk-accent" cx="125.6" cy="120" r="5"/>,<text class="k-num-accent" x="125.6" y="108" text-anchor="middle">770</text>,<text class="k-tick" x="132.69" y="222" text-anchor="middle">25</text>,<line class="l13-leader" x1="177.26" y1="126" x2="172.06" y2="190"/>,<circle class="l13-mk" cx="177.26" cy="120" r="5"/>,<text class="k-num" x="177.26" y="108" text-anchor="middle">852</text>,<text class="k-tick" x="172.06" y="222" text-anchor="middle">27</text>,<line class="l13-leader" x1="233.33" y1="126" x2="231.13" y2="190"/>,<circle class="l13-mk" cx="233.33" cy="120" r="5"/>,<text class="k-num" x="233.33" y="108" text-anchor="middle">941</text>,<text class="k-tick" x="231.13" y="222" text-anchor="middle">30</text>,<line class="l13-leader" x1="402.17" y1="126" x2="408.31" y2="190"/>,<circle class="l13-mk" cx="402.17" cy="120" r="5"/>,<text class="k-num" x="402.17" y="108" text-anchor="middle">1,209</text>,<text class="k-tick" x="408.31" y="222" text-anchor="middle">39</text>,<line class="l13-leader" x1="482.18" y1="126" x2="487.06" y2="190"/>,<circle class="l13-mk" cx="482.18" cy="120" r="5"/>,<text class="k-num" x="482.18" y="108" text-anchor="middle">1,336</text>,<text class="k-tick" x="487.06" y="222" text-anchor="middle">43</text>,<line class="l13-leader" x1="571.01" y1="126" x2="565.81" y2="190"/>,<circle class="l13-mk" cx="571.01" cy="120" r="5"/>,<text class="k-num" x="571.01" y="108" text-anchor="middle">1,477</text>,<text class="k-tick" x="565.81" y="222" text-anchor="middle">47</text>,<line class="l13-leader" x1="669.29" y1="126" x2="664.25" y2="190"/>,<circle class="l13-mk" cx="669.29" cy="120" r="5"/>,<text class="k-num" x="669.29" y="108" text-anchor="middle">1,633</text>,<text class="k-tick" x="664.25" y="222" text-anchor="middle">52</text>,<text class="k-tick" x="680" y="240" text-anchor="end">Hz (axis from 650); ticks: bins at N = 256, every 31.25 Hz</text><text class="k-tick" x="50" y="46" text-anchor="start">bins at N = 205, every 39.02 Hz (dashed, for comparison)</text><text class="k-num-accent" x="50" y="290" text-anchor="start">coral: 770 Hz sits 0.36 bin (11.25 Hz) from bin 25</text><g ><g ><g ><line class="k-axis" x1="63" y1="314" x2="63" y2="330"/></g><text class="k-label" x="84" y="326" text-anchor="start">bin at N = 256</text></g><g ><rect class="l13-shade" x="214" y="315" width="18" height="14"/><text class="k-label" x="244" y="326" text-anchor="start">empty bin</text></g><g ><circle class="l13-mk" cx="383" cy="322" r="5"/><text class="k-label" x="404" y="326" text-anchor="start">keypad tone</text></g><g ><line class="k-curve-soft" x1="543" y1="314" x2="543" y2="330"/><text class="k-label" x="564" y="326" text-anchor="start">bin at N = 205</text></g></g></svg></div>
+</div>
+</body>
+</html>

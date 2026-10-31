@@ -1,0 +1,92 @@
+{
+  "meter": {
+    "title": "The meter: a hum and a ghost",
+    "caption": "The wideband side on a frequency meter. The hum comes through at half height, with a ghost just as strong above 4,000 Hz, and when the hum slides down the ghost slides up.",
+    "animated": true,
+    "phone": true
+  },
+  "upsample": {
+    "title": "Upsampling: a zero in every gap",
+    "caption": "The obvious bridge. Each sample n goes to slot m = 2n, and every odd slot gets a 0.",
+    "animated": true,
+    "phone": true
+  },
+  "wheel-two-speeds": {
+    "title": "One tone, two wheel speeds",
+    "caption": "The same two tones on both lines, coming to rest on sample 1. At 8,000 samples/s, 7,000 Hz lands on 1,000 Hz’s mirror spots, so the samples cannot tell them apart. At 16,000 samples/s it turns 157.5°, a real tone of its own.",
+    "animated": true,
+    "phone": true
+  },
+  "stems": {
+    "title": "The zeros are two half tones",
+    "caption": "Top: the output with zeros in, against the true tone it should have been. Bottom: half of 1,000 Hz (triangles) and half of 7,000 Hz (rings) at each m; their sum, the solid stems and hollow zeros, is that output exactly.",
+    "animated": false,
+    "phone": true
+  },
+  "two-dots": {
+    "title": "Same shadow, opposite shadow",
+    "caption": "Both dots on one wheel at 16,000 samples/s, sample by sample. Even samples: the 7,000 Hz dot sits at the 1,000 Hz dot’s mirror spot, the same shadow. Odd samples: one flip is left over, the opposite shadow. The wheel rests on sample 1, the outlined row: 0.92 and −0.92.",
+    "animated": true,
+    "phone": true
+  },
+  "mirror": {
+    "title": "Every tone has an image across 4,000 Hz",
+    "caption": "The mirror rule. A tone and its image sit equally far either side of 4,000 Hz, so the whole voice comes back upside down from 4,600 Hz to 7,700 Hz.",
+    "animated": true,
+    "phone": true
+  },
+  "fill": {
+    "title": "Fill the gap with the average",
+    "caption": "The neighbor average fills the gap with 0.85. The true tone passes through 0.92: close, not right.",
+    "animated": false,
+    "phone": true
+  },
+  "average-gain": {
+    "title": "The neighbor average is a gentle slope",
+    "caption": "What the neighbor average leaves of each tone, as a share of its height on your line, against the ideal. It slopes gently where the ideal steps, so 3,000 Hz and its image at 5,000 Hz come out almost alike.",
+    "animated": false,
+    "phone": true
+  },
+  "gain-curves": {
+    "title": "Longer rules step more steeply",
+    "caption": "Each curve is one rule’s output height as a share of the tone’s height on your line. The two upright lines mark the gap between the top of the voice, 3,400 Hz, and its image, 4,600 Hz. Longer is steeper, but the ripple shrinks slowly.",
+    "animated": false,
+    "phone": true
+  },
+  "downsample": {
+    "title": "Downsampling folds 6,000 Hz onto 2,000 Hz",
+    "caption": "Keep every other sample of the “s” and the dot turns 270° between two kept samples, the same spot as 90° backwards: a 2,000 Hz tone, at full height.",
+    "animated": true,
+    "phone": true
+  },
+  "flip": {
+    "title": "A flip every sample makes the image",
+    "caption": "Multiply the flip’s shadow by the hum’s shadow, sample by sample, and you get the shadow of a dot turning 180° − 22.5° = 157.5°: the image.",
+    "animated": true,
+    "phone": true
+  },
+  "triple": {
+    "title": "Upsampling by 3 makes two images",
+    "caption": "Upsampling by 3: the hum keeps a third and two images take a third each, the hum’s distance either side of 8,000 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "by-two": {
+    "title": "Upsampling by 2 has one image",
+    "caption": "Why upsampling by 2 has only one image: 9,000 Hz turns 202.5°, which is 157.5° backwards. Its left-right position matches 7,000 Hz, so its samples are the same.",
+    "animated": false,
+    "phone": true
+  },
+  "target": {
+    "title": "The target for your bridge",
+    "caption": "The spec, and the rule that meets it. The 31-sample curve stays inside the voice box and under the ceiling, with only 0.7% to spare at 4,600 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "bridge": {
+    "title": "Where the cutoff goes, each way",
+    "caption": "Up: zeros first, then the step, because the images only exist once the zeros make them. Down: the step first, then the drop, because after the drop an alias and a true tone look the same.",
+    "animated": false,
+    "phone": true
+  }
+}

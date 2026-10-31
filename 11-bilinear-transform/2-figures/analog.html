@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analog and digital filters</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-analog-style">.k-fig .b11-ex { stroke: var(--ink); stroke-width: 2.2; fill: none; } .k-fig .b11-cp { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 9 5; fill: none; } .k-fig .b11-pw { stroke: var(--accent); stroke-width: 2.8; stroke-dasharray: 0.5 5.5; stroke-linecap: round; fill: none; } .k-fig .b11-m-ex { fill: var(--ink); stroke: var(--paper); stroke-width: 1; } .k-fig .b11-m-cp { fill: none; stroke: var(--ink); stroke-width: 1.8; } .k-fig .b11-m-pw { fill: var(--accent); stroke: var(--paper); stroke-width: 1; } .k-fig .b11-ref { stroke: var(--ink-soft); stroke-width: 1; fill: none; } .k-fig .b11-wall { stroke: var(--ink-soft); stroke-width: 3; } .k-fig .b11-shade { fill: var(--paper-2); } .k-fig .b11-stretch { fill: var(--accent-soft); } .k-fig .b11-rim { stroke: var(--ink); stroke-width: 1.5; fill: none; } .k-fig .b11-lap { stroke: var(--ink); stroke-width: 2; fill: none; } .k-fig .b11-tick { stroke: var(--ink); stroke-width: 1.5; } .k-fig .b11-tick-accent { stroke: var(--accent); stroke-width: 2.5; } .k-fig .b11-pole { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; } .k-fig .b11-pole-old { stroke: var(--ink-soft); stroke-width: 1.6; stroke-linecap: round; } .k-fig .b11-zero { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .k-fig .b11-spoke-cp { stroke: var(--ink-soft); stroke-width: 1.4; stroke-dasharray: 9 5; } .k-fig .b11-spoke-pw { stroke: var(--accent); stroke-width: 2.4; stroke-dasharray: 0.5 5; stroke-linecap: round; } .k-fig .b11-vec { stroke: var(--ink); stroke-width: 2; } .k-fig .b11-vec-accent { stroke: var(--accent); stroke-width: 2.6; } .k-fig .b11-cell { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; } .k-fig .b11-wave { stroke: var(--ink); stroke-width: 2; fill: none; } .k-fig .b11-head { fill: var(--ink-soft); } .k-fig .b11-head-ink { fill: var(--ink); }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 11 · the bilinear transform</p>
+<h1>Analog and digital filters</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-analog" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="analog-title analog-desc" data-motion-root data-motion-mode="reveal" data-step-count="2"><title id="analog-title">Analog and digital filters</title><desc id="analog-desc">Top: a smooth voltage flows through an analog filter of capacitors and coils, and its frequency axis runs on forever. Bottom: samples, 8,000 a second, tick through a digital filter, and its frequency axis stops at 4,000 Hz.</desc><defs><marker id="analog-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="analog-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="analog-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="analog-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="420"/><text class="k-name" x="40" y="38" text-anchor="start">analog: a smooth voltage, at every instant</text><text class="k-name" x="40" y="240" text-anchor="start">digital: a list of samples, 8,000 a second</text><path class="k-arrow" d="M222 90L258 90" fill="none" marker-end="url(#analog-arrow)"/><path class="k-arrow" d="M460 90L496 90" fill="none" marker-end="url(#analog-arrow)"/><path class="k-arrow" d="M222 292L258 292" fill="none" marker-end="url(#analog-arrow)"/><path class="k-arrow" d="M460 292L496 292" fill="none" marker-end="url(#analog-arrow)"/><g ><rect class="k-mask-box" x="262" y="54" width="196" height="72" rx="6"/><rect class="k-box" x="262" y="54" width="196" height="72" rx="6"/><text class="k-name" x="360" y="86" text-anchor="middle">analog filter</text><text class="k-tick" x="360" y="106" text-anchor="middle">capacitors and coils</text></g><g ><rect class="k-mask-box" x="262" y="256" width="196" height="72" rx="6"/><rect class="k-box" x="262" y="256" width="196" height="72" rx="6"/><text class="k-name" x="360" y="288" text-anchor="middle">digital filter</text><text class="k-tick" x="360" y="308" text-anchor="middle">arithmetic on samples</text></g><line class="k-axis" x1="40" y1="292" x2="220" y2="292"/><line class="k-axis" x1="500" y1="292" x2="680" y2="292"/><g data-motion-item="" data-step="1" aria-label="the voltage flows through the analog filter continuously"><path class="b11-wave k-a-draw" style="--d:0;--len:4" d="M40 74.36L41.13 72.8L42.25 71.55L43.38 70.61L44.5 70L45.63 69.7L46.75 69.7L47.88 69.99L49 70.53L50.13 71.3L51.25 72.26L52.38 73.37L53.5 74.59L54.63 75.87L55.75 77.17L56.88 78.45L58 79.66L59.13 80.76L60.25 81.72L61.38 82.52L62.5 83.13L63.63 83.52L64.75 83.7L65.88 83.66L67 83.41L68.13 82.95L69.25 82.3L70.38 81.49L71.5 80.55L72.63 79.51L73.75 78.42L74.88 77.31L76 76.23L77.13 75.22L78.25 74.32L79.38 73.58L80.5 73.03L81.63 72.71L82.75 72.65L83.88 72.87L85 73.38L86.13 74.2L87.25 75.32L88.38 76.75L89.5 78.47L90.63 80.45L91.75 82.68L92.88 85.11L94 87.72L95.13 90.45L96.25 93.26L97.38 96.1L98.5 98.91L99.63 101.66L100.75 104.29L101.88 106.75L103 108.99L104.13 110.99L105.25 112.71L106.38 114.11L107.5 115.19L108.63 115.92L109.75 116.31L110.88 116.35L112 116.05L113.13 115.44L114.25 114.53L115.38 113.37L116.5 111.97L117.63 110.39L118.75 108.67L119.88 106.85L121 104.98L122.13 103.11L123.25 101.27L124.38 99.52L125.5 97.89L126.63 96.42L127.75 95.13L128.88 94.06L130 93.2L131.13 92.58L132.25 92.19L133.38 92.03L134.5 92.09L135.63 92.34L136.75 92.76L137.88 93.32L139 93.99L140.13 94.72L141.25 95.48L142.38 96.22L143.5 96.9L144.63 97.48L145.75 97.92L146.88 98.19L148 98.25L149.13 98.07L150.25 97.65L151.38 96.96L152.5 96L153.63 94.77L154.75 93.28L155.88 91.54L157 89.59L158.13 87.44L159.25 85.14L160.38 82.72L161.5 80.23L162.63 77.72L163.75 75.22L164.88 72.81L166 70.51L167.13 68.38L168.25 66.47L169.38 64.81L170.5 63.43L171.63 62.37L172.75 61.65L173.88 61.27L175 61.26L176.13 61.6L177.25 62.29L178.38 63.32L179.5 64.66L180.63 66.27L181.75 68.13L182.88 70.2L184 72.43L185.13 74.77L186.25 77.18L187.38 79.6L188.5 81.99L189.63 84.3L190.75 86.5L191.88 88.53L193 90.37L194.13 91.99L195.25 93.37L196.38 94.49L197.5 95.35L198.63 95.94L199.75 96.28L200.88 96.38L202 96.26L203.13 95.95L204.25 95.48L205.38 94.89L206.5 94.21L207.63 93.49L208.75 92.78L209.88 92.1L211 91.51L212.13 91.03L213.25 90.71L214.38 90.58L215.5 90.65L216.63 90.95L217.75 91.48L218.88 92.25L220 93.26" fill="none" pathLength="1"/><path class="b11-wave k-a-draw" style="--d:0.4;--len:4" d="M500 88.4L501.13 87.41L502.25 86.42L503.38 85.45L504.5 84.49L505.63 83.56L506.75 82.65L507.88 81.78L509 80.93L510.13 80.12L511.25 79.35L512.38 78.62L513.5 77.94L514.63 77.3L515.75 76.72L516.88 76.18L518 75.7L519.13 75.28L520.25 74.91L521.38 74.61L522.5 74.37L523.63 74.18L524.75 74.06L525.88 74.01L527 74.01L528.13 74.08L529.25 74.21L530.38 74.41L531.5 74.66L532.63 74.98L533.75 75.35L534.88 75.79L536 76.28L537.13 76.82L538.25 77.41L539.38 78.06L540.5 78.75L541.63 79.49L542.75 80.27L543.88 81.08L545 81.93L546.13 82.82L547.25 83.73L548.38 84.67L549.5 85.62L550.63 86.6L551.75 87.59L552.88 88.59L554 89.59L555.13 90.59L556.25 91.6L557.38 92.59L558.5 93.58L559.63 94.55L560.75 95.51L561.88 96.44L563 97.35L564.13 98.22L565.25 99.07L566.38 99.88L567.5 100.65L568.63 101.38L569.75 102.06L570.88 102.7L572 103.28L573.13 103.82L574.25 104.3L575.38 104.72L576.5 105.09L577.63 105.39L578.75 105.63L579.88 105.82L581 105.94L582.13 105.99L583.25 105.99L584.38 105.92L585.5 105.79L586.63 105.59L587.75 105.34L588.88 105.02L590 104.65L591.13 104.21L592.25 103.72L593.38 103.18L594.5 102.59L595.63 101.94L596.75 101.25L597.88 100.51L599 99.73L600.13 98.92L601.25 98.07L602.38 97.18L603.5 96.27L604.63 95.33L605.75 94.38L606.88 93.4L608 92.41L609.13 91.41L610.25 90.41L611.38 89.41L612.5 88.4L613.63 87.41L614.75 86.42L615.88 85.45L617 84.49L618.13 83.56L619.25 82.65L620.38 81.78L621.5 80.93L622.63 80.12L623.75 79.35L624.88 78.62L626 77.94L627.13 77.3L628.25 76.72L629.38 76.18L630.5 75.7L631.63 75.28L632.75 74.91L633.88 74.61L635 74.37L636.13 74.18L637.25 74.06L638.38 74.01L639.5 74.01L640.63 74.08L641.75 74.21L642.88 74.41L644 74.66L645.13 74.98L646.25 75.35L647.38 75.79L648.5 76.28L649.63 76.82L650.75 77.41L651.88 78.06L653 78.75L654.13 79.49L655.25 80.27L656.38 81.08L657.5 81.93L658.63 82.82L659.75 83.73L660.88 84.67L662 85.62L663.13 86.6L664.25 87.59L665.38 88.59L666.5 89.59L667.63 90.59L668.75 91.6L669.88 92.59L671 93.58L672.13 94.55L673.25 95.51L674.38 96.44L675.5 97.35L676.63 98.22L677.75 99.07L678.88 99.88L680 100.65" fill="none" pathLength="1"/></g><g data-motion-item="" data-step="2" aria-label="the samples tick through the digital filter one at a time"><g class="k-a-in" style="--d:0;--len:0.3"><line class="k-stem" x1="47.5" y1="292" x2="47.5" y2="271.86"/><circle class="k-stem-dot" cx="47.5" cy="271.86" r="3.5"/></g><g class="k-a-in" style="--d:0.32;--len:0.3"><line class="k-stem" x1="62.5" y1="292" x2="62.5" y2="285.13"/><circle class="k-stem-dot" cx="62.5" cy="285.13" r="3.5"/></g><g class="k-a-in" style="--d:0.64;--len:0.3"><line class="k-stem" x1="77.5" y1="292" x2="77.5" y2="276.9"/><circle class="k-stem-dot" cx="77.5" cy="276.9" r="3.5"/></g><g class="k-a-in" style="--d:0.96;--len:0.3"><line class="k-stem" x1="92.5" y1="292" x2="92.5" y2="286.28"/><circle class="k-stem-dot" cx="92.5" cy="286.28" r="3.5"/></g><g class="k-a-in" style="--d:1.28;--len:0.3"><line class="k-stem" x1="107.5" y1="292" x2="107.5" y2="317.19"/><circle class="k-stem-dot" cx="107.5" cy="317.19" r="3.5"/></g><g class="k-a-in" style="--d:1.6;--len:0.3"><line class="k-stem" x1="122.5" y1="292" x2="122.5" y2="304.49"/><circle class="k-stem-dot" cx="122.5" cy="304.49" r="3.5"/></g><g class="k-a-in" style="--d:1.92;--len:0.3"><line class="k-stem" x1="137.5" y1="292" x2="137.5" y2="295.12"/><circle class="k-stem-dot" cx="137.5" cy="295.12" r="3.5"/></g><g class="k-a-in" style="--d:2.24;--len:0.3"><line class="k-stem" x1="152.5" y1="292" x2="152.5" y2="298"/><circle class="k-stem-dot" cx="152.5" cy="298" r="3.5"/></g><g class="k-a-in" style="--d:2.56;--len:0.3"><line class="k-stem" x1="167.5" y1="292" x2="167.5" y2="269.72"/><circle class="k-stem-dot" cx="167.5" cy="269.72" r="3.5"/></g><g class="k-a-in" style="--d:2.88;--len:0.3"><line class="k-stem" x1="182.5" y1="292" x2="182.5" y2="271.49"/><circle class="k-stem-dot" cx="182.5" cy="271.49" r="3.5"/></g><g class="k-a-in" style="--d:3.2;--len:0.3"><line class="k-stem" x1="197.5" y1="292" x2="197.5" y2="297.35"/><circle class="k-stem-dot" cx="197.5" cy="297.35" r="3.5"/></g><g class="k-a-in" style="--d:3.52;--len:0.3"><line class="k-stem" x1="212.5" y1="292" x2="212.5" y2="292.91"/><circle class="k-stem-dot" cx="212.5" cy="292.91" r="3.5"/></g><g class="k-a-in" style="--d:0.4;--len:0.3"><line class="k-stem" x1="507.5" y1="292" x2="507.5" y2="284.07"/><circle class="k-stem-dot" cx="507.5" cy="284.07" r="3.5"/></g><g class="k-a-in" style="--d:0.72;--len:0.3"><line class="k-stem" x1="522.5" y1="292" x2="522.5" y2="276.37"/><circle class="k-stem-dot" cx="522.5" cy="276.37" r="3.5"/></g><g class="k-a-in" style="--d:1.04;--len:0.3"><line class="k-stem" x1="537.5" y1="292" x2="537.5" y2="279.01"/><circle class="k-stem-dot" cx="537.5" cy="279.01" r="3.5"/></g><g class="k-a-in" style="--d:1.3599999999999999;--len:0.3"><line class="k-stem" x1="552.5" y1="292" x2="552.5" y2="290.25"/><circle class="k-stem-dot" cx="552.5" cy="290.25" r="3.5"/></g><g class="k-a-in" style="--d:1.6800000000000002;--len:0.3"><line class="k-stem" x1="567.5" y1="292" x2="567.5" y2="302.65"/><circle class="k-stem-dot" cx="567.5" cy="302.65" r="3.5"/></g><g class="k-a-in" style="--d:2;--len:0.3"><line class="k-stem" x1="582.5" y1="292" x2="582.5" y2="308"/><circle class="k-stem-dot" cx="582.5" cy="308" r="3.5"/></g><g class="k-a-in" style="--d:2.32;--len:0.3"><line class="k-stem" x1="597.5" y1="292" x2="597.5" y2="302.76"/><circle class="k-stem-dot" cx="597.5" cy="302.76" r="3.5"/></g><g class="k-a-in" style="--d:2.64;--len:0.3"><line class="k-stem" x1="612.5" y1="292" x2="612.5" y2="290.4"/><circle class="k-stem-dot" cx="612.5" cy="290.4" r="3.5"/></g><g class="k-a-in" style="--d:2.96;--len:0.3"><line class="k-stem" x1="627.5" y1="292" x2="627.5" y2="279.1"/><circle class="k-stem-dot" cx="627.5" cy="279.1" r="3.5"/></g><g class="k-a-in" style="--d:3.28;--len:0.3"><line class="k-stem" x1="642.5" y1="292" x2="642.5" y2="276.33"/><circle class="k-stem-dot" cx="642.5" cy="276.33" r="3.5"/></g><g class="k-a-in" style="--d:3.6;--len:0.3"><line class="k-stem" x1="657.5" y1="292" x2="657.5" y2="283.93"/><circle class="k-stem-dot" cx="657.5" cy="283.93" r="3.5"/></g><g class="k-a-in" style="--d:3.92;--len:0.3"><line class="k-stem" x1="672.5" y1="292" x2="672.5" y2="296.87"/><circle class="k-stem-dot" cx="672.5" cy="296.87" r="3.5"/></g></g><line class="k-axis" x1="60" y1="178" x2="680" y2="178" marker-end="url(#analog-arrow)"/><g ><line class="k-axis" x1="60" y1="178" x2="60" y2="183"/><text class="k-tick" x="60" y="197" text-anchor="middle">0</text></g>,<g ><line class="k-axis" x1="138.67" y1="178" x2="138.67" y2="183"/><text class="k-tick" x="138.67" y="197" text-anchor="middle">4,000</text></g>,<g ><line class="k-axis" x1="256.67" y1="178" x2="256.67" y2="183"/><text class="k-tick" x="256.67" y="197" text-anchor="middle">10,000</text></g>,<g ><line class="k-axis" x1="453.33" y1="178" x2="453.33" y2="183"/><text class="k-tick" x="453.33" y="197" text-anchor="middle">20,000 Hz</text></g><text class="k-tick" x="680" y="168" text-anchor="end">analog frequency F, in Hz, from 0: on forever</text><line class="k-axis" x1="60" y1="380" x2="138.67" y2="380"/><line class="b11-wall" x1="138.67" y1="371" x2="138.67" y2="383"/><g ><line class="k-axis" x1="60" y1="380" x2="60" y2="385"/><text class="k-tick" x="60" y="399" text-anchor="middle">0</text></g>,<g ><line class="k-axis" x1="138.67" y1="380" x2="138.67" y2="385"/><text class="k-tick" x="138.67" y="399" text-anchor="middle">4,000 Hz</text></g><text class="k-tick" x="150.67" y="384" text-anchor="start">digital tone f, in Hz, from 0: stops at 4,000</text></svg></div>
+</div>
+</body>
+</html>

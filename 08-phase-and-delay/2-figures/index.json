@@ -1,0 +1,80 @@
+{
+  "smear": {
+    "title": "The bursts arrive shuffled in time",
+    "caption": "Every burst is loud enough. The 1,800 Hz bursts arrive 3.24 samples late, more than twice the fax’s 1.5-sample window, and slide into the next burst.",
+    "animated": true,
+    "phone": true
+  },
+  "wheel-phase": {
+    "title": "Phase: the output’s dot trails the input’s",
+    "caption": "At 1,800 Hz the notch shrinks the wheel to 70.1% (the gain) and sets the dot back 45.5° (the phase): 45.5° ÷ 81° = 0.56 samples late.",
+    "animated": true,
+    "phone": true
+  },
+  "phase-lines": {
+    "title": "Phase from the lines",
+    "caption": "Phase = the pole lines’ directions added up, minus the zero lines’ directions added up: 54.2° − 45.0° = 9.2° at 1,000 Hz.",
+    "animated": false,
+    "phone": true
+  },
+  "linear-phase": {
+    "title": "Straight phase lines mean equal delay",
+    "caption": "A straight phase line through zero is linear phase: every tone delayed the same. The notch is not straight.",
+    "animated": false,
+    "phone": true
+  },
+  "burst-tones": {
+    "title": "A burst is many neighboring tones",
+    "caption": "Switching a tone on and off adds its neighbors. The shorter the burst, the wider its cluster of tones.",
+    "animated": true,
+    "phone": true
+  },
+  "catch-up": {
+    "title": "Two tones, one swell, and the notch",
+    "caption": "Before and after the notch: the wiggles move about half a sample, but the swell moves 11.6° ÷ 4.5° = 2.58 samples.",
+    "animated": true,
+    "phone": true
+  },
+  "group-delay": {
+    "title": "Group delay is the steepness of the phase",
+    "caption": "The steeper the phase climbs, the later a burst arrives there. That steepness is the group delay.",
+    "animated": true,
+    "phone": true
+  },
+  "symmetry": {
+    "title": "Symmetric coefficients balance on the middle",
+    "caption": "Pairs balance on the middle sample: one sample late for every tone.",
+    "animated": false,
+    "phone": true
+  },
+  "all-pass": {
+    "title": "An all-pass keeps one ratio everywhere",
+    "caption": "Wherever the tone sits, its zero distance is 1.54 times its pole distance, so the all-pass passes every tone at 100%.",
+    "animated": true,
+    "phone": true
+  },
+  "swing": {
+    "title": "Lines swing fastest near the pole",
+    "caption": "Like your head as a car drives past: the lines whip round when the tone passes near the pole, and barely turn when it is far away.",
+    "animated": true,
+    "phone": true
+  },
+  "delay-fix": {
+    "title": "The all-pass fills in where the notch is early",
+    "caption": "The all-pass holds back the bottom of the band, so the whole line fits the fax’s 1.5-sample window: 4.72 to 5.67 samples.",
+    "animated": false,
+    "phone": true
+  },
+  "minimum-phase": {
+    "title": "Same gains, different timing",
+    "caption": "Same gains; A’s sound comes first. A, with its zero inside, is minimum phase.",
+    "animated": false,
+    "phone": true
+  },
+  "inverse": {
+    "title": "Running the all-pass backwards is unstable",
+    "caption": "Swap the all-pass’s poles and zeros and the zero at 1.54 becomes a pole outside the circle: every echo grows.",
+    "animated": false,
+    "phone": true
+  }
+}

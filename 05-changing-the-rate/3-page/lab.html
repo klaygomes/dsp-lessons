@@ -1,0 +1,63 @@
+<template id="bridge-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div class="row" data-k="dir" role="group" aria-label="Which way the call goes" hidden>
+    <button type="button" data-dir="up" aria-pressed="true">Going up: your colleague to the wideband line</button>
+    <button type="button" data-dir="down" aria-pressed="false">Going down: a wideband caller to your line</button>
+  </div>
+  <p class="chain" data-k="chain" hidden></p>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="control" data-k="len-control" hidden>
+    <span class="label" data-k="len-label">The rule after the zeros</span>
+    <div class="row" role="group" data-k="len-group" aria-label="Rule length">
+      <button type="button" data-len="0" aria-pressed="true">None</button>
+      <button type="button" data-len="3" aria-pressed="false">Neighbor average (3)</button>
+      <button type="button" data-len="7" aria-pressed="false">7 samples</button>
+      <button type="button" data-len="15" aria-pressed="false">15 samples</button>
+      <button type="button" data-len="31" aria-pressed="false">31 samples</button>
+      <button type="button" data-len="47" aria-pressed="false">47 samples, over budget</button>
+    </div>
+  </div>
+  <div class="control" data-k="place-control" hidden>
+    <span class="label">Where the rule sits</span>
+    <div class="row" role="group" aria-label="Where the rule sits">
+      <button type="button" data-place="before" aria-pressed="false">Before keep every other</button>
+      <button type="button" data-place="after" aria-pressed="true">After keep every other</button>
+    </div>
+  </div>
+  <div class="key" data-k="key-explore">
+    <span><i class="k-hum"></i>the hum, your colleague’s tone</span>
+    <span><i class="k-ghost"></i>the ghost</span>
+    <span><i class="k-zero"></i>a 0 put in</span>
+    <span><i class="k-mirror"></i>4,000 Hz</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
+  </div>
+  <div class="key" data-k="key-fix" hidden>
+    <span><i class="k-rule"></i>each tone’s height at the output, as a share of its height on the line it came from</span>
+    <span><i class="k-range"></i>the target</span>
+    <span><i class="k-zone"></i><span data-k="zone-key">the gap</span></span>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="checks" data-k="checks" hidden>
+    <p data-k="check-voice"></p>
+    <p data-k="check-image"></p>
+  </div>
+  <div class="control" data-k="hum-control">
+    <label data-for="hum">Your colleague’s hum: <output data-k="hum-out">1,000 Hz</output></label>
+    <input data-k="hum" type="range" min="0" max="4000" step="100" value="1000" disabled>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="source" class="k-toggle" aria-pressed="false">Hear your line instead</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another line</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing.</p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

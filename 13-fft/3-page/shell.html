@@ -1,0 +1,83 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Detector That Couldn't Keep Up</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+<!--FILE:lab.css-->
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 13 · chapter 9</p>
+    <h1>The Detector That Couldn't Keep Up</h1>
+    <p class="question">The keypad detector gets every key right on the laptop. On the line's cheap chip it falls further behind with every call. Is the DFT really doing 42,230 different things per block, or the same things over and over?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 9.</span>
+    <span>Next lesson: spectrum analysis with windows, where a loud 4 looks like two keys at once.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+  </footer>
+</div>
+
+<template id="act2-lab">
+  <div class="task" data-k="task"><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div class="row" role="group" aria-label="Block length" data-k="lengths">
+    <span class="label">Block:</span>
+    <button type="button" data-n="205" aria-pressed="true">205 samples</button>
+    <button type="button" data-n="256" aria-pressed="false">256 samples</button>
+  </div>
+  <div class="row" data-k="split-row">
+    <span class="label">Splits: <output data-k="splits-out">0</output></span>
+    <button type="button" data-k="split">Split again</button>
+    <button type="button" data-k="join">Join back</button>
+    <span class="note" data-k="split-note"></span>
+  </div>
+  <div class="row" role="group" aria-label="Detector" data-k="methods" hidden>
+    <span class="label">Detector:</span>
+    <button type="button" data-method="dft" aria-pressed="true">all bins (DFT or FFT)</button>
+    <button type="button" data-method="goertzel" aria-pressed="false">eight Goertzel filters</button>
+  </div>
+  <div class="k-meter l13-meter" data-k="meter">
+    <span data-k="meter-label">Multiplications per block</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div><div class="budget" data-k="budget-mark"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>1,000</span><span>10,000</span><span>140,000, log scale</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+  </div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key">
+    <span><i class="k-box"></i>a key press, or a digit the detector reports</span>
+    <span><i class="k-late"></i>a digit reported late</span>
+    <span><i class="k-ink"></i>from press to report</span>
+  </div>
+  <p class="bins" data-k="matches"></p>
+  <div class="row">
+    <button type="button" data-k="play">Play the call</button>
+    <button type="button" data-k="another" hidden>Try another exchange</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite"></p>
+</template>
+
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

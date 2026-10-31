@@ -1,0 +1,19 @@
+<div class="lab" id="systems-lab">
+  <h3>Experiment: three more systems on one 1,000 Hz tone of size 1</h3>
+  <p>An experiment: pick a system, guess, then look. Does the buzz meter move? Two sections on, the page shows why.</p>
+  <div class="row" role="group" aria-label="Which system">
+    <button type="button" data-system="smoother" aria-pressed="true">The smoother</button>
+    <button type="button" data-system="fader" aria-pressed="false">The fader</button>
+    <button type="button" data-system="add" aria-pressed="false">Add 0.1</button>
+  </div>
+  <pre class="code"><code id="sys-rule"></code></pre>
+  <div id="sys-ask"></div>
+  <canvas id="stage2" class="stage small" role="img" aria-label="The system's output on the 1,000 Hz tone."></canvas>
+  <p class="note" id="sys-key">Dashed: the tone in. Solid: the output, shown after your prediction. Ticks and crosses: the neighbor rule.</p>
+  <div class="k-meter" id="sys-meter">
+    <span>Buzz: new tones as % of the voice</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>40%</span></div>
+  </div>
+</div>

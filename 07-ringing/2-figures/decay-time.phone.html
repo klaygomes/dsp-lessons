@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decay time: down to 1%</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-decay-time-style">.k-fig .r7-s90 { stroke: var(--ink); stroke-width: 2; fill: none; } .k-fig .r7-s95 { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 9 3 2 3; fill: none; } .k-fig .r7-s98 { stroke: var(--ink); stroke-width: 2.2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; } .k-fig .r7-m { fill: var(--ink); stroke: var(--paper); stroke-width: 1; } .k-fig .r7-m-accent { fill: var(--accent); stroke: var(--paper); stroke-width: 1; } .k-fig .r7-m-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; } .k-fig .r7-pole { stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; } .k-fig .r7-zero { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .k-fig .r7-rim { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; } .k-fig .r7-bracket { stroke: var(--ink); stroke-width: 1.4; fill: none; } .k-fig .r7-bracket-accent { stroke: var(--accent); stroke-width: 1.8; fill: none; } .k-fig .r7-result { stroke: var(--accent); stroke-width: 2.5; fill: none; } .k-fig .r7-result-dot { fill: var(--accent); } .k-fig .r7-shade { fill: var(--paper-2); } .k-fig .r7-click { stroke: var(--ink); stroke-width: 4.5; } .k-fig .r7-spiral { stroke: var(--ink); stroke-width: 1.6; fill: none; } .k-fig .r7-drop { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 2 3; } .k-fig .r7-env { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; } .k-fig .r7-level { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; } .k-fig .r7-hatch-line { stroke: var(--accent); stroke-width: 1.5; } .k-fig .r7-span { fill: var(--ink-soft); opacity: 0.35; } .k-fig .r7-answer { fill: var(--input-soft); stroke: var(--input); stroke-width: 1.2; } .k-fig .r7-turn { stroke: var(--ink-soft); stroke-width: 1.6; fill: none; } .k-fig .r7-head-soft { fill: var(--ink-soft); } .k-fig .r7-outline { fill: var(--paper); stroke: var(--ink); stroke-width: 1.8; } .k-fig .r7-plate { fill: var(--paper-2); } .k-fig .r7-softline { stroke: var(--ink-soft); stroke-width: 1.8; fill: none; } .k-fig .r7-op { font-family: var(--font-body); font-weight: 500; font-size: 26px; fill: var(--ink); }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 7 · how long a filter rings</p>
+<h1>Decay time: down to 1%</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-decay-time-phone" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="decay-time-phone-title decay-time-phone-desc"><title id="decay-time-phone-title">Decay time: down to 1%</title><desc id="decay-time-phone-desc">The ring’s size at radius 0.9 falls from 100% as 0.9 to the power n: 0.35 after 10 samples, 0.12 after 20; zoomed in, it crosses 1% at 43.7 samples, 5.5 ms.</desc><defs><marker id="decay-time-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="decay-time-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="decay-time-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="decay-time-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="460"/><text class="k-label" x="10" y="30" text-anchor="start">ring size, share of its start (r = 0.90)</text><g ><line class="k-axis" x1="54" y1="200" x2="344" y2="200"/><text class="k-tick" x="46" y="74" text-anchor="end">100%</text><text class="k-tick" x="46" y="139" text-anchor="end">50%</text><text class="k-tick" x="46" y="204" text-anchor="end">0</text></g><rect class="r7-plate" x="54" y="193.5" width="290" height="6.5"/><line class="k-grid" x1="54" y1="200" x2="54" y2="280"/><line class="k-grid" x1="344" y1="200" x2="344" y2="280"/><rect class="r7-plate" x="54" y="280" width="290" height="100"/><path class="r7-s90" d="M54 70L55.21 73.6L56.42 77.1L57.63 80.51L58.83 83.82L60.04 87.04L61.25 90.17L62.46 93.21L63.67 96.17L64.88 99.05L66.08 101.84L67.29 104.56L68.5 107.21L69.71 109.78L70.92 112.28L72.13 114.71L73.33 117.07L74.54 119.37L75.75 121.6L76.96 123.77L78.17 125.89L79.38 127.94L80.58 129.94L81.79 131.88L83 133.76L84.21 135.6L85.42 137.38L86.63 139.12L87.83 140.8L89.04 142.44L90.25 144.04L91.46 145.59L92.67 147.1L93.88 148.56L95.08 149.99L96.29 151.37L97.5 152.72L98.71 154.03L99.92 155.3L101.13 156.54L102.33 157.75L103.54 158.92L104.75 160.06L105.96 161.16L107.17 162.24L108.38 163.28L109.58 164.3L110.79 165.29L112 166.25L113.21 167.19L114.42 168.1L115.63 168.98L116.83 169.84L118.04 170.68L119.25 171.49L120.46 172.28L121.67 173.05L122.88 173.79L124.08 174.52L125.29 175.22L126.5 175.91L127.71 176.58L128.92 177.23L130.13 177.86L131.33 178.47L132.54 179.07L133.75 179.65L134.96 180.21L136.17 180.76L137.38 181.29L138.58 181.81L139.79 182.32L141 182.81L142.21 183.28L143.42 183.74L144.63 184.2L145.83 184.63L147.04 185.06L148.25 185.47L149.46 185.88L150.67 186.27L151.88 186.65L153.08 187.02L154.29 187.38L155.5 187.73L156.71 188.07L157.92 188.4L159.13 188.72L160.33 189.03L161.54 189.33L162.75 189.63L163.96 189.92L165.17 190.2L166.38 190.47L167.58 190.73L168.79 190.99L170 191.24L171.21 191.48L172.42 191.72L173.63 191.95L174.83 192.17L176.04 192.39L177.25 192.6L178.46 192.8L179.67 193L180.88 193.2L182.08 193.38L183.29 193.57L184.5 193.75L185.71 193.92L186.92 194.09L188.13 194.25L189.33 194.41L190.54 194.57L191.75 194.72L192.96 194.86L194.17 195.01L195.38 195.14L196.58 195.28L197.79 195.41L199 195.54L200.21 195.66L201.42 195.78L202.63 195.9L203.83 196.01L205.04 196.12L206.25 196.23L207.46 196.33L208.67 196.43L209.88 196.53L211.08 196.63L212.29 196.72L213.5 196.81L214.71 196.9L215.92 196.99L217.13 197.07L218.33 197.15L219.54 197.23L220.75 197.31L221.96 197.38L223.17 197.46L224.38 197.53L225.58 197.59L226.79 197.66L228 197.73L229.21 197.79L230.42 197.85L231.63 197.91L232.83 197.97L234.04 198.02L235.25 198.08L236.46 198.13L237.67 198.18L238.88 198.23L240.08 198.28L241.29 198.33L242.5 198.38L243.71 198.42L244.92 198.47L246.13 198.51L247.33 198.55L248.54 198.59L249.75 198.63L250.96 198.67L252.17 198.7L253.38 198.74L254.58 198.77L255.79 198.81L257 198.84L258.21 198.87L259.42 198.9L260.63 198.93L261.83 198.96L263.04 198.99L264.25 199.02L265.46 199.05L266.67 199.07L267.88 199.1L269.08 199.13L270.29 199.15L271.5 199.17L272.71 199.2L273.92 199.22L275.13 199.24L276.33 199.26L277.54 199.28L278.75 199.3L279.96 199.32L281.17 199.34L282.38 199.36L283.58 199.38L284.79 199.39L286 199.41L287.21 199.43L288.42 199.44L289.63 199.46L290.83 199.47L292.04 199.49L293.25 199.5L294.46 199.51L295.67 199.53L296.88 199.54L298.08 199.55L299.29 199.57L300.5 199.58L301.71 199.59L302.92 199.6L304.13 199.61L305.33 199.62L306.54 199.63L307.75 199.64L308.96 199.65L310.17 199.66L311.38 199.67L312.58 199.68L313.79 199.69L315 199.7L316.21 199.71L317.42 199.72L318.63 199.72L319.83 199.73L321.04 199.74L322.25 199.75L323.46 199.75L324.67 199.76L325.88 199.77L327.08 199.77L328.29 199.78L329.5 199.79L330.71 199.79L331.92 199.8L333.13 199.8L334.33 199.81L335.54 199.81L336.75 199.82L337.96 199.82L339.17 199.83L340.38 199.83L341.58 199.84L342.79 199.84L344 199.85" fill="none"/><circle class="r7-m" cx="99.31" cy="154.67" r="4.5"/><circle class="r7-m" cx="144.63" cy="184.2" r="4.5"/><text class="k-num" x="111.31" y="142.67" text-anchor="start">10 samples: 0.35</text><text class="k-num" x="156.63" y="170.2" text-anchor="start">20 samples: 0.12</text><text class="k-tick" x="344" y="216" text-anchor="end">shaded: 0 to 5%, zoomed below</text><g ><line class="k-axis" x1="54" y1="380" x2="344" y2="380"/><text class="k-tick" x="46" y="284" text-anchor="end">5%</text><text class="k-tick" x="46" y="364" text-anchor="end">1%</text><text class="k-tick" x="54" y="398" text-anchor="middle">0</text><text class="k-tick" x="126.5" y="398" text-anchor="middle">2</text><text class="k-tick" x="199" y="398" text-anchor="middle">4</text><text class="k-tick" x="271.5" y="398" text-anchor="middle">6</text><text class="k-tick" x="344" y="398" text-anchor="middle">8 ms</text></g><text class="k-tick" x="46" y="384" text-anchor="end">0</text><text class="k-tick" x="54" y="414" text-anchor="middle">n = 0</text>,<text class="k-tick" x="126.5" y="414" text-anchor="middle">16</text>,<text class="k-tick" x="199" y="414" text-anchor="middle">32</text>,<text class="k-tick" x="271.5" y="414" text-anchor="middle">48</text>,<text class="k-tick" x="344" y="414" text-anchor="middle">64</text><text class="k-tick" x="344" y="432" text-anchor="end">top: ms; below: samples</text><path class="r7-s90" d="M183.05 280.49L183.72 282.03L184.39 283.55L185.06 285.04L185.73 286.51L186.4 287.96L187.07 289.38L187.74 290.78L188.42 292.16L189.09 293.52L189.76 294.86L190.43 296.18L191.1 297.47L191.77 298.75L192.44 300.01L193.11 301.25L193.78 302.46L194.45 303.66L195.12 304.84L195.79 306.01L196.46 307.15L197.13 308.28L197.8 309.39L198.47 310.48L199.15 311.56L199.82 312.62L200.49 313.66L201.16 314.69L201.83 315.7L202.5 316.69L203.17 317.67L203.84 318.63L204.51 319.58L205.18 320.52L205.85 321.44L206.52 322.35L207.19 323.24L207.86 324.12L208.53 324.98L209.2 325.83L209.88 326.67L210.55 327.5L211.22 328.31L211.89 329.11L212.56 329.89L213.23 330.67L213.9 331.43L214.57 332.18L215.24 332.92L215.91 333.65L216.58 334.37L217.25 335.08L217.92 335.77L218.59 336.46L219.26 337.13L219.93 337.79L220.61 338.45L221.28 339.09L221.95 339.72L222.62 340.34L223.29 340.96L223.96 341.56L224.63 342.16L225.3 342.74L225.97 343.32L226.64 343.89L227.31 344.45L227.98 345L228.65 345.54L229.32 346.07L229.99 346.6L230.66 347.11L231.33 347.62L232.01 348.12L232.68 348.62L233.35 349.1L234.02 349.58L234.69 350.05L235.36 350.51L236.03 350.97L236.7 351.42L237.37 351.86L238.04 352.3L238.71 352.72L239.38 353.15L240.05 353.56L240.72 353.97L241.39 354.37L242.07 354.77L242.74 355.16L243.41 355.55L244.08 355.92L244.75 356.3L245.42 356.66L246.09 357.02L246.76 357.38L247.43 357.73L248.1 358.07L248.77 358.41L249.44 358.75L250.11 359.08L250.78 359.4L251.45 359.72L252.12 360.03L252.8 360.34L253.47 360.65L254.14 360.94L254.81 361.24L255.48 361.53L256.15 361.82L256.82 362.1L257.49 362.37L258.16 362.65L258.83 362.92L259.5 363.18L260.17 363.44L260.84 363.7L261.51 363.95L262.18 364.2L262.85 364.44L263.52 364.68L264.2 364.92L264.87 365.15L265.54 365.38L266.21 365.61L266.88 365.83L267.55 366.05L268.22 366.27L268.89 366.48L269.56 366.69L270.23 366.89L270.9 367.1L271.57 367.3L272.24 367.49L272.91 367.69L273.58 367.88L274.26 368.06L274.93 368.25L275.6 368.43L276.27 368.61L276.94 368.79L277.61 368.96L278.28 369.13L278.95 369.3L279.62 369.46L280.29 369.63L280.96 369.79L281.63 369.95L282.3 370.1L282.97 370.25L283.64 370.41L284.31 370.55L284.99 370.7L285.66 370.84L286.33 370.99L287 371.12L287.67 371.26L288.34 371.4L289.01 371.53L289.68 371.66L290.35 371.79L291.02 371.92L291.69 372.04L292.36 372.17L293.03 372.29L293.7 372.41L294.37 372.52L295.04 372.64L295.71 372.75L296.39 372.87L297.06 372.98L297.73 373.08L298.4 373.19L299.07 373.3L299.74 373.4L300.41 373.5L301.08 373.6L301.75 373.7L302.42 373.8L303.09 373.9L303.76 373.99L304.43 374.08L305.1 374.17L305.77 374.26L306.45 374.35L307.12 374.44L307.79 374.53L308.46 374.61L309.13 374.69L309.8 374.78L310.47 374.86L311.14 374.94L311.81 375.02L312.48 375.09L313.15 375.17L313.82 375.24L314.49 375.32L315.16 375.39L315.83 375.46L316.5 375.53L317.18 375.6L317.85 375.67L318.52 375.74L319.19 375.8L319.86 375.87L320.53 375.93L321.2 375.99L321.87 376.06L322.54 376.12L323.21 376.18L323.88 376.24L324.55 376.29L325.22 376.35L325.89 376.41L326.56 376.46L327.23 376.52L327.91 376.57L328.58 376.62L329.25 376.68L329.92 376.73L330.59 376.78L331.26 376.83L331.93 376.88L332.6 376.93L333.27 376.97L333.94 377.02L334.61 377.07L335.28 377.11L335.95 377.16L336.62 377.2L337.29 377.24L337.96 377.29L338.64 377.33L339.31 377.37L339.98 377.41L340.65 377.45L341.32 377.49L341.99 377.53L342.66 377.57L343.33 377.6L344 377.64" fill="none"/><line class="r7-level" x1="54" y1="360" x2="344" y2="360"/><line class="r7-bracket-accent" x1="252.06" y1="360" x2="252.06" y2="380"/><circle class="r7-m-accent" cx="252.06" cy="360" r="5"/><text class="k-num-accent" x="59.44" y="320" text-anchor="start">1% at 43.7 samples</text><text class="k-num-accent" x="59.44" y="336" text-anchor="start">= 5.5 ms</text></svg></div>
+</div>
+</body>
+</html>

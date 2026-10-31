@@ -1,0 +1,54 @@
+<template id="booster-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <div data-k="ask2"></div>
+  <canvas data-k="stage" class="stage" role="img"></canvas>
+  <div class="key">
+    <span><i class="k-range"></i>the range the chip can store</span>
+    <span><i class="k-out"></i>stored sample</span>
+    <span><i class="k-cut"></i>clipped sample</span>
+    <span><i class="k-ideal"></i>what the booster asked for</span>
+    <span data-k="key-marks"><i class="k-tickmark">&#10003;/&#10007;</i>neighbor rule passes or fails</span>
+    <span data-k="key-mark" hidden><i class="k-mark"></i>0.8, the target</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
+  </div>
+  <div class="k-meter" data-k="meter">
+    <span data-k="meter-label">Buzz: new tones as % of the voice</span>
+    <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+    <output aria-live="polite">?</output>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>40%</span></div>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="size-control">
+    <label data-for="size">Caller size: <output data-k="size-out">0.50</output></label>
+    <input data-k="size" type="range" min="0" max="0.5" step="0.01" value="0.5" disabled>
+  </div>
+  <div class="row" data-k="tone-choice" role="group" aria-label="What the caller says">
+    <button type="button" data-tone="500" aria-pressed="false">500 Hz tone</button>
+    <button type="button" data-tone="1000" aria-pressed="true">1,000 Hz tone</button>
+    <button type="button" data-tone="voice" aria-pressed="false">A recorded voice</button>
+  </div>
+  <div class="control" data-k="gain-control" hidden>
+    <label data-for="gain">Booster: <output data-k="gain-out">×4.0</output></label>
+    <input data-k="gain" type="range" min="0.5" max="5" step="0.1" value="4" disabled>
+  </div>
+  <div class="row" data-k="callers" role="group" aria-label="Which caller to play" hidden>
+    <button type="button" data-caller="0" aria-pressed="true">Loud caller</button>
+    <button type="button" data-caller="1" aria-pressed="false">Quiet caller</button>
+    <button type="button" data-caller="2" aria-pressed="false">Speakerphone pair</button>
+  </div>
+  <div class="row">
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="ideal" class="k-toggle" aria-pressed="false">Ideal ×4, no clipping</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another line</button>
+    <button type="button" data-k="reset">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite">Not playing. Press Play to hear the booster's output.</p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

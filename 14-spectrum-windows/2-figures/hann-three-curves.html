@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three plain chains make the Hann curve</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-hann-three-curves-style">
+.k-fig .l-plain { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l-hann { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 7 4; fill: none; }
+.k-fig .l-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.k-fig .l-ref { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; opacity: 0.55; }
+.k-fig .l-bar { stroke: var(--input); stroke-width: 2.2; fill: none; }
+.k-fig .l-total { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-shade { fill: var(--paper-2); }
+.k-fig .l-tint { fill: var(--input-soft); }
+.k-fig .l-dot { fill: var(--ink); }
+.k-fig .l-dot-accent { fill: var(--accent); }
+.k-fig .l-sq { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l-ring { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l-ring-accent { fill: none; stroke: var(--accent); stroke-width: 2; }
+.k-fig .l-pad { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-tri { fill: var(--ink-soft); }
+.k-fig .l-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l-vec-mirror { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; }
+.k-fig .l-vec-col { stroke: var(--ink-soft); stroke-width: 2; }
+.k-fig .l-vec-total { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l-head-ink { fill: var(--ink); }
+.k-fig .l-head-soft { fill: var(--ink-soft); }
+.k-fig .l-head-accent { fill: var(--accent); }
+.k-fig .l-circle { stroke: var(--rule); stroke-width: 1.5; fill: none; }
+.k-fig .l-in-bar { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-out-bar { fill: var(--accent); }
+.k-fig .l-band-faint { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l-grey { opacity: 0.35; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 14 · spectrum analysis with windows</p>
+<h1>Three plain chains make the Hann curve</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-hann-three-curves" viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hann-three-curves-title hann-three-curves-desc"><title id="hann-three-curves-title">Three plain chains make the Hann curve</title><desc id="hann-three-curves-desc">Half the plain chain at the tone and a quarter of the plain chains one bin each way, added as arrows: the sum, rescaled, is the Hann curve, zero at every whole bin from 2 bins out.</desc><defs><marker id="hann-three-curves-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="hann-three-curves-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="hann-three-curves-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="hann-three-curves-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="490"/><defs><marker id="hann-three-curves-hi" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-ink" points="0 0, 8 3, 0 6"/></marker><marker id="hann-three-curves-hs" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-soft" points="0 0, 8 3, 0 6"/></marker><marker id="hann-three-curves-ha" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="l-head-accent" points="0 0, 8 3, 0 6"/></marker></defs><text class="k-name" x="40" y="30" text-anchor="start">three plain chains, measured along the tone's own chain</text>,,<g ><line class="k-axis" x1="70" y1="193.57" x2="670" y2="193.57"/><text class="k-tick" x="62" y="197.57" text-anchor="end">0</text><text class="k-tick" x="62" y="136.86" text-anchor="end">¼</text><text class="k-tick" x="62" y="76.14" text-anchor="end">½</text><text class="k-tick" x="70" y="248" text-anchor="middle">−4</text><text class="k-tick" x="145" y="248" text-anchor="middle">−3</text><text class="k-tick" x="220" y="248" text-anchor="middle">−2</text><text class="k-tick" x="295" y="248" text-anchor="middle">−1</text><text class="k-tick" x="370" y="248" text-anchor="middle">0</text><text class="k-tick" x="445" y="248" text-anchor="middle">1</text><text class="k-tick" x="520" y="248" text-anchor="middle">2</text><text class="k-tick" x="595" y="248" text-anchor="middle">3</text><text class="k-tick" x="670" y="248" text-anchor="middle">4</text></g>,<path class="l-ref" d="M70 193.57L72 193.03L74 192.48L76 191.93L78 191.37L80 190.83L82 190.29L84 189.77L86 189.26L88 188.78L90 188.32L92 187.88L94 187.48L96 187.12L98 186.79L100 186.5L102 186.26L104 186.06L106 185.92L108 185.82L110 185.78L112 185.79L114 185.86L116 185.98L118 186.16L120 186.4L122 186.69L124 187.04L126 187.44L128 187.9L130 188.41L132 188.96L134 189.57L136 190.22L138 190.9L140 191.63L142 192.38L144 193.17L146 193.98L148 194.81L150 195.65L152 196.5L154 197.36L156 198.21L158 199.05L160 199.88L162 200.69L164 201.48L166 202.23L168 202.94L170 203.61L172 204.23L174 204.8L176 205.3L178 205.74L180 206.11L182 206.4L184 206.6L186 206.73L188 206.76L190 206.7L192 206.54L194 206.29L196 205.93L198 205.47L200 204.91L202 204.24L204 203.47L206 202.58L208 201.6L210 200.51L212 199.31L214 198.02L216 196.63L218 195.15L220 193.57L222 191.91L224 190.17L226 188.35L228 186.46L230 184.5L232 182.49L234 180.42L236 178.31L238 176.16L240 173.99L242 171.79L244 169.58L246 167.36L248 165.14L250 162.94L252 160.75L254 158.6L256 156.48L258 154.41L260 152.39L262 150.43L264 148.54L266 146.73L268 145L270 143.36L272 141.82L274 140.39L276 139.07L278 137.86L280 136.77L282 135.81L284 134.98L286 134.29L288 133.72L290 133.3L292 133.02L294 132.87L296 132.87L298 133.02L300 133.3L302 133.72L304 134.29L306 134.98L308 135.81L310 136.77L312 137.86L314 139.07L316 140.39L318 141.82L320 143.36L322 145L324 146.73L326 148.54L328 150.43L330 152.39L332 154.41L334 156.48L336 158.6L338 160.75L340 162.94L342 165.14L344 167.36L346 169.58L348 171.79L350 173.99L352 176.16L354 178.31L356 180.42L358 182.49L360 184.5L362 186.46L364 188.35L366 190.17L368 191.91L370 193.57L372 195.15L374 196.63L376 198.02L378 199.31L380 200.51L382 201.6L384 202.58L386 203.47L388 204.24L390 204.91L392 205.47L394 205.93L396 206.29L398 206.54L400 206.7L402 206.76L404 206.73L406 206.6L408 206.4L410 206.11L412 205.74L414 205.3L416 204.8L418 204.23L420 203.61L422 202.94L424 202.23L426 201.48L428 200.69L430 199.88L432 199.05L434 198.21L436 197.36L438 196.5L440 195.65L442 194.81L444 193.98L446 193.17L448 192.38L450 191.63L452 190.9L454 190.22L456 189.57L458 188.96L460 188.41L462 187.9L464 187.44L466 187.04L468 186.69L470 186.4L472 186.16L474 185.98L476 185.86L478 185.79L480 185.78L482 185.82L484 185.92L486 186.06L488 186.26L490 186.5L492 186.79L494 187.12L496 187.48L498 187.88L500 188.32L502 188.78L504 189.26L506 189.77L508 190.29L510 190.83L512 191.37L514 191.93L516 192.48L518 193.03L520 193.57L522 194.11L524 194.63L526 195.13L528 195.62L530 196.08L532 196.52L534 196.93L536 197.31L538 197.65L540 197.97L542 198.25L544 198.49L546 198.69L548 198.85L550 198.98L552 199.06L554 199.11L556 199.11L558 199.08L560 199.01L562 198.9L564 198.76L566 198.58L568 198.38L570 198.14L572 197.87L574 197.57L576 197.26L578 196.92L580 196.56L582 196.19L584 195.8L586 195.41L588 195L590 194.59L592 194.18L594 193.77L596 193.37L598 192.97L600 192.58L602 192.21L604 191.84L606 191.5L608 191.17L610 190.87L612 190.58L614 190.33L616 190.09L618 189.89L620 189.71L622 189.56L624 189.44L626 189.35L628 189.3L630 189.27L632 189.27L634 189.3L636 189.37L638 189.46L640 189.58L642 189.72L644 189.89L646 190.08L648 190.3L650 190.54L652 190.79L654 191.06L656 191.35L658 191.65L660 191.96L662 192.27L664 192.59L666 192.92L668 193.25L670 193.57" fill="none"/>,<path class="l-ref" d="M70 193.57L72 193.25L74 192.92L76 192.59L78 192.27L80 191.96L82 191.65L84 191.35L86 191.06L88 190.79L90 190.54L92 190.3L94 190.08L96 189.89L98 189.72L100 189.58L102 189.46L104 189.37L106 189.3L108 189.27L110 189.27L112 189.3L114 189.35L116 189.44L118 189.56L120 189.71L122 189.89L124 190.09L126 190.33L128 190.58L130 190.87L132 191.17L134 191.5L136 191.84L138 192.21L140 192.58L142 192.97L144 193.37L146 193.77L148 194.18L150 194.59L152 195L154 195.41L156 195.8L158 196.19L160 196.56L162 196.92L164 197.26L166 197.57L168 197.87L170 198.14L172 198.38L174 198.58L176 198.76L178 198.9L180 199.01L182 199.08L184 199.11L186 199.11L188 199.06L190 198.98L192 198.85L194 198.69L196 198.49L198 198.25L200 197.97L202 197.65L204 197.31L206 196.93L208 196.52L210 196.08L212 195.62L214 195.13L216 194.63L218 194.11L220 193.57L222 193.03L224 192.48L226 191.93L228 191.37L230 190.83L232 190.29L234 189.77L236 189.26L238 188.78L240 188.32L242 187.88L244 187.48L246 187.12L248 186.79L250 186.5L252 186.26L254 186.06L256 185.92L258 185.82L260 185.78L262 185.79L264 185.86L266 185.98L268 186.16L270 186.4L272 186.69L274 187.04L276 187.44L278 187.9L280 188.41L282 188.96L284 189.57L286 190.22L288 190.9L290 191.63L292 192.38L294 193.17L296 193.98L298 194.81L300 195.65L302 196.5L304 197.36L306 198.21L308 199.05L310 199.88L312 200.69L314 201.48L316 202.23L318 202.94L320 203.61L322 204.23L324 204.8L326 205.3L328 205.74L330 206.11L332 206.4L334 206.6L336 206.73L338 206.76L340 206.7L342 206.54L344 206.29L346 205.93L348 205.47L350 204.91L352 204.24L354 203.47L356 202.58L358 201.6L360 200.51L362 199.31L364 198.02L366 196.63L368 195.15L370 193.57L372 191.91L374 190.17L376 188.35L378 186.46L380 184.5L382 182.49L384 180.42L386 178.31L388 176.16L390 173.99L392 171.79L394 169.58L396 167.36L398 165.14L400 162.94L402 160.75L404 158.6L406 156.48L408 154.41L410 152.39L412 150.43L414 148.54L416 146.73L418 145L420 143.36L422 141.82L424 140.39L426 139.07L428 137.86L430 136.77L432 135.81L434 134.98L436 134.29L438 133.72L440 133.3L442 133.02L444 132.87L446 132.87L448 133.02L450 133.3L452 133.72L454 134.29L456 134.98L458 135.81L460 136.77L462 137.86L464 139.07L466 140.39L468 141.82L470 143.36L472 145L474 146.73L476 148.54L478 150.43L480 152.39L482 154.41L484 156.48L486 158.6L488 160.75L490 162.94L492 165.14L494 167.36L496 169.58L498 171.79L500 173.99L502 176.16L504 178.31L506 180.42L508 182.49L510 184.5L512 186.46L514 188.35L516 190.17L518 191.91L520 193.57L522 195.15L524 196.63L526 198.02L528 199.31L530 200.51L532 201.6L534 202.58L536 203.47L538 204.24L540 204.91L542 205.47L544 205.93L546 206.29L548 206.54L550 206.7L552 206.76L554 206.73L556 206.6L558 206.4L560 206.11L562 205.74L564 205.3L566 204.8L568 204.23L570 203.61L572 202.94L574 202.23L576 201.48L578 200.69L580 199.88L582 199.05L584 198.21L586 197.36L588 196.5L590 195.65L592 194.81L594 193.98L596 193.17L598 192.38L600 191.63L602 190.9L604 190.22L606 189.57L608 188.96L610 188.41L612 187.9L614 187.44L616 187.04L618 186.69L620 186.4L622 186.16L624 185.98L626 185.86L628 185.79L630 185.78L632 185.82L634 185.92L636 186.06L638 186.26L640 186.5L642 186.79L644 187.12L646 187.48L648 187.88L650 188.32L652 188.78L654 189.26L656 189.77L658 190.29L660 190.83L662 191.37L664 191.93L666 192.48L668 193.03L670 193.57" fill="none"/>,<path class="l-tri" d="M295 117.86L300 126.86L290 126.86Z" fill="none"/>,<path class="l-tri" d="M445 117.86L450 126.86L440 126.86Z" fill="none"/>,<path class="l-plain" d="M70 193.57L72 194.39L74 195.2L76 196.02L78 196.84L80 197.64L82 198.42L84 199.18L86 199.91L88 200.61L90 201.27L92 201.88L94 202.44L96 202.95L98 203.4L100 203.78L102 204.1L104 204.35L106 204.53L108 204.63L110 204.66L112 204.61L114 204.48L116 204.27L118 203.98L120 203.61L122 203.17L124 202.65L126 202.06L128 201.4L130 200.67L132 199.88L134 199.03L136 198.13L138 197.18L140 196.19L142 195.16L144 194.11L146 193.03L148 191.93L150 190.83L152 189.73L154 188.63L156 187.55L158 186.49L160 185.46L162 184.46L164 183.52L166 182.62L168 181.79L170 181.02L172 180.32L174 179.71L176 179.18L178 178.74L180 178.4L182 178.16L184 178.02L186 177.99L188 178.06L190 178.25L192 178.56L194 178.97L196 179.5L198 180.15L200 180.9L202 181.76L204 182.72L206 183.79L208 184.95L210 186.2L212 187.54L214 188.95L216 190.43L218 191.98L220 193.57L222 195.21L224 196.88L226 198.58L228 200.29L230 201.99L232 203.69L234 205.37L236 207.01L238 208.6L240 210.14L242 211.61L244 213L246 214.29L248 215.48L250 216.55L252 217.49L254 218.29L256 218.95L258 219.45L260 219.78L262 219.94L264 219.91L266 219.7L268 219.29L270 218.68L272 217.86L274 216.84L276 215.61L278 214.16L280 212.5L282 210.64L284 208.56L286 206.28L288 203.79L290 201.11L292 198.23L294 195.17L296 191.93L298 188.53L300 184.96L302 181.25L304 177.4L306 173.43L308 169.35L310 165.17L312 160.91L314 156.59L316 152.21L318 147.79L320 143.36L322 138.93L324 134.5L326 130.11L328 125.77L330 121.5L332 117.3L334 113.21L336 109.22L338 105.37L340 101.67L342 98.13L344 94.76L346 91.59L348 88.61L350 85.86L352 83.33L354 81.03L356 78.98L358 77.19L360 75.66L362 74.4L364 73.42L366 72.71L368 72.28L370 72.14L372 72.28L374 72.71L376 73.42L378 74.4L380 75.66L382 77.19L384 78.98L386 81.03L388 83.33L390 85.86L392 88.61L394 91.59L396 94.76L398 98.13L400 101.67L402 105.37L404 109.22L406 113.21L408 117.3L410 121.5L412 125.77L414 130.11L416 134.5L418 138.93L420 143.36L422 147.79L424 152.21L426 156.59L428 160.91L430 165.17L432 169.35L434 173.43L436 177.4L438 181.25L440 184.96L442 188.53L444 191.93L446 195.17L448 198.23L450 201.11L452 203.79L454 206.28L456 208.56L458 210.64L460 212.5L462 214.16L464 215.61L466 216.84L468 217.86L470 218.68L472 219.29L474 219.7L476 219.91L478 219.94L480 219.78L482 219.45L484 218.95L486 218.29L488 217.49L490 216.55L492 215.48L494 214.29L496 213L498 211.61L500 210.14L502 208.6L504 207.01L506 205.37L508 203.69L510 201.99L512 200.29L514 198.58L516 196.88L518 195.21L520 193.57L522 191.98L524 190.43L526 188.95L528 187.54L530 186.2L532 184.95L534 183.79L536 182.72L538 181.76L540 180.9L542 180.15L544 179.5L546 178.97L548 178.56L550 178.25L552 178.06L554 177.99L556 178.02L558 178.16L560 178.4L562 178.74L564 179.18L566 179.71L568 180.32L570 181.02L572 181.79L574 182.62L576 183.52L578 184.46L580 185.46L582 186.49L584 187.55L586 188.63L588 189.73L590 190.83L592 191.93L594 193.03L596 194.11L598 195.16L600 196.19L602 197.18L604 198.13L606 199.03L608 199.88L610 200.67L612 201.4L614 202.06L616 202.65L618 203.17L620 203.61L622 203.98L624 204.27L626 204.48L628 204.61L630 204.66L632 204.63L634 204.53L636 204.35L638 204.1L640 203.78L642 203.4L644 202.95L646 202.44L648 201.88L650 201.27L652 200.61L654 199.91L656 199.18L658 198.42L660 197.64L662 196.84L664 196.02L666 195.2L668 194.39L670 193.57" fill="none"/>,<text class="k-num" x="403.75" y="76.14" text-anchor="start">½ at the tone</text>,<text class="k-tick" x="285" y="126.86" text-anchor="end">−¼ of the chain one bin left</text>,<text class="k-tick" x="457" y="126.86" text-anchor="start">−¼ of the chain one bin right</text>,<text class="k-tick" x="670" y="266" text-anchor="end">bins from the tone; one bin over, a chain points backward, so −¼ of it adds</text>,<text class="k-name" x="40" y="286" text-anchor="start">their sum, rescaled: the Hann curve</text>,<g ><line class="k-axis" x1="70" y1="440" x2="670" y2="440"/><text class="k-tick" x="62" y="444" text-anchor="end">0%</text><text class="k-tick" x="62" y="314" text-anchor="end">100%</text><text class="k-tick" x="70" y="458" text-anchor="middle">−4</text><text class="k-tick" x="145" y="458" text-anchor="middle">−3</text><text class="k-tick" x="220" y="458" text-anchor="middle">−2</text><text class="k-tick" x="295" y="458" text-anchor="middle">−1</text><text class="k-tick" x="370" y="458" text-anchor="middle">0</text><text class="k-tick" x="445" y="458" text-anchor="middle">1</text><text class="k-tick" x="520" y="458" text-anchor="middle">2</text><text class="k-tick" x="595" y="458" text-anchor="middle">3</text><text class="k-tick" x="670" y="458" text-anchor="middle">4</text></g>,<path class="l-hann" d="M70 440L72 439.94L74 439.88L76 439.82L78 439.75L80 439.69L82 439.62L84 439.56L86 439.49L88 439.43L90 439.36L92 439.3L94 439.24L96 439.19L98 439.13L100 439.09L102 439.04L104 439L106 438.97L108 438.94L110 438.92L112 438.91L114 438.9L116 438.91L118 438.92L120 438.94L122 438.97L124 439L126 439.05L128 439.11L130 439.18L132 439.26L134 439.34L136 439.44L138 439.55L140 439.67L142 439.79L144 439.93L146 439.93L148 439.77L150 439.61L152 439.45L154 439.27L156 439.1L158 438.92L160 438.73L162 438.54L164 438.36L166 438.17L168 437.98L170 437.8L172 437.62L174 437.45L176 437.29L178 437.14L180 437L182 436.88L184 436.77L186 436.68L188 436.6L190 436.56L192 436.53L194 436.53L196 436.56L198 436.63L200 436.72L202 436.85L204 437.02L206 437.23L208 437.48L210 437.78L212 438.12L214 438.51L216 438.96L218 439.45L220 440L222 439.39L224 438.73L226 438L228 437.22L230 436.37L232 435.46L234 434.48L236 433.44L238 432.33L240 431.15L242 429.9L244 428.59L246 427.21L248 425.75L250 424.23L252 422.64L254 420.99L256 419.27L258 417.48L260 415.62L262 413.71L264 411.73L266 409.69L268 407.6L270 405.44L272 403.24L274 400.98L276 398.68L278 396.33L280 393.93L282 391.5L284 389.04L286 386.54L288 384.01L290 381.46L292 378.89L294 376.3L296 373.7L298 371.09L300 368.48L302 365.87L304 363.27L306 360.68L308 358.1L310 355.55L312 353.02L314 350.52L316 348.05L318 345.62L320 343.24L322 340.91L324 338.63L326 336.41L328 334.25L330 332.16L332 330.15L334 328.2L336 326.34L338 324.56L340 322.87L342 321.27L344 319.77L346 318.36L348 317.06L350 315.85L352 314.76L354 313.77L356 312.9L358 312.13L360 311.48L362 310.95L364 310.54L366 310.24L368 310.06L370 310L372 310.06L374 310.24L376 310.54L378 310.95L380 311.48L382 312.13L384 312.9L386 313.77L388 314.76L390 315.85L392 317.06L394 318.36L396 319.77L398 321.27L400 322.87L402 324.56L404 326.34L406 328.2L408 330.15L410 332.16L412 334.25L414 336.41L416 338.63L418 340.91L420 343.24L422 345.62L424 348.05L426 350.52L428 353.02L430 355.55L432 358.1L434 360.68L436 363.27L438 365.87L440 368.48L442 371.09L444 373.7L446 376.3L448 378.89L450 381.46L452 384.01L454 386.54L456 389.04L458 391.5L460 393.93L462 396.33L464 398.68L466 400.98L468 403.24L470 405.44L472 407.6L474 409.69L476 411.73L478 413.71L480 415.62L482 417.48L484 419.27L486 420.99L488 422.64L490 424.23L492 425.75L494 427.21L496 428.59L498 429.9L500 431.15L502 432.33L504 433.44L506 434.48L508 435.46L510 436.37L512 437.22L514 438L516 438.73L518 439.39L520 440L522 439.45L524 438.96L526 438.51L528 438.12L530 437.78L532 437.48L534 437.23L536 437.02L538 436.85L540 436.72L542 436.63L544 436.56L546 436.53L548 436.53L550 436.56L552 436.6L554 436.68L556 436.77L558 436.88L560 437L562 437.14L564 437.29L566 437.45L568 437.62L570 437.8L572 437.98L574 438.17L576 438.36L578 438.54L580 438.73L582 438.92L584 439.1L586 439.27L588 439.45L590 439.61L592 439.77L594 439.93L596 439.93L598 439.79L600 439.67L602 439.55L604 439.44L606 439.34L608 439.26L610 439.18L612 439.11L614 439.05L616 439L618 438.97L620 438.94L622 438.92L624 438.91L626 438.9L628 438.91L630 438.92L632 438.94L634 438.97L636 439L638 439.04L640 439.09L642 439.13L644 439.19L646 439.24L648 439.3L650 439.36L652 439.43L654 439.49L656 439.56L658 439.62L660 439.69L662 439.75L664 439.82L666 439.88L668 439.94L670 440" fill="none"/>,<circle class="l-ring-accent" cx="70" cy="440" r="4.5"/>,<circle class="l-ring-accent" cx="145" cy="440" r="4.5"/>,<circle class="l-ring-accent" cx="220" cy="440" r="4.5"/>,<circle class="l-ring-accent" cx="520" cy="440" r="4.5"/>,<circle class="l-ring-accent" cx="595" cy="440" r="4.5"/>,<circle class="l-ring-accent" cx="670" cy="440" r="4.5"/>,<text class="k-num-accent" x="530" y="428" text-anchor="start">first zero: 2 bins out</text>,<text class="k-num" x="453" y="375" text-anchor="start">50%</text>,<text class="k-tick" x="670" y="476" text-anchor="end">bins from the tone</text></svg></div>
+</div>
+</body>
+</html>

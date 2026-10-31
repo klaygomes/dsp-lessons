@@ -1,0 +1,63 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which Key Did They Press?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+.key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.key .l12-k-walk { width: 22px; border-top: 2px solid var(--ink); }
+.key .l12-k-match { width: 22px; border-top: 3px solid var(--accent); }
+.key .l12-k-pin { width: 22px; border-top: 2px dashed var(--input); }
+.key .l12-k-start { width: 10px; height: 10px; border-radius: 50%; background: var(--input); }
+.key .l12-k-bar { width: 10px; height: 14px; background: var(--ink); }
+.key .l12-k-faint { width: 10px; height: 14px; background: var(--ink-soft); opacity: 0.35; }
+.key .l12-k-pick { width: 10px; height: 14px; background: var(--paper); outline: 2px solid var(--input); outline-offset: 0; }
+.key .l12-k-line { width: 22px; border-top: 2px dashed var(--ink-soft); }
+.key .l12-k-tone { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid var(--ink-soft); }
+.lab canvas.l12-bars { height: 220px; }
+.lab .l12-pair { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; }
+.lab .l12-step { padding: 11px 14px; min-width: 44px; }
+.lab .l12-status { font-size: 16px; }
+.lab .l12-status.k-bad { color: var(--ink); }
+.lab .l12-status b { font-weight: 600; }
+.lab .l12-picks { display: grid; gap: 8px; }
+.lab .l12-picks .row button { font-family: var(--font-mono); font-size: 14px; padding: 10px 12px; }
+.lab .l12-digits { font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.12em; }
+.lab .l12-feedback { min-height: 1.6em; }
+.lab .l12-timeline button { font-size: 15px; padding: 9px 12px; }
+.lab .l12-timeline button.l12-done::after { content: "\00a0\2713"; color: var(--input); }
+.act2 { display: grid; }
+.k-inline-ask { border-left: 3px solid var(--input); padding-left: 16px; }
+@media (max-width: 520px) { .lab .l12-picks .row button { font-size: 13px; padding: 9px 9px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 12 · chapter 8</p>
+    <h1>Which Key Did They Press?</h1>
+    <p class="question">A customer on the support line presses a key. The line never sees the key, only 8,000 samples a second of a short beep. Which key was it?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 8.</span>
+    <span>Next lesson: the FFT, where the key detector is too slow to run live on the chip.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+  </footer>
+</div>
+
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

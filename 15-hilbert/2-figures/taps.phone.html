@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hilbert transformer’s coefficients</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-taps-style">
+.k-fig .h-top { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.k-fig .h-mirror { stroke: var(--ink); stroke-width: 2.6; stroke-dasharray: 0.5 5; stroke-linecap: round; }
+.k-fig .h-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.k-fig .h-res { stroke: var(--accent); stroke-width: 2.8; stroke-linecap: round; }
+.k-fig .h-given { stroke: var(--input); stroke-width: 2.4; stroke-linecap: round; }
+.k-fig .h-head { fill: var(--ink); }
+.k-fig .h-head-open { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+.k-fig .h-head-soft { fill: var(--ink-soft); }
+.k-fig .h-head-accent { fill: var(--accent); }
+.k-fig .h-head-input { fill: var(--input); }
+.k-fig .h-circle { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .h-bar-ref { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.k-fig .h-band { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .h-dotted { stroke: var(--ink); stroke-width: 2.2; stroke-dasharray: 0.5 4.5; stroke-linecap: round; fill: none; }
+.k-fig .h-chip { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .h-shadow { fill: var(--ink); }
+.k-fig .h-shadow-soft { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .h-arc { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .h-arc-input { stroke: var(--input); stroke-width: 1.6; fill: none; }
+.k-fig .h-wedge { fill: var(--paper-2); }
+.k-fig .h-collide { stroke: var(--accent); stroke-width: 2; }
+.k-fig .h-lobe-left { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; }
+.k-fig .h-soft-stem { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .h-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.3; }
+.k-fig .h-hollow-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; }
+.k-fig .h-tick-label { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 15 · the Hilbert transform</p>
+<h1>The Hilbert transformer’s coefficients</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-taps-phone" viewBox="0 0 360 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="taps-phone-title taps-phone-desc"><title id="taps-phone-title">The Hilbert transformer’s coefficients</title><desc id="taps-phone-desc">The coefficients 2 ÷ (πn) for odd n from −15 to 15, with zeros at even n: 0.637, 0.212, 0.127 and on, negative for negative n. Times the Hann window they are tapered toward the ends. The negative n reach into the future, so the whole list is delayed 15 samples.</desc><defs><marker id="taps-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="taps-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="taps-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="taps-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="480"/><rect class="k-fill" x="56" y="100" width="139.38" height="190"/><text class="k-label" x="126.15" y="116" text-anchor="middle">n &lt; 0: the future</text><g ><line class="k-axis" x1="56" y1="195" x2="344" y2="195"/><text class="k-tick" x="48" y="121.42" text-anchor="end">0.637</text><text class="k-tick" x="48" y="276.58" text-anchor="end">−0.637</text><text class="k-tick" x="61.54" y="308" text-anchor="middle">−15</text><text class="k-tick" x="153.85" y="308" text-anchor="middle">−5</text><text class="k-tick" x="200" y="308" text-anchor="middle">n = 0</text><text class="k-tick" x="246.15" y="308" text-anchor="middle">5</text><text class="k-tick" x="338.46" y="308" text-anchor="middle">15</text></g><g ><g ><line class="h-soft-stem" x1="61.54" y1="195" x2="61.54" y2="200.17"/></g><g ><line class="h-soft-stem" x1="80" y1="195" x2="80" y2="200.96"/></g><g ><line class="h-soft-stem" x1="98.46" y1="195" x2="98.46" y2="202.05"/></g><g ><line class="h-soft-stem" x1="116.92" y1="195" x2="116.92" y2="203.62"/></g><g ><line class="h-soft-stem" x1="135.38" y1="195" x2="135.38" y2="206.08"/></g><g ><line class="h-soft-stem" x1="153.85" y1="195" x2="153.85" y2="210.51"/></g><g ><line class="h-soft-stem" x1="172.31" y1="195" x2="172.31" y2="220.85"/></g><g ><line class="h-soft-stem" x1="190.77" y1="195" x2="190.77" y2="272.54"/></g><g ><line class="h-soft-stem" x1="209.23" y1="195" x2="209.23" y2="117.46"/></g><g ><line class="h-soft-stem" x1="227.69" y1="195" x2="227.69" y2="169.15"/></g><g ><line class="h-soft-stem" x1="246.15" y1="195" x2="246.15" y2="179.49"/></g><g ><line class="h-soft-stem" x1="264.62" y1="195" x2="264.62" y2="183.92"/></g><g ><line class="h-soft-stem" x1="283.08" y1="195" x2="283.08" y2="186.38"/></g><g ><line class="h-soft-stem" x1="301.54" y1="195" x2="301.54" y2="187.95"/></g><g ><line class="h-soft-stem" x1="320" y1="195" x2="320" y2="189.04"/></g><g ><line class="h-soft-stem" x1="338.46" y1="195" x2="338.46" y2="189.83"/></g></g><g ><circle class="h-soft-dot" cx="61.54" cy="200.17" r="3.5"/><circle class="h-soft-dot" cx="80" cy="200.96" r="3.5"/><circle class="h-soft-dot" cx="98.46" cy="202.05" r="3.5"/><circle class="h-soft-dot" cx="116.92" cy="203.62" r="3.5"/><circle class="h-soft-dot" cx="135.38" cy="206.08" r="3.5"/><circle class="h-soft-dot" cx="153.85" cy="210.51" r="3.5"/><circle class="h-soft-dot" cx="172.31" cy="220.85" r="3.5"/><circle class="h-soft-dot" cx="190.77" cy="272.54" r="3.5"/><circle class="h-soft-dot" cx="209.23" cy="117.46" r="3.5"/><circle class="h-soft-dot" cx="227.69" cy="169.15" r="3.5"/><circle class="h-soft-dot" cx="246.15" cy="179.49" r="3.5"/><circle class="h-soft-dot" cx="264.62" cy="183.92" r="3.5"/><circle class="h-soft-dot" cx="283.08" cy="186.38" r="3.5"/><circle class="h-soft-dot" cx="301.54" cy="187.95" r="3.5"/><circle class="h-soft-dot" cx="320" cy="189.04" r="3.5"/><circle class="h-soft-dot" cx="338.46" cy="189.83" r="3.5"/></g><g ><g ><line class="k-stem" x1="61.54" y1="195" x2="61.54" y2="195.05"/><circle class="k-stem-dot" cx="61.54" cy="195.05" r="2.6"/></g><g ><line class="k-stem" x1="80" y1="195" x2="80" y2="195.5"/><circle class="k-stem-dot" cx="80" cy="195.5" r="2.6"/></g><g ><line class="k-stem" x1="98.46" y1="195" x2="98.46" y2="196.57"/><circle class="k-stem-dot" cx="98.46" cy="196.57" r="2.6"/></g><g ><line class="k-stem" x1="116.92" y1="195" x2="116.92" y2="198.47"/><circle class="k-stem-dot" cx="116.92" cy="198.47" r="2.6"/></g><g ><line class="k-stem" x1="135.38" y1="195" x2="135.38" y2="201.62"/><circle class="k-stem-dot" cx="135.38" cy="201.62" r="2.6"/></g><g ><line class="k-stem" x1="153.85" y1="195" x2="153.85" y2="207.06"/><circle class="k-stem-dot" cx="153.85" cy="207.06" r="2.6"/></g><g ><line class="k-stem" x1="172.31" y1="195" x2="172.31" y2="218.67"/><circle class="k-stem-dot" cx="172.31" cy="218.67" r="2.6"/></g><g ><line class="k-stem" x1="190.77" y1="195" x2="190.77" y2="271.79"/><circle class="k-stem-dot" cx="190.77" cy="271.79" r="2.6"/></g><g ><line class="k-stem" x1="209.23" y1="195" x2="209.23" y2="118.21"/><circle class="k-stem-dot" cx="209.23" cy="118.21" r="2.6"/></g><g ><line class="k-stem" x1="227.69" y1="195" x2="227.69" y2="171.33"/><circle class="k-stem-dot" cx="227.69" cy="171.33" r="2.6"/></g><g ><line class="k-stem" x1="246.15" y1="195" x2="246.15" y2="182.94"/><circle class="k-stem-dot" cx="246.15" cy="182.94" r="2.6"/></g><g ><line class="k-stem" x1="264.62" y1="195" x2="264.62" y2="188.38"/><circle class="k-stem-dot" cx="264.62" cy="188.38" r="2.6"/></g><g ><line class="k-stem" x1="283.08" y1="195" x2="283.08" y2="191.53"/><circle class="k-stem-dot" cx="283.08" cy="191.53" r="2.6"/></g><g ><line class="k-stem" x1="301.54" y1="195" x2="301.54" y2="193.43"/><circle class="k-stem-dot" cx="301.54" cy="193.43" r="2.6"/></g><g ><line class="k-stem" x1="320" y1="195" x2="320" y2="194.5"/><circle class="k-stem-dot" cx="320" cy="194.5" r="2.6"/></g><g ><line class="k-stem" x1="338.46" y1="195" x2="338.46" y2="194.95"/><circle class="k-stem-dot" cx="338.46" cy="194.95" r="2.6"/></g></g><g ><circle class="k-stop" cx="70.77" cy="195" r="2"/><circle class="k-stop" cx="89.23" cy="195" r="2"/><circle class="k-stop" cx="107.69" cy="195" r="2"/><circle class="k-stop" cx="126.15" cy="195" r="2"/><circle class="k-stop" cx="144.62" cy="195" r="2"/><circle class="k-stop" cx="163.08" cy="195" r="2"/><circle class="k-stop" cx="181.54" cy="195" r="2"/><circle class="k-stop" cx="200" cy="195" r="2"/><circle class="k-stop" cx="218.46" cy="195" r="2"/><circle class="k-stop" cx="236.92" cy="195" r="2"/><circle class="k-stop" cx="255.38" cy="195" r="2"/><circle class="k-stop" cx="273.85" cy="195" r="2"/><circle class="k-stop" cx="292.31" cy="195" r="2"/><circle class="k-stop" cx="310.77" cy="195" r="2"/><circle class="k-stop" cx="329.23" cy="195" r="2"/></g><text class="k-num" x="217.23" y="115.46" text-anchor="start">0.637</text><text class="k-num" x="235.69" y="167.15" text-anchor="start">0.212</text><path class="k-arrow k-input" d="M61.54 330L196 330" fill="none" marker-end="url(#taps-phone-arrow-input)"/><text class="k-num-input" x="208" y="334" text-anchor="start">delay 15 samples</text><text class="k-label" x="56" y="374" text-anchor="start">Hann window: ½ + ½ cos(πn / 16)</text><line class="k-axis" x1="56" y1="440" x2="344" y2="440"/><path class="k-curve" d="M52.31 440L54.15 439.98L56 439.91L57.85 439.81L59.69 439.66L61.54 439.46L63.38 439.23L65.23 438.95L67.08 438.63L68.92 438.27L70.77 437.87L72.62 437.43L74.46 436.95L76.31 436.43L78.15 435.87L80 435.28L81.85 434.65L83.69 433.99L85.54 433.29L87.38 432.56L89.23 431.8L91.08 431.01L92.92 430.18L94.77 429.33L96.62 428.46L98.46 427.56L100.31 426.63L102.15 425.68L104 424.71L105.85 423.72L107.69 422.72L109.54 421.69L111.38 420.65L113.23 419.6L115.08 418.54L116.92 417.46L118.77 416.38L120.62 415.29L122.46 414.2L124.31 413.1L126.15 412L128 410.9L129.85 409.8L131.69 408.71L133.54 407.62L135.38 406.54L137.23 405.46L139.08 404.4L140.92 403.35L142.77 402.31L144.62 401.28L146.46 400.28L148.31 399.29L150.15 398.32L152 397.37L153.85 396.44L155.69 395.54L157.54 394.67L159.38 393.82L161.23 392.99L163.08 392.2L164.92 391.44L166.77 390.71L168.62 390.01L170.46 389.35L172.31 388.72L174.15 388.13L176 387.57L177.85 387.05L179.69 386.57L181.54 386.13L183.38 385.73L185.23 385.37L187.08 385.05L188.92 384.77L190.77 384.54L192.62 384.34L194.46 384.19L196.31 384.09L198.15 384.02L200 384L201.85 384.02L203.69 384.09L205.54 384.19L207.38 384.34L209.23 384.54L211.08 384.77L212.92 385.05L214.77 385.37L216.62 385.73L218.46 386.13L220.31 386.57L222.15 387.05L224 387.57L225.85 388.13L227.69 388.72L229.54 389.35L231.38 390.01L233.23 390.71L235.08 391.44L236.92 392.2L238.77 392.99L240.62 393.82L242.46 394.67L244.31 395.54L246.15 396.44L248 397.37L249.85 398.32L251.69 399.29L253.54 400.28L255.38 401.28L257.23 402.31L259.08 403.35L260.92 404.4L262.77 405.46L264.62 406.54L266.46 407.62L268.31 408.71L270.15 409.8L272 410.9L273.85 412L275.69 413.1L277.54 414.2L279.38 415.29L281.23 416.38L283.08 417.46L284.92 418.54L286.77 419.6L288.62 420.65L290.46 421.69L292.31 422.72L294.15 423.72L296 424.71L297.85 425.68L299.69 426.63L301.54 427.56L303.38 428.46L305.23 429.33L307.08 430.18L308.92 431.01L310.77 431.8L312.62 432.56L314.46 433.29L316.31 433.99L318.15 434.65L320 435.28L321.85 435.87L323.69 436.43L325.54 436.95L327.38 437.43L329.23 437.87L331.08 438.27L332.92 438.63L334.77 438.95L336.62 439.23L338.46 439.46L340.31 439.66L342.15 439.81L344 439.91L345.85 439.98L347.69 440" fill="none"/><text class="k-tick" x="48" y="388" text-anchor="end">1</text><text class="k-tick" x="48" y="444" text-anchor="end">0</text><g ><g ><g ><line class="h-soft-stem" x1="29" y1="33" x2="29" y2="19"/><circle class="h-soft-dot" cx="29" cy="19" r="3.5"/></g><text class="k-label" x="46" y="30" text-anchor="start">2 ÷ (πn), the ideal</text></g><g ><g ><line class="k-stem" x1="29" y1="57" x2="29" y2="43"/><circle class="k-stem-dot" cx="29" cy="43" r="3.5"/></g><text class="k-label" x="46" y="54" text-anchor="start">times the window: kept</text></g></g></svg></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The bins sit on the unit circle</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-circle-bins-style">
+.k-fig .l12-head-ink { fill: var(--ink); }
+.k-fig .l12-head-accent { fill: var(--accent); }
+.k-fig .l12-head-soft { fill: var(--ink-soft); }
+.k-fig .l12-head-open { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.4; }
+.k-fig .l12-vec { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l12-vec-thin { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .l12-vec-accent { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l12-vec-soft { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l12-mirror { stroke: var(--ink-soft); stroke-width: 2.2; stroke-dasharray: 0.1 4.5; stroke-linecap: round; fill: none; }
+.k-fig .l12-ref { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 6 4; fill: none; }
+.k-fig .l12-bad { stroke: var(--ink); stroke-width: 2.2; fill: none; stroke-linecap: round; }
+.k-fig .l12-tint { fill: var(--paper-2); }
+.k-fig .l12-faint-bar { fill: var(--ink-soft); opacity: 0.32; }
+.k-fig .l12-square { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l12-ring { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l12-ring-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.3; }
+.k-fig .l12-dot { fill: var(--ink); }
+.k-fig .l12-dot-accent { fill: var(--accent); }
+.k-fig .l12-dot-soft { fill: var(--ink-soft); }
+.k-fig .l12-rim { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .l12-trace { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.k-fig .l12-hatch-bar { stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l12-hatch-bg { fill: var(--paper-2); }
+.k-fig .l12-hatch { stroke: var(--ink); stroke-width: 1.4; }
+.k-fig .l12-small { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">figure</p>
+<h1>The bins sit on the unit circle</h1>
+<div class="diagram"><svg class="k-fig k-wide" id="fig-circle-bins" viewBox="0 0 720 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="circle-bins-title circle-bins-desc"><title id="circle-bins-title">The bins sit on the unit circle</title><desc id="circle-bins-desc">Left: the unit circle with eight evenly spaced points for N = 8, bin 0 at 0 Hz on the right, bin 4 at 4,000 Hz on the left, bins 5 to 7 hollow on the bottom half as mirrors. Right: the same circle with 205 points for N = 205 and the eight keypad bins, 18 to 24 and 31 to 42, highlighted.</desc><defs><marker id="circle-bins-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="circle-bins-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="circle-bins-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="circle-bins-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="720" height="370"/><text class="k-name" x="180" y="34" text-anchor="middle">N = 8: one bin every 45°</text><g ><line class="k-axis" x1="54" y1="180" x2="306" y2="180"/><line class="k-grid" x1="180" y1="54" x2="180" y2="306"/><circle class="l12-rim" cx="180" cy="180" r="112"/></g><g ><circle class="l12-dot" cx="292" cy="180" r="6"/><text class="k-num" x="310" y="184" text-anchor="middle">0</text></g>,<g ><circle class="l12-dot" cx="259.2" cy="100.8" r="6"/><text class="k-num" x="271.92" y="92.08" text-anchor="middle">1</text></g>,<g ><circle class="l12-dot" cx="180" cy="68" r="6"/><text class="k-num" x="180" y="54" text-anchor="middle">2</text></g>,<g ><circle class="l12-dot" cx="100.8" cy="100.8" r="6"/><text class="k-num" x="88.08" y="92.08" text-anchor="middle">3</text></g>,<g ><circle class="l12-dot" cx="68" cy="180" r="6"/><text class="k-num" x="50" y="184" text-anchor="middle">4</text></g>,<g ><circle class="l12-ring" cx="100.8" cy="259.2" r="6"/><text class="k-num" x="88.08" y="275.92" text-anchor="middle">5</text></g>,<g ><circle class="l12-ring" cx="180" cy="292" r="6"/><text class="k-num" x="180" y="314" text-anchor="middle">6</text></g>,<g ><circle class="l12-ring" cx="259.2" cy="259.2" r="6"/><text class="k-num" x="271.92" y="275.92" text-anchor="middle">7</text></g><text class="k-tick" x="284" y="170" text-anchor="end">0 Hz</text><text class="k-tick" x="76" y="170" text-anchor="start">4,000 Hz</text><text class="k-tick" x="180" y="212" text-anchor="middle">hollow: mirrors</text><text class="k-tick" x="180" y="228" text-anchor="middle">of bins 3 to 1</text><text class="k-name" x="490" y="42" text-anchor="middle">N = 205: the eight keypad bins</text><g ><line class="k-axis" x1="372" y1="180" x2="608" y2="180"/><line class="k-grid" x1="490" y1="62" x2="490" y2="298"/><circle class="l12-rim" cx="490" cy="180" r="104"/></g><circle class="l12-dot-soft" cx="594" cy="180" r="1.3"/>,<circle class="l12-dot-soft" cx="593.95" cy="176.81" r="1.3"/>,<circle class="l12-dot-soft" cx="593.8" cy="173.63" r="1.3"/>,<circle class="l12-dot-soft" cx="593.56" cy="170.45" r="1.3"/>,<circle class="l12-dot-soft" cx="593.22" cy="167.28" r="1.3"/>,<circle class="l12-dot-soft" cx="592.78" cy="164.12" r="1.3"/>,<circle class="l12-dot-soft" cx="592.25" cy="160.98" r="1.3"/>,<circle class="l12-dot-soft" cx="591.62" cy="157.86" r="1.3"/>,<circle class="l12-dot-soft" cx="590.89" cy="154.75" r="1.3"/>,<circle class="l12-dot-soft" cx="590.07" cy="151.67" r="1.3"/>,<circle class="l12-dot-soft" cx="589.15" cy="148.62" r="1.3"/>,<circle class="l12-dot-soft" cx="588.15" cy="145.6" r="1.3"/>,<circle class="l12-dot-soft" cx="587.04" cy="142.61" r="1.3"/>,<circle class="l12-dot-soft" cx="585.85" cy="139.65" r="1.3"/>,<circle class="l12-dot-soft" cx="584.57" cy="136.73" r="1.3"/>,<circle class="l12-dot-soft" cx="583.2" cy="133.85" r="1.3"/>,<circle class="l12-dot-soft" cx="581.74" cy="131.02" r="1.3"/>,<circle class="l12-dot-soft" cx="580.2" cy="128.23" r="1.3"/>,<circle class="l12-dot-soft" cx="578.57" cy="125.49" r="1.3"/>,<circle class="l12-dot-soft" cx="576.86" cy="122.8" r="1.3"/>,<circle class="l12-dot-soft" cx="575.06" cy="120.17" r="1.3"/>,<circle class="l12-dot-soft" cx="573.19" cy="117.59" r="1.3"/>,<circle class="l12-dot-soft" cx="571.24" cy="115.07" r="1.3"/>,<circle class="l12-dot-soft" cx="569.21" cy="112.61" r="1.3"/>,<circle class="l12-dot-soft" cx="567.11" cy="110.21" r="1.3"/>,<circle class="l12-dot-soft" cx="564.93" cy="107.88" r="1.3"/>,<circle class="l12-dot-soft" cx="562.69" cy="105.62" r="1.3"/>,<circle class="l12-dot-soft" cx="560.38" cy="103.43" r="1.3"/>,<circle class="l12-dot-soft" cx="558" cy="101.31" r="1.3"/>,<circle class="l12-dot-soft" cx="555.55" cy="99.26" r="1.3"/>,<circle class="l12-dot-soft" cx="553.05" cy="97.29" r="1.3"/>,<circle class="l12-dot-soft" cx="550.48" cy="95.4" r="1.3"/>,<circle class="l12-dot-soft" cx="547.86" cy="93.58" r="1.3"/>,<circle class="l12-dot-soft" cx="545.19" cy="91.85" r="1.3"/>,<circle class="l12-dot-soft" cx="542.46" cy="90.2" r="1.3"/>,<circle class="l12-dot-soft" cx="539.68" cy="88.63" r="1.3"/>,<circle class="l12-dot-soft" cx="536.86" cy="87.16" r="1.3"/>,<circle class="l12-dot-soft" cx="533.99" cy="85.76" r="1.3"/>,<circle class="l12-dot-soft" cx="531.08" cy="84.46" r="1.3"/>,<circle class="l12-dot-soft" cx="528.14" cy="83.24" r="1.3"/>,<circle class="l12-dot-soft" cx="525.15" cy="82.12" r="1.3"/>,<circle class="l12-dot-soft" cx="522.14" cy="81.09" r="1.3"/>,<circle class="l12-dot-soft" cx="519.09" cy="80.15" r="1.3"/>,<circle class="l12-dot-soft" cx="516.02" cy="79.31" r="1.3"/>,<circle class="l12-dot-soft" cx="512.92" cy="78.56" r="1.3"/>,<circle class="l12-dot-soft" cx="509.8" cy="77.9" r="1.3"/>,<circle class="l12-dot-soft" cx="506.66" cy="77.34" r="1.3"/>,<circle class="l12-dot-soft" cx="503.51" cy="76.88" r="1.3"/>,<circle class="l12-dot-soft" cx="500.34" cy="76.52" r="1.3"/>,<circle class="l12-dot-soft" cx="497.17" cy="76.25" r="1.3"/>,<circle class="l12-dot-soft" cx="493.98" cy="76.08" r="1.3"/>,<circle class="l12-dot-soft" cx="490.8" cy="76" r="1.3"/>,<circle class="l12-dot-soft" cx="487.61" cy="76.03" r="1.3"/>,<circle class="l12-dot-soft" cx="484.42" cy="76.15" r="1.3"/>,<circle class="l12-dot-soft" cx="481.24" cy="76.37" r="1.3"/>,<circle class="l12-dot-soft" cx="478.07" cy="76.69" r="1.3"/>,<circle class="l12-dot-soft" cx="474.91" cy="77.1" r="1.3"/>,<circle class="l12-dot-soft" cx="471.77" cy="77.61" r="1.3"/>,<circle class="l12-dot-soft" cx="468.64" cy="78.22" r="1.3"/>,<circle class="l12-dot-soft" cx="465.53" cy="78.92" r="1.3"/>,<circle class="l12-dot-soft" cx="462.44" cy="79.72" r="1.3"/>,<circle class="l12-dot-soft" cx="459.38" cy="80.61" r="1.3"/>,<circle class="l12-dot-soft" cx="456.35" cy="81.59" r="1.3"/>,<circle class="l12-dot-soft" cx="453.35" cy="82.67" r="1.3"/>,<circle class="l12-dot-soft" cx="450.39" cy="83.84" r="1.3"/>,<circle class="l12-dot-soft" cx="447.46" cy="85.1" r="1.3"/>,<circle class="l12-dot-soft" cx="444.57" cy="86.45" r="1.3"/>,<circle class="l12-dot-soft" cx="441.72" cy="87.88" r="1.3"/>,<circle class="l12-dot-soft" cx="438.92" cy="89.41" r="1.3"/>,<circle class="l12-dot-soft" cx="436.17" cy="91.01" r="1.3"/>,<circle class="l12-dot-soft" cx="433.47" cy="92.71" r="1.3"/>,<circle class="l12-dot-soft" cx="430.82" cy="94.48" r="1.3"/>,<circle class="l12-dot-soft" cx="428.23" cy="96.33" r="1.3"/>,<circle class="l12-dot-soft" cx="425.69" cy="98.27" r="1.3"/>,<circle class="l12-dot-soft" cx="423.22" cy="100.27" r="1.3"/>,<circle class="l12-dot-soft" cx="420.81" cy="102.36" r="1.3"/>,<circle class="l12-dot-soft" cx="418.46" cy="104.52" r="1.3"/>,<circle class="l12-dot-soft" cx="416.18" cy="106.74" r="1.3"/>,<circle class="l12-dot-soft" cx="413.97" cy="109.04" r="1.3"/>,<circle class="l12-dot-soft" cx="411.83" cy="111.4" r="1.3"/>,<circle class="l12-dot-soft" cx="409.77" cy="113.83" r="1.3"/>,<circle class="l12-dot-soft" cx="407.78" cy="116.32" r="1.3"/>,<circle class="l12-dot-soft" cx="405.86" cy="118.87" r="1.3"/>,<circle class="l12-dot-soft" cx="404.03" cy="121.48" r="1.3"/>,<circle class="l12-dot-soft" cx="402.28" cy="124.14" r="1.3"/>,<circle class="l12-dot-soft" cx="400.6" cy="126.85" r="1.3"/>,<circle class="l12-dot-soft" cx="399.02" cy="129.62" r="1.3"/>,<circle class="l12-dot-soft" cx="397.52" cy="132.43" r="1.3"/>,<circle class="l12-dot-soft" cx="396.1" cy="135.29" r="1.3"/>,<circle class="l12-dot-soft" cx="394.78" cy="138.19" r="1.3"/>,<circle class="l12-dot-soft" cx="393.54" cy="141.12" r="1.3"/>,<circle class="l12-dot-soft" cx="392.39" cy="144.1" r="1.3"/>,<circle class="l12-dot-soft" cx="391.34" cy="147.11" r="1.3"/>,<circle class="l12-dot-soft" cx="390.38" cy="150.14" r="1.3"/>,<circle class="l12-dot-soft" cx="389.51" cy="153.21" r="1.3"/>,<circle class="l12-dot-soft" cx="388.74" cy="156.3" r="1.3"/>,<circle class="l12-dot-soft" cx="388.06" cy="159.42" r="1.3"/>,<circle class="l12-dot-soft" cx="387.47" cy="162.55" r="1.3"/>,<circle class="l12-dot-soft" cx="386.99" cy="165.7" r="1.3"/>,<circle class="l12-dot-soft" cx="386.6" cy="168.86" r="1.3"/>,<circle class="l12-dot-soft" cx="386.31" cy="172.04" r="1.3"/>,<circle class="l12-dot-soft" cx="386.11" cy="175.22" r="1.3"/>,<circle class="l12-dot-soft" cx="386.01" cy="178.41" r="1.3"/>,<circle class="l12-dot-soft" cx="386.01" cy="181.59" r="1.3"/>,<circle class="l12-dot-soft" cx="386.11" cy="184.78" r="1.3"/>,<circle class="l12-dot-soft" cx="386.31" cy="187.96" r="1.3"/>,<circle class="l12-dot-soft" cx="386.6" cy="191.14" r="1.3"/>,<circle class="l12-dot-soft" cx="386.99" cy="194.3" r="1.3"/>,<circle class="l12-dot-soft" cx="387.47" cy="197.45" r="1.3"/>,<circle class="l12-dot-soft" cx="388.06" cy="200.58" r="1.3"/>,<circle class="l12-dot-soft" cx="388.74" cy="203.7" r="1.3"/>,<circle class="l12-dot-soft" cx="389.51" cy="206.79" r="1.3"/>,<circle class="l12-dot-soft" cx="390.38" cy="209.86" r="1.3"/>,<circle class="l12-dot-soft" cx="391.34" cy="212.89" r="1.3"/>,<circle class="l12-dot-soft" cx="392.39" cy="215.9" r="1.3"/>,<circle class="l12-dot-soft" cx="393.54" cy="218.88" r="1.3"/>,<circle class="l12-dot-soft" cx="394.78" cy="221.81" r="1.3"/>,<circle class="l12-dot-soft" cx="396.1" cy="224.71" r="1.3"/>,<circle class="l12-dot-soft" cx="397.52" cy="227.57" r="1.3"/>,<circle class="l12-dot-soft" cx="399.02" cy="230.38" r="1.3"/>,<circle class="l12-dot-soft" cx="400.6" cy="233.15" r="1.3"/>,<circle class="l12-dot-soft" cx="402.28" cy="235.86" r="1.3"/>,<circle class="l12-dot-soft" cx="404.03" cy="238.52" r="1.3"/>,<circle class="l12-dot-soft" cx="405.86" cy="241.13" r="1.3"/>,<circle class="l12-dot-soft" cx="407.78" cy="243.68" r="1.3"/>,<circle class="l12-dot-soft" cx="409.77" cy="246.17" r="1.3"/>,<circle class="l12-dot-soft" cx="411.83" cy="248.6" r="1.3"/>,<circle class="l12-dot-soft" cx="413.97" cy="250.96" r="1.3"/>,<circle class="l12-dot-soft" cx="416.18" cy="253.26" r="1.3"/>,<circle class="l12-dot-soft" cx="418.46" cy="255.48" r="1.3"/>,<circle class="l12-dot-soft" cx="420.81" cy="257.64" r="1.3"/>,<circle class="l12-dot-soft" cx="423.22" cy="259.73" r="1.3"/>,<circle class="l12-dot-soft" cx="425.69" cy="261.73" r="1.3"/>,<circle class="l12-dot-soft" cx="428.23" cy="263.67" r="1.3"/>,<circle class="l12-dot-soft" cx="430.82" cy="265.52" r="1.3"/>,<circle class="l12-dot-soft" cx="433.47" cy="267.29" r="1.3"/>,<circle class="l12-dot-soft" cx="436.17" cy="268.99" r="1.3"/>,<circle class="l12-dot-soft" cx="438.92" cy="270.59" r="1.3"/>,<circle class="l12-dot-soft" cx="441.72" cy="272.12" r="1.3"/>,<circle class="l12-dot-soft" cx="444.57" cy="273.55" r="1.3"/>,<circle class="l12-dot-soft" cx="447.46" cy="274.9" r="1.3"/>,<circle class="l12-dot-soft" cx="450.39" cy="276.16" r="1.3"/>,<circle class="l12-dot-soft" cx="453.35" cy="277.33" r="1.3"/>,<circle class="l12-dot-soft" cx="456.35" cy="278.41" r="1.3"/>,<circle class="l12-dot-soft" cx="459.38" cy="279.39" r="1.3"/>,<circle class="l12-dot-soft" cx="462.44" cy="280.28" r="1.3"/>,<circle class="l12-dot-soft" cx="465.53" cy="281.08" r="1.3"/>,<circle class="l12-dot-soft" cx="468.64" cy="281.78" r="1.3"/>,<circle class="l12-dot-soft" cx="471.77" cy="282.39" r="1.3"/>,<circle class="l12-dot-soft" cx="474.91" cy="282.9" r="1.3"/>,<circle class="l12-dot-soft" cx="478.07" cy="283.31" r="1.3"/>,<circle class="l12-dot-soft" cx="481.24" cy="283.63" r="1.3"/>,<circle class="l12-dot-soft" cx="484.42" cy="283.85" r="1.3"/>,<circle class="l12-dot-soft" cx="487.61" cy="283.97" r="1.3"/>,<circle class="l12-dot-soft" cx="490.8" cy="284" r="1.3"/>,<circle class="l12-dot-soft" cx="493.98" cy="283.92" r="1.3"/>,<circle class="l12-dot-soft" cx="497.17" cy="283.75" r="1.3"/>,<circle class="l12-dot-soft" cx="500.34" cy="283.48" r="1.3"/>,<circle class="l12-dot-soft" cx="503.51" cy="283.12" r="1.3"/>,<circle class="l12-dot-soft" cx="506.66" cy="282.66" r="1.3"/>,<circle class="l12-dot-soft" cx="509.8" cy="282.1" r="1.3"/>,<circle class="l12-dot-soft" cx="512.92" cy="281.44" r="1.3"/>,<circle class="l12-dot-soft" cx="516.02" cy="280.69" r="1.3"/>,<circle class="l12-dot-soft" cx="519.09" cy="279.85" r="1.3"/>,<circle class="l12-dot-soft" cx="522.14" cy="278.91" r="1.3"/>,<circle class="l12-dot-soft" cx="525.15" cy="277.88" r="1.3"/>,<circle class="l12-dot-soft" cx="528.14" cy="276.76" r="1.3"/>,<circle class="l12-dot-soft" cx="531.08" cy="275.54" r="1.3"/>,<circle class="l12-dot-soft" cx="533.99" cy="274.24" r="1.3"/>,<circle class="l12-dot-soft" cx="536.86" cy="272.84" r="1.3"/>,<circle class="l12-dot-soft" cx="539.68" cy="271.37" r="1.3"/>,<circle class="l12-dot-soft" cx="542.46" cy="269.8" r="1.3"/>,<circle class="l12-dot-soft" cx="545.19" cy="268.15" r="1.3"/>,<circle class="l12-dot-soft" cx="547.86" cy="266.42" r="1.3"/>,<circle class="l12-dot-soft" cx="550.48" cy="264.6" r="1.3"/>,<circle class="l12-dot-soft" cx="553.05" cy="262.71" r="1.3"/>,<circle class="l12-dot-soft" cx="555.55" cy="260.74" r="1.3"/>,<circle class="l12-dot-soft" cx="558" cy="258.69" r="1.3"/>,<circle class="l12-dot-soft" cx="560.38" cy="256.57" r="1.3"/>,<circle class="l12-dot-soft" cx="562.69" cy="254.38" r="1.3"/>,<circle class="l12-dot-soft" cx="564.93" cy="252.12" r="1.3"/>,<circle class="l12-dot-soft" cx="567.11" cy="249.79" r="1.3"/>,<circle class="l12-dot-soft" cx="569.21" cy="247.39" r="1.3"/>,<circle class="l12-dot-soft" cx="571.24" cy="244.93" r="1.3"/>,<circle class="l12-dot-soft" cx="573.19" cy="242.41" r="1.3"/>,<circle class="l12-dot-soft" cx="575.06" cy="239.83" r="1.3"/>,<circle class="l12-dot-soft" cx="576.86" cy="237.2" r="1.3"/>,<circle class="l12-dot-soft" cx="578.57" cy="234.51" r="1.3"/>,<circle class="l12-dot-soft" cx="580.2" cy="231.77" r="1.3"/>,<circle class="l12-dot-soft" cx="581.74" cy="228.98" r="1.3"/>,<circle class="l12-dot-soft" cx="583.2" cy="226.15" r="1.3"/>,<circle class="l12-dot-soft" cx="584.57" cy="223.27" r="1.3"/>,<circle class="l12-dot-soft" cx="585.85" cy="220.35" r="1.3"/>,<circle class="l12-dot-soft" cx="587.04" cy="217.39" r="1.3"/>,<circle class="l12-dot-soft" cx="588.15" cy="214.4" r="1.3"/>,<circle class="l12-dot-soft" cx="589.15" cy="211.38" r="1.3"/>,<circle class="l12-dot-soft" cx="590.07" cy="208.33" r="1.3"/>,<circle class="l12-dot-soft" cx="590.89" cy="205.25" r="1.3"/>,<circle class="l12-dot-soft" cx="591.62" cy="202.14" r="1.3"/>,<circle class="l12-dot-soft" cx="592.25" cy="199.02" r="1.3"/>,<circle class="l12-dot-soft" cx="592.78" cy="195.88" r="1.3"/>,<circle class="l12-dot-soft" cx="593.22" cy="192.72" r="1.3"/>,<circle class="l12-dot-soft" cx="593.56" cy="189.55" r="1.3"/>,<circle class="l12-dot-soft" cx="593.8" cy="186.37" r="1.3"/>,<circle class="l12-dot-soft" cx="593.95" cy="183.19" r="1.3"/><circle class="l12-dot-accent" cx="578.57" cy="125.49" r="4.5"/>,<circle class="l12-dot-accent" cx="575.06" cy="120.17" r="4.5"/>,<circle class="l12-dot-accent" cx="571.24" cy="115.07" r="4.5"/>,<circle class="l12-dot-accent" cx="567.11" cy="110.21" r="4.5"/>,<circle class="l12-dot-accent" cx="550.48" cy="95.4" r="4.5"/>,<circle class="l12-dot-accent" cx="542.46" cy="90.2" r="4.5"/>,<circle class="l12-dot-accent" cx="531.08" cy="84.46" r="4.5"/>,<circle class="l12-dot-accent" cx="519.09" cy="80.15" r="4.5"/><line class="l12-vec-soft" x1="577.99" y1="113.99" x2="590.79" y2="104.39"/><line class="l12-vec-soft" x1="539.56" y1="81.8" x2="546.77" y2="67.51"/><text class="k-num-accent" x="593.99" y="105.99" text-anchor="start">rows 18 to 24</text><text class="k-num-accent" x="548.57" y="61.94" text-anchor="start">columns 31 to 42</text><text class="k-tick" x="586" y="198" text-anchor="end">0 Hz</text><text class="k-note-accent" x="355" y="352" text-anchor="middle">bin k sits at 360° × k ÷ N, starting at 0 Hz on the right</text></svg></div>
+</div>
+</body>
+</html>

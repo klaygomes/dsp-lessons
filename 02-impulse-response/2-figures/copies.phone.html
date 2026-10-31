@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Each click launches a copy of h</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-copies-style">.k-fig .l2-col { fill: var(--accent-soft); opacity: 0.55; } .k-fig .l2-tone { opacity: 0.4; } .k-fig .k-mark-ok { stroke: var(--ink); } @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .k-fig .l2-col { fill: var(--accent); opacity: 0.22; } :root:not([data-theme="light"]) .k-fig .l2-tone { opacity: 0.7; } } :root[data-theme="dark"] .k-fig .l2-col { fill: var(--accent); opacity: 0.22; } :root[data-theme="dark"] .k-fig .l2-tone { opacity: 0.7; } .k-fig .l2-guess { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; } .k-fig .l2-guess-dot { fill: var(--ink-soft); } .k-fig .l2-chip { fill: var(--paper-2); } .k-fig .l2-badge { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.2; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 2 · impulse response and convolution</p>
+<h1>Each click launches a copy of h</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-copies-phone" viewBox="0 0 360 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="copies-phone-title copies-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="5"><title id="copies-phone-title">Each click launches a copy of h</title><desc id="copies-phone-desc">Under each click of the word, a copy of h scaled by the click and starting 2,000 samples after it; the four copies add into the echo 0.32, 0.32, −0.16, −0.20, −0.04, with two copies landing on each of n = 2,001, 2,002 and 2,003.</desc><defs><marker id="copies-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="copies-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="copies-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="copies-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="660"/><rect class="l2-col" x="181.5" y="64" width="28" height="488"/>,<rect class="l2-col" x="214.5" y="64" width="28" height="488"/>,<rect class="l2-col" x="247.5" y="64" width="28" height="488"/><text class="k-label" style="font-size:9.5px" x="20" y="20" text-anchor="start">h = 0.4, 0.2; each copy is h × one click</text><text class="k-tick" style="font-size:9.5px" x="20" y="36" text-anchor="start">right half drawn 2× taller than the clicks</text><g ><g ><line class="k-axis" x1="22" y1="108" x2="122" y2="108"/><line class="k-axis" x1="144" y1="108" x2="346" y2="108"/><g ><line class="k-axis" x1="127" y1="114" x2="131" y2="102"/><line class="k-axis" x1="135" y1="114" x2="139" y2="102"/></g></g><text class="k-tick" style="font-size:10px" x="24" y="62" text-anchor="start">copy from 0.8 at n = 0</text></g>,<g ><g ><line class="k-axis" x1="22" y1="208" x2="122" y2="208"/><line class="k-axis" x1="144" y1="208" x2="346" y2="208"/><g ><line class="k-axis" x1="127" y1="214" x2="131" y2="202"/><line class="k-axis" x1="135" y1="214" x2="139" y2="202"/></g></g><text class="k-tick" style="font-size:10px" x="24" y="162" text-anchor="start">copy from 0.4 at n = 1</text></g>,<g ><g ><line class="k-axis" x1="22" y1="308" x2="122" y2="308"/><line class="k-axis" x1="144" y1="308" x2="346" y2="308"/><g ><line class="k-axis" x1="127" y1="314" x2="131" y2="302"/><line class="k-axis" x1="135" y1="314" x2="139" y2="302"/></g></g><text class="k-tick" style="font-size:10px" x="24" y="262" text-anchor="start">copy from −0.6 at n = 2</text></g>,<g ><g ><line class="k-axis" x1="22" y1="408" x2="122" y2="408"/><line class="k-axis" x1="144" y1="408" x2="346" y2="408"/><g ><line class="k-axis" x1="127" y1="414" x2="131" y2="402"/><line class="k-axis" x1="135" y1="414" x2="139" y2="402"/></g></g><text class="k-tick" style="font-size:10px" x="24" y="362" text-anchor="start">copy from −0.2 at n = 3</text></g><g ><line class="k-axis" x1="22" y1="520" x2="122" y2="520"/><line class="k-axis" x1="144" y1="520" x2="346" y2="520"/><g ><line class="k-axis" x1="127" y1="526" x2="131" y2="514"/><line class="k-axis" x1="135" y1="526" x2="139" y2="514"/></g></g><g ><text class="k-tick" style="font-size:10px" x="36" y="564" text-anchor="middle">0</text><text class="k-tick" style="font-size:10px" x="108" y="564" text-anchor="middle">3</text><text class="k-tick" style="font-size:9.5px" x="162.5" y="564" text-anchor="middle">2,000</text><text class="k-tick" style="font-size:9.5px" x="195.5" y="576" text-anchor="middle">2,001</text><text class="k-tick" style="font-size:9.5px" x="228.5" y="564" text-anchor="middle">2,002</text><text class="k-tick" style="font-size:9.5px" x="261.5" y="576" text-anchor="middle">2,003</text><text class="k-tick" style="font-size:9.5px" x="294.5" y="564" text-anchor="middle">2,004</text><text class="k-tick" style="font-size:9.5px" x="327.5" y="576" text-anchor="middle">2,005</text></g><text class="k-name-accent" x="24" y="474" text-anchor="start">echo (sum)</text><g data-motion-item="" data-step="1" aria-label="the four clicks of the word: 0.8, 0.4, −0.6, −0.2"><g ><g ><g ><line class="k-stem-soft" x1="60" y1="108" x2="60" y2="108"/><circle class="k-stem-soft-dot" cx="60" cy="108" r="2.5"/></g><g ><line class="k-stem-soft" x1="84" y1="108" x2="84" y2="108"/><circle class="k-stem-soft-dot" cx="84" cy="108" r="2.5"/></g><g ><line class="k-stem-soft" x1="108" y1="108" x2="108" y2="108"/><circle class="k-stem-soft-dot" cx="108" cy="108" r="2.5"/></g></g><g ><g ><line class="k-stem-input" x1="36" y1="108" x2="36" y2="84.89"/><circle class="k-stem-input-dot" cx="36" cy="84.89" r="4.5"/><text class="k-tick" x="36" y="74.89" text-anchor="middle">0.8</text></g></g></g><g ><g ><g ><line class="k-stem-soft" x1="36" y1="208" x2="36" y2="208"/><circle class="k-stem-soft-dot" cx="36" cy="208" r="2.5"/></g><g ><line class="k-stem-soft" x1="84" y1="208" x2="84" y2="208"/><circle class="k-stem-soft-dot" cx="84" cy="208" r="2.5"/></g><g ><line class="k-stem-soft" x1="108" y1="208" x2="108" y2="208"/><circle class="k-stem-soft-dot" cx="108" cy="208" r="2.5"/></g></g><g ><g ><line class="k-stem-input" x1="60" y1="208" x2="60" y2="196.44"/><circle class="k-stem-input-dot" cx="60" cy="196.44" r="4.5"/><text class="k-tick" x="60" y="186.44" text-anchor="middle">0.4</text></g></g></g><g ><g ><g ><line class="k-stem-soft" x1="36" y1="308" x2="36" y2="308"/><circle class="k-stem-soft-dot" cx="36" cy="308" r="2.5"/></g><g ><line class="k-stem-soft" x1="60" y1="308" x2="60" y2="308"/><circle class="k-stem-soft-dot" cx="60" cy="308" r="2.5"/></g><g ><line class="k-stem-soft" x1="108" y1="308" x2="108" y2="308"/><circle class="k-stem-soft-dot" cx="108" cy="308" r="2.5"/></g></g><g ><g ><line class="k-stem-input" x1="84" y1="308" x2="84" y2="325.33"/><circle class="k-stem-input-dot" cx="84" cy="325.33" r="4.5"/><text class="k-tick" x="84" y="345.33" text-anchor="middle">−0.6</text></g></g></g><g ><g ><g ><line class="k-stem-soft" x1="36" y1="408" x2="36" y2="408"/><circle class="k-stem-soft-dot" cx="36" cy="408" r="2.5"/></g><g ><line class="k-stem-soft" x1="60" y1="408" x2="60" y2="408"/><circle class="k-stem-soft-dot" cx="60" cy="408" r="2.5"/></g><g ><line class="k-stem-soft" x1="84" y1="408" x2="84" y2="408"/><circle class="k-stem-soft-dot" cx="84" cy="408" r="2.5"/></g></g><g ><g ><line class="k-stem-input" x1="108" y1="408" x2="108" y2="413.78"/><circle class="k-stem-input-dot" cx="108" cy="413.78" r="4.5"/><text class="k-tick" x="108" y="433.78" text-anchor="middle">−0.2</text></g></g></g></g><g data-motion-item="" data-step="2" aria-label="copy of h from the click at n = 0: 0.32, 0.16; copy of h from the click at n = 1: 0.16, 0.08"><g class="k-a-in" style="--d:1;--len:0.9"><g class="k-a-move" style="--dx:-24px;--d:1;--len:0.9"><g ><g ><line class="k-stem" x1="162.5" y1="108" x2="162.5" y2="89.51"/><circle class="k-stem-dot" cx="162.5" cy="89.51" r="4"/></g><g ><line class="k-stem" x1="195.5" y1="108" x2="195.5" y2="98.76"/><circle class="k-stem-dot" cx="195.5" cy="98.76" r="4"/></g></g><g ><g ><line class="k-stem-soft" x1="228.5" y1="108" x2="228.5" y2="108"/><circle class="k-stem-soft-dot" cx="228.5" cy="108" r="2.5"/></g><g ><line class="k-stem-soft" x1="261.5" y1="108" x2="261.5" y2="108"/><circle class="k-stem-soft-dot" cx="261.5" cy="108" r="2.5"/></g><g ><line class="k-stem-soft" x1="294.5" y1="108" x2="294.5" y2="108"/><circle class="k-stem-soft-dot" cx="294.5" cy="108" r="2.5"/></g><g ><line class="k-stem-soft" x1="327.5" y1="108" x2="327.5" y2="108"/><circle class="k-stem-soft-dot" cx="327.5" cy="108" r="2.5"/></g></g><g ><text class="k-tick" style="font-size:9px" x="162.5" y="80.51" text-anchor="middle">0.32</text><text class="k-tick" style="font-size:9px" x="195.5" y="89.76" text-anchor="middle">0.16</text></g></g></g><g class="k-a-in" style="--d:1;--len:0.9"><g class="k-a-move" style="--dx:-24px;--d:1;--len:0.9"><g ><g ><line class="k-stem" x1="195.5" y1="208" x2="195.5" y2="198.76"/><circle class="k-stem-dot" cx="195.5" cy="198.76" r="4"/></g><g ><line class="k-stem" x1="228.5" y1="208" x2="228.5" y2="203.38"/><circle class="k-stem-dot" cx="228.5" cy="203.38" r="4"/></g></g><g ><g ><line class="k-stem-soft" x1="162.5" y1="208" x2="162.5" y2="208"/><circle class="k-stem-soft-dot" cx="162.5" cy="208" r="2.5"/></g><g ><line class="k-stem-soft" x1="261.5" y1="208" x2="261.5" y2="208"/><circle class="k-stem-soft-dot" cx="261.5" cy="208" r="2.5"/></g><g ><line class="k-stem-soft" x1="294.5" y1="208" x2="294.5" y2="208"/><circle class="k-stem-soft-dot" cx="294.5" cy="208" r="2.5"/></g><g ><line class="k-stem-soft" x1="327.5" y1="208" x2="327.5" y2="208"/><circle class="k-stem-soft-dot" cx="327.5" cy="208" r="2.5"/></g></g><g ><text class="k-tick" style="font-size:9px" x="195.5" y="189.76" text-anchor="middle">0.16</text><text class="k-tick" style="font-size:9px" x="228.5" y="194.38" text-anchor="middle">0.08</text></g></g></g></g>,<g data-motion-item="" data-step="3" aria-label="copy of h from the click at n = 2: −0.24, −0.12; copy of h from the click at n = 3: −0.08, −0.04"><g class="k-a-in" style="--d:2.2;--len:0.9"><g class="k-a-move" style="--dx:-24px;--d:2.2;--len:0.9"><g ><g ><line class="k-stem" x1="228.5" y1="308" x2="228.5" y2="321.87"/><circle class="k-stem-dot" cx="228.5" cy="321.87" r="4"/></g><g ><line class="k-stem" x1="261.5" y1="308" x2="261.5" y2="314.93"/><circle class="k-stem-dot" cx="261.5" cy="314.93" r="4"/></g></g><g ><g ><line class="k-stem-soft" x1="162.5" y1="308" x2="162.5" y2="308"/><circle class="k-stem-soft-dot" cx="162.5" cy="308" r="2.5"/></g><g ><line class="k-stem-soft" x1="195.5" y1="308" x2="195.5" y2="308"/><circle class="k-stem-soft-dot" cx="195.5" cy="308" r="2.5"/></g><g ><line class="k-stem-soft" x1="294.5" y1="308" x2="294.5" y2="308"/><circle class="k-stem-soft-dot" cx="294.5" cy="308" r="2.5"/></g><g ><line class="k-stem-soft" x1="327.5" y1="308" x2="327.5" y2="308"/><circle class="k-stem-soft-dot" cx="327.5" cy="308" r="2.5"/></g></g><g ><text class="k-tick" style="font-size:9px" x="228.5" y="339.87" text-anchor="middle">−0.24</text><text class="k-tick" style="font-size:9px" x="261.5" y="332.93" text-anchor="middle">−0.12</text></g></g></g><g class="k-a-in" style="--d:2.2;--len:0.9"><g class="k-a-move" style="--dx:-24px;--d:2.2;--len:0.9"><g ><g ><line class="k-stem" x1="261.5" y1="408" x2="261.5" y2="412.62"/><circle class="k-stem-dot" cx="261.5" cy="412.62" r="4"/></g><g ><line class="k-stem" x1="294.5" y1="408" x2="294.5" y2="410.31"/><circle class="k-stem-dot" cx="294.5" cy="410.31" r="4"/></g></g><g ><g ><line class="k-stem-soft" x1="162.5" y1="408" x2="162.5" y2="408"/><circle class="k-stem-soft-dot" cx="162.5" cy="408" r="2.5"/></g><g ><line class="k-stem-soft" x1="195.5" y1="408" x2="195.5" y2="408"/><circle class="k-stem-soft-dot" cx="195.5" cy="408" r="2.5"/></g><g ><line class="k-stem-soft" x1="228.5" y1="408" x2="228.5" y2="408"/><circle class="k-stem-soft-dot" cx="228.5" cy="408" r="2.5"/></g><g ><line class="k-stem-soft" x1="327.5" y1="408" x2="327.5" y2="408"/><circle class="k-stem-soft-dot" cx="327.5" cy="408" r="2.5"/></g></g><g ><text class="k-tick" style="font-size:9px" x="261.5" y="430.62" text-anchor="middle">−0.08</text><text class="k-tick" style="font-size:9px" x="294.5" y="428.31" text-anchor="middle">−0.04</text></g></g></g></g><g data-motion-item="" data-step="4" aria-label="the four copies slide down into one row"><g class="k-ghost k-a-flash" style="--d:3.6;--len:1.3" aria-hidden="true"><g class="k-a-move" style="--dy:-412px;--d:3.6;--len:1.1"><g ><g ><line class="k-stem" x1="162.5" y1="520" x2="162.5" y2="501.51"/><circle class="k-stem-dot" cx="162.5" cy="501.51" r="3"/></g><g ><line class="k-stem" x1="195.5" y1="520" x2="195.5" y2="510.76"/><circle class="k-stem-dot" cx="195.5" cy="510.76" r="3"/></g></g></g></g><g class="k-ghost k-a-flash" style="--d:3.6;--len:1.3" aria-hidden="true"><g class="k-a-move" style="--dy:-312px;--d:3.6;--len:1.1"><g ><g ><line class="k-stem" x1="195.5" y1="520" x2="195.5" y2="510.76"/><circle class="k-stem-dot" cx="195.5" cy="510.76" r="3"/></g><g ><line class="k-stem" x1="228.5" y1="520" x2="228.5" y2="515.38"/><circle class="k-stem-dot" cx="228.5" cy="515.38" r="3"/></g></g></g></g><g class="k-ghost k-a-flash" style="--d:3.6;--len:1.3" aria-hidden="true"><g class="k-a-move" style="--dy:-212px;--d:3.6;--len:1.1"><g ><g ><line class="k-stem" x1="228.5" y1="520" x2="228.5" y2="533.87"/><circle class="k-stem-dot" cx="228.5" cy="533.87" r="3"/></g><g ><line class="k-stem" x1="261.5" y1="520" x2="261.5" y2="526.93"/><circle class="k-stem-dot" cx="261.5" cy="526.93" r="3"/></g></g></g></g><g class="k-ghost k-a-flash" style="--d:3.6;--len:1.3" aria-hidden="true"><g class="k-a-move" style="--dy:-112px;--d:3.6;--len:1.1"><g ><g ><line class="k-stem" x1="261.5" y1="520" x2="261.5" y2="524.62"/><circle class="k-stem-dot" cx="261.5" cy="524.62" r="3"/></g><g ><line class="k-stem" x1="294.5" y1="520" x2="294.5" y2="522.31"/><circle class="k-stem-dot" cx="294.5" cy="522.31" r="3"/></g></g></g></g></g><g data-motion-item="" data-step="5" aria-label="the sum: 0.32, 0.32, −0.16, −0.20, −0.04; two copies land on each of n = 2,001, 2,002 and 2,003"><g class="k-a-in" style="--d:5;--len:0.8"><g ><g ><line class="k-stem-accent" x1="162.5" y1="520" x2="162.5" y2="501.51"/><circle class="k-stem-accent-dot" cx="162.5" cy="501.51" r="5"/></g><g ><line class="k-stem-accent" x1="195.5" y1="520" x2="195.5" y2="501.51"/><circle class="k-stem-accent-dot" cx="195.5" cy="501.51" r="5"/></g><g ><line class="k-stem-accent" x1="228.5" y1="520" x2="228.5" y2="529.24"/><circle class="k-stem-accent-dot" cx="228.5" cy="529.24" r="5"/></g><g ><line class="k-stem-accent" x1="261.5" y1="520" x2="261.5" y2="531.56"/><circle class="k-stem-accent-dot" cx="261.5" cy="531.56" r="5"/></g><g ><line class="k-stem-accent" x1="294.5" y1="520" x2="294.5" y2="522.31"/><circle class="k-stem-accent-dot" cx="294.5" cy="522.31" r="5"/></g></g><text class="k-num-accent" style="font-size:9px" x="162.5" y="492.51" text-anchor="middle">0.32</text><text class="k-num-accent" style="font-size:9px" x="195.5" y="483.51" text-anchor="middle">0.32</text><text class="k-num-accent" style="font-size:9px" x="228.5" y="547.24" text-anchor="middle">−0.16</text><text class="k-num-accent" style="font-size:9px" x="261.5" y="558.56" text-anchor="middle">−0.20</text><text class="k-num-accent" style="font-size:9px" x="294.5" y="540.31" text-anchor="middle">−0.04</text><g ><g ><line class="k-stem-soft" x1="327.5" y1="520" x2="327.5" y2="520"/><circle class="k-stem-soft-dot" cx="327.5" cy="520" r="2.5"/></g></g><g ><g ><line class="k-stem-soft" x1="36" y1="520" x2="36" y2="520"/><circle class="k-stem-soft-dot" cx="36" cy="520" r="2.5"/></g><g ><line class="k-stem-soft" x1="60" y1="520" x2="60" y2="520"/><circle class="k-stem-soft-dot" cx="60" cy="520" r="2.5"/></g><g ><line class="k-stem-soft" x1="84" y1="520" x2="84" y2="520"/><circle class="k-stem-soft-dot" cx="84" cy="520" r="2.5"/></g><g ><line class="k-stem-soft" x1="108" y1="520" x2="108" y2="520"/><circle class="k-stem-soft-dot" cx="108" cy="520" r="2.5"/></g></g><text class="k-num-accent" style="font-size:10px" x="180" y="596" text-anchor="middle">tinted: two copies land on one sample,</text><text class="k-num-accent" style="font-size:10px" x="180" y="610" text-anchor="middle">e.g. 0.16 + 0.16 = 0.32</text></g></g></svg></div>
+</div>
+</body>
+</html>

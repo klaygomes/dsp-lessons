@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goertzel’s filter, pushed in time</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-goertzel-swing-style">.k-fig .l13-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .l13-vec-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .l13-vec-soft { stroke: var(--ink-soft); stroke-width: 1.6; stroke-dasharray: 6 5; }
+.k-fig .l13-vec-soft-solid { stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-vec-faint { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.45; }
+.k-fig .l13-thick .l13-vec { stroke-width: 2.8; }
+.k-fig .l13-head { fill: var(--ink); stroke: none; }
+.k-fig .l13-head-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-head-soft, .k-fig .l13-head-soft-solid { fill: var(--ink-soft); stroke: none; }
+.k-fig .l13-head-faint { fill: var(--ink-soft); opacity: 0.45; stroke: none; }
+.k-fig .l13-arc { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l13-arc-ink { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .l13-ring { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.k-fig .l13-mk { fill: var(--ink); stroke: none; }
+.k-fig .l13-mk-accent { fill: var(--accent); stroke: none; }
+.k-fig .l13-mk-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l13-empty { fill: var(--paper-2); }
+.k-fig .l13-cell { fill: var(--ink-soft); opacity: 0.6; }
+.k-fig .l13-gridline { stroke: var(--paper); stroke-width: 0.7; }
+.k-fig .l13-clock { stroke: var(--ink); stroke-width: 3; }
+.k-fig .l13-budget { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 5; }
+.k-fig .l13-node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-cellbox { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-link { fill: none; stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-net-hi { stroke: var(--accent); stroke-width: 2.2; }
+.k-fig .l13-bracket { stroke: var(--ink-soft); stroke-width: 1.2; }
+.k-fig .l13-shade { fill: var(--paper-2); }
+.k-fig .l13-leader { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .l13-solid { fill: var(--ink); }
+.k-fig .l13-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l13-dots-bg { fill: var(--paper); }
+.k-fig .l13-dots-dot { fill: var(--ink); }
+.k-fig .l13-dots-edge { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.k-fig .l13-pole { stroke: var(--ink); stroke-width: 2.2; }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 13 · the FFT</p>
+<h1>Goertzel’s filter, pushed in time</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-goertzel-swing-phone" viewBox="0 0 360 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="goertzel-swing-phone-title goertzel-swing-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="4"><title id="goertzel-swing-phone-title">Goertzel’s filter, pushed in time</title><desc id="goertzel-swing-phone-desc">A pole pair on the unit circle at 35.1 degrees and its mirror, whose sum is 1.636 on the horizontal axis; fed key 5, the filter’s output swings up to about 8.5 in the first ten samples, 90 around sample 100 and 158 at the end, while 1,336 Hz alone stays small.</desc><defs><marker id="goertzel-swing-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="goertzel-swing-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="goertzel-swing-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="goertzel-swing-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="680"/><text class="k-name" x="20" y="34" text-anchor="start">the pole pair on the unit circle</text>,<line class="k-axis" x1="36" y1="150" x2="238.51" y2="150"/>,<line class="k-axis" x1="120" y1="66" x2="120" y2="234"/>,<circle class="k-wheel" cx="120" cy="150" r="70" fill="none"/>,<g data-motion-item="" data-step="1" aria-label="poles at bin 20’s point, 35.1 degrees up, and at its mirror"><g class="k-a-in" style="--d:0"><g ><line class="l13-pole" x1="171.26" y1="103.73" x2="183.26" y2="115.73"/><line class="l13-pole" x1="183.26" y1="103.73" x2="171.26" y2="115.73"/></g><g ><line class="l13-pole" x1="171.26" y1="184.27" x2="183.26" y2="196.27"/><line class="l13-pole" x1="183.26" y1="184.27" x2="171.26" y2="196.27"/></g><text class="k-num" x="181.26" y="97.73" text-anchor="start">p: 35.1° up</text><text class="k-num" x="181.26" y="212.27" text-anchor="start">p̄: its mirror</text></g></g>,<g data-motion-item="" data-step="2" aria-label="p plus its mirror: the up-down parts cancel, leaving 1.636 on the horizontal axis"><g class="k-a-in" style="--d:1"><g ><line class="spoke l13-vec-soft-solid" x1="120" y1="150" x2="172.02" y2="113.41"/><path class="l13-head-soft-solid" d="M177.26 109.73L168.78 111.58L172.64 117.08Z" fill="none"/></g><g ><line class="spoke l13-vec-soft-solid" x1="177.26" y1="109.73" x2="229.28" y2="146.32"/><path class="l13-head-soft-solid" d="M234.51 150L229.9 142.65L226.03 148.15Z" fill="none"/></g><g ><line class="spoke l13-vec" x1="120" y1="153" x2="227.31" y2="153"/><path class="l13-head" d="M234.51 153L225.51 149.22L225.51 156.78Z" fill="none"/></g><text class="k-num" x="242.51" y="154" text-anchor="start">1.636</text></g></g>,<text class="k-tick" x="20" y="268" text-anchor="start">up-down parts cancel: 2 × cos 35.1°</text><text class="k-name" x="54" y="320" text-anchor="start">s[n], the filter’s output</text>,<g ><line class="k-axis" x1="54" y1="450" x2="324" y2="450"/><text class="k-tick" x="46" y="367.16" text-anchor="end">150</text><text class="k-tick" x="46" y="454" text-anchor="end">0</text><text class="k-tick" x="46" y="540.84" text-anchor="end">−150</text><text class="k-tick" x="54" y="578" text-anchor="middle">n = 0</text><text class="k-tick" x="186.35" y="578" text-anchor="middle">100</text><text class="k-tick" x="324" y="578" text-anchor="middle">204</text></g>,<g data-motion-item="" data-step="3" aria-label="key 5 pushes the ring up steadily: about 8.5 in the first ten samples, 90 around sample 100, 158 by the end"><g ><path class="k-curve k-a-draw" style="--d:2;--len:3" d="M54 448.84L55.32 447.34L56.65 446.9L57.97 448.3L59.29 451.04L60.62 453.68L61.94 454.92L63.26 454.35L64.59 452.42L65.91 449.8L67.24 446.97L68.56 444.4L69.88 442.97L71.21 443.83L72.53 447.57L73.85 453.31L75.18 458.69L76.5 460.97L77.82 458.74L79.15 452.79L80.47 445.61L81.79 440.04L83.12 437.93L84.44 439.77L85.76 444.97L87.09 452.22L88.41 459.56L89.74 464.46L91.06 464.56L92.38 458.88L93.71 448.95L95.03 438.57L96.35 432.17L97.68 432.58L99 439.67L100.32 450.58L101.65 461.28L102.97 468.15L104.29 469.06L105.62 463.59L106.94 453.08L108.26 440.57L109.59 430.36L110.91 426.68L112.24 431.78L113.56 444.37L114.88 459.77L116.21 471.85L117.53 475.82L118.85 470.27L120.18 457.46L121.5 442.03L122.82 429.15L124.15 423.05L125.47 426.01L126.79 437.63L128.12 454.54L129.44 470.96L130.76 480.47L132.09 478.79L133.41 465.96L134.74 446.7L136.06 428.42L137.38 418.05L138.71 419.22L140.03 431.26L141.35 449.91L142.68 468.92L144 481.95L145.32 484.29L146.65 474.4L147.97 454.97L149.29 432.64L150.62 415.85L151.94 411.44L153.26 421.53L154.59 442.42L155.91 466.2L157.24 484.09L158.56 489.82L159.88 481.6L161.21 462.27L162.53 438.23L163.85 417.52L165.18 407.57L166.5 412.63L167.82 431.78L169.15 458.53L170.47 482.94L171.79 495.51L173.12 491.24L174.44 471.73L175.76 444.33L177.09 419.02L178.41 404.62L179.74 406L181.06 422.8L182.38 449.62L183.71 477.5L185.03 496.49L186.35 499.15L187.68 483.62L189 455.05L190.32 423.97L191.65 402.18L192.97 397.91L194.29 412.62L195.62 440.72L196.94 472.09L198.26 495.83L199.59 503.77L200.91 492.93L202.24 466.51L203.56 433.27L204.88 404.99L206.21 392.41L207.53 400.91L208.85 427.89L210.18 463.44L211.5 494.24L212.82 508.93L214.15 502.35L215.47 477.15L216.79 442.31L218.12 409.89L219.44 391.1L220.76 392.8L222.09 415.08L223.41 450.74L224.74 487.18L226.06 510.81L227.38 512.33L228.71 490.76L230.03 454.02L231.35 415.77L232.68 389.96L234 385.67L235.32 404.15L236.65 438.89L237.97 477.97L239.29 507.85L240.62 517.74L241.94 503.38L243.26 469.11L244.59 426.96L245.91 392.51L247.24 378.88L248.56 391.35L249.88 425.28L251.21 468.1L252.53 504.31L253.85 521.19L255.18 512.98L256.5 482.46L257.82 439.99L259.15 400.22L260.47 377.46L261.79 380.55L263.12 409.22L264.44 453.47L265.76 497.04L267.09 523.62L268.41 523.33L269.74 496.45L271.06 452.97L272.38 408.53L273.71 378.72L275.03 373.9L276.35 395.98L277.68 437.68L279 484.7L280.32 520.18L281.65 530.74L282.97 511.79L284.29 469.81L285.62 420.2L286.94 381.36L288.26 367.48L289.59 383.35L290.91 422.96L292.24 472.14L293.56 513.69L294.88 533.07L296.21 523.18L297.53 486.86L298.85 436.47L300.18 389.99L301.5 364.71L302.82 370.47L304.15 405.51L305.47 456.96L306.79 505.85L308.12 534.44L309.44 532.73L310.76 501.62L312.09 452.19L313.41 401.64L314.74 367.67L316.06 362.61L317.38 388.98L318.71 438.04L320.03 492.32L321.35 531.78L322.68 541.55L324 517.85" fill="none" pathLength="1"/><g class="k-a-in" style="--d:4.6"><circle class="l13-mk" cx="61.94" cy="454.92" r="3"/><line class="l13-leader" x1="61.94" y1="449.92" x2="61.94" y2="422.21"/><text class="k-num" style="font-size:11px" x="61.94" y="416.21" text-anchor="middle">8.5</text><g ><circle class="l13-mk" cx="192.97" cy="397.91" r="3"/><text class="k-num" style="font-size:11px" x="192.97" y="387.91" text-anchor="middle">90</text></g><circle class="l13-mk" cx="322.68" cy="541.55" r="3"/><text class="k-num" style="font-size:11px" x="330.68" y="545.55" text-anchor="start">158</text><circle class="l13-mk" cx="324" cy="517.85" r="4.5"/></g></g></g>,<g data-motion-item="" data-step="4" aria-label="a tone at the wrong speed, 1,336 Hz alone, stays small"><g class="k-a-in" style="--d:5.4"><path class="k-curve-soft" d="M54 449.42L55.32 448.76L56.65 448.85L57.97 449.93L59.29 451.33L60.62 451.94L61.94 451.27L63.26 449.86L64.59 448.79L65.91 448.75L67.24 449.44L68.56 450.03L69.88 450.04L71.21 449.75L72.53 449.86L73.85 450.6L75.18 451.39L76.5 451.37L77.82 450.27L79.15 448.8L80.47 448.08L81.79 448.63L83.12 449.95L84.44 450.97L85.76 451.06L87.09 450.5L88.41 450.07L89.74 450.2L91.06 450.51L92.38 450.32L93.71 449.43L95.03 448.49L96.35 448.43L97.68 449.52L99 451.03L100.32 451.84L101.65 451.41L102.97 450.21L104.29 449.27L105.62 449.16L106.94 449.61L108.26 449.87L109.59 449.6L110.91 449.23L112.24 449.48L113.56 450.49L114.88 451.56L116.21 451.73L117.53 450.69L118.85 449.16L120.18 448.28L121.5 448.6L122.82 449.66L124.15 450.5L125.47 450.59L126.79 450.23L128.12 450.13L129.44 450.56L130.76 451.01L132.09 450.75L133.41 449.64L134.74 448.43L136.06 448.15L137.38 449.12L138.71 450.62L140.03 451.55L141.35 451.33L142.68 450.42L144 449.71L145.32 449.68L146.65 449.98L147.97 449.92L149.29 449.33L150.62 448.77L151.94 449.02L153.26 450.2L154.59 451.51L155.91 451.91L157.24 451.04L158.56 449.59L159.88 448.66L161.21 448.78L162.53 449.55L163.85 450.11L165.18 450.06L166.5 449.79L167.82 449.97L169.15 450.73L170.47 451.42L171.79 451.21L173.12 449.99L174.44 448.59L175.76 448.08L177.09 448.83L178.41 450.2L179.74 451.11L181.06 451.05L182.38 450.42L183.71 450.03L185.03 450.19L186.35 450.46L187.68 450.17L189 449.26L190.32 448.44L191.65 448.58L192.97 449.8L194.29 451.27L195.62 451.88L196.94 451.24L198.26 449.98L199.59 449.13L200.91 449.15L202.24 449.65L203.56 449.88L204.88 449.59L206.21 449.28L207.53 449.64L208.85 450.69L210.18 451.65L211.5 451.6L212.82 450.41L214.15 448.91L215.47 448.22L216.79 448.73L218.12 449.86L219.44 450.63L220.76 450.61L222.09 450.22L223.41 450.16L224.74 450.6L226.06 450.97L227.38 450.57L228.71 449.4L230.03 448.31L231.35 448.26L232.68 449.39L234 450.88L235.32 451.63L236.65 451.24L237.97 450.25L239.29 449.6L240.62 449.65L241.94 449.95L243.26 449.85L244.59 449.25L245.91 448.79L247.24 449.21L248.56 450.46L249.88 451.67L251.21 451.84L252.53 450.79L253.85 449.33L255.18 448.55L256.5 448.85L257.82 449.68L259.15 450.19L260.47 450.09L261.79 449.84L263.12 450.09L264.44 450.85L265.76 451.41L267.09 451.02L268.41 449.71L269.74 448.4L271.06 448.12L272.38 449.06L273.71 450.45L275.03 451.23L276.35 451.02L277.68 450.34L279 449.98L280.32 450.17L281.65 450.4L282.97 450.03L284.29 449.11L285.62 448.42L286.94 448.76L288.26 450.09L289.59 451.48L290.91 451.87L292.24 451.04L293.56 449.76L294.88 449.01L296.21 449.16L297.53 449.7L298.85 449.89L300.18 449.58L301.5 449.35L302.82 449.82L304.15 450.88L305.47 451.7L306.79 451.44L308.12 450.12L309.44 448.69L310.76 448.2L312.09 448.9L313.41 450.06L314.74 450.74L316.06 450.62L317.38 450.21L318.71 450.19L320.03 450.63L321.35 450.9L322.68 450.37L324 449.18" fill="none"/><rect class="l13-mk-soft" x="320" y="445.18" width="8" height="8"/></g></g>,<g ><g ><g ><line class="k-curve" x1="20" y1="606" x2="46" y2="606"/><circle class="l13-mk" cx="33" cy="606" r="4.5"/></g><text class="k-label" x="54" y="610" text-anchor="start">key 5, 770 + 1,336 Hz</text></g><g ><g ><line class="k-curve-soft" x1="20" y1="628" x2="46" y2="628"/><rect class="l13-mk-soft" x="29" y="624" width="8" height="8"/></g><text class="k-label" x="54" y="632" text-anchor="start">1,336 Hz alone: wrong speed</text></g></g></svg></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group delay is the steepness of the phase</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-group-delay-style">
+.k-fig .l-pole { stroke: var(--ink); stroke-width: 1.3; fill: none; }
+.k-fig .l-zero { stroke: var(--ink-soft); stroke-width: 2.6; stroke-dasharray: 8 3 2 3; fill: none; }
+.k-fig .l-win { fill: var(--ink-soft); opacity: 0.16; }
+.k-fig .l-win-edge { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.k-fig .l-sum { stroke: var(--accent); stroke-width: 4; fill: none; }
+.k-fig .l-half { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .l-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .l-ink { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .l-thin { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.k-fig .l-soft { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
+.k-fig .l-env { stroke: var(--ink-soft); stroke-width: 2.2; fill: none; }
+.k-fig .l-dot { stroke: var(--ink-soft); stroke-width: 2; stroke-dasharray: 0.5 5; stroke-linecap: round; fill: none; }
+.k-fig .l-ap { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .l-total { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-arc { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.k-fig .l-m-ink { fill: var(--ink); }
+.k-fig .l-m-hollow { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .l-m-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .l-m-ap { fill: var(--input); }
+.k-fig .l-m-total { fill: var(--accent); }
+.k-fig .l-x { stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+.k-fig .l-x-accent { stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.k-fig .l-o { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.k-fig .l-tri1 { fill: var(--paper-2); }
+.k-fig .l-tri2 { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linejoin: round; }
+.k-fig .l-halo { fill: var(--paper); }
+.k-fig .l-wedge { fill: var(--accent-soft); stroke: none; opacity: 0.8; }
+.k-fig .l-bracket { stroke: var(--accent); stroke-width: 2; fill: none; }
+.k-fig .l-bracket-input { stroke: var(--input); stroke-width: 2; fill: none; }
+</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 8 · phase and delay</p>
+<h1>Group delay is the steepness of the phase</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-group-delay-phone" viewBox="0 0 360 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="group-delay-phone-title group-delay-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="5"><title id="group-delay-phone-title">Group delay is the steepness of the phase</title><desc id="group-delay-phone-desc">The notch phase from 1,000 to 1,900 Hz. A straight line through 1,700 and 1,800 Hz has steepness 11.6 over 4.5, 2.58 samples. As the tones close in it settles onto the curve at 1,750 Hz, 2.56 samples. A line through 1,000 and 1,100 Hz is nearly flat, 0.34 samples.</desc><defs><marker id="group-delay-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="group-delay-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="group-delay-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="group-delay-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="450"/><g ><line class="k-axis" x1="46" y1="320" x2="326" y2="320"/><text class="k-tick" x="38" y="324" text-anchor="end">0°</text><text class="k-tick" x="38" y="244" text-anchor="end">20°</text><text class="k-tick" x="38" y="164" text-anchor="end">40°</text><text class="k-tick" x="38" y="84" text-anchor="end">60°</text><text class="k-tick" x="46" y="338" text-anchor="middle">1,000</text><text class="k-tick" x="139.33" y="338" text-anchor="middle">1,300</text><text class="k-tick" x="232.67" y="338" text-anchor="middle">1,600</text><text class="k-tick" x="326" y="338" text-anchor="middle">1,900 Hz</text><text class="k-tick" x="46" y="30" text-anchor="start">phase through the notch</text></g><g data-motion-item="" data-step="1" aria-label="the notch phase curve from 1,000 to 1,900 Hz"><path class="l-ink" d="M46 283.39L46.93 283.22L47.87 283.05L48.8 282.88L49.73 282.71L50.67 282.53L51.6 282.36L52.53 282.19L53.47 282.01L54.4 281.83L55.33 281.66L56.27 281.48L57.2 281.3L58.13 281.12L59.07 280.94L60 280.76L60.93 280.58L61.87 280.39L62.8 280.21L63.73 280.03L64.67 279.84L65.6 279.65L66.53 279.47L67.47 279.28L68.4 279.09L69.33 278.9L70.27 278.71L71.2 278.51L72.13 278.32L73.07 278.13L74 277.93L74.93 277.73L75.87 277.54L76.8 277.34L77.73 277.14L78.67 276.94L79.6 276.74L80.53 276.53L81.47 276.33L82.4 276.13L83.33 275.92L84.27 275.71L85.2 275.51L86.13 275.3L87.07 275.09L88 274.88L88.93 274.66L89.87 274.45L90.8 274.23L91.73 274.02L92.67 273.8L93.6 273.58L94.53 273.36L95.47 273.14L96.4 272.92L97.33 272.7L98.27 272.47L99.2 272.24L100.13 272.02L101.07 271.79L102 271.56L102.93 271.33L103.87 271.09L104.8 270.86L105.73 270.63L106.67 270.39L107.6 270.15L108.53 269.91L109.47 269.67L110.4 269.43L111.33 269.18L112.27 268.94L113.2 268.69L114.13 268.44L115.07 268.19L116 267.94L116.93 267.69L117.87 267.43L118.8 267.17L119.73 266.92L120.67 266.66L121.6 266.39L122.53 266.13L123.47 265.87L124.4 265.6L125.33 265.33L126.27 265.06L127.2 264.79L128.13 264.51L129.07 264.24L130 263.96L130.93 263.68L131.87 263.4L132.8 263.12L133.73 262.83L134.67 262.55L135.6 262.26L136.53 261.97L137.47 261.67L138.4 261.38L139.33 261.08L140.27 260.78L141.2 260.48L142.13 260.18L143.07 259.87L144 259.56L144.93 259.25L145.87 258.94L146.8 258.63L147.73 258.31L148.67 257.99L149.6 257.67L150.53 257.35L151.47 257.02L152.4 256.69L153.33 256.36L154.27 256.03L155.2 255.69L156.13 255.35L157.07 255.01L158 254.67L158.93 254.32L159.87 253.97L160.8 253.62L161.73 253.27L162.67 252.91L163.6 252.55L164.53 252.18L165.47 251.82L166.4 251.45L167.33 251.08L168.27 250.7L169.2 250.32L170.13 249.94L171.07 249.56L172 249.17L172.93 248.78L173.87 248.39L174.8 247.99L175.73 247.59L176.67 247.19L177.6 246.78L178.53 246.37L179.47 245.95L180.4 245.54L181.33 245.11L182.27 244.69L183.2 244.26L184.13 243.83L185.07 243.39L186 242.95L186.93 242.51L187.87 242.06L188.8 241.61L189.73 241.15L190.67 240.69L191.6 240.22L192.53 239.75L193.47 239.28L194.4 238.8L195.33 238.32L196.27 237.83L197.2 237.34L198.13 236.85L199.07 236.35L200 235.84L200.93 235.33L201.87 234.82L202.8 234.3L203.73 233.77L204.67 233.24L205.6 232.7L206.53 232.16L207.47 231.62L208.4 231.07L209.33 230.51L210.27 229.95L211.2 229.38L212.13 228.8L213.07 228.22L214 227.64L214.93 227.04L215.87 226.45L216.8 225.84L217.73 225.23L218.67 224.61L219.6 223.99L220.53 223.36L221.47 222.72L222.4 222.08L223.33 221.43L224.27 220.77L225.2 220.1L226.13 219.43L227.07 218.75L228 218.06L228.93 217.37L229.87 216.66L230.8 215.95L231.73 215.23L232.67 214.51L233.6 213.77L234.53 213.03L235.47 212.27L236.4 211.51L237.33 210.74L238.27 209.96L239.2 209.18L240.13 208.38L241.07 207.57L242 206.76L242.93 205.93L243.87 205.09L244.8 204.25L245.73 203.39L246.67 202.52L247.6 201.65L248.53 200.76L249.47 199.86L250.4 198.95L251.33 198.03L252.27 197.09L253.2 196.15L254.13 195.19L255.07 194.22L256 193.24L256.93 192.24L257.87 191.24L258.8 190.22L259.73 189.18L260.67 188.14L261.6 187.08L262.53 186L263.47 184.91L264.4 183.81L265.33 182.69L266.27 181.56L267.2 180.41L268.13 179.25L269.07 178.07L270 176.87L270.93 175.66L271.87 174.43L272.8 173.19L273.73 171.93L274.67 170.65L275.6 169.35L276.53 168.04L277.47 166.7L278.4 165.35L279.33 163.98L280.27 162.59L281.2 161.18L282.13 159.75L283.07 158.3L284 156.83L284.93 155.34L285.87 153.83L286.8 152.3L287.73 150.74L288.67 149.16L289.6 147.56L290.53 145.94L291.47 144.29L292.4 142.62L293.33 140.93L294.27 139.21L295.2 137.47L296.13 135.7L297.07 133.9L298 132.09L298.93 130.24L299.87 128.37L300.8 126.47L301.73 124.55L302.67 122.59L303.6 120.61L304.53 118.6L305.47 116.57L306.4 114.5L307.33 112.41L308.27 110.28L309.2 108.13L310.13 105.95L311.07 103.74L312 101.49L312.93 99.22L313.87 96.92L314.8 94.58L315.73 92.22L316.67 89.82L317.6 87.39L318.53 84.94L319.47 82.45L320.4 79.93L321.33 77.37L322.27 74.79L323.2 72.18L324.13 69.53L325.07 66.85L326 64.15" fill="none"/></g><g data-motion-item="" data-step="2" aria-label="a straight line through the points at 1,700 and 1,800 Hz: 11.6 degrees over 4.5 degrees is 2.58 samples"><g class="k-ghost k-a-flash" style="--d:1;--len:1" aria-hidden="true"><path class="l-soft" d="M220.22 249.64L273.11 170.6L326 91.55" fill="none"/></g><g class="k-a-in" style="--d:1"><circle class="l-m-hollow" cx="263.78" cy="184.55" r="4.5"/><circle class="l-m-hollow" cx="294.89" cy="138.05" r="4.5"/><g ><rect class="k-mask" x="52.68" y="133" width="208.88" height="14"/><text class="k-label" x="257.56" y="144" text-anchor="end">11.6° ÷ 4.5° = 2.58 samples</text></g></g></g><g data-motion-item="" data-step="3" aria-label="the two tones slide together and the line tilts"><g class="k-ghost k-a-flash" style="--d:2;--len:0.8" aria-hidden="true"><path class="l-soft" d="M226.44 241.53L276.22 167.64L326 93.74" fill="none"/></g><g class="k-ghost k-a-flash" style="--d:2.7;--len:0.8" aria-hidden="true"><path class="l-soft" d="M231.11 235.12L276.22 168.35L321.33 101.57" fill="none"/></g><g class="k-ghost k-a-flash" style="--d:3.4;--len:0.8" aria-hidden="true"><path class="l-soft" d="M234.22 230.68L276.22 168.56L318.22 106.44" fill="none"/></g></g><g data-motion-item="" data-step="4" aria-label="it settles onto the curve at 1,750 Hz: steepness 2.56 samples, the group delay"><g class="k-a-in" style="--d:4.2"><path class="l-total" d="M229.56 237.6L277.78 166.28L326 94.97" fill="none"/><path class="l-m-total" d="M279.33 158.48L284.83 163.98L279.33 169.48L273.83 163.98Z"/><g ><rect class="k-mask" x="162.65" y="261" width="164.24" height="14"/><text class="k-num-accent" x="322.89" y="272" text-anchor="end">2.56 samples at 1,750</text></g></g></g><g data-motion-item="" data-step="5" aria-label="near 1,000 Hz the line through 1,000 and 1,100 Hz is almost flat: 1.5 over 4.5 is 0.34 samples"><g class="k-a-in" style="--d:5.2"><path class="l-thin" d="M46 283.39L67.78 279.11L89.56 274.82" fill="none"/><rect class="l-m-ink" x="42.5" y="279.89" width="7" height="7"/><rect class="l-m-ink" x="73.61" y="273.77" width="7" height="7"/><g ><rect class="k-mask" x="46.67" y="297" width="208.88" height="14"/><text class="k-label" x="50.67" y="308" text-anchor="start">1.53° ÷ 4.5° = 0.34 samples</text></g></g></g><text class="k-note" x="20" y="404" text-anchor="start">steeper phase: later burst</text><text class="k-tick" x="20" y="424" text-anchor="start">4.5°: the extra turn per sample</text><text class="k-tick" x="20" y="440" text-anchor="start">of a tone 100 Hz higher</text></svg></div>
+</div>
+</body>
+</html>

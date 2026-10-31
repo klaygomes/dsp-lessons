@@ -1,0 +1,122 @@
+{
+  "spectrum-screen": {
+    "title": "The engineers' spectrum screen",
+    "caption": "A faint 5 on the rural line. The screen draws every bin, so your eye finds the two bumps. The detector reads only the eight keypad bins, and both sit under the 12% bar.",
+    "animated": false,
+    "phone": true
+  },
+  "leakage": {
+    "title": "One tone, five bins",
+    "caption": "On a bin, the tone fills one bin. Halfway between bins it spreads into every bin. The hatched bars are leakage: matches where no tone is anywhere near.",
+    "animated": true,
+    "phone": true
+  },
+  "mid-turn": {
+    "title": "Whole turn, half a turn",
+    "caption": "The 1,000 Hz dot ends the block back where it started. The 1,500 Hz dot stops half a turn short, so the next sample (the hollow dot) jumps from 1.00 to −1.00.",
+    "animated": true,
+    "phone": true
+  },
+  "two-arrows": {
+    "title": "Two arrows make one tone",
+    "caption": "Each arrow is half size. The mirror arrow is always the counter-clockwise arrow reflected across the horizontal line, so the up-down parts cancel and the left-right parts add to the sample.",
+    "animated": true,
+    "phone": true
+  },
+  "leftover": {
+    "title": "The leftover arrow",
+    "caption": "Left: the leftover arrow turns 22.5° per sample, half a turn in all, and the chain reaches 64% as far as a full pile. Right: 45° per sample, one whole turn, and the chain closes.",
+    "animated": true,
+    "phone": true
+  },
+  "two-chains": {
+    "title": "Two chains per bin",
+    "caption": "The mirror chain can point anywhere on the small circle, depending on where the tone starts. From our start it points 112.5° away and pulls the match down to 60%.",
+    "animated": true,
+    "phone": true
+  },
+  "main-lobe": {
+    "title": "The main lobe",
+    "caption": "This is lesson 10's central hump, now named: the main lobe. It falls to zero one bin out on each side, where the leftover arrow makes one whole turn.",
+    "animated": false,
+    "phone": true
+  },
+  "side-lobes": {
+    "title": "The side lobes",
+    "caption": "Beyond the main lobe the curve rises into side lobes that shrink slowly. The 7's bin and the 1's bin both sit on side lobes of the 770 Hz tone.",
+    "animated": false,
+    "phone": true
+  },
+  "keypad-leak": {
+    "title": "A loud 770 Hz across the row bins",
+    "caption": "The 7's bin (843.75 Hz) sits on the second side lobe of the plain curve and catches 13%, over the 12% bar. The dashed Hann curve leaves it 3%.",
+    "animated": false,
+    "phone": true
+  },
+  "phase-wobble": {
+    "title": "Why only sometimes",
+    "caption": "The long chain is fixed. The small chains move with the starts, so the end lands somewhere in a small cloud. Filled dots land past the bar: those presses are thrown out.",
+    "animated": true,
+    "phone": true
+  },
+  "bar-seesaw": {
+    "title": "No bar fits",
+    "caption": "The two ranges overlap. Hearing the rural keys needs a bar below 7.7%; keeping out the leak needs one above 14.6%.",
+    "animated": true,
+    "phone": true
+  },
+  "chain-gap": {
+    "title": "The gap is the top of the fraction",
+    "caption": "The arrows of a chain all turn by the same angle, so they run around one circle. Measured with that circle's radius as 1, the gap is the top of the fraction and one step is the bottom.",
+    "animated": false,
+    "phone": true
+  },
+  "chord": {
+    "title": "The chord",
+    "caption": "The line from the centre to the chord's midpoint splits the angle x in half and the chord in two halves, each sin(x/2) long.",
+    "animated": false,
+    "phone": true
+  },
+  "hann-taper": {
+    "title": "Taper the edges",
+    "caption": "The window shrinks the arrows near both ends of the block. The plain chain's full-length end arrows leave a wide gap; the Hann chain's short ones leave it nearly closed.",
+    "animated": true,
+    "phone": true
+  },
+  "effective-length": {
+    "title": "Half the block does the work",
+    "caption": "A Hann-windowed block acts roughly like one half as long, and its main lobe is twice as wide.",
+    "animated": false,
+    "phone": true
+  },
+  "hann-three-curves": {
+    "title": "Three plain chains make the Hann curve",
+    "caption": "Added as arrows, then rescaled so a tone on its bin reads 100%. Each plain curve is zero at every whole bin but its own centre, so the sum is zero everywhere except at −1, 0 and +1 bins.",
+    "animated": false,
+    "phone": true
+  },
+  "window-trade": {
+    "title": "The window's trade",
+    "caption": "At 128 samples the Hann main lobe swallows the next row's tone. At 256 samples it stops short of it.",
+    "animated": false,
+    "phone": true
+  },
+  "lobe-vs-length": {
+    "title": "Why 256 works",
+    "caption": "Any block between the crossing at 219 samples and the 40 ms limit at 320 keeps the next row outside the main lobe. 256 sits inside that range.",
+    "animated": false,
+    "phone": true
+  },
+  "zero-padding": {
+    "title": "Zero padding",
+    "caption": "The padded bins fall on exactly the same curve. A bin now sits on the tone, but the leak at 843.75 Hz is unchanged.",
+    "animated": true,
+    "phone": true
+  },
+  "padding-myth": {
+    "title": "Padding does not narrow the hump",
+    "caption": "More dots, same hump. The 770 Hz tone is still inside it at 38%.",
+    "animated": false,
+    "phone": true
+  }
+}

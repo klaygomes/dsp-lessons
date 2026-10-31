@@ -1,0 +1,31 @@
+<div class="lab" id="lab">
+  <h3>Try it: one burst through the notch</h3>
+  <p class="note">A long test burst, 240 samples (30 ms), so its tones crowd close around one tone. The top plot shows the whole burst; the bottom one zooms in on its middle.</p>
+  <div id="a1-ask"></div>
+  <div id="a1-ask2"></div>
+  <canvas id="a1-stage" class="stage" role="img" aria-label="A burst before and after the notch."></canvas>
+  <div class="key">
+    <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-ref"/><circle cx="15" cy="6" r="3.5" class="mk-soft"/></svg>burst sent</span>
+    <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-ink"/><circle cx="15" cy="6" r="3.5" class="mk-inkdot"/></svg>burst received</span>
+    <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="15" y1="0" x2="15" y2="12" class="mk-total"/></svg>where the burst’s shape arrived</span>
+    <span><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="15" y1="0" x2="15" y2="12" class="mk-soft-line"/></svg>where a wave crest arrived</span>
+    <span id="a1-key-pin" hidden><svg class="mk" viewBox="0 0 30 12" aria-hidden="true"><line x1="0" y1="6" x2="30" y2="6" class="mk-pin"/></svg>pinned burst received</span>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" id="a1-result"></div>
+    <p id="a1-why"></p>
+    <p class="compare" id="a1-compare" hidden></p>
+  </div>
+  <div class="control">
+    <label for="a1-tone">Tone: <output id="a1-tone-out">1,650 Hz</output></label>
+    <input id="a1-tone" type="range" min="1000" max="1900" step="10" value="1650" disabled>
+  </div>
+  <div class="row">
+    <button type="button" id="a1-send" disabled>Send burst</button>
+    <button type="button" id="a1-play">Play</button>
+    <button type="button" id="a1-notch" class="k-toggle" aria-pressed="true">Notch on</button>
+    <button type="button" id="a1-pin" disabled>Pin this</button>
+    <button type="button" id="a1-reset" class="quiet">Reset</button>
+  </div>
+  <p class="k-now" id="a1-now" aria-live="polite">Not playing.</p>
+</div>

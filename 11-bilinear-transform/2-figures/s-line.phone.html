@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climbing the analog ruler</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-s-line-style">.k-fig .b11-ex { stroke: var(--ink); stroke-width: 2.2; fill: none; } .k-fig .b11-cp { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 9 5; fill: none; } .k-fig .b11-pw { stroke: var(--accent); stroke-width: 2.8; stroke-dasharray: 0.5 5.5; stroke-linecap: round; fill: none; } .k-fig .b11-m-ex { fill: var(--ink); stroke: var(--paper); stroke-width: 1; } .k-fig .b11-m-cp { fill: none; stroke: var(--ink); stroke-width: 1.8; } .k-fig .b11-m-pw { fill: var(--accent); stroke: var(--paper); stroke-width: 1; } .k-fig .b11-ref { stroke: var(--ink-soft); stroke-width: 1; fill: none; } .k-fig .b11-wall { stroke: var(--ink-soft); stroke-width: 3; } .k-fig .b11-shade { fill: var(--paper-2); } .k-fig .b11-stretch { fill: var(--accent-soft); } .k-fig .b11-rim { stroke: var(--ink); stroke-width: 1.5; fill: none; } .k-fig .b11-lap { stroke: var(--ink); stroke-width: 2; fill: none; } .k-fig .b11-tick { stroke: var(--ink); stroke-width: 1.5; } .k-fig .b11-tick-accent { stroke: var(--accent); stroke-width: 2.5; } .k-fig .b11-pole { stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; } .k-fig .b11-pole-old { stroke: var(--ink-soft); stroke-width: 1.6; stroke-linecap: round; } .k-fig .b11-zero { fill: var(--paper); stroke: var(--ink); stroke-width: 2; } .k-fig .b11-spoke-cp { stroke: var(--ink-soft); stroke-width: 1.4; stroke-dasharray: 9 5; } .k-fig .b11-spoke-pw { stroke: var(--accent); stroke-width: 2.4; stroke-dasharray: 0.5 5; stroke-linecap: round; } .k-fig .b11-vec { stroke: var(--ink); stroke-width: 2; } .k-fig .b11-vec-accent { stroke: var(--accent); stroke-width: 2.6; } .k-fig .b11-cell { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; } .k-fig .b11-wave { stroke: var(--ink); stroke-width: 2; fill: none; } .k-fig .b11-head { fill: var(--ink-soft); } .k-fig .b11-head-ink { fill: var(--ink); }</style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 11 · the bilinear transform</p>
+<h1>Climbing the analog ruler</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-s-line-phone" viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s-line-phone-title s-line-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="3"><title id="s-line-phone-title">Climbing the analog ruler</title><desc id="s-line-phone-desc">The analog ruler drawn as the line s = j2πF; a dot climbs it while the size of H traces the gain curve 1 over the root of 1 + (F/3400)^4. At 3,400 Hz the bottom of H is the arrow j√2, length 1.41, so the gain is 71%.</desc><defs><marker id="s-line-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="s-line-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="s-line-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="s-line-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="560"/><text class="k-name" x="84" y="30" text-anchor="middle">the analog ruler</text><text class="k-num" x="84" y="50" text-anchor="middle">s = j 2πF</text><line class="b11-tick" x1="84" y1="306" x2="84" y2="64" marker-end="url(#s-line-phone-arrow)"/><g ><line class="k-axis" x1="79" y1="300" x2="84" y2="300"/><text class="k-tick" x="75" y="304" text-anchor="end">0 Hz</text></g>,<g ><line class="k-axis" x1="79" y1="227.24" x2="84" y2="227.24"/><text class="k-tick" x="75" y="231.24" text-anchor="end">3,400 Hz</text></g>,<g ><line class="k-axis" x1="79" y1="86" x2="84" y2="86"/><text class="k-tick" x="75" y="90" text-anchor="end">10,000 Hz</text></g><line class="k-axis" x1="150" y1="300" x2="150" y2="70"/><line class="k-axis" x1="150" y1="300" x2="326" y2="300"/><g ><line class="k-axis" x1="150" y1="300" x2="150" y2="305"/><text class="k-tick" x="150" y="319" text-anchor="middle">0%</text></g>,<g ><line class="k-axis" x1="238" y1="300" x2="238" y2="305"/><text class="k-tick" x="238" y="319" text-anchor="middle">50%</text></g>,<g ><line class="k-axis" x1="326" y1="300" x2="326" y2="305"/><text class="k-tick" x="326" y="319" text-anchor="middle">100%</text></g><text class="k-tick" x="326" y="338" text-anchor="end">size of H</text><text class="k-name" x="160" y="30" text-anchor="start">size of H</text><line class="b11-ref" x1="84" y1="227.24" x2="274.45" y2="227.24"/><g data-motion-item="" data-step="1" aria-label="a dot climbs the ruler from 0 Hz to 3,400 Hz while the gain curve traces out"><g class="k-a-move" style="--dy:72.76px;--d:0;--len:2;animation-timing-function:linear"><circle class="k-dot" cx="84" cy="227.24" r="6"/></g><path class="b11-ex k-a-draw" style="--d:0;--len:2;animation-timing-function:linear" d="M326 300L326 299.39L326 298.79L326 298.18L326 297.57L326 296.97L326 296.36L326 295.76L326 295.15L326 294.54L326 293.94L325.99 293.33L325.99 292.72L325.99 292.12L325.98 291.51L325.98 290.9L325.97 290.3L325.96 289.69L325.96 289.09L325.94 288.48L325.93 287.87L325.92 287.27L325.9 286.66L325.88 286.05L325.86 285.45L325.83 284.84L325.81 284.24L325.77 283.63L325.74 283.02L325.7 282.42L325.66 281.81L325.61 281.2L325.56 280.6L325.5 279.99L325.44 279.38L325.37 278.78L325.29 278.17L325.21 277.57L325.12 276.96L325.03 276.35L324.92 275.75L324.81 275.14L324.69 274.53L324.57 273.93L324.43 273.32L324.29 272.71L324.13 272.11L323.96 271.5L323.79 270.9L323.6 270.29L323.41 269.68L323.2 269.08L322.98 268.47L322.74 267.86L322.5 267.26L322.24 266.65L321.97 266.05L321.68 265.44L321.39 264.83L321.07 264.23L320.75 263.62L320.4 263.01L320.05 262.41L319.67 261.8L319.28 261.19L318.88 260.59L318.46 259.98L318.02 259.38L317.57 258.77L317.1 258.16L316.62 257.56L316.12 256.95L315.6 256.34L315.06 255.74L314.51 255.13L313.94 254.53L313.35 253.92L312.74 253.31L312.12 252.71L311.49 252.1L310.83 251.49L310.16 250.89L309.47 250.28L308.77 249.67L308.05 249.07L307.31 248.46L306.56 247.86L305.79 247.25L305.01 246.64L304.21 246.04L303.4 245.43L302.57 244.82L301.73 244.22L300.88 243.61L300.01 243L299.13 242.4L298.24 241.79L297.34 241.19L296.42 240.58L295.5 239.97L294.56 239.37L293.62 238.76L292.66 238.15L291.7 237.55L290.72 236.94L289.74 236.34L288.76 235.73L287.76 235.12L286.76 234.52L285.76 233.91L284.75 233.3L283.73 232.7L282.71 232.09L281.68 231.48L280.66 230.88L279.63 230.27L278.59 229.67L277.56 229.06L276.52 228.45L275.49 227.85L274.45 227.24" fill="none" pathLength="1"/></g><g data-motion-item="" data-step="2" aria-label="the rest of the gain curve, up to 10,000 Hz"><path class="b11-ex k-a-draw" style="--d:2;--len:1.6" d="M274.45 227.24L272.44 226.06L270.43 224.89L268.42 223.71L266.43 222.53L264.45 221.36L262.48 220.18L260.52 219L258.59 217.82L256.67 216.65L254.78 215.47L252.9 214.29L251.06 213.12L249.23 211.94L247.44 210.76L245.67 209.59L243.93 208.41L242.22 207.23L240.53 206.05L238.88 204.88L237.26 203.7L235.66 202.52L234.1 201.35L232.56 200.17L231.06 198.99L229.59 197.82L228.14 196.64L226.73 195.46L225.35 194.28L223.99 193.11L222.66 191.93L221.36 190.75L220.09 189.58L218.85 188.4L217.63 187.22L216.44 186.05L215.28 184.87L214.14 183.69L213.03 182.51L211.94 181.34L210.87 180.16L209.83 178.98L208.81 177.81L207.82 176.63L206.85 175.45L205.89 174.27L204.96 173.1L204.05 171.92L203.16 170.74L202.29 169.57L201.44 168.39L200.61 167.21L199.8 166.04L199 164.86L198.22 163.68L197.46 162.51L196.72 161.33L195.99 160.15L195.27 158.97L194.57 157.8L193.89 156.62L193.22 155.44L192.57 154.27L191.93 153.09L191.3 151.91L190.69 150.73L190.09 149.56L189.5 148.38L188.92 147.2L188.36 146.03L187.8 144.85L187.26 143.67L186.73 142.5L186.21 141.32L185.7 140.14L185.2 138.97L184.71 137.79L184.24 136.61L183.77 135.43L183.3 134.26L182.85 133.08L182.41 131.9L181.98 130.73L181.55 129.55L181.13 128.37L180.72 127.2L180.32 126.02L179.93 124.84L179.54 123.66L179.16 122.49L178.79 121.31L178.42 120.13L178.06 118.96L177.71 117.78L177.36 116.6L177.03 115.42L176.69 114.25L176.36 113.07L176.04 111.89L175.73 110.72L175.42 109.54L175.11 108.36L174.81 107.19L174.52 106.01L174.23 104.83L173.94 103.66L173.66 102.48L173.39 101.3L173.12 100.12L172.86 98.95L172.59 97.77L172.34 96.59L172.09 95.42L171.84 94.24L171.59 93.06L171.35 91.89L171.12 90.71L170.89 89.53L170.66 88.35L170.43 87.18L170.21 86" fill="none" pathLength="1"/></g><circle class="b11-m-ex" cx="274.45" cy="227.24" r="4.5"/><text class="k-num" x="284.45" y="219.24" text-anchor="start">71%</text><g data-motion-item="" data-step="3" aria-label="at 3,400 Hz the bottom of H is an arrow pointing straight up, length 1.41, so the gain is 71%"><g class="k-a-in" style="--d:3.6;--len:0.6"><line class="k-axis" x1="60" y1="470" x2="140.4" y2="470"/><line class="k-axis" x1="70" y1="480" x2="70" y2="393"/><line class="b11-vec-accent" x1="70" y1="470" x2="70" y2="407.77" marker-end="url(#s-line-phone-arrow-accent)"/><text class="k-num-accent" x="80" y="411.77" text-anchor="start">j√2</text></g></g><g ><text class="k-label" x="20" y="362" text-anchor="start">the bottom of H at 3,400 Hz (u = 1):</text><text class="k-num" x="160" y="420" text-anchor="start">(1 − 1) + j√2 = j√2</text><text class="k-num" x="160" y="442" text-anchor="start">length 1.41, so</text><text class="k-num" x="160" y="464" text-anchor="start">gain 1 ÷ 1.41 = 71%</text></g></svg></div>
+</div>
+</body>
+</html>

@@ -2,19 +2,19 @@
 __pycache__/
 
 read-aloud*/
-**/4-video/vo*/
-**/4-video/voice-variants/
-**/4-video/stills*/
-**/4-video/look/
-**/4-video/film/runtime/
-**/4-video/audio/
-**/4-video/*.pt
-**/4-video/mix.wav
-**/4-video/draft.mp4*
-**/4-video/final.mp4.events.json
-**/4-video/schedule.txt
-**/4-video/*-log.txt
-**/4-video/r*.aiff
+**/4-video*/vo*/
+**/4-video*/voice-variants/
+**/4-video*/stills*/
+**/4-video*/look/
+**/4-video*/film/runtime/
+**/4-video*/audio/
+**/4-video*/*.pt
+**/4-video*/mix.wav
+**/4-video*/draft.mp4*
+**/4-video*/final.mp4.events.json
+**/4-video*/schedule.txt
+**/4-video*/*-log.txt
+**/4-video*/r*.aiff
 
 **/2-machine/shots/
 **/2-machine/machine*.html
@@ -34,3 +34,4 @@ read-aloud*/
 **/3-page.src.html
 **/fold.svg.txt
 **/tokens.css
+*.log

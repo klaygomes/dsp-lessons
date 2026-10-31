@@ -1,0 +1,59 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Fax That Smears</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lesson.css">
+<style>
+<!--KIT:fig.css-->
+<!--KIT:page.css-->
+p.rule-box { max-width: none; background: var(--paper-2); border-radius: var(--radius); padding: 14px 18px; font-size: 16px; }
+.key svg.mk { width: 30px; height: 12px; vertical-align: middle; margin-right: 6px; overflow: visible; }
+.mk .mk-ref { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.mk .mk-soft { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.mk .mk-ink { stroke: var(--ink); stroke-width: 2; }
+.mk .mk-inkdot { fill: var(--ink); }
+.mk .mk-total { stroke: var(--accent); stroke-width: 2.5; }
+.mk .mk-totaldot { fill: var(--accent); }
+.mk .mk-soft-line { stroke: var(--ink-soft); stroke-width: 1.5; }
+.mk .mk-pin { stroke: var(--input); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.mk .mk-ap { stroke: var(--input); stroke-width: 2; }
+.mk .mk-apdot { fill: var(--input); }
+.mk .mk-window { fill: color-mix(in srgb, var(--ink-soft) 18%, transparent); stroke: var(--ink-soft); stroke-width: 1.2; }
+.lab canvas.stage { touch-action: none; }
+.a2-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.a2-side .fax { max-width: 300px; }
+.a2-side pre.code { font-size: 12.5px; }
+.fax { margin: 0; gap: 4px; }
+.fax-page { width: 100%; display: block; border: 1px solid var(--rule); border-radius: 4px; }
+.fax figcaption { font-size: 13px; }
+.act2 { display: grid; }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="topic">Discrete-Time Signal Processing · lesson 8 · chapter 5</p>
+    <h1>The Fax That Smears</h1>
+    <p class="question">Every tone of the fax gets through, loud enough. So why do its bursts come out shuffled in time, sliding into one another?</p>
+  </header>
+
+<!--BODY-->
+
+  <footer>
+    <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 5.</span>
+    <span>Next lesson: finite precision, where three notches that work on the laptop hum and blow up on the 8-bit chip.</span>
+    <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
+  </footer>
+</div>
+
+<script>
+<!--KIT:lab.js-->
+</script>
+<script>
+<!--KIT:page.js-->
+</script>
+<script>
+<!--FILE:lab.js-->
+</script>

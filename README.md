@@ -2,21 +2,18 @@
 
 A series of story-driven lessons on Oppenheim and Schafer's *Discrete-Time Signal Processing* (Prentice Hall, 1989). You are building a digital phone line. Every lesson opens on a bug your customers can hear, and ends when you fix it yourself in an interactive lab.
 
-| # | Lesson | Bug | Page | Video |
-|---|---|---|---|---|
-| 1 | Sampling and aliasing | a 5,000 Hz whistle comes out at 3,000 Hz | [3-page.html](01-sampling-aliasing/3-page.html) | [final.mp4](01-sampling-aliasing/4-video/final.mp4) |
-| 2 | Zeros and poles | every call carries a whine | [3-page.html](02-zeros-and-poles/3-page/3-page.html) | [final.mp4](02-zeros-and-poles/4-video/final.mp4) |
+Open [index.html](index.html) in a browser for the course: sixteen lessons in the book's order, each linked once its page is ready. The pages are plain HTML files with `lesson.css` beside them; they need no server.
 
 Each lesson folder holds four representations of the same idea:
 
 - `1-prose.md` and `1-sheet.md`: the lesson text, and the teacher's sheet (objective, terms, misconception, numbers).
-- `2-diagram-*.html`, `2-machine/`: the figures. The test bench in lesson 2 is an interactive isometric figure.
+- `2-figures/`: the figures, one per concept, built from `figures.mjs` with the shared kit in `_kit/`.
 - `3-page/`: the interactive page, built from the prose (`python3 build.py`).
 - `4-video/`: the storyboard, the narration script and the film.
 
 `series.md` holds the story world, the glossary every lesson shares, and the next bug.
 
-Lesson 1 was made with an earlier version of the process and will be rebuilt.
+`_kit/` holds the shared figure, page and lab code. `python3 _kit/index.py` rebuilds `index.html` from `series.md`.
 
 ## How they are made
 

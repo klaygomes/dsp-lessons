@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What the phone stores</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-sampler-style"></style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 4 · sampling and aliasing</p>
+<h1>What the phone stores</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-sampler-phone" viewBox="0 0 360 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sampler-phone-title sampler-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="4"><title id="sampler-phone-title">What the phone stores</title><desc id="sampler-phone-desc">A smooth 1,000 Hz true tone is sampled every 125 microseconds; between samples the phone looks away, and the list it stores is 1, 0.71, 0, −0.71, −1, −0.71, 0, 0.71, 1.</desc><defs><marker id="sampler-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="sampler-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="sampler-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="sampler-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="290"/><text class="k-note" style="font-size:14px" x="180" y="24" text-anchor="middle">a 1,000 Hz true tone; shaded: the phone looks away</text><g data-motion-item="" data-step="2" aria-label="a sample every 125 microseconds; in between, the phone looks away"><g class="k-a-in" style="--d:2;--len:0.8"><rect style="fill:var(--rule);opacity:0.5" x="49.18" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="84.64" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="120.09" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="155.55" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="191" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="226.45" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="261.91" y="64" width="25.45" height="140"/><rect style="fill:var(--rule);opacity:0.5" x="297.36" y="64" width="25.45" height="140"/><line class="k-axis" x1="44.18" y1="52" x2="79.64" y2="52"/><line class="k-axis" x1="44.18" y1="47" x2="44.18" y2="57"/><line class="k-axis" x1="79.64" y1="47" x2="79.64" y2="57"/><text class="k-tick" x="87.64" y="56" text-anchor="start">125 µs</text></g></g><g ><line class="k-axis" x1="30" y1="134" x2="342" y2="134"/><text class="k-tick" x="22" y="79.67" text-anchor="end">1</text><text class="k-tick" x="22" y="196.33" text-anchor="end">−1</text><text class="k-tick" x="44.18" y="222" text-anchor="middle">n = 0</text><text class="k-tick" x="79.64" y="222" text-anchor="middle">1</text><text class="k-tick" x="115.09" y="222" text-anchor="middle">2</text><text class="k-tick" x="150.55" y="222" text-anchor="middle">3</text><text class="k-tick" x="186" y="222" text-anchor="middle">4</text><text class="k-tick" x="221.45" y="222" text-anchor="middle">5</text><text class="k-tick" x="256.91" y="222" text-anchor="middle">6</text><text class="k-tick" x="292.36" y="222" text-anchor="middle">7</text><text class="k-tick" x="327.82" y="222" text-anchor="middle">8</text></g><g data-motion-item="" data-step="1" aria-label="the true tone, a smooth 1,000 Hz wave"><g ><path class="k-curve-soft k-a-in" style="--d:0;--len:1.6" d="M30 78.52L30.98 78.15L31.95 77.8L32.92 77.47L33.9 77.17L34.88 76.9L35.85 76.66L36.83 76.44L37.8 76.25L38.78 76.08L39.75 75.95L40.73 75.84L41.7 75.75L42.68 75.7L43.65 75.67L44.63 75.67L45.6 75.7L46.58 75.75L47.55 75.83L48.53 75.94L49.5 76.07L50.48 76.23L51.45 76.42L52.43 76.64L53.4 76.88L54.38 77.15L55.35 77.44L56.33 77.76L57.3 78.11L58.28 78.49L59.25 78.89L60.23 79.31L61.2 79.76L62.18 80.24L63.15 80.74L64.13 81.27L65.1 81.82L66.08 82.39L67.05 82.99L68.03 83.62L69 84.26L69.97 84.93L70.95 85.63L71.93 86.34L72.9 87.08L73.88 87.84L74.85 88.62L75.82 89.42L76.8 90.24L77.78 91.09L78.75 91.95L79.72 92.83L80.7 93.74L81.68 94.66L82.65 95.6L83.63 96.55L84.6 97.53L85.57 98.52L86.55 99.53L87.53 100.55L88.5 101.59L89.48 102.65L90.45 103.72L91.43 104.8L92.4 105.9L93.38 107.01L94.35 108.13L95.32 109.27L96.3 110.41L97.28 111.57L98.25 112.74L99.23 113.92L100.2 115.1L101.18 116.3L102.15 117.51L103.12 118.72L104.1 119.94L105.08 121.16L106.05 122.4L107.03 123.63L108 124.87L108.98 126.12L109.95 127.37L110.93 128.62L111.9 129.88L112.88 131.14L113.85 132.4L114.82 133.66L115.8 134.92L116.78 136.18L117.75 137.43L118.73 138.69L119.7 139.95L120.67 141.2L121.65 142.45L122.63 143.69L123.6 144.93L124.57 146.17L125.55 147.39L126.53 148.62L127.5 149.83L128.48 151.04L129.45 152.24L130.43 153.44L131.4 154.62L132.38 155.79L133.35 156.96L134.32 158.11L135.3 159.25L136.27 160.38L137.25 161.5L138.23 162.6L139.2 163.69L140.18 164.77L141.15 165.83L142.13 166.88L143.1 167.92L144.07 168.93L145.05 169.93L146.02 170.92L147 171.88L147.98 172.83L148.95 173.76L149.93 174.68L150.9 175.57L151.88 176.44L152.85 177.3L153.83 178.13L154.8 178.95L155.78 179.74L156.75 180.51L157.73 181.26L158.7 181.99L159.67 182.69L160.65 183.37L161.62 184.03L162.6 184.67L163.58 185.28L164.55 185.87L165.53 186.44L166.5 186.98L167.48 187.49L168.45 187.98L169.43 188.45L170.4 188.88L171.37 189.3L172.35 189.69L173.33 190.05L174.3 190.39L175.27 190.69L176.25 190.98L177.23 191.23L178.2 191.46L179.18 191.67L180.15 191.84L181.13 191.99L182.1 192.12L183.08 192.21L184.05 192.28L185.03 192.32L186 192.33L186.97 192.32L187.95 192.28L188.93 192.21L189.9 192.12L190.88 191.99L191.85 191.84L192.83 191.67L193.8 191.46L194.77 191.23L195.75 190.98L196.73 190.69L197.7 190.39L198.68 190.05L199.65 189.69L200.63 189.3L201.6 188.88L202.58 188.45L203.55 187.98L204.52 187.49L205.5 186.98L206.48 186.44L207.45 185.87L208.43 185.28L209.4 184.67L210.38 184.03L211.35 183.37L212.33 182.69L213.3 181.99L214.27 181.26L215.25 180.51L216.23 179.74L217.2 178.95L218.18 178.13L219.15 177.3L220.13 176.44L221.1 175.57L222.08 174.68L223.05 173.76L224.02 172.83L225 171.88L225.98 170.92L226.95 169.93L227.93 168.93L228.9 167.92L229.88 166.88L230.85 165.83L231.83 164.77L232.8 163.69L233.77 162.6L234.75 161.5L235.72 160.38L236.7 159.25L237.68 158.11L238.65 156.96L239.63 155.79L240.6 154.62L241.58 153.44L242.55 152.24L243.52 151.04L244.5 149.83L245.48 148.62L246.45 147.39L247.43 146.17L248.4 144.93L249.38 143.69L250.35 142.45L251.33 141.2L252.3 139.95L253.28 138.69L254.25 137.43L255.23 136.18L256.2 134.92L257.18 133.66L258.15 132.4L259.13 131.14L260.1 129.88L261.08 128.62L262.05 127.37L263.03 126.12L264 124.87L264.97 123.63L265.95 122.4L266.92 121.16L267.9 119.94L268.88 118.72L269.85 117.51L270.83 116.3L271.8 115.1L272.78 113.92L273.75 112.74L274.73 111.57L275.7 110.41L276.68 109.27L277.65 108.13L278.63 107.01L279.6 105.9L280.58 104.8L281.55 103.72L282.52 102.65L283.5 101.59L284.47 100.55L285.45 99.53L286.42 98.52L287.4 97.53L288.37 96.55L289.35 95.6L290.33 94.66L291.3 93.74L292.28 92.83L293.25 91.95L294.23 91.09L295.2 90.24L296.17 89.42L297.15 88.62L298.12 87.84L299.1 87.08L300.08 86.34L301.05 85.63L302.03 84.93L303 84.26L303.98 83.62L304.95 82.99L305.93 82.39L306.9 81.82L307.88 81.27L308.85 80.74L309.83 80.24L310.8 79.76L311.77 79.31L312.75 78.89L313.73 78.49L314.7 78.11L315.68 77.76L316.65 77.44L317.63 77.15L318.6 76.88L319.58 76.64L320.55 76.42L321.52 76.23L322.5 76.07L323.47 75.94L324.45 75.83L325.42 75.75L326.4 75.7L327.37 75.67L328.35 75.67L329.33 75.7L330.3 75.75L331.28 75.84L332.25 75.95L333.23 76.08L334.2 76.25L335.17 76.44L336.15 76.66L337.12 76.9L338.1 77.17L339.08 77.47L340.05 77.8L341.03 78.15L342 78.52" fill="none"/></g></g><g data-motion-item="" data-step="3" aria-label="a playhead sweeps along and drops one dot per sample"><g class="k-ghost k-a-flash" style="--d:3;--len:4.4" aria-hidden="true"><g class="k-a-move" style="--dx:-283.64px;--d:3;--len:4;animation-timing-function:linear"><line class="k-line" style="stroke-width:1" x1="327.82" y1="60" x2="327.82" y2="208"/></g></g><g class="k-a-in" style="--d:3;--len:0.4"><g ><g ><line class="k-stem" x1="44.18" y1="134" x2="44.18" y2="75.67"/><circle class="k-stem-dot" cx="44.18" cy="75.67" r="5"/></g></g></g><g class="k-a-in" style="--d:3.5;--len:0.4"><g ><g ><line class="k-stem" x1="79.64" y1="134" x2="79.64" y2="92.75"/><circle class="k-stem-dot" cx="79.64" cy="92.75" r="5"/></g></g></g><g class="k-a-in" style="--d:4;--len:0.4"><g ><g ><line class="k-stem" x1="115.09" y1="134" x2="115.09" y2="134"/><circle class="k-stem-dot" cx="115.09" cy="134" r="5"/></g></g></g><g class="k-a-in" style="--d:4.5;--len:0.4"><g ><g ><line class="k-stem" x1="150.55" y1="134" x2="150.55" y2="175.25"/><circle class="k-stem-dot" cx="150.55" cy="175.25" r="5"/></g></g></g><g class="k-a-in" style="--d:5;--len:0.4"><g ><g ><line class="k-stem" x1="186" y1="134" x2="186" y2="192.33"/><circle class="k-stem-dot" cx="186" cy="192.33" r="5"/></g></g></g><g class="k-a-in" style="--d:5.5;--len:0.4"><g ><g ><line class="k-stem" x1="221.45" y1="134" x2="221.45" y2="175.25"/><circle class="k-stem-dot" cx="221.45" cy="175.25" r="5"/></g></g></g><g class="k-a-in" style="--d:6;--len:0.4"><g ><g ><line class="k-stem" x1="256.91" y1="134" x2="256.91" y2="134"/><circle class="k-stem-dot" cx="256.91" cy="134" r="5"/></g></g></g><g class="k-a-in" style="--d:6.5;--len:0.4"><g ><g ><line class="k-stem" x1="292.36" y1="134" x2="292.36" y2="92.75"/><circle class="k-stem-dot" cx="292.36" cy="92.75" r="5"/></g></g></g><g class="k-a-in" style="--d:7;--len:0.4"><g ><g ><line class="k-stem" x1="327.82" y1="134" x2="327.82" y2="75.67"/><circle class="k-stem-dot" cx="327.82" cy="75.67" r="5"/></g></g></g></g><g data-motion-item="" data-step="4" aria-label="the list the phone stores: 1, 0.71, 0, −0.71, −1, −0.71, 0, 0.71, 1"><text class="k-label" x="30" y="246" text-anchor="start">what the phone stores:</text><g class="k-a-in" style="--d:3.2;--len:0.4"><text class="k-tick" x="44.18" y="266" text-anchor="middle">1</text></g><g class="k-a-in" style="--d:3.7;--len:0.4"><text class="k-tick" x="79.64" y="266" text-anchor="middle">0.71</text></g><g class="k-a-in" style="--d:4.2;--len:0.4"><text class="k-tick" x="115.09" y="266" text-anchor="middle">0</text></g><g class="k-a-in" style="--d:4.7;--len:0.4"><text class="k-tick" x="150.55" y="266" text-anchor="middle">−0.71</text></g><g class="k-a-in" style="--d:5.2;--len:0.4"><text class="k-tick" x="186" y="266" text-anchor="middle">−1</text></g><g class="k-a-in" style="--d:5.7;--len:0.4"><text class="k-tick" x="221.45" y="266" text-anchor="middle">−0.71</text></g><g class="k-a-in" style="--d:6.2;--len:0.4"><text class="k-tick" x="256.91" y="266" text-anchor="middle">0</text></g><g class="k-a-in" style="--d:6.7;--len:0.4"><text class="k-tick" x="292.36" y="266" text-anchor="middle">0.71</text></g><g class="k-a-in" style="--d:7.2;--len:0.4"><text class="k-tick" x="327.82" y="266" text-anchor="middle">1</text></g></g></svg></div>
+</div>
+</body>
+</html>

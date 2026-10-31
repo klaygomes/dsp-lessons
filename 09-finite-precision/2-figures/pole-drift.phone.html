@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rounding moves the crowded poles</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-pole-drift-style"></style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 9 · finite precision</p>
+<h1>Rounding moves the crowded poles</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-pole-drift-phone" viewBox="0 0 360 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pole-drift-phone-title pole-drift-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="4"><title id="pole-drift-phone-title">Rounding moves the crowded poles</title><desc id="pole-drift-phone-desc">The top of the unit circle, 1,700 to 2,300 Hz. The laptop poles at radius 0.98 at 1,900, 2,000 and 2,100 Hz move on the chip to 1.0567 at 1,817 and 2,183 Hz, outside the circle, and to 0.8378 at 2,000 Hz, inside. Lesson 6’s notch at the same zoom moves from 0.9 to 0.9014.</desc><defs><marker id="pole-drift-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="pole-drift-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="pole-drift-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="pole-drift-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="500"/><text class="k-note" x="180" y="96.67" text-anchor="middle">outside the circle: the echo grows</text><text class="k-note" x="31.85" y="241.85" text-anchor="end"></text><path class="k-wheel" d="M327.37 159.73L323.76 158.81L320.15 157.92L316.53 157.05L312.9 156.21L309.27 155.38L305.63 154.58L301.99 153.8L298.35 153.05L294.7 152.32L291.04 151.61L287.38 150.92L283.72 150.26L280.05 149.62L276.38 149L272.7 148.41L269.02 147.84L265.34 147.29L261.65 146.76L257.96 146.26L254.27 145.78L250.58 145.33L246.88 144.9L243.18 144.49L239.47 144.1L235.77 143.74L232.06 143.4L228.35 143.09L224.64 142.79L220.92 142.53L217.21 142.28L213.49 142.06L209.77 141.86L206.06 141.68L202.33 141.53L198.61 141.4L194.89 141.3L191.17 141.22L187.45 141.16L183.72 141.12L180 141.11L176.28 141.12L172.55 141.16L168.83 141.22L165.11 141.3L161.39 141.4L157.67 141.53L153.94 141.68L150.23 141.86L146.51 142.06L142.79 142.28L139.08 142.53L135.36 142.79L131.65 143.09L127.94 143.4L124.23 143.74L120.53 144.1L116.82 144.49L113.12 144.9L109.42 145.33L105.73 145.78L102.04 146.26L98.35 146.76L94.66 147.29L90.98 147.84L87.3 148.41L83.62 149L79.95 149.62L76.28 150.26L72.62 150.92L68.96 151.61L65.3 152.32L61.65 153.05L58.01 153.8L54.37 154.58L50.73 155.38L47.1 156.21L43.47 157.05L39.85 157.92L36.24 158.81L32.63 159.73" fill="none"/><text class="k-tick" x="331.11" y="167.78" text-anchor="end">unit circle</text><g data-motion-item="" data-step="1" aria-label="the laptop poles at radius 0.98, at 1,900, 2,000 and 2,100 Hz"><g ><g ><circle class="k-guide" cx="225.56" cy="154.75" r="8.5"/><path class="k-axis" d="M221.56 150.75L229.56 158.75M229.56 150.75L221.56 158.75" fill="none"/></g><g ><circle class="k-guide" cx="180" cy="152.96" r="8.5"/><path class="k-axis" d="M176 148.96L184 156.96M184 148.96L176 156.96" fill="none"/></g><g ><circle class="k-guide" cx="134.44" cy="154.75" r="8.5"/><path class="k-axis" d="M130.44 150.75L138.44 158.75M138.44 150.75L130.44 158.75" fill="none"/></g><text class="k-tick" style="font-size:10px" x="223.47" y="185.34" text-anchor="middle">1,900 Hz</text><text class="k-tick" style="font-size:10px" x="180" y="183.63" text-anchor="middle">2,000</text><text class="k-tick" style="font-size:10px" x="136.53" y="185.34" text-anchor="middle">2,100</text><text class="k-num" x="120.44" y="158.75" text-anchor="end">0.98</text></g></g><g data-motion-item="" data-step="2" aria-label="on the chip the outer pairs slide out past the circle and the middle pair slides in"><g class="k-a-move" style="--dx:-43.93px;--dy:40.8px;--d:1;--len:2"><path class="k-stem-accent" d="M264 108.45L275 119.45M275 108.45L264 119.45" fill="none"/></g><g class="k-a-move" style="--dx:0px;--dy:-84.29px;--d:1;--len:2"><path class="k-stem" d="M174.5 231.75L185.5 242.75M185.5 231.75L174.5 242.75" fill="none"/></g><g class="k-a-move" style="--dx:43.93px;--dy:40.8px;--d:1;--len:2"><path class="k-stem-accent" d="M85 108.45L96 119.45M96 108.45L85 119.45" fill="none"/></g></g><g data-motion-item="" data-step="3" aria-label="where they land: 1.0567 at 1,817 and 2,183 Hz, 0.8378 at 2,000 Hz"><g class="k-a-in" style="--d:3;--len:0.8"><path class="k-arrow" d="M233.47 147.41L261.59 121.3" fill="none" marker-end="url(#pole-drift-phone-arrow)"/><path class="k-arrow" d="M180 190.89L180 222.08" fill="none" marker-end="url(#pole-drift-phone-arrow)"/><path class="k-arrow" d="M126.53 147.41L98.41 121.3" fill="none" marker-end="url(#pole-drift-phone-arrow)"/><text class="k-num-accent" x="281.5" y="110.95" text-anchor="start">1.0567</text>,<text class="k-num-accent" x="281.5" y="125.95" text-anchor="start">1,817 Hz</text><text class="k-num-accent" x="78.5" y="110.95" text-anchor="end">1.0567</text>,<text class="k-num-accent" x="78.5" y="125.95" text-anchor="end">2,183 Hz</text><text class="k-num" x="192" y="241.25" text-anchor="start">0.8378</text></g></g><g data-motion-item="" data-step="4" aria-label="lesson 6’s notch at the same zoom moves from 0.9 to 0.9014, too little to see"><g class="k-a-in" style="--d:4;--len:0.8"><rect class="k-frame" x="20" y="300" width="130" height="120" fill="none"/><path class="k-wheel" d="M58.33 317.56Q85 316.37 111.67 317.56" fill="none"/><g ><circle class="k-guide" cx="85" cy="376.22" r="8.5"/><path class="k-axis" d="M81 372.22L89 380.22M89 372.22L81 380.22" fill="none"/></g><path class="k-stem" d="M79.5 369.89L90.5 380.89M90.5 369.89L79.5 380.89" fill="none"/><text class="k-label" x="162" y="330" text-anchor="start">lesson 6’s notch</text><text class="k-tick" x="162" y="348" text-anchor="start">at the same zoom:</text><text class="k-num" x="162" y="370" text-anchor="start">0.9 to 0.9014,</text><text class="k-tick" x="162" y="388" text-anchor="start">a move too small to see</text></g></g><g ><g ><g ><circle class="k-guide" cx="38" cy="462" r="8"/><path class="k-axis" d="M34.5 458.5L41.5 465.5M41.5 458.5L34.5 465.5" fill="none"/></g><text class="k-label" x="54" y="466" text-anchor="start">pole on the laptop</text></g><g ><path class="k-stem" d="M33 479L43 489M43 479L33 489" fill="none"/><text class="k-label" x="54" y="488" text-anchor="start">pole on the chip</text></g></g></svg></div>
+</div>
+</body>
+</html>

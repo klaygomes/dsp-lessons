@@ -1,0 +1,49 @@
+<template id="route-lab">
+  <div class="task" data-k="task" hidden><p data-k="task-text"></p></div>
+  <div data-k="ask"></div>
+  <canvas data-k="stage" class="stage route-stage" role="img"></canvas>
+  <div class="key" data-k="key-explore">
+    <span><i class="k-in"></i>the tone going in</span>
+    <span><i class="k-outdot"></i>the route's output</span>
+    <span><i class="k-ghost"></i>where the input dot is now</span>
+    <span><i class="k-gap"></i>phase: how far out trails in</span>
+    <span data-k="key-pin" hidden><i class="k-pin"></i>pinned size</span>
+  </div>
+  <div class="key" data-k="key-fix" hidden>
+    <span><i class="k-bar"></i>what the route keeps, measured</span>
+    <span><i class="k-target"></i>95% to 105%, the target</span>
+    <span><i class="k-in"></i><i class="k-outdot"></i>route and boost together after Check: teal dot with a tick on target, coral dot with a cross off</span>
+  </div>
+  <div class="readout" aria-live="polite">
+    <div class="result" data-k="result"></div>
+    <p data-k="why"></p>
+    <p class="compare" data-k="compare" hidden></p>
+  </div>
+  <div class="control" data-k="tone-control">
+    <label data-for="tone">Tone: <output data-k="tone-out">2,000 Hz</output></label>
+    <input data-k="tone" type="range" min="0" max="4000" step="50" value="2000" disabled>
+  </div>
+  <div class="row" data-k="source" role="group" aria-label="What to play">
+    <button type="button" data-source="tone" aria-pressed="true">The tone</button>
+    <button type="button" data-source="voice" aria-pressed="false">A caller's voice</button>
+  </div>
+  <div class="bands" data-k="bands" hidden></div>
+  <div class="control" data-k="volume-control" hidden>
+    <label data-for="volume">Volume knob: <output data-k="volume-out">×1.0</output></label>
+    <input data-k="volume" type="range" min="0.5" max="3" step="0.1" value="1" disabled>
+  </div>
+  <div class="row">
+    <button type="button" data-k="check" hidden>Check the line</button>
+    <button type="button" data-k="play">Play</button>
+    <button type="button" data-k="route" class="k-toggle" aria-pressed="true">Through the route</button>
+    <button type="button" data-k="boost" class="k-toggle" aria-pressed="true" hidden>Boost on</button>
+    <button type="button" data-k="pause">Pause the wheels</button>
+    <button type="button" data-k="next">Next sample</button>
+    <button type="button" data-k="pin" disabled>Pin this</button>
+    <button type="button" data-k="another" hidden>Try another route</button>
+    <button type="button" data-k="reset" class="quiet">Reset</button>
+  </div>
+  <p class="k-now" data-k="now" aria-live="polite"></p>
+  <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
+</template>
+<div class="lab" id="lab"></div>

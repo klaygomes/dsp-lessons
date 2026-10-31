@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One click, laptop against chip</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+
+  --font-title: "Instrument Serif", Georgia, serif;
+  --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --measure: 62ch;
+  --column: 780px;
+  --section-gap: 64px;
+  --block-gap: 18px;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+    --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1D1E21; --paper-2: #27292D; --ink: #EEE8DC; --ink-soft: #A6A39C; --rule: #3A3C41;
+  --accent: #F07A5C; --accent-ink: #F59C83; --accent-soft: #4A2C24; --input: #5FB3AC; --input-soft: #1F3A38;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+::selection { background: var(--accent-soft); }
+:focus-visible { outline: 2px solid var(--input); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--column); margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 12px; }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
+code, .num { font-family: var(--font-mono); font-size: 0.88em; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; text-wrap: balance; }
+
+header { padding-top: 56px; display: grid; gap: 14px; }
+.topic { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--font-title); font-weight: 400; font-size: clamp(34px, 5vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+.question { font-size: 24px; line-height: 1.4; max-width: 32ch; }
+
+section { margin-top: var(--section-gap); display: grid; gap: var(--block-gap); }
+section > *, figure > * { min-width: 0; }
+h2 { font-family: var(--font-body); font-weight: 600; font-size: 23px; line-height: 1.3; letter-spacing: -0.01em; }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 15px; color: var(--ink-soft); }
+.diagram { overflow-x: auto; }
+
+.lab { display: grid; gap: 16px; border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px; background: var(--paper); }
+.ask { display: grid; gap: 10px; }
+.ask p { font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: 500 16px/1 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 6px; padding: 11px 15px; cursor: pointer; }
+button:hover { background: var(--paper-2); }
+button[aria-pressed="true"] { background: var(--input-soft); border-color: var(--input); }
+button.quiet { border-color: var(--rule); color: var(--ink-soft); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+canvas.stage { width: 100%; height: 240px; display: block; background: var(--paper); border-block: 1px solid var(--rule); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--ink-soft); }
+.control { display: grid; gap: 6px; }
+.control label { font-weight: 600; }
+.control output { font-family: var(--font-mono); color: var(--input); }
+input[type="range"] { width: 100%; accent-color: var(--input); }
+.readout { display: grid; gap: 6px; }
+.readout .result { font-family: var(--font-mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readout .result .changed { color: var(--accent-ink); }
+.readout .compare { color: var(--ink-soft); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 12px; }
+ol.steps li::before { content: counter(s); font-family: var(--font-mono); font-size: 15px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; }
+ol.steps b { display: block; }
+ol.steps span { color: var(--ink-soft); font-size: 16px; }
+
+table.alt { border-collapse: collapse; width: 100%; font-size: 16px; }
+table.alt th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+table.alt th, table.alt td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.alt td.num { white-space: nowrap; }
+table.alt .changed { color: var(--accent-ink); font-weight: 600; }
+.table { overflow-x: auto; }
+
+.myth { border-left: 3px solid var(--accent); padding-left: 16px; display: grid; gap: 8px; }
+.myth b { color: var(--accent-ink); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); display: grid; gap: 4px; }
+@media (max-width: 520px) { body { font-size: 17px; } .question { font-size: 21px; } header { padding-top: 36px; } .lab { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.k-fig { display: block; width: 100%; height: auto; --k-step: 650ms; }
+.k-fig.k-narrow { display: none; max-width: 440px; margin: 0 auto; }
+@container k-fig (max-width: 600px) {
+  .k-fig.k-wide { display: none; }
+  .k-fig.k-narrow { display: block; }
+}
+.k-fig .k-bg { fill: var(--paper); }
+.k-fig .k-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.k-fig .k-grid { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-frame { stroke: var(--rule); stroke-width: 1; }
+.k-fig .k-line { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.k-fig .k-guide { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
+.k-fig .k-band { fill: var(--input-soft); }
+.k-fig .k-edge { stroke: var(--input); stroke-width: 1.2; stroke-dasharray: 6 4; }
+.k-fig .k-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.k-fig .k-curve-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+.k-fig .k-curve-faint { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; opacity: 0.35; }
+.k-fig .k-curve-accent { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; fill: none; }
+.k-fig .k-curve-input { stroke: var(--input); stroke-width: 2; fill: none; }
+.k-fig .k-fill { fill: var(--paper-2); }
+.k-fig .k-stem { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-stem-dot { fill: var(--ink); }
+.k-fig .k-stem-soft { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-stem-soft-dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.k-fig .k-stem-accent { stroke: var(--accent); stroke-width: 2.5; }
+.k-fig .k-stem-accent-dot { fill: var(--accent); }
+.k-fig .k-stem-input { stroke: var(--input); stroke-width: 2; }
+.k-fig .k-stem-input-dot { fill: var(--input); }
+.k-fig .k-hollow { fill: var(--paper); stroke-width: 1.5; }
+.k-fig .k-stem-dot.k-hollow { stroke: var(--ink); }
+.k-fig .k-bar { fill: var(--ink); }
+.k-fig .k-bar-soft { fill: var(--ink-soft); }
+.k-fig .k-ring-missing { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.k-fig .k-row-tint { fill: var(--paper-2); }
+.k-fig .k-muted { opacity: 0.55; }
+.k-fig .k-bar-accent { fill: var(--accent); }
+.k-fig .k-bar-hatch { stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-hatch-bg { fill: var(--accent-soft); }
+.k-fig .k-hatch { stroke: var(--accent); stroke-width: 2; }
+.k-fig .k-arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.k-fig .k-arrow.k-accent { stroke: var(--accent); }
+.k-fig .k-arrow.k-input { stroke: var(--input); }
+.k-fig .k-head { fill: var(--ink-soft); }
+.k-fig .k-head-accent { fill: var(--accent); }
+.k-fig .k-head-input { fill: var(--input); }
+.k-fig .k-vec { stroke: var(--ink); stroke-width: 2; }
+.k-fig .k-wheel { stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-stop { fill: var(--ink-soft); }
+.k-fig .k-dot { fill: var(--accent); }
+.k-fig .k-spoke-line { stroke: var(--ink-soft); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k-fig .k-mask { fill: var(--paper); }
+.k-fig .k-mask-box { fill: var(--paper); }
+.k-fig .k-box { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.5; }
+.k-fig .k-box-accent { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.k-fig .k-mark-ok { stroke: var(--input); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.k-fig .k-mark-bad { stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.k-fig text { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-label { font-family: var(--font-mono); font-size: 12px; fill: var(--ink-soft); }
+.k-fig .k-tick { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); }
+.k-fig .k-num { font-family: var(--font-mono); font-size: 12px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.k-fig .k-num-accent { font-family: var(--font-mono); font-size: 12px; fill: var(--accent-ink); font-weight: 500; }
+.k-fig .k-num-input { font-family: var(--font-mono); font-size: 12px; fill: var(--input); font-weight: 500; }
+.k-fig .k-name { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--ink); }
+.k-fig .k-name-accent { font-family: var(--font-body); font-weight: 600; font-size: 15px; fill: var(--accent-ink); }
+.k-fig .k-note { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.k-fig .k-note-accent { font-family: var(--font-title); font-style: italic; font-size: 17px; fill: var(--accent-ink); }
+.k-fig .k-math { font-family: var(--font-title); font-style: italic; font-size: 18px; fill: var(--ink); }
+
+.k-fig [class*="k-a-"] {
+  animation-duration: calc(var(--len, 1) * var(--k-step));
+  animation-delay: calc(var(--d, 0) * var(--k-step));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+.k-fig .k-a-in { animation-name: k-in; }
+.k-fig .k-a-fade { animation-name: k-fade; }
+.k-fig .k-a-flash { animation-name: k-flash; animation-timing-function: linear; }
+.k-fig .k-a-move { animation-name: k-move; }
+.k-fig .k-a-scale { animation-name: k-scale; transform-box: view-box; }
+.k-fig .k-a-turn { animation-name: k-turn; transform-box: view-box; animation-timing-function: steps(var(--steps), jump-none); }
+.k-fig .k-a-draw { animation-name: k-draw; stroke-dasharray: 1; animation-timing-function: ease-in-out; }
+@keyframes k-in { from { opacity: 0; } }
+@keyframes k-fade { from { opacity: var(--o0, 1); } }
+@keyframes k-flash { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-move { from { transform: translate(var(--dx, 0px), var(--dy, 0px)); } }
+@keyframes k-scale { from { transform: scale(var(--sx, 1), var(--sy, 1)); } }
+@keyframes k-turn { from { transform: rotate(var(--r0, 0deg)); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.k-fig.k-wait [class*="k-a-"] { animation-play-state: paused; }
+.k-fig.k-reset [class*="k-a-"], .k-fig.k-done [class*="k-a-"] { animation-name: none; }
+@media (prefers-reduced-motion: reduce) {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+@media print {
+  .k-fig [class*="k-a-"] { animation: none !important; }
+}
+.diagram { container: k-fig / inline-size; }
+.k-figure { display: grid; gap: 8px; }
+.k-replay { justify-self: start; font-size: 14px; padding: 8px 12px; }
+@media (prefers-reduced-motion: reduce) { .k-replay { display: none; } }
+.k-fig .k-ghost { opacity: 0; }
+.k-fig .k-faint { opacity: 0.4; }
+.k-fig .k-legend-line { stroke-width: 2; }
+
+body { padding: 40px 16px; }
+.frame { max-width: 400px; margin: 0 auto; display: grid; gap: 16px; }
+.frame .k-fig { display: block; max-width: none; }
+.frame h1 { font-size: 30px; }</style>
+<style id="fig-hum-style"></style>
+</head>
+<body>
+<div class="frame">
+<p class="topic">Lesson 9 · finite precision</p>
+<h1>One click, laptop against chip</h1>
+<div class="diagram"><svg class="k-fig k-narrow" id="fig-hum-phone" viewBox="0 0 360 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hum-phone-title hum-phone-desc" data-motion-root data-motion-mode="reveal" data-step-count="3"><title id="hum-phone-title">One click, laptop against chip</title><desc id="hum-phone-desc">After one click of size 0.1, the laptop’s output, drawn ten times taller, rings faintly and dies; the chip’s output grows 15.8 times every 50 samples, first hits the limit at sample 76 (9.5 ms), then swings between +1 and −1.</desc><defs><marker id="hum-phone-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head" points="0 0, 8 3, 0 6"/></marker><marker id="hum-phone-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-accent" points="0 0, 8 3, 0 6"/></marker><marker id="hum-phone-arrow-input" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="k-head-input" points="0 0, 8 3, 0 6"/></marker><pattern id="hum-phone-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="k-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="k-hatch"/></pattern></defs><rect class="k-bg" width="360" height="450"/><g ><g ><line class="k-axis" x1="40" y1="114" x2="340" y2="114"/><text class="k-tick" x="32" y="81.08" text-anchor="end">+0.1</text><text class="k-tick" x="32" y="154.92" text-anchor="end">−0.1</text><text class="k-tick" x="40" y="180" text-anchor="middle">n = 0</text><text class="k-tick" x="190" y="180" text-anchor="middle">120</text><text class="k-tick" x="340" y="180" text-anchor="middle">240</text><text class="k-tick" x="340" y="198" text-anchor="end">samples (8 per ms)</text></g><text class="k-name" x="40" y="52" text-anchor="start">on the laptop, 10× taller</text></g><g ><g ><rect class="k-band" x="40" y="261.08" width="300" height="73.85"/></g><g ><line class="k-axis" x1="40" y1="298" x2="340" y2="298"/><text class="k-tick" x="32" y="265.08" text-anchor="end">+1</text><text class="k-tick" x="32" y="338.92" text-anchor="end">−1</text><text class="k-tick" x="40" y="364" text-anchor="middle">n = 0</text><text class="k-tick" x="190" y="364" text-anchor="middle">120</text><text class="k-tick" x="340" y="364" text-anchor="middle">240</text><text class="k-tick" x="340" y="382" text-anchor="end">samples (8 per ms)</text></g><text class="k-name" x="40" y="236" text-anchor="start">on the chip</text></g><text class="k-tick" x="352" y="236" text-anchor="end">shaded: −1 to +1</text><g data-motion-item="" data-step="1" aria-label="on the laptop the click passes and its ring dies away"><path class="k-line k-a-draw" style="--d:0;--len:2;stroke-width:1.4" d="M40 79.23L41.25 114L42.5 109.9L43.75 114L45 117.68L46.25 114L47.5 110.77L48.75 114L50 116.77L51.25 114L52.5 111.69L53.75 114L55 115.85L56.25 114L57.5 112.58L58.75 114L60 115.01L61.25 114L62.5 113.37L63.75 114L65 114.3L66.25 114L67.5 114L68.75 114L70 113.76L71.25 114L72.5 114.44L73.75 114L75 113.41L76.25 114L77.5 114.69L78.75 114L80 113.26L81.25 114L82.5 114.76L83.75 114L85 113.27L86.25 114L87.5 114.67L88.75 114L90 113.42L91.25 114L92.5 114.46L93.75 114L95 113.67L96.25 114L97.5 114.18L98.75 114L100 113.97L101.25 114L102.5 113.87L103.75 114L105 114.29L106.25 114L107.5 113.56L108.75 114L110 114.58L111.25 114L112.5 113.3L113.75 114L115 114.82L116.25 114L117.5 113.09L118.75 114L120 114.98L121.25 114L122.5 112.97L123.75 114L125 115.07L126.25 114L127.5 112.92L128.75 114L130 115.07L131.25 114L132.5 112.95L133.75 114L135 115.01L136.25 114L137.5 113.04L138.75 114L140 114.89L141.25 114L142.5 113.19L143.75 114L145 114.73L146.25 114L147.5 113.36L148.75 114L150 114.55L151.25 114L152.5 113.54L153.75 114L155 114.37L156.25 114L157.5 113.72L158.75 114L160 114.2L161.25 114L162.5 113.87L163.75 114L165 114.06L166.25 114L167.5 114L168.75 114L170 113.95L171.25 114L172.5 114.09L173.75 114L175 113.88L176.25 114L177.5 114.14L178.75 114L180 113.85L181.25 114L182.5 114.15L183.75 114L185 113.85L186.25 114L187.5 114.13L188.75 114L190 113.89L191.25 114L192.5 114.09L193.75 114L195 113.93L196.25 114L197.5 114.04L198.75 114L200 113.99L201.25 114L202.5 113.97L203.75 114L205 114.06L206.25 114L207.5 113.91L208.75 114L210 114.11L211.25 114L212.5 113.86L213.75 114L215 114.16L216.25 114L217.5 113.82L218.75 114L220 114.19L221.25 114L222.5 113.79L223.75 114L225 114.21L226.25 114L227.5 113.79L228.75 114L230 114.21L231.25 114L232.5 113.79L233.75 114L235 114.2L236.25 114L237.5 113.81L238.75 114L240 114.18L241.25 114L242.5 113.84L243.75 114L245 114.15L246.25 114L247.5 113.87L248.75 114L250 114.11L251.25 114L252.5 113.91L253.75 114L255 114.07L256.25 114L257.5 113.94L258.75 114L260 114.04L261.25 114L262.5 113.98L263.75 114L265 114.01L266.25 114L267.5 114L268.75 114L270 113.99L271.25 114L272.5 114.02L273.75 114L275 113.98L276.25 114L277.5 114.03L278.75 114L280 113.97L281.25 114L282.5 114.03L283.75 114L285 113.97L286.25 114L287.5 114.03L288.75 114L290 113.98L291.25 114L292.5 114.02L293.75 114L295 113.99L296.25 114L297.5 114.01L298.75 114L300 114L301.25 114L302.5 113.99L303.75 114L305 114.01L306.25 114L307.5 113.98L308.75 114L310 114.02L311.25 114L312.5 113.97L313.75 114L315 114.03L316.25 114L317.5 113.96L318.75 114L320 114.04L321.25 114L322.5 113.96L323.75 114L325 114.04L326.25 114L327.5 113.96L328.75 114L330 114.04L331.25 114L332.5 113.96L333.75 114L335 114.04L336.25 114L337.5 113.96L338.75 114L340 114.04" fill="none" pathLength="1"/><text class="k-tick" x="46.25" y="82.62" text-anchor="start">the click</text><text class="k-tick" x="82.5" y="97.38" text-anchor="start">a faint ring fades</text></g><g data-motion-item="" data-step="2" aria-label="on the chip the ring grows every sample until it hits both limits"><path class="k-stem-accent k-a-draw" style="--d:2;--len:3;stroke-width:1.2" d="M40 294.54L41.25 298L42.5 297.46L43.75 298L45 298.67L46.25 298L47.5 297.14L48.75 298L50 299.06L51.25 298L52.5 296.75L53.75 298L55 299.39L56.25 298L57.5 296.56L58.75 298L60 299.36L61.25 298L62.5 296.86L63.75 298L65 298.74L66.25 298L67.5 297.82L68.75 298L70 297.46L71.25 298L72.5 299.37L73.75 298L75 295.73L76.25 298L77.5 301.15L78.75 298L80 294.09L81.25 298L82.5 302.45L83.75 298L85 293.34L86.25 298L87.5 302.43L88.75 298L90 294.32L91.25 298L92.5 300.36L93.75 298L95 297.54L96.25 298L97.5 296.05L98.75 298L100 302.75L101.25 298L102.5 290.25L103.75 298L105 308.67L106.25 298L107.5 284.8L108.75 298L110 312.96L111.25 298L112.5 282.4L113.75 298L115 312.75L116.25 298L117.5 285.84L118.75 298L120 305.64L121.25 298L122.5 296.78L123.75 298L125 291.08L126.25 298L127.5 314.35L128.75 298L130 271.62L131.25 298L132.5 334.13L133.75 298L135 261.08L136.25 298L137.5 326.74L138.75 298L140 286.21L141.25 298L142.5 284.81L143.75 298L145 334.92L146.25 298L147.5 261.08L148.75 298L150 313L151.25 298L152.5 324.57L153.75 298L155 261.08L156.25 298L157.5 316.81L158.75 298L160 322.8L161.25 298L162.5 261.08L163.75 298L165 318.33L166.25 298L167.5 320.01L168.75 298L170 261.08L171.25 298L172.5 324.68L173.75 298L175 304.41L176.25 298L177.5 261.08L178.75 298L180 334.92L181.25 298L182.5 288.93L183.75 298L185 261.08L186.25 298L187.5 334.92L188.75 298L190 302.48L191.25 298L192.5 261.08L193.75 298L195 334.92L196.25 298L197.5 290.62L198.75 298L200 261.08L201.25 298L202.5 334.92L203.75 298L205 300.99L206.25 298L207.5 261.08L208.75 298L210 334.92L211.25 298L212.5 291.92L213.75 298L215 261.08L216.25 298L217.5 334.92L218.75 298L220 299.86L221.25 298L222.5 261.08L223.75 298L225 334.92L226.25 298L227.5 292.91L228.75 298L230 261.08L231.25 298L232.5 334.92L233.75 298L235 298.99L236.25 298L237.5 261.08L238.75 298L240 334.92L241.25 298L242.5 293.67L243.75 298L245 261.08L246.25 298L247.5 334.92L248.75 298L250 298.33L251.25 298L252.5 261.08L253.75 298L255 334.92L256.25 298L257.5 294.25L258.75 298L260 261.08L261.25 298L262.5 334.92L263.75 298L265 297.82L266.25 298L267.5 261.08L268.75 298L270 334.92L271.25 298L272.5 294.7L273.75 298L275 261.08L276.25 298L277.5 334.92L278.75 298L280 297.43L281.25 298L282.5 261.08L283.75 298L285 334.92L286.25 298L287.5 295.04L288.75 298L290 261.08L291.25 298L292.5 334.92L293.75 298L295 297.13L296.25 298L297.5 261.08L298.75 298L300 334.92L301.25 298L302.5 295.3L303.75 298L305 261.08L306.25 298L307.5 334.92L308.75 298L310 296.9L311.25 298L312.5 261.08L313.75 298L315 334.92L316.25 298L317.5 295.5L318.75 298L320 261.08L321.25 298L322.5 334.92L323.75 298L325 296.73L326.25 298L327.5 261.08L328.75 298L330 334.92L331.25 298L332.5 295.65L333.75 298L335 261.08L336.25 298L337.5 334.92L338.75 298L340 296.59" fill="none" pathLength="1"/></g><g data-motion-item="" data-step="3" aria-label="it grows 15.8 times every 50 samples, then clips on both sides"><g class="k-a-in" style="--d:5;--len:0.8"><line class="k-axis" x1="135" y1="246" x2="135" y2="259.08"/><text class="k-tick" x="141" y="252" text-anchor="start">first clip: n = 76</text><text class="k-note-accent" x="180" y="402" text-anchor="middle">grows ×15.8 every 50 samples,</text><text class="k-note-accent" x="180" y="424" text-anchor="middle">then clips on both sides</text></g></g></svg></div>
+</div>
+</body>
+</html>
