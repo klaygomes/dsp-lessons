@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Wall on the Line</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.dot { position: absolute; border-radius: 50%; }
+.box { position: absolute; background: var(--paper-2); border: 4px solid var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 50px; line-height: 62px; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":137.1,"wpm":211,"lines":[{"line":1,"text":"The echo is gone. Then a new route opens to the east, through old cable and a smoothing circuit. Nothing drops, nothing buzzes. Yet the tickets say: it's like talking through a wall. Every word is there, but its edges are gone.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line01.wav","at":0.6,"start":0.6,"end":11.5,"start_frame":18,"words":[{"word":"the","frame":18},{"word":"echo","frame":26},{"word":"is","frame":35},{"word":"gone","frame":40},{"word":"then","frame":48},{"word":"a","frame":59},{"word":"new","frame":63},{"word":"route","frame":68},{"word":"opens","frame":75},{"word":"to","frame":85},{"word":"the","frame":89},{"word":"east","frame":92},{"word":"through","frame":101},{"word":"old","frame":109},{"word":"cable","frame":115},{"word":"and","frame":124},{"word":"a","frame":130},{"word":"smoothing","frame":134},{"word":"circuit","frame":143},{"word":"nothing","frame":163},{"word":"drops","frame":169},{"word":"nothing","frame":181},{"word":"buzzes","frame":192},{"word":"yet","frame":207},{"word":"the","frame":216},{"word":"tickets","frame":220},{"word":"say","frame":228},{"word":"it's","frame":238},{"word":"like","frame":245},{"word":"talking","frame":250},{"word":"through","frame":259},{"word":"a","frame":265},{"word":"wall","frame":269},{"word":"every","frame":286},{"word":"word","frame":290},{"word":"is","frame":296},{"word":"there","frame":300},{"word":"but","frame":307},{"word":"its","frame":312},{"word":"edges","frame":317},{"word":"are","frame":323},{"word":"gone","frame":329}]},{"line":2,"text":"The route is linear and time-invariant, so do what lesson two taught you: send one click and listen. It comes back smeared across three samples: point one five, point seven, point one five. But nowhere in those numbers is the word muffled. We need a different question.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix/line01.wav","at":12.3,"start":12.3,"end":25.32,"start_frame":369,"words":[{"word":"The","frame":369},{"word":"root","frame":377},{"word":"is","frame":382},{"word":"linear","frame":388},{"word":"and","frame":396},{"word":"time","frame":403},{"word":"-invariant,","frame":410},{"word":"so","frame":430},{"word":"do","frame":432},{"word":"what","frame":436},{"word":"lesson","frame":440},{"word":"two","frame":448},{"word":"taught","frame":455},{"word":"you.","frame":463},{"word":"Send","frame":481},{"word":"one","frame":485},{"word":"click","frame":490},{"word":"and","frame":498},{"word":"listen.","frame":504},{"word":"It","frame":526},{"word":"comes","frame":528},{"word":"back","frame":534},{"word":"smeared","frame":541},{"word":"across","frame":550},{"word":"three","frame":557},{"word":"samples,","frame":565},{"word":".15,","frame":583},{"word":".7,","frame":601},{"word":".15,","frame":626},{"word":"but","frame":650},{"word":"nowhere","frame":653},{"word":"in","frame":659},{"word":"those","frame":665},{"word":"numbers","frame":670},{"word":"is","frame":679},{"word":"the","frame":686},{"word":"word","frame":689},{"word":"muffled.","frame":695},{"word":"We","frame":719},{"word":"need","frame":723},{"word":"a","frame":728},{"word":"different","frame":730},{"word":"question.","frame":736}]},{"line":3,"text":"So feed it one steady tone: two thousand hertz. At eight thousand samples a second, that's one, zero, minus one, zero. What comes out? The same pattern, shrunk to seventy percent, one sample late. A tone went in, and the same tone came out.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line03.wav","at":26.32,"start":26.32,"end":37.8,"start_frame":790,"words":[{"word":"So","frame":790},{"word":"feed","frame":799},{"word":"it","frame":805},{"word":"one","frame":809},{"word":"steady","frame":814},{"word":"tone,","frame":823},{"word":"2","frame":841},{"word":",000","frame":847},{"word":"hertz.","frame":857},{"word":"At","frame":880},{"word":"8","frame":884},{"word":",000","frame":889},{"word":"samples","frame":897},{"word":"a","frame":907},{"word":"second,","frame":911},{"word":"that's","frame":920},{"word":"1","frame":926},{"word":",0,","frame":932},{"word":"minus","frame":943},{"word":"1","frame":949},{"word":",0,","frame":956},{"word":"what","frame":965},{"word":"comes","frame":969},{"word":"out?","frame":976},{"word":"The","frame":991},{"word":"same","frame":994},{"word":"pattern,","frame":1000},{"word":"shrunk","frame":1018},{"word":"to","frame":1029},{"word":"70","frame":1033},{"word":"%","frame":1041},{"word":"one","frame":1049},{"word":"sample","frame":1057},{"word":"late,","frame":1066},{"word":"a","frame":1075},{"word":"tone","frame":1079},{"word":"went","frame":1085},{"word":"in,","frame":1091},{"word":"and","frame":1100},{"word":"the","frame":1102},{"word":"same","frame":1105},{"word":"tone","frame":1111},{"word":"came","frame":1118},{"word":"out.","frame":1124}]},{"line":4,"text":"Why? Picture a dot on the rim of a wheel. The sample is how far left or right it sits. Those samples are the dot turning ninety degrees every sample. One thousand hertz turns forty-five degrees. Four thousand turns half a turn, so its samples flip. That's the tone as a wheel.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line04.wav","at":38.4,"start":38.4,"end":51.63,"start_frame":1152,"words":[{"word":"Why?","frame":1152},{"word":"Picture","frame":1168},{"word":"a","frame":1177},{"word":"dot","frame":1182},{"word":"on","frame":1187},{"word":"the","frame":1191},{"word":"rim","frame":1193},{"word":"of","frame":1198},{"word":"a","frame":1202},{"word":"wheel.","frame":1204},{"word":"The","frame":1215},{"word":"sample","frame":1220},{"word":"is","frame":1228},{"word":"how","frame":1234},{"word":"far","frame":1238},{"word":"left","frame":1244},{"word":"or","frame":1250},{"word":"right","frame":1255},{"word":"it","frame":1259},{"word":"sits.","frame":1264},{"word":"Those","frame":1279},{"word":"samples","frame":1285},{"word":"are","frame":1293},{"word":"the","frame":1298},{"word":"dot","frame":1301},{"word":"turning","frame":1307},{"word":"90","frame":1315},{"word":"degrees","frame":1325},{"word":"every","frame":1337},{"word":"sample.","frame":1346},{"word":"1000","frame":1365},{"word":"hertz","frame":1376},{"word":"turns","frame":1390},{"word":"45","frame":1399},{"word":"degrees.","frame":1411},{"word":"4000","frame":1438},{"word":"turns","frame":1446},{"word":"half","frame":1460},{"word":"a","frame":1467},{"word":"turn","frame":1471},{"word":"so","frame":1478},{"word":"its","frame":1484},{"word":"samples","frame":1488},{"word":"flip.","frame":1497},{"word":"That's","frame":1511},{"word":"the","frame":1521},{"word":"tone","frame":1524},{"word":"as","frame":1531},{"word":"a","frame":1535},{"word":"wheel.","frame":1537}]},{"line":5,"text":"The route's output is the same dot, only smaller and behind. How much a system scales one tone is its gain. Here, point seven. How many degrees the output's dot trails the input's is its phase. Here, ninety.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix/line02.wav","at":52.13,"start":52.13,"end":62.03,"start_frame":1564,"words":[{"word":"The","frame":1564},{"word":"route's","frame":1572},{"word":"output","frame":1580},{"word":"is","frame":1588},{"word":"the","frame":1593},{"word":"same","frame":1596},{"word":"dot,","frame":1603},{"word":"only","frame":1614},{"word":"smaller","frame":1620},{"word":"and","frame":1631},{"word":"behind.","frame":1636},{"word":"How","frame":1653},{"word":"much","frame":1655},{"word":"a","frame":1659},{"word":"system","frame":1663},{"word":"scales","frame":1671},{"word":"one","frame":1682},{"word":"tone","frame":1689},{"word":"is","frame":1695},{"word":"its","frame":1699},{"word":"gain,","frame":1704},{"word":"here","frame":1716},{"word":"0","frame":1721},{"word":".7.","frame":1727},{"word":"How","frame":1748},{"word":"many","frame":1751},{"word":"degrees","frame":1756},{"word":"the","frame":1767},{"word":"output's","frame":1772},{"word":"dot","frame":1782},{"word":"trails","frame":1788},{"word":"the","frame":1796},{"word":"inputs","frame":1801},{"word":"is","frame":1810},{"word":"its","frame":1814},{"word":"phase,","frame":1819},{"word":"here","frame":1834},{"word":"90.","frame":1844}]},{"line":6,"text":"Why does every tone come out as itself? The route adds three copies of the input: fresh, one sample old, two samples old. Draw each as an arrow scaled by its weight, and add them tip to tail. As the wheel turns, all three arrows turn together, so their sum turns at the same speed. No new tone can appear.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line06.wav","at":62.83,"start":62.83,"end":77.23,"start_frame":1885,"words":[{"word":"Why","frame":1885},{"word":"does","frame":1894},{"word":"every","frame":1899},{"word":"tone","frame":1905},{"word":"come","frame":1911},{"word":"out","frame":1917},{"word":"as","frame":1922},{"word":"itself?","frame":1926},{"word":"The","frame":1948},{"word":"root","frame":1950},{"word":"adds","frame":1955},{"word":"three","frame":1962},{"word":"copies","frame":1969},{"word":"of","frame":1980},{"word":"the","frame":1984},{"word":"input.","frame":1988},{"word":"Fresh,","frame":2007},{"word":"one","frame":2015},{"word":"sample","frame":2019},{"word":"old,","frame":2028},{"word":"two","frame":2038},{"word":"samples","frame":2042},{"word":"old.","frame":2052},{"word":"Draw","frame":2070},{"word":"each","frame":2074},{"word":"as","frame":2082},{"word":"an","frame":2086},{"word":"arrow","frame":2089},{"word":"scaled","frame":2095},{"word":"by","frame":2104},{"word":"its","frame":2109},{"word":"weight","frame":2114},{"word":"and","frame":2120},{"word":"add","frame":2125},{"word":"them","frame":2129},{"word":"tip","frame":2133},{"word":"to","frame":2139},{"word":"tail.","frame":2144},{"word":"As","frame":2158},{"word":"the","frame":2162},{"word":"wheel","frame":2165},{"word":"turns,","frame":2170},{"word":"all","frame":2184},{"word":"three","frame":2187},{"word":"arrows","frame":2192},{"word":"turn","frame":2202},{"word":"together,","frame":2209},{"word":"so","frame":2220},{"word":"their","frame":2226},{"word":"sum","frame":2230},{"word":"turns","frame":2237},{"word":"at","frame":2245},{"word":"the","frame":2250},{"word":"same","frame":2253},{"word":"speed.","frame":2259},{"word":"No","frame":2278},{"word":"new","frame":2283},{"word":"tone","frame":2288},{"word":"can","frame":2294},{"word":"appear.","frame":2299}]},{"line":7,"text":"Now sweep the tone from zero to four thousand hertz. Zero keeps one hundred percent. Two thousand keeps seventy. Four thousand, only forty. Gain and phase, for every tone: that's the frequency response. [surprise-oh] And there's the wall. Vowels live low and walk through. The edges of consonants live near three thousand, where the route keeps less than half.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line07.wav","at":78.23,"start":78.23,"end":95.73,"start_frame":2347,"words":[{"word":"Now","frame":2347},{"word":"sweep","frame":2356},{"word":"the","frame":2366},{"word":"tone","frame":2370},{"word":"from","frame":2376},{"word":"0","frame":2384},{"word":"to","frame":2392},{"word":"4000","frame":2398},{"word":"Hz.","frame":2413},{"word":"0","frame":2438},{"word":"keeps","frame":2441},{"word":"100%,","frame":2449},{"word":"2000","frame":2479},{"word":"keeps","frame":2492},{"word":"70,","frame":2507},{"word":"4000","frame":2526},{"word":"only","frame":2542},{"word":"40.","frame":2555},{"word":"Gain","frame":2576},{"word":"and","frame":2581},{"word":"phase","frame":2585},{"word":"for","frame":2595},{"word":"every","frame":2602},{"word":"tone","frame":2613},{"word":"that's","frame":2622},{"word":"the","frame":2629},{"word":"frequency","frame":2632},{"word":"response.","frame":2643},{"word":"Oh,","frame":2672},{"word":"and","frame":2681},{"word":"there's","frame":2684},{"word":"the","frame":2691},{"word":"wall.","frame":2694},{"word":"Vowels","frame":2714},{"word":"live","frame":2724},{"word":"low","frame":2730},{"word":"and","frame":2735},{"word":"walk","frame":2740},{"word":"through.","frame":2747},{"word":"The","frame":2760},{"word":"edges","frame":2762},{"word":"of","frame":2769},{"word":"consonants","frame":2774},{"word":"live","frame":2790},{"word":"near","frame":2796},{"word":"3000","frame":2801},{"word":"where","frame":2817},{"word":"the","frame":2828},{"word":"root","frame":2832},{"word":"keeps","frame":2838},{"word":"less","frame":2847},{"word":"than","frame":2852},{"word":"half.","frame":2858}]},{"line":8,"text":"Turn up the volume? Doubling everything keeps the proportions: three thousand hertz still comes out half as strong as five hundred. And the loudest callers get pushed past the line's range and clip. One knob can't fix tones scaled by different amounts.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line08.wav","at":96.93,"start":96.93,"end":109.24,"start_frame":2908,"words":[{"word":"Turn","frame":2908},{"word":"up","frame":2918},{"word":"the","frame":2922},{"word":"volume,","frame":2925},{"word":"doubling","frame":2943},{"word":"everything","frame":2953},{"word":"keeps","frame":2966},{"word":"the","frame":2975},{"word":"proportions.","frame":2980},{"word":"3000","frame":3024},{"word":"Hz","frame":3024},{"word":"still","frame":3033},{"word":"comes","frame":3041},{"word":"out","frame":3049},{"word":"half","frame":3054},{"word":"as","frame":3061},{"word":"strong","frame":3068},{"word":"as","frame":3073},{"word":"500,","frame":3078},{"word":"and","frame":3105},{"word":"the","frame":3109},{"word":"loudest","frame":3112},{"word":"callers","frame":3122},{"word":"get","frame":3133},{"word":"pushed","frame":3138},{"word":"past","frame":3145},{"word":"the","frame":3151},{"word":"line's","frame":3156},{"word":"range","frame":3164},{"word":"and","frame":3171},{"word":"clip.","frame":3174},{"word":"One","frame":3195},{"word":"knob","frame":3201},{"word":"can't","frame":3207},{"word":"fix","frame":3214},{"word":"tones","frame":3221},{"word":"scaled","frame":3230},{"word":"by","frame":3240},{"word":"different","frame":3246},{"word":"amounts.","frame":3255}]},{"line":9,"text":"Here's the fix. The route keeps seventy percent of two thousand hertz, so boost that tone by one over point seven: one point four three. Do it band by band, each band a stretch of neighboring tones with one knob, and every tone gets out at full strength. The caller steps out from behind the wall.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix2-t1/line01.wav","at":109.84,"start":109.84,"end":124.1,"start_frame":3295,"words":[{"word":"here's","frame":3295},{"word":"the","frame":3305},{"word":"fix","frame":3308},{"word":"the","frame":3316},{"word":"root","frame":3326},{"word":"keeps","frame":3331},{"word":"70","frame":3338},{"word":"percent","frame":3348},{"word":"of","frame":3358},{"word":"2000","frame":3364},{"word":"hertz","frame":3377},{"word":"so","frame":3388},{"word":"boost","frame":3400},{"word":"that","frame":3407},{"word":"tone","frame":3413},{"word":"by","frame":3420},{"word":"one","frame":3425},{"word":"over","frame":3431},{"word":"point","frame":3437},{"word":"seven","frame":3443},{"word":"1","frame":3463},{"word":".43","frame":3467},{"word":"do","frame":3484},{"word":"it","frame":3505},{"word":"band","frame":3509},{"word":"by","frame":3516},{"word":"band","frame":3521},{"word":"each","frame":3532},{"word":"band","frame":3543},{"word":"a","frame":3550},{"word":"stretch","frame":3555},{"word":"of","frame":3562},{"word":"neighboring","frame":3567},{"word":"tones","frame":3577},{"word":"with","frame":3587},{"word":"one","frame":3593},{"word":"knob","frame":3600},{"word":"and","frame":3609},{"word":"every","frame":3616},{"word":"tone","frame":3622},{"word":"gets","frame":3628},{"word":"out","frame":3634},{"word":"at","frame":3638},{"word":"full","frame":3643},{"word":"strength","frame":3647},{"word":"the","frame":3658},{"word":"caller","frame":3670},{"word":"steps","frame":3677},{"word":"out","frame":3686},{"word":"from","frame":3692},{"word":"behind","frame":3698},{"word":"the","frame":3705},{"word":"wall","frame":3710}]},{"line":10,"text":"Then a hearing clinic files a ticket. They play a whistle at five thousand hertz, and patients hear a clean three thousand. Our wheel stopped at four thousand. [sigh] What happens to a dot that turns more than half a turn per sample?","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line10.wav","at":125.3,"start":125.3,"end":136.6,"start_frame":3759,"words":[{"word":"Then","frame":3759},{"word":"a","frame":3767},{"word":"hearing","frame":3771},{"word":"clinic","frame":3777},{"word":"files","frame":3787},{"word":"a","frame":3797},{"word":"ticket.","frame":3802},{"word":"They","frame":3824},{"word":"play","frame":3826},{"word":"a","frame":3833},{"word":"whistle","frame":3836},{"word":"at","frame":3842},{"word":"5","frame":3848},{"word":",000","frame":3856},{"word":"Hz","frame":3866},{"word":"and","frame":3872},{"word":"patients","frame":3883},{"word":"hear","frame":3893},{"word":"a","frame":3900},{"word":"clean","frame":3904},{"word":"3","frame":3910},{"word":",000.","frame":3917},{"word":"Our","frame":3945},{"word":"wheels","frame":3949},{"word":"stopped","frame":3956},{"word":"at","frame":3965},{"word":"4","frame":3970},{"word":",000.","frame":3976},{"word":"What","frame":4000},{"word":"happens","frame":4013},{"word":"to","frame":4023},{"word":"a","frame":4028},{"word":"dot","frame":4032},{"word":"that","frame":4038},{"word":"turns","frame":4043},{"word":"more","frame":4052},{"word":"than","frame":4058},{"word":"half","frame":4061},{"word":"a","frame":4067},{"word":"turn","frame":4072},{"word":"per","frame":4076},{"word":"sample?","frame":4082}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%']/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const fmt = (v, d = 2) => (v < -0.0005 ? '−' : '') + Math.abs(v).toFixed(d);
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const gain = f => 0.7 + 0.3 * cosd(360 * f / 8000);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => { const [x0, y0] = pt(cx, cy, r, a0), [x1, y1] = pt(cx, cy, r, a1); return `M${x0.toFixed(1)} ${y0.toFixed(1)}A${r} ${r} 0 ${Math.abs(a1 - a0) > 180 ? 1 : 0} ${a1 > a0 ? 0 : 1} ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
+const wedgeD = (cx, cy, r, a0, a1) => { const [x0, y0] = pt(cx, cy, r, a0); return `M${cx} ${cy}L${x0.toFixed(1)} ${y0.toFixed(1)}${arcD(cx, cy, r, a0, a1).replace(/^M[^A]+/, '')}Z`; };
+const OUT2 = [0.558, 0.691, 0.719, -0.488, -0.029, -0.691, -1.248, -0.489];
+const BANDS = [[500, 250, 750], [1000, 750, 1250], [1500, 1250, 1750], [2000, 1750, 2250], [2500, 2250, 2750], [3000, 2750, 3250], [3400, 3250, 3550]];
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+function box(parent, text, x, y, w, h, cls = 'box') {
+  const id = 'X' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text;
+  Object.assign(e.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  return '#' + id;
+}
+function dot(parent, x, y, r, color, hollow) {
+  const id = 'D' + (++uid), e = el('div', { id, class: 'dot' }, parent);
+  Object.assign(e.style, { left: (x - r) + 'px', top: (y - r) + 'px', width: 2 * r + 'px', height: 2 * r + 'px', background: hollow ? C.paper : color, border: hollow ? `5px solid ${color}` : 'none' });
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const travel = (sel, pts) => { M.kf(sel, 'x', pts.map(([f, x, , e]) => [f, x, e])); M.kf(sel, 'y', pts.map(([f, , y, e]) => [f, y, e])); };
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+
+function plot({ x0, dx, base, A }) { return { X: n => x0 + n * dx, Y: v => base - v * A, x0, dx, base, A }; }
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const zeroDot = (x, y) => `<circle cx="${x}" cy="${y}" r="7" fill="${C.soft}"/>`;
+const stemSvg = (x, base, y, kind) => kind === 'in'
+  ? `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${C.soft}" stroke-width="5" stroke-dasharray="12 10"/><circle cx="${x}" cy="${y}" r="15" fill="${C.paper}" stroke="${C.soft}" stroke-width="5"/>`
+  : kind === 'acc'
+    ? `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${C.accent}" stroke-width="9" stroke-linecap="round"/>`
+    : `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${C.ink}" stroke-width="8" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="15" fill="${C.ink}"/>`;
+function stem(c, x, base, y, kind, at) {
+  const sel = layer(c, stemSvg(x, base, y, kind));
+  if (at !== undefined) { origin(sel, x, base); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + 10, 1, 'softLand']]); }
+  return sel;
+}
+const head = (x1, y1, x2, y2, len, half) => {
+  const d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d, bx = x2 - ux * len, by = y2 - uy * len;
+  return { bx, by, pts: `${x2.toFixed(1)},${y2.toFixed(1)} ${(bx - uy * half).toFixed(1)},${(by + ux * half).toFixed(1)} ${(bx + uy * half).toFixed(1)},${(by - ux * half).toFixed(1)}` };
+};
+const vecSvg = (x1, y1, x2, y2, color = C.ink, w = 7) => { const h = head(x1, y1, x2, y2, 30, 15); return `<line x1="${x1}" y1="${y1}" x2="${h.bx.toFixed(1)}" y2="${h.by.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${h.pts}" fill="${color}"/>`; };
+const arrowHead = (x, y, dir, color) => { const s = dir === 'r' ? -1 : 1; return `<path d="M ${x + s * 22} ${y - 14} L ${x} ${y} L ${x + s * 22} ${y + 14}" fill="none" stroke="${color}" stroke-width="5" stroke-linejoin="round"/>`; };
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+function cross(c, x, y, s = 1) { return layer(c, `<g stroke="${C.accent}" stroke-width="9" stroke-linecap="round"><line x1="${x}" y1="${y - 20 * s}" x2="${x + 40 * s}" y2="${y + 20 * s}"/><line x1="${x + 40 * s}" y1="${y - 20 * s}" x2="${x}" y2="${y + 20 * s}"/></g>`); }
+function steps(sel, deg, frames, len = 6) {
+  const keys = [[0, 0]];
+  frames.forEach((f, i) => { keys.push([f, -deg * i]); keys.push([f + len, -deg * (i + 1), 'softInOut']); });
+  M.kf(sel, 'rotation', keys);
+}
+
+function callWaves(c, yc, amp, from, to, at, x0, len) {
+  const crisp = [], soft = [];
+  for (let i = 0; i <= 4400; i += 2) {
+    const x = -100 + i, u = (x + 100) / 800, env = Math.abs(Math.sin(Math.PI * u)) ** 1.2;
+    const low = 0.62 * Math.sin(2 * Math.PI * 2.4 * u) + 0.3 * Math.sin(2 * Math.PI * 4.6 * u + 1.1);
+    const high = 0.34 * Math.sin(2 * Math.PI * 21 * u + 0.4) + 0.22 * Math.sin(2 * Math.PI * 33 * u + 2.0);
+    crisp.push([x, env * (low + high)]); soft.push([x, env * low]);
+  }
+  layer(c, hline(0, 1920, yc, C.rule));
+  const strip = sub(c);
+  M.kf('#' + strip.id, 'x', [[x0, 0], [x0 + len, -5 * len]]);
+  const K = 14;
+  for (let j = 0; j <= K; j++) {
+    const k = from + (to - from) * j / K, pts = crisp.map(([x, v], i) => [x, yc - amp * ((1 - k) * v + k * soft[i][1])]);
+    const on = j === 0 ? 0 : at + j * 2, off = j < K ? at + (j + 1) * 2 : undefined;
+    M.show(layer(strip, `<path d="${path(pts)}" fill="none" stroke="${k > 0.5 ? C.soft : C.ink}" stroke-width="5" stroke-linejoin="round"/>`), on, off);
+  }
+}
+
+{
+  const c = cam(1), n = 0, s2 = sceneEnd(1);
+  callWaves(c, 430, 220, 0, 1, word(1, 'edges'), n, s2 - n);
+  M.show(label(c, 'the east route', 960, 30, 'lbl', 'center'), word(1, 'route'));
+  M.show(label(c, 'old cable, smoothing circuit', 960, 100, 'lbl s', 'center'), word(1, 'cable'));
+  const tk = word(1, 'tickets');
+  M.show(label(c, 'no drops', 820, 760, 'lbl', 'right'), word(1, 'drops'), tk);
+  M.show(tick(c, 840, 800), word(1, 'drops'), tk);
+  M.show(label(c, 'no buzz', 1040, 760, 'lbl'), word(1, 'buzzes'), tk);
+  M.show(tick(c, 1270, 800), word(1, 'buzzes'), tk);
+  M.show(label(c, '“Like talking through a wall.”', 960, 690, 'note', 'center'), tk);
+  M.show(label(c, 'every word: there', 820, 790, 'lbl ok', 'right'), word(1, 'word'));
+  M.show(label(c, 'edges: gone', 900, 790, 'lbl acc'), word(1, 'edges'));
+}
+{
+  const c = cam(2);
+  const base = 600, A = 380;
+  const XA = k => 200 + k * 110, XB = k => 1300 + k * 110;
+  layer(c, hline(160, 680, base) + hline(1260, 1780, base) + [1, 2, 3, 4].map(k => zeroDot(XA(k), base)).join(''));
+  box(c, 'the east route', 730, 520, 460, 160);
+  layer(c, `<line x1="680" y1="600" x2="716" y2="600" stroke="${C.soft}" stroke-width="5"/>${arrowHead(718, 600, 'r', C.soft)}<line x1="1200" y1="600" x2="1236" y2="600" stroke="${C.soft}" stroke-width="5"/>${arrowHead(1238, 600, 'r', C.soft)}`);
+  [0, 1, 2, 3, 4].forEach(k => { label(c, String(k), XA(k), 625, 'lbl s', 'center'); label(c, String(k), XB(k), 625, 'lbl s', 'center'); });
+  label(c, 'n', 110, 625, 'lbl s');
+  label(c, 'the click going in', 420, 130, 'lbl s', 'center');
+  label(c, 'what comes back', 1520, 700, 'lbl s', 'center');
+  M.show(label(c, 'linear', 780, 20, 'lbl', 'right'), word(2, 'linear'));
+  M.show(tick(c, 800, 55), word(2, 'linear'));
+  M.show(label(c, 'time-invariant', 900, 20, 'lbl'), word(2, 'time'));
+  M.show(tick(c, 1360, 55), word(2, 'time'));
+  const ck = word(2, 'click');
+  stem(c, XA(0), base, base - A, 'in', ck);
+  M.show(label(c, '1', XA(0) + 30, base - A - 30, 'lbl s'), ck + 6);
+  const go = word(2, 'listen'), p = dot(c, 0, 0, 14, C.soft);
+  M.show(p, go, go + 30);
+  travel(p, [[go, 690, 600], [go + 12, 960, 600, 'softInOut'], [go + 28, 1240, 600, 'softInOut']]);
+  const H = [0.15, 0.7, 0.15], at = [word(2, '.15'), word(2, '.7'), word(2, '.15', 1)];
+  H.forEach((v, k) => {
+    stem(c, XB(k), base, base - v * A, 'out', at[k]);
+    M.show(label(c, fmt(v), XB(k), base - v * A - 82, 'lbl', 'center'), at[k]);
+  });
+  M.show(layer(c, [3, 4].map(k => zeroDot(XB(k), base)).join('')), at[2] + 8);
+  M.show(label(c, 'where is “muffled”?', 960, 790, 'lbl acc', 'center'), word(2, 'muffled'));
+  drift(2);
+}
+{
+  const c = cam(3);
+  const P = plot({ x0: 330, dx: 180, base: 470, A: 260 }), d = 24;
+  const xin = k => [1, 0, -1, 0][k % 4], yout = k => 0.7 * xin(k + 3);
+  layer(c, hline(270, 1690, P.base) + `<line x1="270" y1="${P.Y(0.7)}" x2="1690" y2="${P.Y(0.7)}" stroke="${C.soft}" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>`);
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach(k => label(c, String(k), P.X(k), 770, 'lbl s', 'center'));
+  label(c, 'n', 230, 770, 'lbl s', 'right');
+  label(c, '1', 230, P.Y(1) - 31, 'lbl s', 'right'); label(c, '−1', 230, P.Y(-1) - 31, 'lbl s', 'right');
+  M.show(label(c, '2,000 Hz', 960, 30, 'lbl', 'center'), word(3, '2'), word(3, 'same', 1));
+  M.show(label(c, '8,000 ÷ 2,000 = 4 samples per cycle', 960, 100, 'lbl s', 'center'), word(3, '8'), word(3, 'same', 1));
+  const said = [word(3, '1'), word(3, ',0,'), word(3, 'minus'), word(3, ',0,', 1)];
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach(k => {
+    const at = k < 4 ? said[k] : said[3] + 4 + (k - 4) * 3;
+    if (xin(k)) stem(c, P.X(k) - d, P.base, P.Y(xin(k)), 'in', at); else M.show(layer(c, zeroDot(P.X(k) - d, P.base)), at);
+  });
+  const so = word(3, 'same');
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach(k => {
+    const at = so + k * 3;
+    if (yout(k)) stem(c, P.X(k) + d, P.base, P.Y(yout(k)), 'out', at); else M.show(layer(c, zeroDot(P.X(k) + d, P.base)), at);
+  });
+  const sv = word(3, '70'), bx = P.X(5) + 75;
+  M.show(layer(c, `<g stroke="${C.accent}" stroke-width="5"><line x1="${bx}" y1="${P.base}" x2="${bx}" y2="${P.Y(0.7)}"/><line x1="${bx - 14}" y1="${P.Y(0.7)}" x2="${bx + 14}" y2="${P.Y(0.7)}"/><line x1="${bx - 14}" y1="${P.base}" x2="${bx + 14}" y2="${P.base}"/></g>`), sv);
+  M.show(label(c, '70%', bx + 22, P.Y(0.35) - 31, 'lbl acc'), sv);
+  const lt = word(3, 'late');
+  M.show(layer(c, vecSvg(P.X(0) - d + 18, P.Y(1) - 6, P.X(1) + d - 18, P.Y(0.7) - 10, C.accent, 6)), lt);
+  M.show(label(c, '1 sample later', P.X(1) + d + 30, P.Y(0.7) - 8, 'lbl s acc'), lt);
+  layer(c, `<line x1="1740" y1="236" x2="1740" y2="290" stroke="${C.soft}" stroke-width="5" stroke-dasharray="8 6"/><circle cx="1740" cy="236" r="13" fill="${C.paper}" stroke="${C.soft}" stroke-width="5"/>`);
+  M.show(layer(c, `<line x1="1740" y1="336" x2="1740" y2="390" stroke="${C.ink}" stroke-width="7"/><circle cx="1740" cy="336" r="13" fill="${C.ink}"/>`), so);
+  label(c, 'in', 1770, 220, 'lbl s');
+  M.show(label(c, 'out', 1770, 320, 'lbl'), so);
+  const st = word(3, 'same', 1);
+  M.show(label(c, '2,000 Hz in, 2,000 Hz out', 960, 30, 'lbl', 'center'), st);
+  M.show(tick(c, 1390, 70), st);
+  drift(3);
+}
+{
+  const c = cam(4), R = 150, cy = 360, rowY = k => 560 + k * 44;
+  const cells = [[1000, 400], [2000, 960], [4000, 1520]];
+  const on = { 1000: word(4, '1000'), 2000: sceneStart(4), 4000: word(4, '4000') };
+  const go = { 1000: on[1000] + 10, 2000: word(4, 'turning'), 4000: on[4000] + 8 };
+  const gap = { 1000: 6, 2000: 10, 4000: 6 };
+  cells.forEach(([f, cx]) => {
+    const t = 360 * f / 8000, uniq = Math.round(360 / (t || 360)), g = sub(c), gs = '#' + g.id;
+    M.show(gs, on[f]);
+    const stops = Array.from({ length: Math.min(uniq, 8) }, (_, k) => { const [x, y] = pt(cx, cy, R, t * k); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${C.soft}"/>`; }).join('');
+    layer(g, hline(cx - R - 24, cx + R + 24, cy) + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + stops +
+      `<line x1="${cx}" y1="${rowY(0) - 22}" x2="${cx}" y2="${rowY(7) + 22}" stroke="${C.soft}" stroke-width="3"/>` +
+      [cx - R, cx + R].map(x => `<line x1="${x}" y1="${rowY(0) - 22}" x2="${x}" y2="${rowY(7) + 22}" stroke="${C.soft}" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>`).join(''));
+    label(g, `${f.toLocaleString('en-US')} Hz  ${t}°`, cx, 120, f === 2000 ? 'lbl' : 'lbl s', 'center');
+    const spin = layer(g, `<line x1="${cx}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/><circle cx="${cx + R}" cy="${cy}" r="20" fill="${C.accent}"/>`);
+    origin(spin, cx, cy);
+    const fr = Array.from({ length: 7 }, (_, k) => go[f] + k * gap[f]);
+    steps(spin, t, fr);
+    for (let k = 0; k < 8; k++) {
+      const x = cx + R * cosd(t * k), at = k ? fr[k - 1] + 6 : (f === 2000 ? word(4, 'sample') : on[f] + 2);
+      M.show(layer(g, `<line x1="${cx}" y1="${rowY(k)}" x2="${x.toFixed(1)}" y2="${rowY(k)}" stroke="${C.ink}" stroke-width="6"/><circle cx="${x.toFixed(1)}" cy="${rowY(k)}" r="10" fill="${C.ink}"/>`), at);
+    }
+  });
+  const lr = word(4, 'left');
+  M.show(label(c, '−1', 960 - R - 30, cy - 70, 'lbl s', 'right'), lr);
+  M.show(label(c, '+1', 960 + R + 30, cy - 70, 'lbl s'), lr);
+  M.show(label(c, 'n = 0', 960 - R - 24, rowY(0) - 29, 'lbl s', 'right'), word(4, 'sample'));
+  M.show(label(c, '7', 960 - R - 24, rowY(7) - 29, 'lbl s', 'right'), go[2000] + 66);
+  M.show(label(c, 'the tone as a wheel', 960, 30, 'lbl', 'center'), word(4, "that's"));
+  drift(4);
+}
+{
+  const c = cam(5), cx = 600, cy = 470, R = 330, r = 231;
+  layer(c, hline(cx - R - 30, cx + R + 30, cy) + `<line x1="${cx}" y1="${cy - R - 30}" x2="${cx}" y2="${cy + R + 30}" stroke="${C.soft}" stroke-width="3"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="14 10"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  const ph = word(5, 'phase'), spin = layer(c, `<path d="${wedgeD(cx, cy, r - 20, 0, 90)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="4"/>` +
+    `<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - R}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/><circle cx="${cx}" cy="${cy - R}" r="22" fill="${C.paper}" stroke="${C.soft}" stroke-width="6"/>` +
+    `<line x1="${cx}" y1="${cy}" x2="${cx + r}" y2="${cy}" stroke="${C.ink}" stroke-width="5"/><circle cx="${cx + r}" cy="${cy}" r="20" fill="${C.ink}"/>`);
+  origin(spin, cx, cy);
+  const s0 = sceneStart(5) + 12, n = Math.floor((ph - 20 - s0) / 64) * 4;
+  steps(spin, 90, Array.from({ length: n }, (_, k) => s0 + k * 16), 8);
+  label(c, '2,000 Hz, through the route', 1060, 120, 'lbl s');
+  layer(c, `<circle cx="1090" cy="281" r="18" fill="${C.paper}" stroke="${C.soft}" stroke-width="6"/>`);
+  label(c, 'in: size 1', 1140, 250, 'lbl s');
+  M.show(layer(c, `<circle cx="1090" cy="371" r="18" fill="${C.ink}"/>`), word(5, 'output'));
+  M.show(label(c, 'out: size 0.70', 1140, 340, 'lbl'), word(5, 'smaller'));
+  M.show(label(c, 'gain = 0.70 ÷ 1 = 0.70', 1060, 480, 'lbl'), word(5, 'gain'));
+  M.show(layer(c, `<path d="${wedgeD(1090, 625, 34, 0, 90)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="4"/>`), ph);
+  M.show(label(c, 'phase = 90°', 1140, 570, 'lbl acc'), ph);
+  M.show(label(c, '90°', cx + 40, cy - 110, 'lbl acc'), ph);
+  M.show(label(c, 'one sample behind', 1060, 660, 'lbl s'), word(5, '90'));
+  drift(5);
+}
+{
+  const c = cam(6), cx = 470, cy = 480, R = 270, ox = 1180, oy = 470, s = 400, w = 45;
+  const H = [0.15, 0.7, 0.15];
+  layer(c, hline(cx - R - 30, cx + R + 30, cy) + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(ox - 60, ox + 540, oy, C.rule));
+  M.show(label(c, '1,000 Hz: three copies', 960, 30, 'lbl s', 'center'), sceneStart(6), word(6, 'arrow'));
+  const fr = word(6, 'fresh'), o1 = word(6, 'one'), o2 = word(6, 'two'), ar = word(6, 'arrow'), tail = word(6, 'tail');
+  const dotSvg = (a, kind) => { const [x, y] = pt(cx, cy, R, a); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/>` + (kind === 0 ? `<circle cx="${x}" cy="${y}" r="20" fill="${C.ink}"/>` : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="18" fill="${C.paper}" stroke="${kind === 1 ? C.ink : C.soft}" stroke-width="6"/>`); };
+  const pts = [[ox, oy]];
+  H.forEach((h, k) => { const [px, py] = pts[k]; pts.push([px + s * h * cosd(-w * k), py - s * h * sind(-w * k)]); });
+  const chainInner = k => vecSvg(pts[k][0], pts[k][1], pts[k + 1][0], pts[k + 1][1], C.ink, 7);
+  const sumInner = vecSvg(ox, oy, pts[3][0], pts[3][1], C.accent, 9);
+  const turn = word(6, 'turns'), tw = word(6, 'turn', 1);
+  const ghost = layer(c, `<g opacity="0.16">${dotSvg(0, 0)}${dotSvg(-w, 1)}${dotSvg(-2 * w, 2)}${[0, 1, 2].map(chainInner).join('')}${sumInner}</g>`);
+  M.show(ghost, turn);
+  const wheel = sub(c), ws = '#' + wheel.id, chain = sub(c), cs = '#' + chain.id;
+  origin(ws, cx, cy); origin(cs, ox, oy);
+  [[fr, 0], [o1, -w], [o2, -2 * w]].forEach(([at, a], k) => M.show(layer(wheel, dotSvg(a, k)), at));
+  M.show(layer(wheel, `<path d="${arcD(cx, cy, 80, -w, 0)}" fill="none" stroke="${C.soft}" stroke-width="4"/>`), o1);
+  const segAt = [ar, word(6, 'scaled'), word(6, 'weight')];
+  [0, 1, 2].forEach(k => M.show(layer(chain, chainInner(k)), segAt[k]));
+  M.show(layer(chain, sumInner), tail);
+  steps(ws, w, [turn, tw], 12); steps(cs, w, [turn, tw], 12);
+  const lbFresh = label(c, 'fresh', cx + R + 40, cy - 31, 'lbl s'), lb1 = label(c, '1 old', pt(cx, cy, R + 40, -w)[0], pt(cx, cy, R + 40, -w)[1] - 10, 'lbl s'), lb2 = label(c, '2 old', cx, cy + R + 20, 'lbl s', 'center'), lb45 = label(c, '45°', cx + 90, cy + 10, 'lbl s');
+  M.show(lbFresh, fr, turn); M.show(lb1, o1, turn); M.show(lb2, o2, turn); M.show(lb45, o1, turn);
+  M.show(label(c, '1,000 Hz: the same copies as arrows', 960, 30, 'lbl s', 'center'), ar);
+  const mid = (a, b, off) => { const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, d = Math.hypot(b[0] - a[0], b[1] - a[1]); return [mx + (b[1] - a[1]) / d * off, my - (b[0] - a[0]) / d * off]; };
+  const rot = (p, a) => { const dx = p[0] - ox, dy = p[1] - oy; return [ox + dx * cosd(a) + dy * sind(a), oy - dx * sind(a) + dy * cosd(a)]; };
+  const back = tw + 12;
+  [['0.15', 0, 40], ['0.70', 1, 60], ['0.15', 2, 70]].forEach(([t, k, off]) => {
+    const [x, y] = mid(pts[k], pts[k + 1], off), [rx, ry] = rot([x, y], 2 * w);
+    M.show(label(c, t, x, y - 31, 'lbl', 'center'), segAt[k], turn); M.show(label(c, t, rx - (k ? 0 : 60), ry - 31, 'lbl', 'center'), back);
+  });
+  const sm = mid(pts[0], pts[3], -60), [sx, sy] = rot(sm, 2 * w);
+  M.show(label(c, 'sum 0.912', sm[0], sm[1] - 31, 'lbl acc', 'right'), tail, turn);
+  M.show(label(c, 'sum 0.912', sx + 40, sy - 31, 'lbl acc'), back);
+  [['fresh', 0], ['1 old', -w], ['2 old', -2 * w]].forEach(([t, a]) => { const [x, y] = pt(cx, cy, R + 50, a + 2 * w); M.show(label(c, t, x, y - 31, 'lbl s', a === 0 ? 'center' : 'left'), back); });
+  M.show(label(c, 'all turn together', 960, 100, 'lbl acc', 'center'), tw + 14);
+  M.show(label(c, 'sum: same speed, same tone', 960, 800, 'lbl', 'center'), word(6, 'speed'));
+  M.show(tick(c, 1530, 840), word(6, 'appear'));
+  drift(6);
+}
+{
+  const c = cam(7), X = f => 300 + f * 0.35, Y = v => 600 - v * 400, Q = d => 840 - d * 120 / 180;
+  const vw = word(7, 'vowels'), cn = word(7, 'consonants'), wl = word(7, 'wall');
+  M.show(layer(c, `<rect x="${X(300)}" y="${Y(1)}" width="${X(1000) - X(300)}" height="400" fill="${C.paper2}" stroke="${C.soft}" stroke-width="3"/>`), vw);
+  M.show(layer(c, `<rect x="${X(2000)}" y="${Y(1)}" width="${X(3400) - X(2000)}" height="400" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="3"/>`), wl);
+  M.show(label(c, 'vowels', (X(300) + X(1000)) / 2, 520, 'lbl s', 'center'), vw);
+  M.show(label(c, 'consonant edges', (X(2000) + X(3400)) / 2, 520, 'lbl acc', 'center'), cn);
+  layer(c, hline(300, 1700, 600) + hline(300, 1700, 840) + `<line x1="300" y1="${Y(1.05)}" x2="300" y2="600" stroke="${C.soft}" stroke-width="3"/><line x1="300" y1="700" x2="300" y2="840" stroke="${C.soft}" stroke-width="3"/>`);
+  [[1, '100%'], [0.5, '50%'], [0, '0%']].forEach(([v, t]) => label(c, t, 280, Y(v) - 29, 'lbl s', 'right'));
+  [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(c, t, f === 4000 ? 1790 : X(f), 612, 'lbl s', f === 4000 ? 'right' : 'center'));
+  const sw = word(7, 'sweep'), z = word(7, '0', 1), m2 = word(7, '2000'), m4 = word(7, '4000', 1);
+  const gp = [], pp = [];
+  for (let f = 0; f <= 4000; f += 20) { gp.push([X(f), Y(gain(f))]); pp.push([X(f), Q(f * 45 / 1000)]); }
+  const a = sw + 6, b = z - 4;
+  reveal(layer(c, `<path d="${path(gp)}" fill="none" stroke="${C.ink}" stroke-width="7"/>`, [300, 1700]), a, b, 'cruise');
+  reveal(layer(c, `<path d="${path(pp)}" fill="none" stroke="${C.ink}" stroke-width="5"/>`, [300, 1700]), a, b, 'cruise');
+  const mk = dot(c, 0, 0, 16, C.accent);
+  M.show(mk, a, b + 2);
+  const kk = [];
+  for (let i = 0; i <= 10; i++) { const f = 400 * i, fr = a + (b - a) * i / 10; kk.push([fr, X(f), Y(gain(f))]); }
+  travel(mk, kk);
+  const mark = (f, t, at, cls = 'lbl', dx = 20, dy = -80) => { M.show(layer(c, `<circle cx="${X(f)}" cy="${Y(gain(f))}" r="14" fill="${cls.includes('acc') ? C.accent : C.ink}"/>`), at); M.show(label(c, t, X(f) + dx, Y(gain(f)) + dy, cls), at); };
+  M.show(layer(c, `<circle cx="${X(0)}" cy="${Y(1)}" r="14" fill="${C.ink}"/>`), z);
+  mark(2000, '70%', m2, 'lbl', 20, -80);
+  mark(4000, '40%', m4, 'lbl', -120, 24);
+  mark(3000, '“s”: 49%', cn, 'lbl acc', 20, -84);
+  M.show(layer(c, `<line x1="${X(2000)}" y1="${Y(0.5)}" x2="${X(3400)}" y2="${Y(0.5)}" stroke="${C.accent}" stroke-width="4" stroke-dasharray="14 10"/>`), word(7, 'half'));
+  M.show(label(c, 'gain: how much of each tone the route keeps', 300, 110, 'lbl s'), word(7, 'gain'));
+  M.show(label(c, 'phase: 0° to 180°, 45° per 1,000 Hz', 340, 690, 'lbl s'), word(7, 'phase'));
+  M.show(label(c, 'the frequency response', 960, 30, 'lbl', 'center'), word(7, 'frequency'));
+  drift(7, 1, 1.04);
+}
+{
+  const c = cam(8), lo = word(8, 'loudest');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(8), lo); M.show('#' + b.id, lo);
+  const base = 700, U = 230, xs = [720, 1200], v0 = [0.977, 0.488], v2 = [1.954, 0.976], db = word(8, 'doubling');
+  layer(a, hline(520, 1400, base) + `<line x1="520" y1="${base - U}" x2="1400" y2="${base - U}" stroke="${C.soft}" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>`);
+  label(a, '1', 500, base - U - 29, 'lbl s', 'right'); label(a, '2', 500, base - 2 * U - 29, 'lbl s', 'right');
+  label(a, '500 Hz vowel', xs[0], 712, 'lbl s', 'center'); label(a, '3,000 Hz edge', xs[1], 712, 'lbl s', 'center');
+  M.show(label(a, 'a voice: equal parts going in, after the route', 960, 30, 'lbl s', 'center'), sceneStart(8), db);
+  M.show(label(a, 'after the route, volume × 2', 960, 30, 'lbl', 'center'), db);
+  xs.forEach((x, i) => {
+    const bar = layer(a, `<rect x="${x - 80}" y="${base - v2[i] * U}" width="160" height="${v2[i] * U}" fill="${C.ink}"/>`);
+    origin(bar, x, base);
+    M.kf(bar, 'scaleY', [[0, v0[i] / v2[i]], [db, v0[i] / v2[i]], [db + 14, 1, 'softLand']]);
+    M.show(label(a, fmt(v0[i], 3), x, base - v0[i] * U - 72, 'lbl', 'center'), sceneStart(8), db + 8);
+    M.show(layer(a, `<rect x="${x - 80}" y="${base - v0[i] * U}" width="160" height="${v0[i] * U}" fill="none" stroke="${C.paper}" stroke-width="5" stroke-dasharray="14 10"/>`), db + 14);
+    M.show(label(a, fmt(v2[i]), x, base - v2[i] * U - 72, 'lbl', 'center'), db + 8);
+  });
+  M.show(label(a, 'volume × 1: 0.488 ÷ 0.977 = 0.50', 960, 790, 'lbl s', 'center'), sceneStart(8), word(8, 'half'));
+  M.show(label(a, '0.98 ÷ 1.95 = 0.50: still half', 960, 790, 'lbl acc', 'center'), word(8, 'half'));
+  const P = plot({ x0: 420, dx: 150, base: 450, A: 260 }), X = k => P.X(k - 2);
+  layer(b, `<rect x="360" y="${P.Y(1)}" width="1200" height="${2 * P.A}" fill="${C.paper2}"/>` + hline(360, 1560, P.base));
+  label(b, 'the line’s range, −1 to 1', 1550, P.Y(1) + 10, 'lbl s', 'right');
+  label(b, '1', 340, P.Y(1) - 29, 'lbl s', 'right'); label(b, '−1', 340, P.Y(-1) - 29, 'lbl s', 'right');
+  M.show(label(b, 'a loud caller’s samples, through the route, × 2', 360, 30, 'lbl s'), lo, word(8, 'knob'));
+  [2, 3, 4, 5, 6, 7, 8, 9].forEach(k => label(b, String(k), X(k), 800, 'lbl s', 'center'));
+  const ps = word(8, 'pushed'), cl = word(8, 'clip');
+  OUT2.forEach((v, i) => {
+    const k = i + 2, at = lo + i * 3;
+    if (Math.abs(v) > 1) {
+      M.show(layer(b, stemSvg(X(k), P.base, P.Y(v), 'in')), ps);
+      M.show(layer(b, stemSvg(X(k), P.base, P.Y(-1), 'acc') + `<line x1="${X(k) - 26}" y1="${P.Y(-1)}" x2="${X(k) + 26}" y2="${P.Y(-1)}" stroke="${C.accent}" stroke-width="9" stroke-linecap="round"/>`), cl);
+      M.show(label(b, 'asks −1.25, cut to −1', X(k) - 50, P.Y(-1) + 4, 'lbl acc', 'right'), cl);
+    } else stem(b, X(k), P.base, P.Y(v), 'out', at);
+  });
+  M.show(label(b, 'clipped: lesson 1’s buzz', 1560, 110, 'lbl acc', 'right'), cl + 10);
+  M.show(cross(b, 360, 62), word(8, 'knob'));
+  M.show(label(b, 'one knob: × 2 for every tone', 420, 30, 'lbl'), word(8, 'knob'));
+  drift(8);
+}
+{
+  const c = cam(9), cl = word(9, 'caller');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(9), cl); M.show('#' + b.id, cl);
+  const X = f => 300 + f * 0.35, Y = v => 760 - v * 220;
+  const bd = word(9, 'band');
+  M.show(layer(a, BANDS.map(([, lo, hi]) => `<rect x="${X(lo)}" y="${Y(2.5)}" width="${X(hi) - X(lo)}" height="${Y(0) - Y(2.5)}" fill="${C.paper2}" stroke="${C.rule}" stroke-width="3"/>`).join('')), bd);
+  layer(a, hline(300, 1700, 760) + `<line x1="300" y1="${Y(2.5)}" x2="300" y2="760" stroke="${C.soft}" stroke-width="3"/><line x1="300" y1="${Y(1)}" x2="1700" y2="${Y(1)}" stroke="${C.soft}" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>`);
+  [[2, '200%'], [1, '100%'], [0, '0%']].forEach(([v, t]) => label(a, t, 280, Y(v) - 29, 'lbl s', 'right'));
+  [[0, '0'], [2000, '2,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(a, t, f === 4000 ? 1790 : X(f), 772, 'lbl s', f === 4000 ? 'right' : 'center'));
+  const gp = []; for (let f = 0; f <= 4000; f += 20) gp.push([X(f), Y(gain(f))]);
+  layer(a, `<path d="${path(gp)}" fill="none" stroke="${C.ink}" stroke-width="7"/>`);
+  label(a, 'the route', 1150, 662, 'lbl');
+  const s70 = word(9, '70'), bo = word(9, 'boost'), ov = word(9, 'over'), p43 = word(9, '.43');
+  M.show(layer(a, `<circle cx="${X(2000)}" cy="${Y(0.7)}" r="15" fill="${C.ink}"/>`), s70, bd);
+  M.show(label(a, '70%', X(2000) + 20, Y(0.7) + 6, 'lbl'), s70, bd);
+  M.show(layer(a, vecSvg(X(2000), Y(0.7) - 20, X(2000), Y(1) - 6, C.input, 7)), bo, bd);
+  M.show(label(a, 'boost: 1 ÷ 0.70', 960, 30, 'lbl ok', 'center'), ov, p43);
+  M.show(label(a, 'boost: 1 ÷ 0.70 = × 1.43', 960, 30, 'lbl ok', 'center'), p43, word(9, 'full'));
+  BANDS.forEach(([f, lo, hi], i) => {
+    const at = bd + 4 + i * 4, v = 1 / gain(f);
+    M.show(layer(a, `<line x1="${X(lo) + 8}" y1="${Y(v)}" x2="${X(hi) - 8}" y2="${Y(v)}" stroke="${C.input}" stroke-width="9" stroke-linecap="round"/>`), at);
+    M.show(label(a, fmt(v), X(f), Y(v) - 66, 'lbl s ok', 'center'), at);
+  });
+  M.show(label(a, '× boost, one knob per band', 300, 100, 'lbl ok'), bd + 30, word(9, 'full'));
+  const fu = word(9, 'full');
+  M.show(layer(a, BANDS.map(([f]) => `<circle cx="${X(f)}" cy="${Y(1)}" r="15" fill="${C.ink}"/>`).join('')), fu);
+  M.show(label(a, 'route × boost = 100% in every band', 960, 30, 'lbl', 'center'), fu);
+  M.show(label(a, 'together', 1560, Y(1) - 74, 'lbl'), fu);
+  M.show(tick(a, 1580, 70), fu);
+  callWaves(b, 430, 220, 1, 0, cl + 4, cl, sceneEnd(9) - cl);
+  M.show(label(b, 'every word, edges back', 960, 760, 'lbl ok', 'center'), word(9, 'steps'));
+  drift(9);
+}
+{
+  const c = cam(10), cx = 560, cy = 500, R = 270;
+  const tk = word(10, 'ticket'), wh = word(10, 'wheels'), mo = word(10, 'more'), q = word(10, 'sample');
+  M.show(label(c, 'next ticket: a hearing clinic', 960, 30, 'lbl s', 'center'), tk);
+  M.show(label(c, 'plays 5,000 Hz', 1100, 330, 'lbl'), word(10, '5'));
+  M.show(label(c, 'patients hear 3,000 Hz', 1100, 420, 'lbl acc'), word(10, 'hear'));
+  const stops = [[0, '0'], [45, '1,000'], [90, '2,000'], [135, '3,000'], [180, '4,000']];
+  layer(c, hline(cx - R - 30, cx + R + 30, cy) + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  stops.forEach(([a, t], i) => {
+    const [x, y] = pt(cx, cy, R, a), [lx, ly] = pt(cx, cy, R + (a % 90 ? 80 : 40), a), at = wh + i * 3;
+    M.show(layer(c, `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="14" fill="${C.ink}"/>`), at);
+    M.show(label(c, t, lx, ly - 29, 'lbl s', a === 0 ? 'left' : a === 180 ? 'right' : 'center'), at);
+  });
+  const spin = layer(c, `<line x1="${cx}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/><circle cx="${cx + R}" cy="${cy}" r="20" fill="${C.accent}"/>`);
+  origin(spin, cx, cy);
+  steps(spin, 45, [wh, wh + 3, wh + 6, wh + 9], 3);
+  const [ex, ey] = pt(cx, cy, R, 225);
+  M.show(layer(c, `<path d="${arcD(cx, cy, R, 180, 225)}" fill="none" stroke="${C.accent}" stroke-width="8" stroke-dasharray="14 10"/><circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="20" fill="${C.paper}" stroke="${C.accent}" stroke-width="6"/>`), mo);
+  M.show(label(c, '5,000 Hz: 225°?', 1100, 600, 'lbl acc'), q);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

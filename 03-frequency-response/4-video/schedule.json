@@ -1,0 +1,1977 @@
+{
+ "fps": 30,
+ "duration": 137.1,
+ "wpm": 211,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The echo is gone. Then a new route opens to the east, through old cable and a smoothing circuit. Nothing drops, nothing buzzes. Yet the tickets say: it's like talking through a wall. Every word is there, but its edges are gone.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 11.5,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "the",
+     "frame": 18
+    },
+    {
+     "word": "echo",
+     "frame": 26
+    },
+    {
+     "word": "is",
+     "frame": 35
+    },
+    {
+     "word": "gone",
+     "frame": 40
+    },
+    {
+     "word": "then",
+     "frame": 48
+    },
+    {
+     "word": "a",
+     "frame": 59
+    },
+    {
+     "word": "new",
+     "frame": 63
+    },
+    {
+     "word": "route",
+     "frame": 68
+    },
+    {
+     "word": "opens",
+     "frame": 75
+    },
+    {
+     "word": "to",
+     "frame": 85
+    },
+    {
+     "word": "the",
+     "frame": 89
+    },
+    {
+     "word": "east",
+     "frame": 92
+    },
+    {
+     "word": "through",
+     "frame": 101
+    },
+    {
+     "word": "old",
+     "frame": 109
+    },
+    {
+     "word": "cable",
+     "frame": 115
+    },
+    {
+     "word": "and",
+     "frame": 124
+    },
+    {
+     "word": "a",
+     "frame": 130
+    },
+    {
+     "word": "smoothing",
+     "frame": 134
+    },
+    {
+     "word": "circuit",
+     "frame": 143
+    },
+    {
+     "word": "nothing",
+     "frame": 163
+    },
+    {
+     "word": "drops",
+     "frame": 169
+    },
+    {
+     "word": "nothing",
+     "frame": 181
+    },
+    {
+     "word": "buzzes",
+     "frame": 192
+    },
+    {
+     "word": "yet",
+     "frame": 207
+    },
+    {
+     "word": "the",
+     "frame": 216
+    },
+    {
+     "word": "tickets",
+     "frame": 220
+    },
+    {
+     "word": "say",
+     "frame": 228
+    },
+    {
+     "word": "it's",
+     "frame": 238
+    },
+    {
+     "word": "like",
+     "frame": 245
+    },
+    {
+     "word": "talking",
+     "frame": 250
+    },
+    {
+     "word": "through",
+     "frame": 259
+    },
+    {
+     "word": "a",
+     "frame": 265
+    },
+    {
+     "word": "wall",
+     "frame": 269
+    },
+    {
+     "word": "every",
+     "frame": 286
+    },
+    {
+     "word": "word",
+     "frame": 290
+    },
+    {
+     "word": "is",
+     "frame": 296
+    },
+    {
+     "word": "there",
+     "frame": 300
+    },
+    {
+     "word": "but",
+     "frame": 307
+    },
+    {
+     "word": "its",
+     "frame": 312
+    },
+    {
+     "word": "edges",
+     "frame": 317
+    },
+    {
+     "word": "are",
+     "frame": 323
+    },
+    {
+     "word": "gone",
+     "frame": 329
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "The route is linear and time-invariant, so do what lesson two taught you: send one click and listen. It comes back smeared across three samples: point one five, point seven, point one five. But nowhere in those numbers is the word muffled. We need a different question.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix/line01.wav",
+   "at": 12.3,
+   "start": 12.3,
+   "end": 25.32,
+   "start_frame": 369,
+   "words": [
+    {
+     "word": "The",
+     "frame": 369
+    },
+    {
+     "word": "root",
+     "frame": 377
+    },
+    {
+     "word": "is",
+     "frame": 382
+    },
+    {
+     "word": "linear",
+     "frame": 388
+    },
+    {
+     "word": "and",
+     "frame": 396
+    },
+    {
+     "word": "time",
+     "frame": 403
+    },
+    {
+     "word": "-invariant,",
+     "frame": 410
+    },
+    {
+     "word": "so",
+     "frame": 430
+    },
+    {
+     "word": "do",
+     "frame": 432
+    },
+    {
+     "word": "what",
+     "frame": 436
+    },
+    {
+     "word": "lesson",
+     "frame": 440
+    },
+    {
+     "word": "two",
+     "frame": 448
+    },
+    {
+     "word": "taught",
+     "frame": 455
+    },
+    {
+     "word": "you.",
+     "frame": 463
+    },
+    {
+     "word": "Send",
+     "frame": 481
+    },
+    {
+     "word": "one",
+     "frame": 485
+    },
+    {
+     "word": "click",
+     "frame": 490
+    },
+    {
+     "word": "and",
+     "frame": 498
+    },
+    {
+     "word": "listen.",
+     "frame": 504
+    },
+    {
+     "word": "It",
+     "frame": 526
+    },
+    {
+     "word": "comes",
+     "frame": 528
+    },
+    {
+     "word": "back",
+     "frame": 534
+    },
+    {
+     "word": "smeared",
+     "frame": 541
+    },
+    {
+     "word": "across",
+     "frame": 550
+    },
+    {
+     "word": "three",
+     "frame": 557
+    },
+    {
+     "word": "samples,",
+     "frame": 565
+    },
+    {
+     "word": ".15,",
+     "frame": 583
+    },
+    {
+     "word": ".7,",
+     "frame": 601
+    },
+    {
+     "word": ".15,",
+     "frame": 626
+    },
+    {
+     "word": "but",
+     "frame": 650
+    },
+    {
+     "word": "nowhere",
+     "frame": 653
+    },
+    {
+     "word": "in",
+     "frame": 659
+    },
+    {
+     "word": "those",
+     "frame": 665
+    },
+    {
+     "word": "numbers",
+     "frame": 670
+    },
+    {
+     "word": "is",
+     "frame": 679
+    },
+    {
+     "word": "the",
+     "frame": 686
+    },
+    {
+     "word": "word",
+     "frame": 689
+    },
+    {
+     "word": "muffled.",
+     "frame": 695
+    },
+    {
+     "word": "We",
+     "frame": 719
+    },
+    {
+     "word": "need",
+     "frame": 723
+    },
+    {
+     "word": "a",
+     "frame": 728
+    },
+    {
+     "word": "different",
+     "frame": 730
+    },
+    {
+     "word": "question.",
+     "frame": 736
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "So feed it one steady tone: two thousand hertz. At eight thousand samples a second, that's one, zero, minus one, zero. What comes out? The same pattern, shrunk to seventy percent, one sample late. A tone went in, and the same tone came out.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line03.wav",
+   "at": 26.32,
+   "start": 26.32,
+   "end": 37.8,
+   "start_frame": 790,
+   "words": [
+    {
+     "word": "So",
+     "frame": 790
+    },
+    {
+     "word": "feed",
+     "frame": 799
+    },
+    {
+     "word": "it",
+     "frame": 805
+    },
+    {
+     "word": "one",
+     "frame": 809
+    },
+    {
+     "word": "steady",
+     "frame": 814
+    },
+    {
+     "word": "tone,",
+     "frame": 823
+    },
+    {
+     "word": "2",
+     "frame": 841
+    },
+    {
+     "word": ",000",
+     "frame": 847
+    },
+    {
+     "word": "hertz.",
+     "frame": 857
+    },
+    {
+     "word": "At",
+     "frame": 880
+    },
+    {
+     "word": "8",
+     "frame": 884
+    },
+    {
+     "word": ",000",
+     "frame": 889
+    },
+    {
+     "word": "samples",
+     "frame": 897
+    },
+    {
+     "word": "a",
+     "frame": 907
+    },
+    {
+     "word": "second,",
+     "frame": 911
+    },
+    {
+     "word": "that's",
+     "frame": 920
+    },
+    {
+     "word": "1",
+     "frame": 926
+    },
+    {
+     "word": ",0,",
+     "frame": 932
+    },
+    {
+     "word": "minus",
+     "frame": 943
+    },
+    {
+     "word": "1",
+     "frame": 949
+    },
+    {
+     "word": ",0,",
+     "frame": 956
+    },
+    {
+     "word": "what",
+     "frame": 965
+    },
+    {
+     "word": "comes",
+     "frame": 969
+    },
+    {
+     "word": "out?",
+     "frame": 976
+    },
+    {
+     "word": "The",
+     "frame": 991
+    },
+    {
+     "word": "same",
+     "frame": 994
+    },
+    {
+     "word": "pattern,",
+     "frame": 1000
+    },
+    {
+     "word": "shrunk",
+     "frame": 1018
+    },
+    {
+     "word": "to",
+     "frame": 1029
+    },
+    {
+     "word": "70",
+     "frame": 1033
+    },
+    {
+     "word": "%",
+     "frame": 1041
+    },
+    {
+     "word": "one",
+     "frame": 1049
+    },
+    {
+     "word": "sample",
+     "frame": 1057
+    },
+    {
+     "word": "late,",
+     "frame": 1066
+    },
+    {
+     "word": "a",
+     "frame": 1075
+    },
+    {
+     "word": "tone",
+     "frame": 1079
+    },
+    {
+     "word": "went",
+     "frame": 1085
+    },
+    {
+     "word": "in,",
+     "frame": 1091
+    },
+    {
+     "word": "and",
+     "frame": 1100
+    },
+    {
+     "word": "the",
+     "frame": 1102
+    },
+    {
+     "word": "same",
+     "frame": 1105
+    },
+    {
+     "word": "tone",
+     "frame": 1111
+    },
+    {
+     "word": "came",
+     "frame": 1118
+    },
+    {
+     "word": "out.",
+     "frame": 1124
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Why? Picture a dot on the rim of a wheel. The sample is how far left or right it sits. Those samples are the dot turning ninety degrees every sample. One thousand hertz turns forty-five degrees. Four thousand turns half a turn, so its samples flip. That's the tone as a wheel.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line04.wav",
+   "at": 38.4,
+   "start": 38.4,
+   "end": 51.63,
+   "start_frame": 1152,
+   "words": [
+    {
+     "word": "Why?",
+     "frame": 1152
+    },
+    {
+     "word": "Picture",
+     "frame": 1168
+    },
+    {
+     "word": "a",
+     "frame": 1177
+    },
+    {
+     "word": "dot",
+     "frame": 1182
+    },
+    {
+     "word": "on",
+     "frame": 1187
+    },
+    {
+     "word": "the",
+     "frame": 1191
+    },
+    {
+     "word": "rim",
+     "frame": 1193
+    },
+    {
+     "word": "of",
+     "frame": 1198
+    },
+    {
+     "word": "a",
+     "frame": 1202
+    },
+    {
+     "word": "wheel.",
+     "frame": 1204
+    },
+    {
+     "word": "The",
+     "frame": 1215
+    },
+    {
+     "word": "sample",
+     "frame": 1220
+    },
+    {
+     "word": "is",
+     "frame": 1228
+    },
+    {
+     "word": "how",
+     "frame": 1234
+    },
+    {
+     "word": "far",
+     "frame": 1238
+    },
+    {
+     "word": "left",
+     "frame": 1244
+    },
+    {
+     "word": "or",
+     "frame": 1250
+    },
+    {
+     "word": "right",
+     "frame": 1255
+    },
+    {
+     "word": "it",
+     "frame": 1259
+    },
+    {
+     "word": "sits.",
+     "frame": 1264
+    },
+    {
+     "word": "Those",
+     "frame": 1279
+    },
+    {
+     "word": "samples",
+     "frame": 1285
+    },
+    {
+     "word": "are",
+     "frame": 1293
+    },
+    {
+     "word": "the",
+     "frame": 1298
+    },
+    {
+     "word": "dot",
+     "frame": 1301
+    },
+    {
+     "word": "turning",
+     "frame": 1307
+    },
+    {
+     "word": "90",
+     "frame": 1315
+    },
+    {
+     "word": "degrees",
+     "frame": 1325
+    },
+    {
+     "word": "every",
+     "frame": 1337
+    },
+    {
+     "word": "sample.",
+     "frame": 1346
+    },
+    {
+     "word": "1000",
+     "frame": 1365
+    },
+    {
+     "word": "hertz",
+     "frame": 1376
+    },
+    {
+     "word": "turns",
+     "frame": 1390
+    },
+    {
+     "word": "45",
+     "frame": 1399
+    },
+    {
+     "word": "degrees.",
+     "frame": 1411
+    },
+    {
+     "word": "4000",
+     "frame": 1438
+    },
+    {
+     "word": "turns",
+     "frame": 1446
+    },
+    {
+     "word": "half",
+     "frame": 1460
+    },
+    {
+     "word": "a",
+     "frame": 1467
+    },
+    {
+     "word": "turn",
+     "frame": 1471
+    },
+    {
+     "word": "so",
+     "frame": 1478
+    },
+    {
+     "word": "its",
+     "frame": 1484
+    },
+    {
+     "word": "samples",
+     "frame": 1488
+    },
+    {
+     "word": "flip.",
+     "frame": 1497
+    },
+    {
+     "word": "That's",
+     "frame": 1511
+    },
+    {
+     "word": "the",
+     "frame": 1521
+    },
+    {
+     "word": "tone",
+     "frame": 1524
+    },
+    {
+     "word": "as",
+     "frame": 1531
+    },
+    {
+     "word": "a",
+     "frame": 1535
+    },
+    {
+     "word": "wheel.",
+     "frame": 1537
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "The route's output is the same dot, only smaller and behind. How much a system scales one tone is its gain. Here, point seven. How many degrees the output's dot trails the input's is its phase. Here, ninety.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix/line02.wav",
+   "at": 52.13,
+   "start": 52.13,
+   "end": 62.03,
+   "start_frame": 1564,
+   "words": [
+    {
+     "word": "The",
+     "frame": 1564
+    },
+    {
+     "word": "route's",
+     "frame": 1572
+    },
+    {
+     "word": "output",
+     "frame": 1580
+    },
+    {
+     "word": "is",
+     "frame": 1588
+    },
+    {
+     "word": "the",
+     "frame": 1593
+    },
+    {
+     "word": "same",
+     "frame": 1596
+    },
+    {
+     "word": "dot,",
+     "frame": 1603
+    },
+    {
+     "word": "only",
+     "frame": 1614
+    },
+    {
+     "word": "smaller",
+     "frame": 1620
+    },
+    {
+     "word": "and",
+     "frame": 1631
+    },
+    {
+     "word": "behind.",
+     "frame": 1636
+    },
+    {
+     "word": "How",
+     "frame": 1653
+    },
+    {
+     "word": "much",
+     "frame": 1655
+    },
+    {
+     "word": "a",
+     "frame": 1659
+    },
+    {
+     "word": "system",
+     "frame": 1663
+    },
+    {
+     "word": "scales",
+     "frame": 1671
+    },
+    {
+     "word": "one",
+     "frame": 1682
+    },
+    {
+     "word": "tone",
+     "frame": 1689
+    },
+    {
+     "word": "is",
+     "frame": 1695
+    },
+    {
+     "word": "its",
+     "frame": 1699
+    },
+    {
+     "word": "gain,",
+     "frame": 1704
+    },
+    {
+     "word": "here",
+     "frame": 1716
+    },
+    {
+     "word": "0",
+     "frame": 1721
+    },
+    {
+     "word": ".7.",
+     "frame": 1727
+    },
+    {
+     "word": "How",
+     "frame": 1748
+    },
+    {
+     "word": "many",
+     "frame": 1751
+    },
+    {
+     "word": "degrees",
+     "frame": 1756
+    },
+    {
+     "word": "the",
+     "frame": 1767
+    },
+    {
+     "word": "output's",
+     "frame": 1772
+    },
+    {
+     "word": "dot",
+     "frame": 1782
+    },
+    {
+     "word": "trails",
+     "frame": 1788
+    },
+    {
+     "word": "the",
+     "frame": 1796
+    },
+    {
+     "word": "inputs",
+     "frame": 1801
+    },
+    {
+     "word": "is",
+     "frame": 1810
+    },
+    {
+     "word": "its",
+     "frame": 1814
+    },
+    {
+     "word": "phase,",
+     "frame": 1819
+    },
+    {
+     "word": "here",
+     "frame": 1834
+    },
+    {
+     "word": "90.",
+     "frame": 1844
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Why does every tone come out as itself? The route adds three copies of the input: fresh, one sample old, two samples old. Draw each as an arrow scaled by its weight, and add them tip to tail. As the wheel turns, all three arrows turn together, so their sum turns at the same speed. No new tone can appear.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line06.wav",
+   "at": 62.83,
+   "start": 62.83,
+   "end": 77.23,
+   "start_frame": 1885,
+   "words": [
+    {
+     "word": "Why",
+     "frame": 1885
+    },
+    {
+     "word": "does",
+     "frame": 1894
+    },
+    {
+     "word": "every",
+     "frame": 1899
+    },
+    {
+     "word": "tone",
+     "frame": 1905
+    },
+    {
+     "word": "come",
+     "frame": 1911
+    },
+    {
+     "word": "out",
+     "frame": 1917
+    },
+    {
+     "word": "as",
+     "frame": 1922
+    },
+    {
+     "word": "itself?",
+     "frame": 1926
+    },
+    {
+     "word": "The",
+     "frame": 1948
+    },
+    {
+     "word": "root",
+     "frame": 1950
+    },
+    {
+     "word": "adds",
+     "frame": 1955
+    },
+    {
+     "word": "three",
+     "frame": 1962
+    },
+    {
+     "word": "copies",
+     "frame": 1969
+    },
+    {
+     "word": "of",
+     "frame": 1980
+    },
+    {
+     "word": "the",
+     "frame": 1984
+    },
+    {
+     "word": "input.",
+     "frame": 1988
+    },
+    {
+     "word": "Fresh,",
+     "frame": 2007
+    },
+    {
+     "word": "one",
+     "frame": 2015
+    },
+    {
+     "word": "sample",
+     "frame": 2019
+    },
+    {
+     "word": "old,",
+     "frame": 2028
+    },
+    {
+     "word": "two",
+     "frame": 2038
+    },
+    {
+     "word": "samples",
+     "frame": 2042
+    },
+    {
+     "word": "old.",
+     "frame": 2052
+    },
+    {
+     "word": "Draw",
+     "frame": 2070
+    },
+    {
+     "word": "each",
+     "frame": 2074
+    },
+    {
+     "word": "as",
+     "frame": 2082
+    },
+    {
+     "word": "an",
+     "frame": 2086
+    },
+    {
+     "word": "arrow",
+     "frame": 2089
+    },
+    {
+     "word": "scaled",
+     "frame": 2095
+    },
+    {
+     "word": "by",
+     "frame": 2104
+    },
+    {
+     "word": "its",
+     "frame": 2109
+    },
+    {
+     "word": "weight",
+     "frame": 2114
+    },
+    {
+     "word": "and",
+     "frame": 2120
+    },
+    {
+     "word": "add",
+     "frame": 2125
+    },
+    {
+     "word": "them",
+     "frame": 2129
+    },
+    {
+     "word": "tip",
+     "frame": 2133
+    },
+    {
+     "word": "to",
+     "frame": 2139
+    },
+    {
+     "word": "tail.",
+     "frame": 2144
+    },
+    {
+     "word": "As",
+     "frame": 2158
+    },
+    {
+     "word": "the",
+     "frame": 2162
+    },
+    {
+     "word": "wheel",
+     "frame": 2165
+    },
+    {
+     "word": "turns,",
+     "frame": 2170
+    },
+    {
+     "word": "all",
+     "frame": 2184
+    },
+    {
+     "word": "three",
+     "frame": 2187
+    },
+    {
+     "word": "arrows",
+     "frame": 2192
+    },
+    {
+     "word": "turn",
+     "frame": 2202
+    },
+    {
+     "word": "together,",
+     "frame": 2209
+    },
+    {
+     "word": "so",
+     "frame": 2220
+    },
+    {
+     "word": "their",
+     "frame": 2226
+    },
+    {
+     "word": "sum",
+     "frame": 2230
+    },
+    {
+     "word": "turns",
+     "frame": 2237
+    },
+    {
+     "word": "at",
+     "frame": 2245
+    },
+    {
+     "word": "the",
+     "frame": 2250
+    },
+    {
+     "word": "same",
+     "frame": 2253
+    },
+    {
+     "word": "speed.",
+     "frame": 2259
+    },
+    {
+     "word": "No",
+     "frame": 2278
+    },
+    {
+     "word": "new",
+     "frame": 2283
+    },
+    {
+     "word": "tone",
+     "frame": 2288
+    },
+    {
+     "word": "can",
+     "frame": 2294
+    },
+    {
+     "word": "appear.",
+     "frame": 2299
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Now sweep the tone from zero to four thousand hertz. Zero keeps one hundred percent. Two thousand keeps seventy. Four thousand, only forty. Gain and phase, for every tone: that's the frequency response. [surprise-oh] And there's the wall. Vowels live low and walk through. The edges of consonants live near three thousand, where the route keeps less than half.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line07.wav",
+   "at": 78.23,
+   "start": 78.23,
+   "end": 95.73,
+   "start_frame": 2347,
+   "words": [
+    {
+     "word": "Now",
+     "frame": 2347
+    },
+    {
+     "word": "sweep",
+     "frame": 2356
+    },
+    {
+     "word": "the",
+     "frame": 2366
+    },
+    {
+     "word": "tone",
+     "frame": 2370
+    },
+    {
+     "word": "from",
+     "frame": 2376
+    },
+    {
+     "word": "0",
+     "frame": 2384
+    },
+    {
+     "word": "to",
+     "frame": 2392
+    },
+    {
+     "word": "4000",
+     "frame": 2398
+    },
+    {
+     "word": "Hz.",
+     "frame": 2413
+    },
+    {
+     "word": "0",
+     "frame": 2438
+    },
+    {
+     "word": "keeps",
+     "frame": 2441
+    },
+    {
+     "word": "100%,",
+     "frame": 2449
+    },
+    {
+     "word": "2000",
+     "frame": 2479
+    },
+    {
+     "word": "keeps",
+     "frame": 2492
+    },
+    {
+     "word": "70,",
+     "frame": 2507
+    },
+    {
+     "word": "4000",
+     "frame": 2526
+    },
+    {
+     "word": "only",
+     "frame": 2542
+    },
+    {
+     "word": "40.",
+     "frame": 2555
+    },
+    {
+     "word": "Gain",
+     "frame": 2576
+    },
+    {
+     "word": "and",
+     "frame": 2581
+    },
+    {
+     "word": "phase",
+     "frame": 2585
+    },
+    {
+     "word": "for",
+     "frame": 2595
+    },
+    {
+     "word": "every",
+     "frame": 2602
+    },
+    {
+     "word": "tone",
+     "frame": 2613
+    },
+    {
+     "word": "that's",
+     "frame": 2622
+    },
+    {
+     "word": "the",
+     "frame": 2629
+    },
+    {
+     "word": "frequency",
+     "frame": 2632
+    },
+    {
+     "word": "response.",
+     "frame": 2643
+    },
+    {
+     "word": "Oh,",
+     "frame": 2672
+    },
+    {
+     "word": "and",
+     "frame": 2681
+    },
+    {
+     "word": "there's",
+     "frame": 2684
+    },
+    {
+     "word": "the",
+     "frame": 2691
+    },
+    {
+     "word": "wall.",
+     "frame": 2694
+    },
+    {
+     "word": "Vowels",
+     "frame": 2714
+    },
+    {
+     "word": "live",
+     "frame": 2724
+    },
+    {
+     "word": "low",
+     "frame": 2730
+    },
+    {
+     "word": "and",
+     "frame": 2735
+    },
+    {
+     "word": "walk",
+     "frame": 2740
+    },
+    {
+     "word": "through.",
+     "frame": 2747
+    },
+    {
+     "word": "The",
+     "frame": 2760
+    },
+    {
+     "word": "edges",
+     "frame": 2762
+    },
+    {
+     "word": "of",
+     "frame": 2769
+    },
+    {
+     "word": "consonants",
+     "frame": 2774
+    },
+    {
+     "word": "live",
+     "frame": 2790
+    },
+    {
+     "word": "near",
+     "frame": 2796
+    },
+    {
+     "word": "3000",
+     "frame": 2801
+    },
+    {
+     "word": "where",
+     "frame": 2817
+    },
+    {
+     "word": "the",
+     "frame": 2828
+    },
+    {
+     "word": "root",
+     "frame": 2832
+    },
+    {
+     "word": "keeps",
+     "frame": 2838
+    },
+    {
+     "word": "less",
+     "frame": 2847
+    },
+    {
+     "word": "than",
+     "frame": 2852
+    },
+    {
+     "word": "half.",
+     "frame": 2858
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "Turn up the volume? Doubling everything keeps the proportions: three thousand hertz still comes out half as strong as five hundred. And the loudest callers get pushed past the line's range and clip. One knob can't fix tones scaled by different amounts.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line08.wav",
+   "at": 96.93,
+   "start": 96.93,
+   "end": 109.24,
+   "start_frame": 2908,
+   "words": [
+    {
+     "word": "Turn",
+     "frame": 2908
+    },
+    {
+     "word": "up",
+     "frame": 2918
+    },
+    {
+     "word": "the",
+     "frame": 2922
+    },
+    {
+     "word": "volume,",
+     "frame": 2925
+    },
+    {
+     "word": "doubling",
+     "frame": 2943
+    },
+    {
+     "word": "everything",
+     "frame": 2953
+    },
+    {
+     "word": "keeps",
+     "frame": 2966
+    },
+    {
+     "word": "the",
+     "frame": 2975
+    },
+    {
+     "word": "proportions.",
+     "frame": 2980
+    },
+    {
+     "word": "3000",
+     "frame": 3024
+    },
+    {
+     "word": "Hz",
+     "frame": 3024
+    },
+    {
+     "word": "still",
+     "frame": 3033
+    },
+    {
+     "word": "comes",
+     "frame": 3041
+    },
+    {
+     "word": "out",
+     "frame": 3049
+    },
+    {
+     "word": "half",
+     "frame": 3054
+    },
+    {
+     "word": "as",
+     "frame": 3061
+    },
+    {
+     "word": "strong",
+     "frame": 3068
+    },
+    {
+     "word": "as",
+     "frame": 3073
+    },
+    {
+     "word": "500,",
+     "frame": 3078
+    },
+    {
+     "word": "and",
+     "frame": 3105
+    },
+    {
+     "word": "the",
+     "frame": 3109
+    },
+    {
+     "word": "loudest",
+     "frame": 3112
+    },
+    {
+     "word": "callers",
+     "frame": 3122
+    },
+    {
+     "word": "get",
+     "frame": 3133
+    },
+    {
+     "word": "pushed",
+     "frame": 3138
+    },
+    {
+     "word": "past",
+     "frame": 3145
+    },
+    {
+     "word": "the",
+     "frame": 3151
+    },
+    {
+     "word": "line's",
+     "frame": 3156
+    },
+    {
+     "word": "range",
+     "frame": 3164
+    },
+    {
+     "word": "and",
+     "frame": 3171
+    },
+    {
+     "word": "clip.",
+     "frame": 3174
+    },
+    {
+     "word": "One",
+     "frame": 3195
+    },
+    {
+     "word": "knob",
+     "frame": 3201
+    },
+    {
+     "word": "can't",
+     "frame": 3207
+    },
+    {
+     "word": "fix",
+     "frame": 3214
+    },
+    {
+     "word": "tones",
+     "frame": 3221
+    },
+    {
+     "word": "scaled",
+     "frame": 3230
+    },
+    {
+     "word": "by",
+     "frame": 3240
+    },
+    {
+     "word": "different",
+     "frame": 3246
+    },
+    {
+     "word": "amounts.",
+     "frame": 3255
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Here's the fix. The route keeps seventy percent of two thousand hertz, so boost that tone by one over point seven: one point four three. Do it band by band, each band a stretch of neighboring tones with one knob, and every tone gets out at full strength. The caller steps out from behind the wall.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo-fix2-t1/line01.wav",
+   "at": 109.84,
+   "start": 109.84,
+   "end": 124.1,
+   "start_frame": 3295,
+   "words": [
+    {
+     "word": "here's",
+     "frame": 3295
+    },
+    {
+     "word": "the",
+     "frame": 3305
+    },
+    {
+     "word": "fix",
+     "frame": 3308
+    },
+    {
+     "word": "the",
+     "frame": 3316
+    },
+    {
+     "word": "root",
+     "frame": 3326
+    },
+    {
+     "word": "keeps",
+     "frame": 3331
+    },
+    {
+     "word": "70",
+     "frame": 3338
+    },
+    {
+     "word": "percent",
+     "frame": 3348
+    },
+    {
+     "word": "of",
+     "frame": 3358
+    },
+    {
+     "word": "2000",
+     "frame": 3364
+    },
+    {
+     "word": "hertz",
+     "frame": 3377
+    },
+    {
+     "word": "so",
+     "frame": 3388
+    },
+    {
+     "word": "boost",
+     "frame": 3400
+    },
+    {
+     "word": "that",
+     "frame": 3407
+    },
+    {
+     "word": "tone",
+     "frame": 3413
+    },
+    {
+     "word": "by",
+     "frame": 3420
+    },
+    {
+     "word": "one",
+     "frame": 3425
+    },
+    {
+     "word": "over",
+     "frame": 3431
+    },
+    {
+     "word": "point",
+     "frame": 3437
+    },
+    {
+     "word": "seven",
+     "frame": 3443
+    },
+    {
+     "word": "1",
+     "frame": 3463
+    },
+    {
+     "word": ".43",
+     "frame": 3467
+    },
+    {
+     "word": "do",
+     "frame": 3484
+    },
+    {
+     "word": "it",
+     "frame": 3505
+    },
+    {
+     "word": "band",
+     "frame": 3509
+    },
+    {
+     "word": "by",
+     "frame": 3516
+    },
+    {
+     "word": "band",
+     "frame": 3521
+    },
+    {
+     "word": "each",
+     "frame": 3532
+    },
+    {
+     "word": "band",
+     "frame": 3543
+    },
+    {
+     "word": "a",
+     "frame": 3550
+    },
+    {
+     "word": "stretch",
+     "frame": 3555
+    },
+    {
+     "word": "of",
+     "frame": 3562
+    },
+    {
+     "word": "neighboring",
+     "frame": 3567
+    },
+    {
+     "word": "tones",
+     "frame": 3577
+    },
+    {
+     "word": "with",
+     "frame": 3587
+    },
+    {
+     "word": "one",
+     "frame": 3593
+    },
+    {
+     "word": "knob",
+     "frame": 3600
+    },
+    {
+     "word": "and",
+     "frame": 3609
+    },
+    {
+     "word": "every",
+     "frame": 3616
+    },
+    {
+     "word": "tone",
+     "frame": 3622
+    },
+    {
+     "word": "gets",
+     "frame": 3628
+    },
+    {
+     "word": "out",
+     "frame": 3634
+    },
+    {
+     "word": "at",
+     "frame": 3638
+    },
+    {
+     "word": "full",
+     "frame": 3643
+    },
+    {
+     "word": "strength",
+     "frame": 3647
+    },
+    {
+     "word": "the",
+     "frame": 3658
+    },
+    {
+     "word": "caller",
+     "frame": 3670
+    },
+    {
+     "word": "steps",
+     "frame": 3677
+    },
+    {
+     "word": "out",
+     "frame": 3686
+    },
+    {
+     "word": "from",
+     "frame": 3692
+    },
+    {
+     "word": "behind",
+     "frame": 3698
+    },
+    {
+     "word": "the",
+     "frame": 3705
+    },
+    {
+     "word": "wall",
+     "frame": 3710
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "Then a hearing clinic files a ticket. They play a whistle at five thousand hertz, and patients hear a clean three thousand. Our wheel stopped at four thousand. [sigh] What happens to a dot that turns more than half a turn per sample?",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/03-frequency-response/4-video/vo/line10.wav",
+   "at": 125.3,
+   "start": 125.3,
+   "end": 136.6,
+   "start_frame": 3759,
+   "words": [
+    {
+     "word": "Then",
+     "frame": 3759
+    },
+    {
+     "word": "a",
+     "frame": 3767
+    },
+    {
+     "word": "hearing",
+     "frame": 3771
+    },
+    {
+     "word": "clinic",
+     "frame": 3777
+    },
+    {
+     "word": "files",
+     "frame": 3787
+    },
+    {
+     "word": "a",
+     "frame": 3797
+    },
+    {
+     "word": "ticket.",
+     "frame": 3802
+    },
+    {
+     "word": "They",
+     "frame": 3824
+    },
+    {
+     "word": "play",
+     "frame": 3826
+    },
+    {
+     "word": "a",
+     "frame": 3833
+    },
+    {
+     "word": "whistle",
+     "frame": 3836
+    },
+    {
+     "word": "at",
+     "frame": 3842
+    },
+    {
+     "word": "5",
+     "frame": 3848
+    },
+    {
+     "word": ",000",
+     "frame": 3856
+    },
+    {
+     "word": "Hz",
+     "frame": 3866
+    },
+    {
+     "word": "and",
+     "frame": 3872
+    },
+    {
+     "word": "patients",
+     "frame": 3883
+    },
+    {
+     "word": "hear",
+     "frame": 3893
+    },
+    {
+     "word": "a",
+     "frame": 3900
+    },
+    {
+     "word": "clean",
+     "frame": 3904
+    },
+    {
+     "word": "3",
+     "frame": 3910
+    },
+    {
+     "word": ",000.",
+     "frame": 3917
+    },
+    {
+     "word": "Our",
+     "frame": 3945
+    },
+    {
+     "word": "wheels",
+     "frame": 3949
+    },
+    {
+     "word": "stopped",
+     "frame": 3956
+    },
+    {
+     "word": "at",
+     "frame": 3965
+    },
+    {
+     "word": "4",
+     "frame": 3970
+    },
+    {
+     "word": ",000.",
+     "frame": 3976
+    },
+    {
+     "word": "What",
+     "frame": 4000
+    },
+    {
+     "word": "happens",
+     "frame": 4013
+    },
+    {
+     "word": "to",
+     "frame": 4023
+    },
+    {
+     "word": "a",
+     "frame": 4028
+    },
+    {
+     "word": "dot",
+     "frame": 4032
+    },
+    {
+     "word": "that",
+     "frame": 4038
+    },
+    {
+     "word": "turns",
+     "frame": 4043
+    },
+    {
+     "word": "more",
+     "frame": 4052
+    },
+    {
+     "word": "than",
+     "frame": 4058
+    },
+    {
+     "word": "half",
+     "frame": 4061
+    },
+    {
+     "word": "a",
+     "frame": 4067
+    },
+    {
+     "word": "turn",
+     "frame": 4072
+    },
+    {
+     "word": "per",
+     "frame": 4076
+    },
+    {
+     "word": "sample?",
+     "frame": 4082
+    }
+   ]
+  }
+ ]
+}

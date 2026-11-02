@@ -1,0 +1,321 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:01.580
+The echo is gone.
+
+2
+00:00:01.600 --> 00:00:03.340
+Then a new route opens to the east,
+
+3
+00:00:03.360 --> 00:00:05.220
+through old cable and a smoothing circuit.
+
+4
+00:00:05.420 --> 00:00:06.880
+Nothing drops, nothing buzzes.
+
+5
+00:00:06.900 --> 00:00:07.900
+Yet the tickets say:
+
+6
+00:00:07.920 --> 00:00:09.360
+it's like talking through a wall.
+
+7
+00:00:09.520 --> 00:00:10.200
+Every word is there,
+
+8
+00:00:10.220 --> 00:00:11.320
+but its edges are gone.
+
+9
+00:00:12.300 --> 00:00:14.320
+The route is linear and time-invariant,
+
+10
+00:00:14.340 --> 00:00:15.920
+so do what lesson two taught you:
+
+11
+00:00:16.020 --> 00:00:17.420
+send one click and listen.
+
+12
+00:00:17.520 --> 00:00:19.400
+It comes back smeared
+across three samples:
+
+13
+00:00:19.420 --> 00:00:20.840
+point one five, point seven,
+
+14
+00:00:20.860 --> 00:00:21.640
+point one five.
+
+15
+00:00:21.660 --> 00:00:23.820
+But nowhere in those numbers
+is the word muffled.
+
+16
+00:00:23.980 --> 00:00:25.260
+We need a different question.
+
+17
+00:00:26.320 --> 00:00:28.020
+So feed it one steady tone:
+
+18
+00:00:28.040 --> 00:00:29.200
+two thousand hertz.
+
+19
+00:00:29.340 --> 00:00:30.640
+At eight thousand samples a second,
+
+20
+00:00:30.660 --> 00:00:32.160
+that's one, zero, minus one, zero.
+
+21
+00:00:32.180 --> 00:00:32.920
+What comes out?
+
+22
+00:00:33.020 --> 00:00:34.940
+The same pattern,
+shrunk to seventy percent,
+
+23
+00:00:34.960 --> 00:00:35.800
+one sample late.
+
+24
+00:00:35.820 --> 00:00:37.820
+A tone went in,
+and the same tone came out.
+
+25
+00:00:38.400 --> 00:00:38.900
+Why?
+
+26
+00:00:38.920 --> 00:00:40.480
+Picture a dot on the rim of a wheel.
+
+27
+00:00:40.500 --> 00:00:42.620
+The sample is how far left or
+right it sits.
+
+28
+00:00:42.640 --> 00:00:45.480
+Those samples are the dot turning
+ninety degrees every sample.
+
+29
+00:00:45.500 --> 00:00:47.900
+One thousand hertz turns
+forty-five degrees.
+
+30
+00:00:47.940 --> 00:00:49.240
+Four thousand turns half a turn,
+
+31
+00:00:49.260 --> 00:00:50.360
+so its samples flip.
+
+32
+00:00:50.380 --> 00:00:51.640
+That's the tone as a wheel.
+
+33
+00:00:52.130 --> 00:00:53.770
+The route's output is the same dot,
+
+34
+00:00:53.790 --> 00:00:55.090
+only smaller and behind.
+
+35
+00:00:55.110 --> 00:00:57.170
+How much a system scales
+one tone is its gain.
+
+36
+00:00:57.190 --> 00:00:58.210
+Here, point seven.
+
+37
+00:00:58.270 --> 00:01:02.070
+How many degrees the output's dot trails
+the input's is its phase. Here, ninety.
+
+38
+00:01:02.830 --> 00:01:04.850
+Why does every tone come out as itself?
+
+39
+00:01:04.930 --> 00:01:06.830
+The route adds three copies of the input:
+
+40
+00:01:06.890 --> 00:01:07.930
+fresh, one sample old,
+
+41
+00:01:07.950 --> 00:01:08.950
+two samples old.
+
+42
+00:01:08.990 --> 00:01:10.630
+Draw each as an arrow
+scaled by its weight,
+
+43
+00:01:10.650 --> 00:01:11.910
+and add them tip to tail.
+
+44
+00:01:11.930 --> 00:01:12.790
+As the wheel turns,
+
+45
+00:01:12.810 --> 00:01:13.970
+all three arrows turn together,
+
+46
+00:01:13.990 --> 00:01:15.930
+so their sum turns at the same speed.
+
+47
+00:01:15.950 --> 00:01:17.190
+No new tone can appear.
+
+48
+00:01:18.230 --> 00:01:21.150
+Now sweep the tone from zero
+to four thousand hertz.
+
+49
+00:01:21.270 --> 00:01:22.610
+Zero keeps one hundred percent.
+
+50
+00:01:22.630 --> 00:01:24.190
+Two thousand keeps seventy.
+
+51
+00:01:24.210 --> 00:01:25.830
+Four thousand, only forty.
+
+52
+00:01:25.850 --> 00:01:27.370
+Gain and phase, for every tone:
+
+53
+00:01:27.390 --> 00:01:28.970
+that's the frequency response.
+
+54
+00:01:29.370 --> 00:01:30.390
+And there's the wall.
+
+55
+00:01:30.470 --> 00:01:31.970
+Vowels live low and walk through.
+
+56
+00:01:31.990 --> 00:01:33.870
+The edges of consonants
+live near three thousand,
+
+57
+00:01:33.890 --> 00:01:35.750
+where the route keeps less than half.
+
+58
+00:01:36.930 --> 00:01:38.070
+Turn up the volume?
+
+59
+00:01:38.090 --> 00:01:40.270
+Doubling everything keeps the proportions:
+
+60
+00:01:40.790 --> 00:01:43.170
+three thousand hertz still comes out
+half as strong as five hundred.
+
+61
+00:01:43.510 --> 00:01:46.390
+And the loudest callers get pushed
+past the line's range and clip.
+
+62
+00:01:46.510 --> 00:01:49.210
+One knob can't fix tones
+scaled by different amounts.
+
+63
+00:01:49.840 --> 00:01:50.520
+Here's the fix.
+
+64
+00:01:50.540 --> 00:01:52.900
+The route keeps seventy percent
+of two thousand hertz,
+
+65
+00:01:52.920 --> 00:01:55.200
+so boost that tone
+by one over point seven:
+
+66
+00:01:55.440 --> 00:01:56.120
+one point four three.
+
+67
+00:01:56.140 --> 00:01:57.700
+Do it band by band,
+
+68
+00:01:57.720 --> 00:02:00.280
+each band a stretch
+of neighboring tones with one knob,
+
+69
+00:02:00.300 --> 00:02:01.900
+and every tone gets out at full strength.
+
+70
+00:02:01.920 --> 00:02:04.000
+The caller steps out from behind the wall.
+
+71
+00:02:05.300 --> 00:02:07.300
+Then a hearing clinic files a ticket.
+
+72
+00:02:07.460 --> 00:02:09.060
+They play a whistle
+at five thousand hertz,
+
+73
+00:02:09.080 --> 00:02:11.240
+and patients hear a clean three thousand.
+
+74
+00:02:11.500 --> 00:02:13.180
+Our wheel stopped at four thousand.
+
+75
+00:02:13.320 --> 00:02:16.640
+What happens to a dot that turns
+more than half a turn per sample?
