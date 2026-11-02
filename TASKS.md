@@ -7,14 +7,14 @@ Where the course build stands, so work can resume in a new session. Built with t
 1. Builder: figures (`2-figures/`) and page (`3-page/`) from `1-prose.md` and `1-sheet.md`, using `_kit/`.
 2. Learner judge (fresh agent, own Chrome on a random port): walks the page, reports blocking items.
 3. Fix, then judge again until "ready". Mark `page ready` in `series.md`, run `python3 _kit/index.py`.
-4. Video (`4-video/`): narration voiced with agent-voice v0.2.0 (young female voice, `--speed 1.3 --temperature 0.8`), motionmaxxing film, gates G0 to G5, then a viewer judge until "ready". Mark `video ready`.
+4. Video (`4-video/`): narration voiced with agent-voice v0.2.0 (young female voice, `--speed 1.1 --temperature 0.8`), motionmaxxing film, gates G0 to G5, then a viewer judge until "ready". Mark `video ready`.
 
 Rules the builders learned the hard way (they live in the builder brief):
 
 - A prediction never asks for a number the text above it already prints, and options carry no built-in reasons.
 - Act 2 uses live values the prose never prints; default settings must not pass; feedback names the mistake without giving the answer.
 - No sideways scroll at 400 px; figures readable in grayscale (shape and line style, not only color).
-- Videos: keep speed 1.3, say less rather than slower (about 450 to 480 words); captions at most 42 characters per line; text clear of the caption band; no voice tags in captions.
+- Videos: keep speed 1.1 (the user's choice by ear on 2026-11-02; 1.3 was too fast), say less rather than slower (about 450 to 480 words; at 1.1 the film runs about 15% longer than at 1.3); captions at most 42 characters per line; text clear of the caption band; no voice tags in captions.
 
 ## Status
 

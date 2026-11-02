@@ -2,7 +2,7 @@
 
 **Problem:** loud callers come out with a harsh buzz, quiet callers are fine, on a line that runs the same code for everybody. **Audience:** software engineers with no signal processing background, at the start of the series. **Goal:** the viewer can say why clipping invents a tone that a linear, time-invariant system never could, and how to size the booster with headroom (×1.6). **Emotion:** from puzzlement ("louder should just be louder") to the click of seeing the buzz as a second tone, then the calm of a clean fix.
 
-Voice: `female, young adult, high pitch, american accent`, designed once by `agent-voice script` (it speaks the first sentence as a neutral reference, then clones that speaker for every line, and retries a line up to three times when Whisper hears under 90% of its words). `--speed 1.3 --temperature 0.8`. Three non-verbal tags: `[laughter]` after the kazoo ticket, `[surprise-oh]` at the reveal, `[sigh]` when the next ticket arrives.
+Voice: `female, young adult, high pitch, american accent`, designed once by `agent-voice script` (it speaks the first sentence as a neutral reference, then clones that speaker for every line, and retries a line up to three times when Whisper hears under 90% of its words). `--speed 1.1 --temperature 0.8` (the user's choice by ear on 2026-11-02; 1.3 was too fast). Three non-verbal tags: `[laughter]` after the kazoo ticket, `[surprise-oh]` at the reveal, `[sigh]` when the next ticket arrives.
 
 Visual code, from `lesson.css` and the kit (`_kit/README.md`): paper ground, ink stems with round dots for the signal as it is; teal-soft band with dashed teal edges for the range −1 to +1 the chip can store; dashed soft hollow stems for "what ×4 asked for"; coral (accent) for the one result to notice: the clipped sample, the buzz tone. Teal tick and coral cross only with a number beside them. Labels in Geist Mono at 48 px or more, quotes in Instrument Serif. Motion grammar: stems grow with a soft landing, clipping is a hard push back to the edge, curves draw left to right, held scenes drift (scale 1 to 1.03). Hard cuts between scenes.
 
@@ -31,26 +31,28 @@ Each scene cuts in 9 frames (0.3 s) before its line's first word. Pauses after e
 
 | # | Scene | Length | Purpose | Voice | Clip |
 |---|---|---|---|---|---|
-| 1 | 0.30 to 10.83 s | 10.5 s | hook: the bug | 0.60 to 10.32 s | vo/line01.wav |
-| 2 | 10.83 to 21.67 s | 10.8 s | a call is numbers | 11.12 to 21.45 s | vo/line02.wav |
-| 3 | 21.67 to 36.90 s | 15.2 s | the tone | 21.95 to 36.61 s | vo-redo2/line01.wav |
-| 4 | 36.90 to 51.23 s | 14.3 s | the booster, a system, and the chip | 37.21 to 50.73 s | vo-redo/line02.wav |
-| 5 | 51.23 to 64.43 s | 13.2 s | worked example 1 | 51.53 to 63.75 s | vo-redo2/line02.wav |
-| 6 | 64.43 to 74.13 s | 9.7 s | neighbor test | 64.75 to 73.23 s | vo/line06.wav |
-| 7 | 74.13 to 85.10 s | 11.0 s | reveal: two tones (hero) | 74.43 to 84.39 s | vo/line07.wav |
-| 8 | 85.10 to 96.13 s | 11.0 s | linear | 85.39 to 95.82 s | vo/line08.wav |
-| 9 | 96.13 to 107.47 s | 11.3 s | the trap: sums | 96.42 to 106.96 s | vo/line09.wav |
-| 10 | 107.47 to 119.40 s | 11.9 s | time-invariant and the law | 107.76 to 118.71 s | vo/line10.wav |
-| 11 | 119.40 to 138.50 s | 19.1 s | the fix | 119.71 to 137.59 s | vo-redo/line04.wav |
-| 12 | 138.50 to 146.11 s | 7.6 s | next bug | 138.79 to 145.61 s | vo-redo/line05.wav |
+| 1 | 0.30 to 12.47 s | 12.2 s | hook: the bug | 0.60 to 11.97 s | vo-s110/line01.wav |
+| 2 | 12.47 to 25.13 s | 12.7 s | a call is numbers | 12.77 to 24.93 s | vo-s110/line02.wav |
+| 3 | 25.13 to 43.03 s | 17.9 s | the tone | 25.43 to 42.74 s | vo-s110/line03.wav |
+| 4 | 43.03 to 59.73 s | 16.7 s | the booster, a system, and the chip | 43.34 to 59.24 s | vo-s110/line04.wav |
+| 5 | 59.73 to 72.87 s | 13.1 s | worked example 1 | 60.04 to 72.17 s | vo-s110/line05.wav |
+| 6 | 72.87 to 84.13 s | 11.3 s | neighbor test | 73.17 to 83.24 s | vo-s110/line06.wav |
+| 7 | 84.13 to 96.87 s | 12.7 s | reveal: two tones (hero) | 84.44 to 96.16 s | vo-s110/line07.wav |
+| 8 | 96.87 to 109.77 s | 12.9 s | linear | 97.16 to 109.46 s | vo-s110/line08.wav |
+| 9 | 109.77 to 123.07 s | 13.3 s | the trap: sums | 110.06 to 122.56 s | vo-s110/line09.wav |
+| 10 | 123.07 to 136.93 s | 13.9 s | time-invariant and the law | 123.36 to 136.22 s | vo-s110/line10.wav |
+| 11 | 136.93 to 159.23 s | 22.3 s | the fix | 137.22 to 158.34 s | vo-s110/line11.wav |
+| 12 | 159.23 to 168.12 s | 8.9 s | next bug | 159.54 to 167.62 s | vo-s110/line12.wav |
 
-Film 146.11 s, 600 words in `vo.txt` (tags included), 246 words per minute over the whole film. The hero frame (scene 7) lands at about 82 s, 56% of the film.
+Film 168.12 s, 600 words in `vo-s110.txt` (tags included), 214 words per minute over the whole film (229 over the 157.5 s of speech). At speed 1.3 the same text ran 146.11 s at 246 wpm. The hero frame (scene 7) lands at about 90 s, 53% of the film.
 
 ## Voice
 
-`agent-voice script vo.txt --out vo --voice "female, young adult, high pitch, american accent" --speed 1.3 --temperature 0.8` through the GPU lock wrapper, then re-voiced lines with `agent-voice script --prompt vo/voice.pt` (same speaker, speed and temperature) into `vo-redo/` and `vo-redo2/`. `lines.final.json` maps each line to its clip (table above). Coverage per line 0.83 to 1.00. Two tags stay in the voicing input: `[laughter]` (line 1) and `[surprise-oh]` (line 7); Whisper heard neither as a word. `[sigh]` in line 12 was heard as "Aye", so it was removed and the line re-voiced. No tag reaches the captions or the screen.
+Round 4 (speed 1.1): `agent-voice script vo-s110.txt --out vo-s110 --prompt vo/voice.pt --speed 1.1 --temperature 0.8`, the same saved speaker, with the 12 final texts from the speed 1.3 cut (`vo-s110.txt`). All 12 clips come from `vo-s110/`; `lines.final.json` now points at them (the speed 1.3 mapping is kept as `lines.final.s130.json`). Coverage per line: 1.00, 1.00, 0.96, 1.00, 0.88, 0.94, 0.95, 1.00, 0.95, 0.96, 0.92, 1.00. Line 5 was retried three times by the tool and stays at 0.88: every word is spoken, Whisper writes "point two" as "0 .2" and "caller" as "collar" (the speed 1.3 take kept 0.83 for the same reason). In line 6 Whisper heard "clipped" as "clip", so the film's fail beat looks up `word(6, 'clip')`.
 
-Captions: `final.vtt` holds 73 cues of 1.00 to 3.14 s, at most two rows of at most 7 words, timed from the measured word times (vo.txt words aligned to Whisper's words).
+Earlier rounds (speed 1.3): `agent-voice script vo.txt --out vo --voice "female, young adult, high pitch, american accent" --speed 1.3 --temperature 0.8` through the GPU lock wrapper, then re-voiced lines with `agent-voice script --prompt vo/voice.pt` (same speaker, speed and temperature) into `vo-redo/` and `vo-redo2/`. `lines.final.s130.json` maps each line to its speed 1.3 clip. Coverage per line 0.83 to 1.00. Two tags stay in the voicing input: `[laughter]` (line 1) and `[surprise-oh]` (line 7); Whisper heard neither as a word. `[sigh]` in line 12 was heard as "Aye", so it was removed and the line re-voiced. No tag reaches the captions or the screen.
+
+Captions: `final.vtt` holds 68 cues of 0.94 to 3.70 s, at most two rows of at most 7 words and 42 characters, timed from the measured word times (vo.txt words aligned to Whisper's words).
 
 ## Revision after the viewer judge
 
@@ -65,14 +67,13 @@ Captions: `final.vtt` holds 73 cues of 1.00 to 3.14 s, at most two rows of at mo
 - Scene 10: the box reads "the smoother / linear, time-invariant"; "same pitch, no new tones"; the plot and its label moved inside the safe area (right edge at 1,720 px).
 - Scene 11: "buzz meter 0%: loud 0.80 · quiet 0.32 · pair 0.64", headroom label on the word "headroom".
 
-## Gates (look.sh on final.mp4, lint.mjs on film/index.html)
+## Gates (look.sh on final.mp4, lint.mjs on film/index.html; speed 1.1 cut)
 
-- G0 PASS: duration 146.10 s matches --expect 146.11 s; audio present. H.264 1920x1080 30 fps, AAC 48 kHz.
+- G0 PASS: duration 168.12 s matches --expect 168.12 s; audio present. H.264 1920x1080 30 fps, AAC 48 kHz.
 - G2 PASS: no run of more than 3 flat frames.
-- G3 PASS: end hold 1.20 s (0.6 to 1.4); final shot 1.23 s, 1% of the film.
+- G3 PASS: end hold 1.23 s (0.6 to 1.4); final shot 1.29 s, 1% of the film.
 - G1 by eye on `look/sheet.jpg`: every label in Geist Mono at 48 px or more (0.044 H), plots 0.6 to 0.8 W.
 - G4 by eye: one plot or one in-box-out row per frame; scenes 1 and 5 pan between two plots on one strip.
 - G5 PASS, no warnings.
-- Seek self test: PASS, 24 samples, 681 elements, 0 mismatches.
-- Audio: -14.2 LUFS integrated, true peak -1.1 dBFS after AAC (mixed at -1.5 dBTP; the first encode at -1.0 measured -0.9 and was flagged), LRA 4.0 LU. The lead silence (0.78 s), the pauses between lines and the 0.69 s tail are by design. No music or SFX; intended tempo if added later: 90 BPM, 20 frames per beat, ducked under the voice.
+- Audio: -14.2 LUFS integrated, true peak -1.3 dBFS after AAC (mixed at -1.5 dBTP), LRA 3.4 LU. The lead silence (0.79 s), the pauses between lines and the 0.69 s tail are by design. No music or SFX; intended tempo if added later: 90 BPM, 20 frames per beat, ducked under the voice.
 - MOTION note: mean frame-to-frame change 0.1/255, below the motion band. Lessons hold charts while the voice explains; held scenes drift by scale 1 to 1.03.

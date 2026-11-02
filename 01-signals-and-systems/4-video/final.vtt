@@ -1,328 +1,315 @@
 WEBVTT
 
 1
-00:00:00.600 --> 00:00:02.020
+00:00:00.600 --> 00:00:02.060
 The line went live last week,
 
 2
-00:00:02.040 --> 00:00:04.260
-and the support tickets split
-into two neat piles.
+00:00:02.080 --> 00:00:04.480
+and the support tickets
+split into two neat piles.
 
 3
-00:00:04.520 --> 00:00:06.540
-Quiet callers are fine. Loud
-callers hear a harsh,
+00:00:04.580 --> 00:00:07.040
+Quiet callers are fine.
+Loud callers hear a harsh,
 
 4
-00:00:06.560 --> 00:00:08.020
+00:00:07.060 --> 00:00:08.900
 raspy buzz on top of their voice.
 
 5
-00:00:08.160 --> 00:00:10.160
+00:00:09.000 --> 00:00:11.540
 One says his boss sounds like
 he's yelling through a kazoo.
 
 6
-00:00:11.120 --> 00:00:13.520
+00:00:12.770 --> 00:00:15.630
 Strange, isn't it? The line runs
 the same code for everybody,
 
 7
-00:00:13.540 --> 00:00:14.900
+00:00:15.650 --> 00:00:17.210
 and louder should just be louder.
 
 8
-00:00:15.060 --> 00:00:17.020
-So look at what it
-carries: the microphone's voltage,
+00:00:17.430 --> 00:00:19.930
+So look at what it carries:
+the microphone's voltage,
 
 9
-00:00:17.040 --> 00:00:18.600
+00:00:19.950 --> 00:00:21.770
 measured eight thousand times a second.
 
 10
-00:00:18.720 --> 00:00:21.300
-Each measurement is a sample, and a
-call is a list of numbers.
+00:00:21.970 --> 00:00:24.830
+Each measurement is a sample, and
+a call is a list of numbers.
 
 11
-00:00:21.950 --> 00:00:23.230
+00:00:25.430 --> 00:00:28.770
 The simplest sound is a tone,
-
-12
-00:00:23.250 --> 00:00:24.950
 like a tuning fork: a steady wave,
 
+12
+00:00:28.790 --> 00:00:30.730
+and how many times a second
+it repeats, in hertz,
+
 13
-00:00:24.970 --> 00:00:26.350
-and how many times
-a second it repeats,
-
-14
-00:00:26.370 --> 00:00:27.730
-in hertz, is the pitch you hear.
-
-15
-00:00:27.750 --> 00:00:29.110
+00:00:30.750 --> 00:00:33.770
+is the pitch you hear.
 Its samples come from the cosine.
 
+14
+00:00:33.790 --> 00:00:35.030
+For one thousand hertz,
+
+15
+00:00:35.050 --> 00:00:38.430
+the angle steps three hundred sixty
+times one thousand over eight thousand.
+
 16
-00:00:29.130 --> 00:00:32.270
-For one thousand hertz, the angle steps
-three hundred sixty times one thousand over
+00:00:38.450 --> 00:00:40.530
+That's forty-five degrees each sample,
 
 17
-00:00:32.483 --> 00:00:34.550
-eight thousand. That's forty-five degrees each sample,
-
-18
-00:00:34.670 --> 00:00:36.470
+00:00:40.550 --> 00:00:42.630
 so after eight samples
 the pattern starts over.
 
-19
-00:00:37.210 --> 00:00:38.730
+18
+00:00:43.340 --> 00:00:45.120
 Early in the chain sits the booster.
 
-20
-00:00:38.750 --> 00:00:40.670
-It's a system: a rule
-that takes in one signal,
+19
+00:00:45.140 --> 00:00:47.420
+It's a system:
+a rule that takes in one signal,
 
-21
-00:00:40.710 --> 00:00:42.270
+20
+00:00:47.460 --> 00:00:49.280
 one list of numbers,
 and gives back another.
 
-22
-00:00:42.290 --> 00:00:43.430
+21
+00:00:49.300 --> 00:00:52.740
 Its rule is one line of code:
-
-23
-00:00:43.450 --> 00:00:44.730
 multiply every sample by four.
 
-24
-00:00:44.750 --> 00:00:47.330
+22
+00:00:52.760 --> 00:00:55.580
 But the chip after it can only
 store values from minus one to plus
 
-25
-00:00:47.350 --> 00:00:49.290
-one. Hand it two, and
-it writes down one.
+23
+00:00:55.600 --> 00:00:57.700
+one. Hand it two,
+and it writes down one.
 
-26
-00:00:49.310 --> 00:00:50.670
+24
+00:00:57.720 --> 00:00:59.160
 That flattening is called clipping.
 
-27
-00:00:51.530 --> 00:00:53.390
+25
+00:01:00.040 --> 00:01:02.000
 Take a quiet caller
 at size point two,
 
-28
-00:00:53.410 --> 00:00:54.870
+26
+00:01:02.020 --> 00:01:05.300
 so their biggest sample is point two,
-
-29
-00:00:54.890 --> 00:00:56.210
 and a loud one at point five.
 
-30
-00:00:56.230 --> 00:00:58.970
-Which comes out clean? The quiet one
-grows to point eight and stays inside
+27
+00:01:05.380 --> 00:01:06.420
+Which comes out clean?
 
-31
-00:00:58.990 --> 00:01:00.630
-the range. The loud
-one would reach two,
+28
+00:01:06.440 --> 00:01:09.180
+The quiet one grows to point
+eight and stays inside the range.
 
-32
-00:01:00.650 --> 00:01:02.230
+29
+00:01:09.360 --> 00:01:12.080
+The loud one would reach two,
 so its tops are sliced off flat.
 
-33
-00:01:04.750 --> 00:01:06.010
+30
+00:01:13.170 --> 00:01:14.630
 Is that just an uglier tone?
 
-34
-00:01:06.030 --> 00:01:07.390
+31
+00:01:14.650 --> 00:01:16.290
 Try a pencil test. In any tone,
 
-35
-00:01:07.410 --> 00:01:10.090
+32
+00:01:16.310 --> 00:01:19.350
 a sample's two neighbors add up to
 the middle sample times a fixed number,
 
-36
-00:01:10.110 --> 00:01:11.310
+33
+00:01:19.370 --> 00:01:21.190
 here one point four one four.
 
-37
-00:01:11.330 --> 00:01:13.050
+34
+00:01:21.210 --> 00:01:23.110
 The clean tone passes.
 The clipped one fails.
 
-38
-00:01:14.430 --> 00:01:15.710
+35
+00:01:24.440 --> 00:01:26.100
 So what is it? It's two tones.
 
+36
+00:01:26.120 --> 00:01:27.420
+A one thousand hertz tone,
+
+37
+00:01:27.440 --> 00:01:29.640
+minus a three thousand
+hertz tone a sixth its size,
+
+38
+00:01:29.660 --> 00:01:31.660
+lands exactly on every clipped sample.
+
 39
-00:01:15.730 --> 00:01:18.710
-A one thousand hertz tone, minus a
-three thousand hertz tone a sixth its
-
-40
-00:01:18.730 --> 00:01:20.930
-size, lands exactly on every clipped sample.
-
-41
-00:01:20.950 --> 00:01:22.190
+00:01:31.680 --> 00:01:33.300
 That second tone is the buzz.
 
-42
-00:01:22.210 --> 00:01:24.330
+40
+00:01:33.320 --> 00:01:35.900
 Nobody said it. The booster
 made it, out of nothing.
 
-43
-00:01:25.390 --> 00:01:26.470
+41
+00:01:37.160 --> 00:01:38.580
 What did the booster break?
 
-44
-00:01:26.490 --> 00:01:28.930
+42
+00:01:38.740 --> 00:01:41.580
 A system is linear when doubling
 the input doubles the output,
 
-45
-00:01:28.950 --> 00:01:30.930
+43
+00:01:41.600 --> 00:01:43.700
 and two inputs added
 give their outputs added.
 
-46
-00:01:30.950 --> 00:01:32.470
+44
+00:01:43.880 --> 00:01:45.440
 The real booster is not linear.
 
-47
-00:01:32.530 --> 00:01:35.330
+45
+00:01:45.460 --> 00:01:48.800
 It only behaves like the linear times
 four while its inputs stay inside the
 
-48
-00:01:35.350 --> 00:01:36.350
+46
+00:01:48.820 --> 00:01:49.820
 range.
 
+47
+00:01:50.060 --> 00:01:52.880
+And here's the trap. Two quiet
+voices share a speakerphone.
+
+48
+00:01:52.900 --> 00:01:54.860
+Each alone comes out
+at point eight, fine.
+
 49
-00:01:36.420 --> 00:01:38.960
-And here's the trap. Two
-quiet voices share a speakerphone.
-
-50
-00:01:38.980 --> 00:01:40.320
-Each alone comes out at point eight,
-
-51
-00:01:40.340 --> 00:01:42.700
-fine. Linearity says together they
+00:01:55.120 --> 00:01:57.520
+Linearity says together they
 should give one point six.
 
-52
-00:01:42.720 --> 00:01:44.160
+50
+00:01:57.540 --> 00:02:00.400
 The chip writes one. Each passed alone,
+and together they buzz.
 
-53
-00:01:44.180 --> 00:01:46.600
-and together they buzz. Linearity
-is a promise about sums.
+51
+00:02:00.420 --> 00:02:02.160
+Linearity is a promise about sums.
 
-54
-00:01:47.760 --> 00:01:48.920
+52
+00:02:03.360 --> 00:02:04.720
 Now add one more property.
 
-55
-00:01:48.940 --> 00:01:51.880
+53
+00:02:04.740 --> 00:02:08.340
 A system is time-invariant when delaying
 the input only delays the output.
 
-56
-00:01:51.900 --> 00:01:52.900
+54
+00:02:08.360 --> 00:02:10.940
 Together they make a law:
-
-57
-00:01:52.920 --> 00:01:54.220
 a tone that goes into a linear,
 
+55
+00:02:10.960 --> 00:02:14.120
+time-invariant system comes out at the
+same pitch, only bigger or smaller,
+
+56
+00:02:14.140 --> 00:02:16.060
+and shifted. No new tones, ever.
+
+57
+00:02:17.220 --> 00:02:19.840
+So the fix is to keep every
+input inside the range.
+
 58
-00:01:54.610 --> 00:01:56.040
-time-invariant system comes out
-at the same pitch,
-
-59
-00:01:56.060 --> 00:01:57.440
-only bigger or smaller, and shifted.
-
-60
-00:01:57.460 --> 00:01:58.500
-No new tones, ever.
-
-61
-00:01:59.710 --> 00:02:02.090
-So the fix is to keep
-every input inside the range.
-
-62
-00:02:02.150 --> 00:02:03.730
+00:02:20.020 --> 00:02:23.720
 The loudest input the booster ever sees,
-
-63
-00:02:03.750 --> 00:02:05.330
 speakerphones included, is point five.
 
-64
-00:02:05.350 --> 00:02:06.570
-Times two lands right on the edge,
+59
+00:02:23.740 --> 00:02:26.180
+Times two lands right on
+the edge, with no margin.
 
-65
-00:02:06.590 --> 00:02:09.310
-with no margin. Instead, keep the
-loudest peak at point eight,
+60
+00:02:26.500 --> 00:02:29.460
+Instead, keep the loudest peak at
+point eight, a fifth below the edge.
 
-66
-00:02:09.330 --> 00:02:11.330
-a fifth below the edge.
+61
+00:02:29.640 --> 00:02:30.720
 That gap is the headroom.
 
-67
-00:02:11.477 --> 00:02:13.650
-Point eight divided by point
-five is one point six.
+62
+00:02:30.740 --> 00:02:33.580
+Point eight divided by
+point five is one point six.
 
-68
-00:02:13.670 --> 00:02:15.910
-Now the buzz meter, which measures the
-tones that weren't in the input,
+63
+00:02:33.940 --> 00:02:36.580
+Now the buzz meter, which measures
+the tones that weren't in the input,
 
-69
-00:02:15.930 --> 00:02:17.430
+64
+00:02:36.600 --> 00:02:38.280
 reads zero percent on every caller.
 
-70
-00:02:18.790 --> 00:02:20.850
+65
+00:02:39.540 --> 00:02:41.700
 Loud callers sound like loud people again.
 
-71
-00:02:20.930 --> 00:02:22.590
+66
+00:02:41.760 --> 00:02:43.880
 Then a new ticket arrives:
 I can hear myself.
 
-72
-00:02:22.650 --> 00:02:24.650
-Every word comes back, faint, a
-quarter of a second later.
+67
+00:02:44.020 --> 00:02:46.540
+Every word comes back, faint,
+a quarter of a second later.
 
-73
-00:02:24.670 --> 00:02:25.670
+68
+00:02:46.620 --> 00:02:47.560
 That's the next bug.
