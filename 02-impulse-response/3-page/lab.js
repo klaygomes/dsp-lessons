@@ -13,13 +13,14 @@
   const RAW = K.wav(window.LESSON_CALL);
   const PEAK = RAW.reduce((m, s) => Math.max(m, Math.abs(s)), 1e-6);
   const VOICE = RAW.map(s => 0.8 * s / PEAK);
+  const CALL = VOICE.subarray(0, Math.round(4.16 * FS));
   const slow = (x, speed) => Float32Array.from({ length: Math.floor(x.length / speed) }, (_, i) => {
     const t = i * speed, a = Math.floor(t), f = t - a;
     return (x[a] || 0) * (1 - f) + (x[a + 1] || 0) * f;
   });
-  const FAR = slow(VOICE, 0.8).map(v => 0.7 * v);
+  const FAR = slow(CALL, 0.8).map(v => 0.7 * v);
   const LOOP = 14 * FS, FAR_AT = Math.round(6.5 * FS);
-  const LOUD = (() => { let best = 0, at = 0; for (let i = 0; i + 48 < VOICE.length; i += 8) { let e = 0; for (let j = 0; j < 48; j++) e += VOICE[i + j] ** 2; if (e > best) { best = e; at = i; } } return at; })();
+  const LOUD = (() => { let best = 0, at = 0; for (let i = 0; i + 48 < CALL.length; i += 8) { let e = 0; for (let j = 0; j < 48; j++) e += CALL[i + j] ** 2; if (e > best) { best = e; at = i; } } return at; })();
 
   const SO = [0, 0.7, 0.5, -0.3];
   const HI = [0.8, 0.4, -0.6, -0.2];
@@ -36,9 +37,9 @@
 
   function callSignal(c) {
     const ear = new Float32Array(LOOP), own = new Float32Array(LOOP);
-    VOICE.forEach((v, i) => { own[i] = v; });
+    CALL.forEach((v, i) => { own[i] = v; });
     FAR.forEach((v, i) => { if (FAR_AT + i < LOOP) ear[FAR_AT + i] += v; });
-    for (let n = 0; n < LOOP; n++) ear[n] += convAt(VOICE, taps(c.D, c.a, c.b), n);
+    for (let n = 0; n < LOOP; n++) ear[n] += convAt(CALL, taps(c.D, c.a, c.b), n);
     return { ear, own };
   }
 
@@ -46,8 +47,8 @@
   function farClean(c, g) {
     const tE = taps(c.D, c.a, c.b), tG = taps(g.d, g.s1, g.s2);
     let rr = 0;
-    const lo = Math.min(c.D, g.d), hiN = Math.max(c.D, g.d) + VOICE.length + 2;
-    for (let n = lo; n <= hiN; n++) { const r = convAt(VOICE, tE, n) - (g.on ? convAt(VOICE, tG, n) : 0); rr += r * r; }
+    const lo = Math.min(c.D, g.d), hiN = Math.max(c.D, g.d) + CALL.length + 2;
+    for (let n = lo; n <= hiN; n++) { const r = convAt(CALL, tE, n) - (g.on ? convAt(CALL, tG, n) : 0); rr += r * r; }
     return FAR_E / (FAR_E + rr);
   }
 
@@ -58,7 +59,7 @@
       const x = n => cosd(45 * n), f = (tp, n) => tp.reduce((s, [m, k]) => s + k * x(n - m), 0);
       for (let n = 0; n < 800; n++) { const e = f(tE, n), r = e - (g.on ? f(tG, n) : 0); ee += e * e; rr += r * r; }
     } else {
-      const x = sig === 'hi' ? HI : VOICE;
+      const x = sig === 'hi' ? HI : CALL;
       const lo = Math.min(c.D, g.d), hiN = Math.max(c.D, g.d) + x.length + 2;
       for (let n = lo; n <= hiN; n++) { const e = convAt(x, tE, n), r = e - (g.on ? convAt(x, tG, n) : 0); ee += e * e; rr += r * r; }
     }
@@ -247,7 +248,7 @@
       const tE = taps(c.D, c.a, c.b), tG = taps(g.d, g.s1, g.s2);
       let ns, fe, fg;
       if (sig === 'tone') { const x = n => cosd(45 * n); ns = Array.from({ length: 8 }, (_, i) => c.D + 100 + i); fe = n => tE.reduce((q, [m, k]) => q + k * x(n - m), 0); fg = n => tG.reduce((q, [m, k]) => q + k * x(n - m), 0); }
-      else { const x = sig === 'hi' ? HI : VOICE, at = sig === 'hi' ? 0 : LOUD; ns = Array.from({ length: sig === 'hi' ? 6 : 24 }, (_, i) => c.D + at + i); fe = n => convAt(x, tE, n); fg = n => convAt(x, tG, n); }
+      else { const x = sig === 'hi' ? HI : CALL, at = sig === 'hi' ? 0 : LOUD; ns = Array.from({ length: sig === 'hi' ? 6 : 24 }, (_, i) => c.D + at + i); fe = n => convAt(x, tE, n); fg = n => convAt(x, tG, n); }
       return ns.map(n => { const e = fe(n), q = st.on ? fg(n) : 0; return { n, e, q, r: e - q }; });
     }
 
@@ -365,7 +366,7 @@
       }
       const c = kase(), { ear, own } = callSignal(c), tG = taps(st.d, st.s1, st.s2);
       const out = new Float32Array(LOOP);
-      for (let n = 0; n < LOOP; n++) out[n] = ear[n] - (st.on ? convAt(VOICE, tG, n) : 0) + (st.own ? 0.5 * own[n] : 0);
+      for (let n = 0; n < LOOP; n++) out[n] = ear[n] - (st.on ? convAt(CALL, tG, n) : 0) + (st.own ? 0.5 * own[n] : 0);
       const p = out.reduce((m, v) => Math.max(m, Math.abs(v)), 0);
       return p > 1 ? out.map(v => v / p) : out;
     }
@@ -460,7 +461,7 @@
       if (who === 'quiet') { st.measured = { at }; st.noisy = false; st.clean = true; }
       else {
         const { ear } = callSignal(c), base = (at % LOOP);
-        st.measured = { at, who, noise: n => 0.04 * VOICE[LOUD + ((n * 7 + base) % 48)] / 0.8 + ear[(base + n) % LOOP] / 0.1 };
+        st.measured = { at, who, noise: n => 0.04 * CALL[LOUD + ((n * 7 + base) % 48)] / 0.8 + ear[(base + n) % LOOP] / 0.1 };
         st.noisy = true;
       }
       render();

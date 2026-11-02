@@ -41,7 +41,7 @@
     return Float32Array.from(re.subarray(0, x.length));
   }
 
-  const RAW = K.wav(window.LESSON_CALL);
+  const RAW = K.wav(window.LESSON_CALL).subarray(0, Math.round(8.98 * FS));
   const VOICE = (() => { const v = shape(RAW, f => (f > VOICE_TOP ? 0 : 1)), peak = v.reduce((m, s) => Math.max(m, Math.abs(s)), 1e-6); return v.map(s => 0.5 * s / peak); })();
   const voiceCache = new Map();
   const voiceAt = c => { if (!voiceCache.has(c)) voiceCache.set(c, shape(VOICE, f => gainAt(c, f))); return voiceCache.get(c); };
