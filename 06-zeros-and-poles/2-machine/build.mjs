@@ -33,11 +33,11 @@ const CAPTION =
   "The stylus rides the top half of the unit circle: 0 Hz at the right, 4,000 Hz at the left, a long mark every 1,000 Hz. One cord runs to the zero pin on the rim at 2,000 Hz, the other to the pole pin at radius r on the same line. The gauge reads the zero distances multiplied together, divided by the pole distances multiplied together, as a share of the same number at 0 Hz. Only the upper zero and pole are drawn; their mirror pair below the axis is implied, and the gauge counts it.";
 
 const KEYS = [
-  { mark: "lit", label: "Needle: how much of the tone passes" },
+  { mark: "lit", label: "Needle: how much of the tone passes, 0 to 100%" },
   { mark: "input", label: "Arm handle and carriage knob: what you move" },
   { mark: "raised", label: "Zero pin on the rim, pole pin on its carriage" },
   { mark: "edge", label: "Solid cord: distance to the zero" },
-  { mark: "dashed", label: "Dashed cord: distance to the pole" },
+  { mark: "dashdot", label: "Dash-dot cord: distance to the pole" },
 ];
 
 function swatch(mark) {
@@ -51,7 +51,7 @@ function card(svg) {
   const corner = (name, text, extra = "") => `<span class="iso-plate-corner" data-corner="${name}"${extra}>${text}</span>`;
   const keys = KEYS.map((key) => `<span class="iso-key">${swatch(key.mark)}${key.label}</span>`).join("");
   const stage = `<div class="iso-stage" tabindex="0" role="slider" aria-label="Filter test bench. Drag the tone arm, or use Right and Left arrows to raise and lower the tone; Up and Down arrows move the pole carriage outward and inward." aria-valuemin="0" aria-valuemax="${NYQUIST}" aria-valuenow="${START.tone}" aria-valuetext="${valueTextOf(reading, START.radius)}">${svg}</div>`;
-  return `<figure class="iso-figure"><div class="iso-plate"><div class="iso-plate-corners" aria-hidden="true">${corner("fig", "Fig 2")}${corner("title", "The filter test bench")}${corner("hint", "Drag · ← → tone · ↑ ↓ r")}${corner("readout", readoutOf(reading, START.radius), " data-readout")}</div>${stage}</div><figcaption class="iso-legend"><span class="iso-keys">${keys}</span><span class="iso-caption">${CAPTION}</span></figcaption></figure>`;
+  return `<figure class="iso-figure"><div class="iso-plate"><div class="iso-plate-corners" aria-hidden="true">${corner("fig", "Interactive")}${corner("title", "The filter test bench")}${corner("hint", "Drag · ← → tone · ↑ ↓ r")}${corner("readout", readoutOf(reading, START.radius), " data-readout")}</div>${stage}</div><figcaption class="iso-legend"><button type="button" class="tb-sweep" data-sweep hidden>Restart the sweep</button><span class="iso-keys">${keys}</span><span class="iso-caption">${CAPTION}</span></figcaption></figure>`;
 }
 
 const figure = (pose, standalone) =>

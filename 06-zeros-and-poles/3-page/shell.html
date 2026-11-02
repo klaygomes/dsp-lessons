@@ -27,6 +27,20 @@
 .lab .meters { display: grid; gap: 10px; }
 .rule-quote { border-left: 3px solid var(--rule); padding-left: 16px; }
 .tb-machine { overflow-x: auto; }
+@media (max-width: 600px) {
+  .lab[data-mode="fix"] > .readout { order: 1; }
+  .lab[data-mode="fix"] > .meters { order: 2; }
+  .lab[data-mode="fix"] > .row, .lab[data-mode="fix"] > .k-now { order: 3; }
+}
+table.worked { table-layout: fixed; }
+table.worked th:first-child, table.worked td:first-child { width: 11em; }
+@media (max-width: 600px) {
+  .table:has(table.worked) { overflow-x: visible; }
+  table.worked, table.worked thead, table.worked tbody { display: block; }
+  table.worked tr { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding: 4px 0; }
+  table.worked th, table.worked td { flex: 1 1 1px; min-width: 0; padding: 2px 1px; border: 0; font-size: 11px; letter-spacing: -0.02em; text-align: center; white-space: nowrap; }
+  table.worked th:first-child, table.worked td:first-child { flex-basis: 100%; width: auto; min-width: 0; text-align: left; font-size: 14px; }
+}
 </style>
 
 <div class="wrap">

@@ -146,6 +146,25 @@ export function bench(k) {
     return out.join("");
   }
 
+  function toneLabels() {
+    const face = (at, text, anchor) => k.faceTextSvg(k.topMatrix(at, 0, P, "x"), text, { size: 9, tone: "mid", anchor });
+    return [
+      face([R - 36, 13], "0 Hz", "start"),
+      face([0, -R - 14], "2,000 Hz", "middle"),
+      face([-R + 4, 13], "4,000 Hz", "start"),
+    ].join("");
+  }
+
+  function gaugeScale() {
+    const { x, y, r, top } = GAUGE;
+    const at = (degrees) => {
+      const angle = (degrees * Math.PI) / 180;
+      return [x + Math.sin(angle) * (r - 11), y - Math.cos(angle) * (r - 11)];
+    };
+    const face = (degrees, text, anchor) => k.faceTextSvg(k.topMatrix(at(degrees), top, P, "x"), text, { size: 5, tone: "mid", anchor });
+    return [face(-166, "0", "middle"), face(108, "100%", "middle")].join("");
+  }
+
   function labelPlate() {
     const plan = { x: -132, y: 16, w: 44, d: 22, r: 1.6 };
     const out = [S(k.slabOf(plan, 0, 0.8, P, 4), { tone: "lo", crease: "none" })];
@@ -339,6 +358,7 @@ export function bench(k) {
     return [
       plate(),
       dial(),
+      toneLabels(),
       labelPlate(),
       radiusScale(),
       rail(),
@@ -351,6 +371,7 @@ export function bench(k) {
       column(),
       beam(),
       gauge(),
+      gaugeScale(),
       `<path data-part="needle" class="iso-line" data-tone="lit" data-free="" d="${needleOf(passes)}" style="stroke-width:1.6"/>`,
       hitArea(),
     ];

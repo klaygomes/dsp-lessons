@@ -11,8 +11,8 @@
   <div class="key" data-k="key-fix" hidden>
     <span><i class="k-zero"></i>zero pair (you move it)</span>
     <span data-k="key-pole"><i class="k-pole"></i>pole pair</span>
-    <span><i class="k-curve"></i>how much each tone passes</span>
-    <span><i class="k-spike"></i>the whine, on the frequency meter</span>
+    <span><i class="k-curve"></i>how much each tone passes, compared with 0 Hz</span>
+    <span data-k="key-spike" hidden><i class="k-spike"></i>the whine, on the frequency meter</span>
     <span><i class="k-band"></i>voice tones, 300 to 3,400 Hz</span>
   </div>
   <div class="meters">
@@ -47,6 +47,7 @@
       <span data-k="zero-msg" aria-live="polite"></span>
     </div>
   </div>
+  <div data-k="ask-poles" hidden></div>
   <div class="control" data-k="pole-control" hidden>
     <label data-for="pole">Pole radius: <output data-k="pole-out">0 (no poles)</output></label>
     <input data-k="pole" type="range" min="0" max="1.1" step="0.01" value="0" disabled>

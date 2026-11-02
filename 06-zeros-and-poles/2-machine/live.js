@@ -7,6 +7,7 @@ function mountBench(root) {
   const stage = root.querySelector(".iso-stage");
   const svg = stage.querySelector("svg");
   const readout = root.querySelector("[data-readout]");
+  const sweepButton = root.querySelector("[data-sweep]");
   const part = (name) => svg.querySelector(`[data-part="${name}"]`);
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   const kit = { extrude, roundedPlan, iso };
@@ -65,7 +66,6 @@ function mountBench(root) {
   let touring = false;
   let tourClock = 0;
   let tourPhase = 0;
-  let idleTimer = 0;
   let drag = null;
   let drawn = { tone: NaN, radius: NaN };
 
@@ -106,6 +106,7 @@ function mountBench(root) {
     tourPhase = Math.acos(share) * (tone.v < 0 ? -1 : 1);
     tourClock = 0;
     touring = true;
+    sweepButton.hidden = true;
     run();
   };
 
@@ -163,10 +164,9 @@ function mountBench(root) {
   function takeOver() {
     if (touring) {
       touring = false;
-      tone.target = tone.x;
+      tone.target = snapTone(tone.x);
     }
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(startTour, 3600);
+    sweepButton.hidden = still.matches;
   }
   const snapTone = (value) => clampTone(Math.round(value / TONE_STEP) * TONE_STEP);
   const snapRadius = (value) => clampRadius(Math.round(value * 100) / 100);
@@ -224,6 +224,7 @@ function mountBench(root) {
     if (!drag) return;
     drag = null;
     stage.removeAttribute("data-dragging");
+    describe();
     if (hit.hasPointerCapture(event.pointerId)) hit.releasePointerCapture(event.pointerId);
   };
   hit.addEventListener("pointerup", release);
@@ -251,15 +252,23 @@ function mountBench(root) {
     { rootMargin: "120px 0px" },
   ).observe(stage);
 
+  sweepButton.addEventListener("click", () => {
+    startTour();
+    stage.focus({ preventScroll: true });
+  });
+
   still.addEventListener("change", () => {
     if (still.matches) {
       touring = false;
-      clearTimeout(idleTimer);
+      tone.target = snapTone(tone.x);
+      describe();
     }
+    sweepButton.hidden = true;
+    if (!still.matches && !touring) sweepButton.hidden = false;
     run();
   });
 
   draw();
   describe();
-  if (!still.matches) idleTimer = setTimeout(startTour, 1400);
+  if (!still.matches) setTimeout(() => { if (!touring && sweepButton.hidden) startTour(); }, 1400);
 }

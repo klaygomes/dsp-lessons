@@ -25,7 +25,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 3 | Frequency response | ready | ready |
 | 4 | Sampling and aliasing | ready | ready |
 | 5 | Changing the rate | ready | ready |
-| 6 | Zeros and poles | built, learner judge running | to build |
+| 6 | Zeros and poles | ready | to build |
 | 7 | Ringing | ready | to build |
 | 8 | Phase and delay | ready | to build |
 | 9 | Finite precision | fixed after judge 1, judge 2 running | to build |
@@ -42,7 +42,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 - [ ] Lesson 1 text: replace "leave a fifth of the range free" (range is -1 to +1, so that strip is a tenth) with "keep the loudest peak at 0.8, a fifth below the edge" in `1-prose.md` line 272, `1-sheet.md` lines 88 and 122, `3-page/lab.js` lines 156 and 158, then rebuild the page. Waiting on the user's go-ahead.
 - [ ] Lesson 1 sheet: "behaves like linear times four while its inputs stay inside the range" should talk about outputs (an input of 0.5 is inside the range and still clips).
 - [ ] Lesson 9 sheet: "within 10 to 20 ms" becomes "after 76 samples (9.5 ms) for a 0.1 click, about 20 ms for 0.001"; "mirrors" becomes "the same pushes, flipped left for right"; act 2 now uses hidden whines. Prose step five: "one arrow from every other pole to p1".
-- [ ] Lesson 6: decide whether to rebuild the reused `2-machine` figure with a dash-dot pole cord (dashed means input elsewhere); add "The voice meter averages how much of each tone from 300 to 3,400 Hz passes" to "Your turn".
+- [x] Lesson 6: decide whether to rebuild the reused `2-machine` figure with a dash-dot pole cord (dashed means input elsewhere); add "The voice meter averages how much of each tone from 300 to 3,400 Hz passes" to "Your turn".
 - [ ] Lesson 10 sheet: act 2 prediction and cases changed (second bridge 3,500/4,500 Hz first, then your own line).
 - [ ] Lesson 11 sheet: act 1 and act 2 designs changed (hidden aged-rack cases); add one prose sentence naming the aged rack; unify 0.707-style and %-style gains.
 - [ ] Lesson 12: builder changed the mirror-arrow wording (two half arrows laid tip to tail land on the sample, not halfway between tips); check lesson 6 and series.md use the same picture. Sheet act 1 predictions changed (half turn, N = 16). Add "presses arrive at different loudness" to the act 2 task.

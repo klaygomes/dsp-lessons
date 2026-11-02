@@ -102,11 +102,11 @@ So "which tones does this filter remove?" has a geometric answer: the ones at it
 
 ## The whine moves
 
-You ship the averaging filter. The whine tickets stop. A few new ones say calls sound "a bit muffled, but much better". The rule says why: the average keeps 56% at 2,500 Hz and 38% at 3,000 Hz, so the very top of the voice is shaved. Customers can live with it for now, and you make a note. It holds until Thursday.
+You ship the averaging filter. The whine tickets stop. A few new ones say calls sound "a bit muffled, but much better". The rule says why: the average keeps 56% at 2,500 Hz and 38% at 3,000 Hz, so the very top of the voice is shaved (a voice's tones run from about 300 to 3,400 Hz). Customers can live with it for now, and you make a note. It holds until Thursday.
 
 A technician replaces the cheap clock chip with a slightly less cheap one, and the whine comes back. Same piercing tone, different pitch. The meter now says 2,000 Hz.
 
-How much of it does the average pass? 2,000 Hz sits at the top of the circle, 1.41 from the zero, so 71% gets through. Barely a dent.
+How much of it does the average pass? 2,000 Hz sits at the top of the circle, 1.41 from the zero, so 71% gets through. The whine is still almost three quarters as loud.
 
 The circle shows the fix. You don't need a better average. You need a filter whose zero sits at the top of the circle, where 2,000 Hz lives. On the wheel, 2,000 Hz turns 90° per sample, so two samples make 180°: every sample sits opposite the one two steps back.
 
@@ -120,9 +120,11 @@ So instead of averaging neighbors, average each sample with the one two steps ba
 output[n] = (input[n] + input[n - 2]) / 2
 ```
 
-| n | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-|---|---|---|---|---|---|---|---|
-| (this + two back) / 2 | (−1 + 1) / 2 = 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+At n = 2 that's (−1 + 1) / 2 = 0, and every later sample cancels the same way. Samples 0 and 1 have nothing two steps back yet, so they stay blank.
+
+| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|---|
+| (this + two back) / 2 | | | 0 | 0 | 0 | 0 | 0 | 0 |
 
 Gone again. If the circle is telling the truth, this filter must have a zero at the top. To check, we need a name for that point, and the name is j.
 
@@ -136,7 +138,7 @@ With j you can name any point: how far right it is, plus j times how far up it i
 
 Here's the clean answer, from chapter 4 of Oppenheim and Schafer's *Discrete-Time Signal Processing* (1989). One fact about j first, then six steps.
 
-**Multiplying points.** The general rule is a picture too: multiplying two points multiplies their sizes (a point's size is its distance from the center) and adds their angles. Try it on the point 45° up the rim, 0.71 + 0.71j, times itself. Multiply it out, using j × j = −1: 0.5 + 0.5j + 0.5j + 0.5 × (−1) = j. (With the unrounded 0.7071 it's exactly j.) Size 1 × 1 = 1, angle 45° + 45° = 90°: the top of the circle. A point of size 0.9 at 90° works the same way: (0.9j) × (0.9j) has size 0.81 and angle 180°, so it's −0.81. Remember that one; the poles will need it.
+**Multiplying points.** The general rule is a picture too: multiplying two points multiplies their sizes (a point's size is its distance from the center) and adds their angles. Try it on the point 45° up the rim, 0.71 + 0.71j, times itself. Multiply it out, using j × j = −1: 0.5 + 0.5j + 0.5j + 0.5 × (−1) = j. (With the unrounded 0.7071 it's exactly j.) Size 1 × 1 = 1, angle 45° + 45° = 90°: the top of the circle. A point of size 0.9 at 90° works the same way: (0.9j) × (0.9j) has size 0.81 and angle 180°, so it's −0.81. Remember that one; it comes back later today.
 
 [[diagram:multiply]]
 
@@ -178,7 +180,7 @@ At 500 Hz, \(1 + z^{-1}\) adds the fresh dot and the one 22.5° clockwise behind
 
 **Step four: the zero.** A tone is removed exactly when \(H(z) = 0\). The top of the fraction, \(z + 1\), is zero when \(z = -1\), the point at the far left of the circle: ω = π, 4,000 Hz.
 
-**Step five: the distance.** Write \(|a|\) for the size of a number a: its distance from the center. Then \(|a - b|\) is the distance between two points, and multiplying numbers multiplies their sizes. On the unit circle \(|z| = 1\), so the bottom of the fraction has size \(|2z| = 2\). The top, \(|z + 1| = |z - (-1)|\), is literally the distance from the tone's point z to the zero at −1. So
+**Step five: the distance.** Write \(|a|\) for the size of a number a: its distance from the center. Then \(|a - b|\) is the distance between two points: \(a - b\) is the arrow from b to a, and its size is that arrow's length. And multiplying numbers multiplies their sizes. On the unit circle \(|z| = 1\), so the bottom of the fraction has size \(|2z| = 2\). The top, \(|z + 1| = |z - (-1)|\), is literally the distance from the tone's point z to the zero at −1. So
 
 \[ |H(z)| = \frac{\text{distance from } z \text{ to the zero}}{2} \]
 
@@ -214,9 +216,11 @@ The last term is a plain \(z^{-2}\) because the two factors' angles cancel: \(e^
 
 \[ y[n] = x[n] - 2\cos\theta \; x[n-1] + x[n-2] \]
 
+The ½ of the two-back filter only set the volume, so from here on the pair leaves it out.
+
 [[diagram:zero-pair]]
 
-The figure shows the pair at a few angles, each with its middle weight. At θ = π/2 the weight is 0: \(x[n] + x[n-2]\) again.
+The figure shows the pair at a few angles, each with its middle weight. At θ = π/2 the weight is 0: \(x[n] + x[n-2]\), the two-back filter without its ½.
 
 Zeros alone can't save the consonants, though. The filter needs a second kind of point: one that pushes the response back up.
 
@@ -224,11 +228,11 @@ Zeros alone can't save the consonants, though. The filter needs a second kind of
 
 \(H(z)\) is just arithmetic, so you can plug in any point z at all: on the rim, inside it, outside it. Tones only ever visit the rim, because a tone's z always has size 1. Picture the size of \(H\) as a landscape over the whole plane, with each tone a walker on the rim reading the height under its feet. A zero is a pit where the height is 0. Today's new point is the opposite: a spike. Put it just inside the rim and no tone ever stands on it, but every tone walking past nearby gets lifted.
 
+And a point inside the rim means something too. Raise z = 0.9j to the powers 1, 2, 3 and so on: each step turns a quarter turn and shrinks to 0.9 of its size. That's a dot spiraling inward, a 2,000 Hz turn that fades. Keep that spiral in mind.
+
 [[diagram:z-plane]]
 
-The figure is a 3D relief: two pits on the rim, two spikes just inside, and a walker whose height bar dips only near 2,000 Hz.
-
-And a point inside the rim means something too. Raise z = 0.9j to the powers 1, 2, 3 and so on: each step turns a quarter turn and shrinks to 0.9 of its size. That's a dot spiraling inward, a 2,000 Hz turn that fades. Keep that spiral in mind.
+The figure is a 3D relief: two pits on the rim, two spikes just inside, and a walker whose height bar dips only near 2,000 Hz. The small inset draws the spiral.
 
 ## Poles: the filter listens to itself
 
@@ -264,7 +268,7 @@ Each factor \(z - p\) has size equal to the distance from z to p, as in step fiv
 
 Here's the 0.905. For 0 Hz the zero distances multiply to 2 and the pole distances to 1.81, so 0.905 × 2 ÷ 1.81 = 1, exactly 100%.
 
-On the test bench below, a stylus rides the top half of the circle as the tone. Cords run from it to the zero at 2,000 Hz and to the pole inside, and a gauge reads the share that passes. Drag the tone, and slide the pole in and out.
+On the test bench below, a stylus rides the top half of the circle as the tone. Cords run from it to the zero at 2,000 Hz and to the pole inside, whose distance from the center, its radius, is written r. A gauge reads the share that passes. Drag the tone, and slide the pole in and out.
 
 [[machine]]
 
@@ -291,9 +295,9 @@ The three rows show the echo fading, holding, and running off the scale. (In the
 Now you fix the line. In the lab, a new whine is waiting at a pitch you don't know yet. Your job:
 
 1. Listen, find the whine, and move the zero pair onto it until the whine is removed.
-2. Bring in the poles to give the voice its edge back, without letting the filter blow up.
+2. Move the poles out from the center toward the rim to give the voice its edge back, without letting the filter blow up.
 
-You're done when the meter shows the whine at 0% and the voice above 90%.
+The voice meter averages how much of each tone from 300 to 3,400 Hz passes. You're done when the meter shows the whine at 0% and the voice above 90%.
 
 [[lab-act2]]
 

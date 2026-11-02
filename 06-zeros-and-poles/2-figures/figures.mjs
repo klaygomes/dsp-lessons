@@ -135,28 +135,31 @@ export default k => {
 
   const midpoint = L => {
     const ph = L.phone;
-    const [cx, cy, R] = ph ? [12, 400, 296] : [64, 356, 580];
-    const P = polar(cx, cy, R), m = cosd(11.25);
+    const [cx, cy, R, A] = ph ? [26, 214, 290, 74] : [64, 356, 580, 120];
+    const P = polar(cx, cy, R), Q = polar(cx, cy, A + 24), m = cosd(11.25);
     const [ox, oy] = P(1, 0), [fx, fy] = P(1, 22.5), [mx, my] = P(m, 11.25), [rx, ry] = P(1, 11.25);
     const at = x => cy - (x - cx) * Math.tan(11.25 * Math.PI / 180);
-    const lx = ph ? 230 : 440;
+    const lx = ph ? 262 : 440;
+    const [ax, ay] = Q(1, 22.5);
+    const foot = ph ? 268 : 406;
     return [
-      path(arcD(cx, cy, R, -2, 30), { cls: 'z6-rim' }),
-      ph ? '' : line(cx, cy, fx, fy, { cls: 'k-guide' }),
+      path(arcD(cx, cy, R, -2, ph ? 27 : 30), { cls: 'z6-rim' }),
+      line(cx, cy, ax, ay, { cls: 'k-guide' }), line(cx, cy, cx + A + 24, cy, { cls: 'k-guide' }),
       line(fx, fy, ox, oy, { cls: 'z6-chord' }),
       line(cx, cy, mx, my, { cls: 'z6-dist' }),
-      ph ? '' : path(arcD(cx, cy, 70, 0, 22.5), { cls: 'z6-turn' }),
-      ph ? '' : text(cx + 78, cy - 10, '22.5°', { anchor: 'start', cls: 'k-tick' }),
+      path(arcD(cx, cy, A, 0, 22.5), { cls: 'z6-turn' }),
+      text(ax + 4, ay - 4, '22.5°', { anchor: 'start', cls: 'k-num' }),
+      circle(cx, cy, 3.5, { cls: 'z6-tone' }), text(cx - 8, cy + 20, 'center', { anchor: 'start', cls: 'k-tick' }),
       text(lx, at(lx) - 12, '0.98 from the center', { anchor: 'end', cls: 'k-num-accent' }),
       circle(fx, fy, 6, { cls: 'z6-tone' }), circle(ox, oy, 6, { cls: 'z6-tone-old' }), circle(mx, my, 5.5, { cls: 'z6-result' }),
       text(fx - 12, fy + 4, 'fresh dot, n = 1', { anchor: 'end', cls: 'k-label' }),
       text(ox - 10, oy + 22, 'one sample old, n = 0', { anchor: 'end', cls: 'k-label' }),
-      text(mx - 14, my - 16, 'midpoint: the average', { anchor: 'end', cls: 'k-label' }),
+      text(mx - 14, my - (ph ? 22 : 16), 'midpoint: the average', { anchor: 'end', cls: 'k-label' }),
       line(rx + 3, ry, rx + (ph ? 8 : 14), ry, { cls: 'k-guide' }),
       text(rx + (ph ? 10 : 18), ry + 5, '2% lost', { anchor: 'start', cls: 'k-note-accent', style: ph ? 'font-size:14px' : undefined }),
-      text(ph ? 16 : 100, ph ? 456 : 406, '500 Hz: the two dots sit 22.5° apart', { anchor: 'start', cls: 'k-tick' }),
-      text(ph ? 16 : 100, ph ? 474 : 424, ph ? 'midpoint: 11.25° behind the fresh dot' : 'the midpoint sits 11.25° behind the fresh dot: half a sample late', { anchor: 'start', cls: 'k-tick' }),
-      ph ? text(16, 492, 'half a sample late', { anchor: 'start', cls: 'k-tick' }) : '',
+      text(ph ? 16 : 100, foot, '500 Hz: the two dots sit 22.5° apart', { anchor: 'start', cls: 'k-tick' }),
+      text(ph ? 16 : 100, foot + 18, ph ? 'midpoint: 11.25° behind the fresh dot' : 'the midpoint sits 11.25° behind the fresh dot: half a sample late', { anchor: 'start', cls: 'k-tick' }),
+      ph ? text(16, foot + 36, 'half a sample late', { anchor: 'start', cls: 'k-tick' }) : '',
     ];
   };
 
@@ -414,15 +417,12 @@ export default k => {
   const zeroPair = L => {
     const ph = L.phone;
     const tiles = [[45, 'π/4', '1,000 Hz', `${M}1.41`, `y[n] = x[n] ${M} 1.41 x[n${M}1] + x[n${M}2]`], [90, 'π/2', '2,000 Hz', '0', `y[n] = x[n] + x[n${M}2]`], [135, '3π/4', '3,000 Hz', '+1.41', `y[n] = x[n] + 1.41 x[n${M}1] + x[n${M}2]`]];
-    const head = ph
-      ? [rich(16, 26, `(1 − e${sup('jθ')}z⁻¹)(1 − e${sup('−jθ')}z⁻¹)`, { anchor: 'start', cls: 'k-num' }), text(16, 48, '= 1 − 2cos θ z⁻¹ + z⁻²', { anchor: 'start', cls: 'k-num' })]
-      : [rich(360, 30, `(1 − e${sup('jθ')}z⁻¹)(1 − e${sup('−jθ')}z⁻¹)  =  1 − 2cos θ z⁻¹ + z⁻²`, { cls: 'k-num' })];
-    return [head, tiles.map(([th, rad, f, wgt, prog], i) => {
-      const [cx, cy, R] = ph ? [70, 130 + i * 156, 50] : [120 + i * 240, 140, 66];
+    return [tiles.map(([th, rad, f, wgt, prog], i) => {
+      const [cx, cy, R] = ph ? [70, 86 + i * 156, 50] : [120 + i * 240, 104, 66];
       const P = polar(cx, cy, R), [ax, ay] = P(1, th), [bx, by] = P(1, -th), [tx0, ty0] = P(1, 22.5);
       const x0 = ph ? 140 : cx - 108, y0 = ph ? cy - 34 : cy + R + 34;
       return g({},
-        th === 90 ? rect(ph ? 8 : cx - 116, ph ? cy - 66 : 52, ph ? 344 : 232, ph ? 140 : 292, { cls: 'z6-tile', rx: 6 }) : '',
+        th === 90 ? rect(ph ? 8 : cx - 116, ph ? cy - 66 : 16, ph ? 344 : 232, ph ? 140 : 292, { cls: 'z6-tile', rx: 6 }) : '',
         rim(cx, cy, R),
         line(tx0, ty0, ax, ay, { cls: 'z6-dist' }), line(tx0, ty0, bx, by, { cls: 'z6-dist' }),
         zeroO(ax, ay, 6), zeroO(bx, by, 6), circle(tx0, ty0, 4.5, { cls: 'z6-tone' }),
@@ -430,7 +430,7 @@ export default k => {
         text(x0, y0 + 22, `middle weight −2cos θ = ${wgt}`, { anchor: 'start', cls: th === 90 ? 'k-num-accent' : 'k-num' }),
         ph && th !== 90 ? [text(x0, y0 + 44, prog.split(' + x[n−2]')[0], { anchor: 'start', cls: 'k-tick' }), text(x0 + 30, y0 + 60, '+ x[n−2]', { anchor: 'start', cls: 'k-tick' })]
           : text(x0, y0 + 44, prog, { anchor: 'start', cls: 'k-tick', style: 'font-size:10px' }));
-    }), ph ? [text(16, L.H - 30, 'each tile: a zero pair at θ and −θ, and a', { anchor: 'start', cls: 'k-tick' }), text(16, L.H - 12, '500 Hz tone with its distance to each zero', { anchor: 'start', cls: 'k-tick' })] : text(24, L.H - 12, 'each tile: a zero pair at θ and −θ, and a 500 Hz tone with its distance to each zero', { anchor: 'start', cls: 'k-tick' })];
+    }), ph ? [text(16, L.H - 30, 'each tile: rings, the zero pair at θ and −θ;', { anchor: 'start', cls: 'k-tick' }), text(16, L.H - 12, 'filled dot, a 500 Hz tone, lines to each zero', { anchor: 'start', cls: 'k-tick' })] : text(24, L.H - 12, 'each tile: rings, the zero pair at θ and −θ; filled dot, a 500 Hz tone, with a line to each zero', { anchor: 'start', cls: 'k-tick' })];
   };
 
   const zPlane = L => {
@@ -466,8 +466,8 @@ export default k => {
     const [pkx, pky] = proj(0, -0.9, hmax), [pitx, pity] = proj(0, 1, 0), [rmx, rmy] = proj(1, 0, h(1, 0));
     return [
       order,
-      ph ? g({}, line(pkx - 4, pky, pkx - 24, pky + 16, { cls: 'k-guide' }), text(pkx - 28, pky + 22, 'spikes: poles at ±0.9j', { anchor: 'end', cls: 'k-label' }))
-        : g({}, line(pkx + 4, pky, pkx + 24, pky + 16, { cls: 'k-guide' }), text(pkx + 28, pky + 22, 'spikes: poles at ±0.9j', { anchor: 'start', cls: 'k-label' })),
+      ph ? g({}, line(pkx - 4, pky, pkx - 24, pky + 16, { cls: 'k-guide' }), text(pkx - 28, pky + 22, 'spikes at ±0.9j', { anchor: 'end', cls: 'k-label' }))
+        : g({}, line(pkx + 4, pky, pkx + 24, pky + 16, { cls: 'k-guide' }), text(pkx + 28, pky + 22, 'spikes at ±0.9j', { anchor: 'start', cls: 'k-label' })),
       line(pitx, pity + 4, pitx, pity + (ph ? 22 : 26), { cls: 'k-guide' }), text(pitx, pity + (ph ? 36 : 40), 'pit: zero at j, 2,000 Hz', { cls: 'k-label' }),
       ph ? text(pitx, pity + 54, 'dark line: the rim, where tones live', { cls: 'k-label' })
         : g({}, line(rmx + 6, rmy, rmx + 78, rmy, { cls: 'k-guide' }), text(rmx + 82, rmy - 4, 'the rim:', { anchor: 'start', cls: 'k-label' }), text(rmx + 82, rmy + 12, 'tones live here', { anchor: 'start', cls: 'k-label' })),
@@ -510,21 +510,20 @@ export default k => {
         text(200, 500, 'feedback', { anchor: 'start', cls: 'k-note-accent' }),
       ];
     }
-    const pulse = [[600, 110], [600, 150], [600, 230], [544, 250], [440, 230], [440, 160]];
+    const pulse = [[600, 46], [600, 86], [600, 166], [544, 186], [440, 166], [440, 96]];
     return [
-      text(20, 116, 'x[n]', { anchor: 'start', cls: 'k-name' }),
+      text(20, 52, 'x[n]', { anchor: 'start', cls: 'k-name' }),
       step(1, 'the input and the input two samples ago are added, then scaled by 0.905',
-        g({}, A([[60, 110], [222, 110]]), A([[80, 110], [80, 188], [98, 188]]), A([[232, 188], [240, 188], [240, 128]]),
-          A([[258, 110], [282, 110]]), A([[380, 110], [422, 110]]), A([[458, 110], [640, 110]]))),
-      box(100, 168, 132, 40, 'two samples ago'), sum(240, 110), box(284, 90, 96, 40, '× 0.905'), sum(440, 110),
-      text(648, 116, 'y[n]', { anchor: 'start', cls: 'k-name' }),
+        g({}, A([[60, 46], [222, 46]]), A([[80, 46], [80, 124], [98, 124]]), A([[232, 124], [240, 124], [240, 64]]),
+          A([[258, 46], [282, 46]]), A([[380, 46], [422, 46]]), A([[458, 46], [640, 46]]))),
+      box(100, 104, 132, 40, 'two samples ago'), sum(240, 46), box(284, 26, 96, 40, '× 0.905'), sum(440, 46),
+      text(648, 52, 'y[n]', { anchor: 'start', cls: 'k-name' }),
       step(2, 'the loop: the output, two samples ago, times minus 0.81, back into the sum',
-        g({ anim: { k: 'in', d: 1, len: 0.8 } }, A([[600, 110], [600, 152]], 'accent'), A([[600, 194], [600, 250], [490, 250]], 'accent'), A([[440, 230], [440, 128]], 'accent'))),
-      box(534, 154, 132, 40, 'two samples ago', 'k-box-accent'), box(392, 230, 96, 40, '× −0.81', 'k-box-accent'),
+        g({ anim: { k: 'in', d: 1, len: 0.8 } }, A([[600, 46], [600, 88]], 'accent'), A([[600, 130], [600, 186], [490, 186]], 'accent'), A([[440, 166], [440, 64]], 'accent'))),
+      box(534, 90, 132, 40, 'two samples ago', 'k-box-accent'), box(392, 166, 96, 40, '× −0.81', 'k-box-accent'),
       step(3, 'a pulse goes once around the loop every two samples',
         pulse.map(([x, y], i) => g({ cls: 'k-ghost', 'aria-hidden': 'true', anim: { k: 'flash', d: 2 + i * 0.35, len: 0.45 } }, circle(x, y, 6, { cls: 'z6-pulse' })))),
-      text(250, 296, 'feedback: the filter reuses its own output', { anchor: 'start', cls: 'k-note-accent' }),
-      text(20, 30, 'y[n] = 0.905 (x[n] + x[n − 2]) − 0.81 y[n − 2]', { anchor: 'start', cls: 'k-num' }),
+      text(250, 232, 'feedback: the filter reuses its own output', { anchor: 'start', cls: 'k-note-accent' }),
     ];
   };
 
@@ -616,7 +615,7 @@ export default k => {
     fig('wheel', 330, 540, 'Every tone turns a wheel',
       'Dots turning counter-clockwise 45, 90 and 180 degrees per sample for 1,000, 2,000 and 4,000 Hz, with their stops numbered and the left-right position read at each stop.',
       'A tone is a dot turning 360° × tone ÷ 8,000 per sample. Its left-right position at each stop is the sample.', wheelFig, 3),
-    fig('midpoint', 440, 510, 'The average is a midpoint',
+    fig('midpoint', 440, 320, 'The average is a midpoint',
       'The fresh 500 Hz dot and the one-sample-old dot sit 22.5 degrees apart on the rim; their midpoint is 0.98 from the center and 11.25 degrees behind the fresh dot, 2% inside the rim.',
       'Zoomed in on the rim: the average of two dots is the midpoint of the chord between them, 0.98 from the center. The short gap to the rim is the 2% the average loses at 500 Hz.', midpoint),
     fig('radians', 390, 370, 'Radians: a turn measured by the walk',
@@ -646,13 +645,13 @@ export default k => {
     fig('dull', 350, 490, 'Zeros at ±j dull 1,500 Hz',
       'With zeros at j and −j, 1,500 Hz is 0.39 and 1.96 from them, a product of 0.77, against 1.41 times 1.41, 2, for 0 Hz, so 1,500 Hz keeps 38%.',
       'Multiply the distances to both zeros, then compare with 0 Hz: 1,500 Hz keeps only 38%.', dull),
-    fig('zero-pair', 380, 620, 'A zero pair at any angle',
+    fig('zero-pair', 344, 506, 'A zero pair at any angle',
       'Zero pairs at θ = π/4, π/2 and 3π/4 with middle weights −1.41, 0 and +1.41; the program is y[n] = x[n] − 2cos θ x[n−1] + x[n−2], and θ = π/2 gives x[n] + x[n−2].',
       'Put the pair at the whine’s angle θ and its mirror. The middle weight of the program is −2cos θ.', zeroPair),
     fig('z-plane', 400, 570, 'The size of H over the whole plane',
-      'A relief of the size of H for the notch: pits at the zeros ±j on the rim and spikes at the poles ±0.9j just inside; a walker on the rim from 0 Hz to 4,000 Hz stays near height 1 and dips to 0 only at 2,000 Hz; (0.9j) to the power n spirals inward.',
+      'A relief of the size of H: pits at the zeros ±j on the rim and spikes at ±0.9j just inside; a walker on the rim from 0 Hz to 4,000 Hz stays near height 1 and dips to 0 only at 2,000 Hz; (0.9j) to the power n spirals inward.',
       'A relief map of the size of H, its front edge cut through the zero at j. Tones only walk the rim; the height under a tone is how much of it passes.', zPlane, 2),
-    fig('feedback', 320, 560, 'Feedback: the filter listens to itself',
+    fig('feedback', 256, 560, 'Feedback: the filter listens to itself',
       'Block flow of y[n] = 0.905 (x[n] + x[n−2]) − 0.81 y[n−2]: the input and the input two samples ago are added and scaled by 0.905, and the output two samples ago, times −0.81, loops back into the sum.',
       'The loop on the right is the feedback: each output is fed back, two samples later, times −0.81.', feedback, 3),
     fig('notch', 340, 270, 'A pole beside the zero saves the voice',

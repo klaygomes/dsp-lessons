@@ -1,9 +1,9 @@
 (() => {
   const K = window.Kit, FS = 8000, TAU = 2 * Math.PI;
   const { fmt, hz } = K;
-  const VOICE_LO = 300, VOICE_HI = 3400, START_ZERO = 1000;
-  const pctText = v => (v > 0 && v < 0.005 ? 'under 1%' : `${Math.round(v * 100)}%`);
-  const voiceText = v => `${Math.floor(v * 100 + 1e-9)}%`;
+  const VOICE_LO = 300, VOICE_HI = 3400, START_ZERO = 2000, LOCK_HZ = 20;
+  const pctText = v => (v > 0 && v < 0.005 ? 'under 1%' : v >= 10 ? 'over 1,000%' : `${hz(Math.round(v * 100))}%`);
+  const voiceText = v => (v >= 10 ? 'over 1,000%' : `${hz(Math.floor(v * 100 + 1e-9))}%`);
   const degText = d => `${Number(d.toFixed(2))}°`;
   const omega = f => TAU * f / FS;
   const at = (P, r, th) => [P.cx + r * P.R * Math.cos(th), P.cy - r * P.R * Math.sin(th)];
@@ -24,10 +24,11 @@
     };
     let peak = 0;
     for (let f = 0; f <= 4000; f += 5) peak = Math.max(peak, raw(f));
-    const gain = f => Math.min(raw(f) / peak, 1);
+    const ref = raw(0), known = ref > 1e-9;
+    const gain = f => raw(f) / ref;
     let sum = 0, n = 0;
-    for (let f = VOICE_LO; f <= VOICE_HI; f += 10) { sum += gain(f); n++; }
-    return { gain, voice: sum / n, b: [1 / peak, -2 * c / peak, 1 / peak], a: [1, -2 * r * c, r * r], stable: r < 1 };
+    if (known) for (let f = VOICE_LO; f <= VOICE_HI; f += 10) { sum += gain(f); n++; }
+    return { gain, known, voice: known ? sum / n : NaN, b: [1 / peak, -2 * c / peak, 1 / peak], a: [1, -2 * r * c, r * r], stable: r < 1 };
   }
 
   function runFilter(x, b, a) {
@@ -49,7 +50,7 @@
 
   function newWhine(avoid) {
     let f;
-    do { f = 650 + 10 * Math.floor(Math.random() * 271); } while (f % 100 === 0 || Math.abs(f - avoid) < 400 || Math.abs(f - 2000) < 60);
+    do { f = 2230 + 10 * Math.floor(Math.random() * 115); } while (f % 100 === 0 || Math.abs(f - avoid) < 400);
     return f;
   }
 
@@ -63,7 +64,8 @@
     const explore = mode === 'explore';
     const state = explore
       ? { revealed: false, tone: 2000, pinned: null, filter: true }
-      : { unlocked: false, zero: START_ZERO, r: 0, whine: newWhine(START_ZERO), solved: false, everSolved: false, filter: true };
+      : { unlocked: false, heard: false, poleAsked: false, poleReady: false, zero: START_ZERO, r: 0, whine: newWhine(START_ZERO), solved: false, everSolved: false, filter: true };
+    const zeroAt = () => (!explore && Math.abs(state.zero - state.whine) <= LOCK_HZ ? state.whine : state.zero);
 
     const layout = (w, h) => {
       if (w < 560) {
@@ -76,24 +78,43 @@
 
     function drawChart(s, C, gain, { unstable = false, mark = null, pin = null, whine = null, zero = null, hidden = false } = {}) {
       const { pen, c } = s, X = f => C.x0 + f / 4000 * (C.x1 - C.x0), Y = g => C.y1 - g * (C.y1 - C.y0);
+      const note = (t, color) => {
+        const x = (C.x0 + C.x1) / 2, y = (C.y0 + C.y1) / 2;
+        s.ctx.font = '400 12px "Geist Mono", ui-monospace, monospace';
+        const wd = s.ctx.measureText(t).width;
+        pen.rect(x - wd / 2 - 8, y - 15, wd + 16, 22, c.paper);
+        pen.text(t, x, y, { color, size: 12 });
+      };
       if (!explore) {
         pen.rect(X(VOICE_LO), C.y0, X(VOICE_HI) - X(VOICE_LO), C.y1 - C.y0, c.paper2);
-        pen.text('voice tones', X(VOICE_LO) + 6, C.y1 - 8, { align: 'left', color: c.soft, size: 10 });
+        pen.text('voice tones', X(VOICE_LO), C.y0 - 8, { align: 'left', color: c.soft, size: 10 });
       }
       [0, 0.5, 1].forEach(g => { pen.line([[C.x0, Y(g)], [C.x1, Y(g)]], c.rule, 1); pen.text(`${g * 100}%`, C.x0 - 8, Y(g) + 4, { align: 'right', color: c.soft }); });
       pen.line([[C.x0, C.y1], [C.x1, C.y1]], c.soft, 1);
       [0, 1000, 2000, 3000, 4000].forEach(f => pen.text(f ? hz(f) : '0', X(f), C.y1 + 16, { color: c.soft, size: 10 }));
       pen.text('tone, Hz', C.x1, C.y1 + 32, { align: 'right', color: c.soft, size: 10 });
-      if (whine !== null) {
-        pen.line([[X(whine), C.y1], [X(whine), C.y0 + 22]], c.soft, 3);
+      if (whine !== null) pen.line([[X(whine), C.y1], [X(whine), C.y0 + 22]], c.soft, 3);
+      const whineLabel = () => {
+        if (whine === null) return;
+        s.ctx.font = '400 10px "Geist Mono", ui-monospace, monospace';
+        const wd = s.ctx.measureText('whine').width;
+        pen.rect(X(whine) - wd / 2 - 3, C.y0 + 7, wd + 6, 12, c.paper);
         pen.text('whine', X(whine), C.y0 + 16, { color: c.soft, size: 10 });
-      }
-      if (hidden) { pen.text('the curve appears after your guess', (C.x0 + C.x1) / 2, (C.y0 + C.y1) / 2, { color: c.soft }); return; }
-      const pts = [];
-      for (let i = 0; i <= 800; i++) { const f = 4000 * i / 800; pts.push([X(f), Y(gain(f))]); }
-      pen.line(pts, unstable ? c.soft : c.ink, 2, unstable ? [5, 5] : []);
-      if (unstable) pen.text('unstable: no gain to draw', (C.x0 + C.x1) / 2, C.y0 + 40, { color: c.accentInk, size: 12 });
+      };
       if (zero !== null) pen.line([[X(zero), C.y1 + 1], [X(zero), C.y1 - 9]], c.input, 3);
+      if (hidden) { note('the curve appears after your guess', c.soft); whineLabel(); return; }
+      if (unstable) { note('unstable: no gain to draw', c.accentInk); whineLabel(); return; }
+      if (gain === null) { note('0 Hz removed: nothing to compare with', c.accentInk); whineLabel(); return; }
+      const runs = [];
+      let run = null, prev = null;
+      for (let i = 0; i <= 800; i++) {
+        const f = 4000 * i / 800, g = gain(f), p = [X(f), Y(Math.min(g, 1))], over = g > 1.005;
+        if (!run || run.over !== over) { runs.push(run = { over, pts: prev ? [prev] : [] }); }
+        run.pts.push(p); prev = p;
+      }
+      runs.forEach(r => pen.line(r.pts, c.ink, 2, r.over ? [4, 4] : []));
+      whineLabel();
+      if (runs.some(r => r.over)) pen.text('dashed: above 100%, louder than 0 Hz', C.x1, C.y0 - 8, { align: 'right', color: c.soft, size: 10 });
       if (pin !== null) { pen.line([[X(pin), C.y1], [X(pin), Y(gain(pin))]], c.input, 1.5, [4, 4]); pen.ring(X(pin), Y(gain(pin)), 5, c.input, 2); }
       if (mark !== null) pen.dot(X(mark), Y(gain(mark)), 5.5, c.accent);
     }
@@ -127,17 +148,16 @@
     }
 
     function drawFix(s) {
-      const { pen, c, w, h } = s, L = layout(w, h), P = L.circle, F = notch(state.zero, state.r), th = omega(state.zero);
+      const { pen, c, w, h } = s, L = layout(w, h), P = L.circle, F = notch(zeroAt(), state.r), th = omega(zeroAt());
       drawRim(s, P, true);
       if (state.r > 0) {
         pen.line([[P.cx, P.cy], at(P, Math.max(state.r, 1), th)], c.rule, 1, [3, 4]);
         [th, -th].forEach((t, i) => { const [x, y] = at(P, state.r, t); const k = 6; pen.line([[x - k, y - k], [x + k, y + k]], c.input, 2.5, [], i ? 0.55 : 1); pen.line([[x - k, y + k], [x + k, y - k]], c.input, 2.5, [], i ? 0.55 : 1); });
-        const [px, py] = at(P, state.r, th);
-        pen.text(`r ${state.r.toFixed(2)}`, px + (px >= P.cx ? 12 : -12), py + 18, { align: px >= P.cx ? 'left' : 'right', color: c.ink, size: 11 });
       }
       [th, -th].forEach((t, i) => { const [x, y] = at(P, 1, t); s.ctx.globalAlpha = i ? 0.55 : 1; pen.ring(x, y, 7, c.input, 2.5); s.ctx.globalAlpha = 1; });
-      if (state.solved) { const [x, y] = at(P, 1, omega(state.whine)); pen.text(`whine ${hz(state.whine)} Hz`, x + (x >= P.cx ? 12 : -12), y - 10, { align: x >= P.cx ? 'left' : 'right', color: c.ink, size: 11 }); }
-      drawChart(s, L.chart, F.gain, { unstable: !F.stable, whine: state.whine, zero: state.zero });
+      const caption = [state.solved ? `whine ${hz(state.whine)} Hz` : '', state.r > 0 ? `poles at r ${state.r.toFixed(2)}` : ''].filter(Boolean).join(' · ');
+      if (caption) pen.text(caption, P.cx, P.cy + P.R + 22, { color: c.ink, size: 11 });
+      drawChart(s, L.chart, F.known ? F.gain : null, { hidden: !state.unlocked, unstable: !F.stable, whine: state.heard ? state.whine : null, zero: zeroAt() });
     }
 
     const stage = K.stage($('stage'), s => (explore ? drawExplore(s) : drawFix(s)), { height: w => (w < 560 ? 500 : 280) });
@@ -153,35 +173,41 @@
     }
 
     function fixMessage(F) {
-      const whine = F.gain(state.whine), gap = state.whine - state.zero;
-      if (!state.unlocked) return 'Answer the question above to unlock the zero pair and the poles.';
+      if (!state.unlocked) return 'Answer the question above to unlock the zero pair.';
       if (!F.stable) return state.r > 1
         ? `Poles at ${state.r.toFixed(2)}, outside the circle: every echo comes back ${state.r.toFixed(2)} × ${state.r.toFixed(2)} times bigger two samples later, so the filter blows up. Pull them back inside.`
         : 'Poles exactly on the circle: one click and the loop rings forever. Pull them a little inside.';
+      if (!F.known) return 'Your zeros sit on 0 Hz itself, so 0 Hz is removed and there is nothing left to compare with. The whine is not at 0 Hz.';
+      const whine = F.gain(state.whine);
+      const listen = state.heard ? '' : ' Play the call: once you have heard it, the frequency meter marks the whine.';
       if (whine >= 0.005) {
-        const dir = gap > 0 ? 'below' : 'above', move = gap > 0 ? 'up' : 'down';
-        const near = Math.abs(gap) <= 100 ? `Close, but your zeros sit just ${dir} the whine` : `Your zeros sit ${dir} the whine`;
-        return `${near}: it still passes ${pctText(whine)}. Move them ${move}${Math.abs(gap) <= 100 ? ' a little' : ''}, and listen.`;
+        if (whine > 1.005) return `The whine is still there, and it passes ${pctText(whine)}: more than 0 Hz, because 0 Hz now sits nearer your zeros than the whine does.${listen}`;
+        if (state.r > 0) return `The whine is still there: it passes ${pctText(whine)}. Poles cannot remove a tone; only a zero on its point can.${listen}`;
+        return `The whine is still there: it passes ${pctText(whine)}.${listen}`;
       }
+      const at = `your zero pair sits on it, at ${hz(state.whine)} Hz`;
       if (F.voice < 0.9) {
-        if (state.r === 0) return `The whine is removed. But the voice keeps only ${voiceText(F.voice)}: the zeros dull the tones around the whine. Bring the poles in beside them.`;
-        if (state.r < 0.7) return `The whine is removed, and the voice is up to ${voiceText(F.voice)}. The poles are still far from the zeros, so nearby tones cannot tell them apart from the center. Move the poles out toward the rim.`;
-        return `Nearly there: the voice keeps ${voiceText(F.voice)}. Move the poles a little closer to the rim, so only tones right beside the whine feel the zeros.`;
+        if (state.r === 0) return state.poleReady
+          ? `The whine is removed: ${at}. The voice keeps only ${voiceText(F.voice)}. Move the poles out from the center toward the rim, beside the zeros.`
+          : `The whine is removed: ${at}. But the voice keeps only ${voiceText(F.voice)}: the zeros dull every tone near them. Answer the new question before you move the poles.`;
+        if (state.r < 0.7) return `The whine is removed, and the voice is up to ${voiceText(F.voice)}. This far from the rim, each pole sits too far from its zero to cancel it for the tones near the whine.`;
+        return `The voice keeps ${voiceText(F.voice)}, not yet above 90%: the tones near the whine still feel the zeros more than the poles.`;
       }
-      return `Fixed. The whine sat at ${hz(state.whine)} Hz and now passes 0%; the voice keeps ${voiceText(F.voice)}. The poles sit at ${state.r.toFixed(2)}, inside the circle, so every echo dies out. Line two is quiet.`;
+      return `Fixed. The whine sat at ${hz(state.whine)} Hz and now passes 0%; the voice keeps ${voiceText(F.voice)}, compared with 0 Hz. The poles sit at ${state.r.toFixed(2)}, inside the circle, so every echo dies out. Line two is quiet.`;
     }
 
     function nowText() {
-      if (!audio.playing) return explore ? 'Not playing. Play runs the call, with a tone at the slider’s pitch, through the average.' : 'Not playing. Play runs the call, whine and all, through your filter.';
-      const via = state.filter ? (explore ? 'through the average' : 'through your filter') : 'with the filter off';
-      return explore ? `Playing the call with a ${hz(state.tone)} Hz tone, ${via}.` : `Playing the call with the whine, ${via}.`;
+      const off = state.filter ? '' : explore ? ' Filter off changes only the sound: the wheel, the meter and the curve still show the average.' : ' Filter off changes only the sound: the meters and the curve still show your filter.';
+      const route = state.filter ? (explore ? 'through the average' : 'through your filter') : 'with the filter off';
+      if (!audio.playing) return (explore ? `Not playing. Play runs the call, with a tone at the slider’s pitch, ${route}.` : `Not playing. Play runs the call, whine and all, ${route}.`) + off;
+      return (explore ? `Playing the call with a ${hz(state.tone)} Hz tone, ${route}.` : `Playing the call with the whine, ${route}.`) + off;
     }
 
     function render8k() {
       const x = call(explore ? state.tone : state.whine);
       if (!state.filter) return x;
       if (explore) return runFilter(x, [0.5, 0.5], [1]);
-      const F = notch(state.zero, state.r);
+      const F = notch(zeroAt(), state.r);
       return runFilter(x, F.b, F.a);
     }
     const audio = K.player({ rate: FS, gain: 0.3, onChange: on => { $('play').textContent = on ? 'Stop' : 'Play the call'; $('now').textContent = nowText(); } });
@@ -214,15 +240,19 @@
           ? `The wheel at ${hz(state.tone)} Hz: the fresh dot, the dot one sample before, and their midpoint ${fmt(avgGain(state.tone))} from the center. Beside it, the share each tone passes, from 100% at 0 Hz down to 0% at 4,000 Hz.`
           : `The wheel at ${hz(state.tone)} Hz: the fresh dot and the dot one sample before.`);
       } else {
-        const F = notch(state.zero, state.r);
-        $('zero').value = state.zero; $('zero-out').textContent = `${hz(state.zero)} Hz`;
-        if (document.activeElement !== $('zero-typed')) $('zero-typed').value = String(state.zero);
+        const F = notch(zeroAt(), state.r), locked = zeroAt() === state.whine;
+        $('zero').value = state.zero; $('zero-out').textContent = locked ? `${hz(zeroAt())} Hz, locked onto the whine` : `${hz(state.zero)} Hz`;
+        if (document.activeElement !== $('zero-typed')) $('zero-typed').value = String(zeroAt());
+        $('zero').setAttribute('aria-valuetext', $('zero-out').textContent);
         $('pole').value = state.r;
-        $('pole-out').textContent = state.r === 0 ? '0 (no poles)' : `${state.r.toFixed(2)}${state.r > 1 ? ' (outside the circle)' : state.r === 1 ? ' (on the circle)' : ''}`;
-        ['zero', 'zero-typed', 'pole', 'play'].forEach(k => { $(k).disabled = !state.unlocked; });
+        $('pole-out').textContent = state.r === 0 ? (state.poleReady ? '0 (no poles)' : '0 (no poles yet)') : `${state.r.toFixed(2)}${state.r > 1 ? ' (outside the circle)' : state.r === 1 ? ' (on the circle)' : ''}`;
+        ['zero', 'zero-typed', 'play'].forEach(k => { $(k).disabled = !state.unlocked; });
+        $('pole').disabled = !state.unlocked || !state.poleReady;
         $('key-pole').hidden = state.r === 0;
+        $('key-spike').hidden = !state.heard;
+        if (state.unlocked && F.stable && F.known && F.gain(state.whine) < 0.005 && !state.poleAsked) askPoles();
         const msg = fixMessage(F);
-        const solvedNow = state.unlocked && F.stable && F.gain(state.whine) < 0.005 && F.voice >= 0.9;
+        const solvedNow = state.unlocked && F.stable && F.known && F.gain(state.whine) < 0.005 && F.voice >= 0.9;
         state.solved = solvedNow;
         if (!state.unlocked) {
           $('result').textContent = 'Whine passes ? · voice keeps ?';
@@ -232,18 +262,24 @@
           const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = state.r > 1 ? 'unstable, it blows up' : 'unstable, it rings forever';
           $('result').append(sp);
           K.meter($('meter-a'), 0, { max: 1, text: 'unstable' }); K.meter($('meter-b'), 0, { max: 1, text: 'unstable' });
+        } else if (!F.known) {
+          $('result').replaceChildren('Zeros on 0 Hz · ');
+          const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = 'nothing to compare with';
+          $('result').append(sp);
+          K.meter($('meter-a'), 0, { max: 1, known: false }); K.meter($('meter-b'), 0, { max: 1, known: false });
         } else {
           const wv = F.gain(state.whine);
-          $('result').replaceChildren(`Zeros ${hz(state.zero)} Hz · poles ${state.r ? state.r.toFixed(2) : 'none'} · whine passes `);
+          $('result').replaceChildren(`Zeros ${hz(zeroAt())} Hz · poles ${state.r ? state.r.toFixed(2) : 'none'} · whine passes `);
           const a = document.createElement('span'); a.className = wv >= 0.005 ? 'changed' : ''; a.textContent = pctText(wv);
           const b = document.createElement('span'); b.className = F.voice < 0.9 ? 'changed' : ''; b.textContent = voiceText(F.voice);
           $('result').append(a, ' · voice keeps ', b);
-          K.meter($('meter-a'), wv, { max: 1, text: wv < 0.005 ? '0%' : undefined }); K.meter($('meter-b'), F.voice, { max: 1, text: voiceText(F.voice) });
+          K.meter($('meter-a'), wv, { max: 1, text: wv < 0.005 ? '0%' : wv > 1 ? `${pctText(wv)}, past the bar` : pctText(wv) });
+          K.meter($('meter-b'), F.voice, { max: 1, text: F.voice > 1 ? `${voiceText(F.voice)}, past the bar` : voiceText(F.voice) });
         }
         $('why').textContent = msg;
         $('another').hidden = !solvedNow;
         if (solvedNow && !state.everSolved) { state.everSolved = true; document.dispatchEvent(new CustomEvent('k:solved', { detail: 'act2' })); }
-        $('stage').setAttribute('aria-label', `The unit circle with your zero pair at ${hz(state.zero)} Hz${state.r ? ` and poles at radius ${state.r.toFixed(2)}` : ''}. Beside it, how much each tone passes, with the voice tones shaded and the whine marked on the frequency meter.`);
+        $('stage').setAttribute('aria-label', `The unit circle with your zero pair at ${hz(zeroAt())} Hz${state.r ? ` and poles at radius ${state.r.toFixed(2)}` : ''}.${state.unlocked ? ` Beside it, how much each tone passes compared with 0 Hz, with the voice tones shaded${state.heard ? ' and the whine marked on the frequency meter' : ''}.` : ' The curve beside it appears after your answer.'}`);
       }
       $('filter').setAttribute('aria-pressed', String(state.filter));
       $('filter').textContent = state.filter ? 'Filter on' : 'Filter off';
@@ -256,6 +292,18 @@
 
     function setZero(v) { state.zero = Math.max(0, Math.min(4000, v)); render(); }
 
+    function askPoles() {
+      state.poleAsked = true;
+      $('ask-poles').hidden = false;
+      K.ask($('ask-poles'), {
+        question: 'Next you move the poles out from the center toward the rim, each beside its zero. As they move out, what will the voice meter do?',
+        options: [['rise', 'It rises'], ['fall', 'It falls further'], ['same', 'It stays where it is']], right: 'rise',
+        hints: { fall: 'A pole sits on the bottom of the fraction. Does dividing by a short distance make a tone quieter or louder?', same: 'Every tone has a distance to the poles, not only the whine. What happens to that fraction for a tone near the whine?' },
+        explain: 'Near the rim, each pole sits almost on its zero, so a tone away from the whine finds the two distances nearly equal, and they cancel. Only the tones right beside the whine still feel the zero. The pole radius is yours now.',
+        onSolved: () => { state.poleReady = true; render(); }, focusAfter: () => $('pole'),
+      });
+    }
+
     if (explore) {
       K.ask($('ask'), {
         question: 'A 2,000 Hz tone goes through the average. How much of it passes?',
@@ -267,16 +315,16 @@
       });
     } else {
       $('task').hidden = false;
-      $('task-text').textContent = 'Line two again: a new chip, a new whine, at a pitch you do not know yet. Play the call and listen, and find the whine’s spike on the frequency meter. Move the zero pair onto it until the whine passes 0%, then bring the poles in until the voice keeps more than 90%, without letting them reach the circle. Every share is compared with the loudest tone your filter passes.';
+      $('task-text').textContent = 'Line two again: a new chip, a new whine, at a pitch you do not know yet. Play the call and listen: once you have heard it, the frequency meter marks the whine. Move the zero pair onto it until the whine passes 0% (within 20 Hz, the pair locks on), then move the poles out from the center toward the rim until the voice keeps more than 90%, without letting them reach the circle. As in the rule, every share is compared with 0 Hz; the voice meter averages how much of each tone from 300 to 3,400 Hz passes.';
       ['tone-control', 'pin', 'jump', 'key-explore'].forEach(k => { $(k).hidden = true; });
       ['zero-control', 'pole-control', 'key-fix', 'meter-b'].forEach(k => { $(k).hidden = false; });
       $('meter-a-label').textContent = 'Whine: share that passes (done at 0%)';
       $('play').disabled = true;
       K.ask($('ask'), {
         question: 'Before you touch anything: once your zero pair sits right on this whine, with no poles yet, what will the voice meter read?',
-        options: [['most', 'Above 90%: the zeros only touch the whine'], ['less', 'Well under 90%: the voice turns dull'], ['none', 'About 0%: the voice goes too']], right: 'less',
+        options: [['most', 'Above 90%'], ['less', 'Well under 90%'], ['none', 'About 0%']], right: 'less',
         hints: { most: 'A zero weakens every tone near it, not only the one it sits on. How far around the circle does that reach?', none: 'Tones far from the zeros sit far from them on the circle. Do they lose everything?' },
-        explain: 'A zero pair pulls down every tone near it, so the voice turns dull, like the sock ticket. The controls are yours now: find the whine, then see how dull.',
+        explain: 'A zero pair pulls down every tone near it, so the voice turns dull, like the sock ticket. The zero pair is yours now: play the call, find the whine, and see how dull.',
         onSolved: () => { state.unlocked = true; render(); }, focusAfter: () => $('play'),
       });
     }
@@ -290,8 +338,8 @@
         $('zero-msg').textContent = 'Type a whole number of hertz, from 0 to 4,000.'; $('zero-msg').className = 'bad';
         $('zero-typed').value = String(state.zero); return;
       }
-      $('zero-msg').textContent = `Zero pair moved to ${hz(v)} Hz.`; $('zero-msg').className = '';
       setZero(v);
+      $('zero-msg').textContent = zeroAt() === state.whine ? `Zero pair locked onto the whine at ${hz(zeroAt())} Hz.` : `Zero pair moved to ${hz(v)} Hz.`; $('zero-msg').className = '';
     });
     $('zero-typed').addEventListener('keydown', e => { if (e.key === 'Enter') $('zero-typed').dispatchEvent(new Event('change')); });
     $('pole').addEventListener('input', () => { state.r = Math.round(Number($('pole').value) * 100) / 100; render(); });
@@ -299,11 +347,12 @@
       if (audio.playing) { audio.stop(); return; }
       if (!explore && state.filter && state.r >= 1) { $('now').textContent = 'Not playing: an unstable filter would only blast noise. Pull the poles back inside the circle first.'; return; }
       audio.play(render8k);
+      if (!explore && !state.heard) { state.heard = true; render(); }
     });
     $('filter').addEventListener('click', () => { state.filter = !state.filter; render(); });
     $('another').addEventListener('click', () => {
       audio.stop();
-      Object.assign(state, { whine: newWhine(state.whine), zero: START_ZERO, r: 0, solved: false });
+      Object.assign(state, { whine: newWhine(state.whine), zero: START_ZERO, r: 0, solved: false, heard: false });
       $('zero-msg').textContent = '';
       render(); $('zero').focus();
     });
