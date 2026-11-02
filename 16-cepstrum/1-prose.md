@@ -86,7 +86,7 @@ The figure draws the 4-sample and 40-sample ripples on one axis: between 0 and 4
 
 Notice which way that goes. A longer delay makes a finer ripple.
 
-Go and play with it. Set a delay and a strength, and the lab plays a sweep through the echo. A sweep is one tone gliding from 0 Hz up to 4,000 Hz, so you hear the ripple as a wobble in loudness. Before you touch the delay slider, predict: if you double the delay, do the peaks get further apart or closer together?
+Now try it in the lab. You set a delay and a strength, and the lab plays a sweep through the echo. A sweep is one tone gliding from 0 Hz up to 4,000 Hz, so you hear the ripple as a wobble in loudness. The lab opens with a question about doubling the delay; answer it before you touch the sliders.
 
 [[lab]]
 

@@ -29,7 +29,7 @@ The course follows the book in order. Each lesson assumes only the lessons befor
 | 13 | The FFT (ch. 9) | the key detector is too slow to run live on the chip | split the DFT into even and odd samples again and again: N log N instead of N squared | butterfly, FFT, Goertzel |  | figures, page and video in progress |
 | 14 | Spectrum analysis with windows (ch. 10) | the detector sometimes rejects a 4 as two keys at once and misses faint keys | a short recording leaks each tone into its neighbors; choose window and length for the keys you must tell apart | leakage, main lobe, side lobe, zero padding |  | figures, page and video in progress |
 | 15 | The Hilbert transform (ch. 11) | shifting every call up 300 Hz to disguise tip-line callers also creates a ghost voice 300 Hz below the original | build the analytic signal, which has no negative tones, then shift it | negative tone, analytic signal, Hilbert transformer, single sideband |  | figures, page and video in progress |
-| 16 | The cepstrum (ch. 12) | an echo of unknown delay; lesson 2's fix needs the delay | an echo is a ripple in the log spectrum; read delay and strength from the cepstrum peak, then cancel with feedback | strength, ripple, log spectrum, cepstrum, quefrency |  | figures, page and video in progress |
+| 16 | The cepstrum (ch. 12) | an echo of unknown delay; lesson 2's fix needs the delay | an echo is a ripple in the log spectrum; read delay and strength from the cepstrum peak, then cancel with feedback | strength, ripple, log spectrum, cepstrum, quefrency | 16-cepstrum/3-page/3-page.html | page ready; video to build |
 
 ## Conventions every lesson keeps
 

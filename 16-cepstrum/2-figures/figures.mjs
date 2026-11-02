@@ -176,7 +176,7 @@ export default k => {
       text(x1, P.y1 + 36, ph ? 'tone (Hz; 1k = 1,000)' : 'tone (Hz)', { anchor: 'end', cls: 'k-tick' }),
       line(P.x0, P.Y(1), P.x1, P.Y(1), { cls: 'k-grid' }),
       curve(P, f => gainAt(f, 4), { n: 400 }),
-      dots.map(f => { const v = gainAt(f, 4); return g({}, circle(P.X(f), P.Y(v), 4.5, { cls: 'k-stem-dot' }), k.masked(P.X(f) + (f === 4000 ? -8 : f === 0 ? 8 : f === 500 ? -10 : 0), f === 500 ? P.Y(v) + 18 : v > 1 ? P.Y(v) - 10 : P.Y(v) + 22, fmt(v), { anchor: f === 4000 || f === 500 ? 'end' : f === 0 ? 'start' : 'middle', cls: 'k-num' })); }),
+      dots.map(f => { const v = gainAt(f, 4); return g({}, circle(P.X(f), P.Y(v), 4.5, { cls: 'k-stem-dot' }), k.masked(P.X(f) + (f === 4000 ? -8 : f === 0 ? 8 : f === 500 ? (ph ? 8 : -10) : 0), f === 500 ? P.Y(v) + (ph ? -8 : 18) : v > 1 ? P.Y(v) - 10 : P.Y(v) + 22, fmt(v), { anchor: f === 4000 || (f === 500 && !ph) ? 'end' : f === 0 || f === 500 ? 'start' : 'middle', cls: 'k-num' })); }),
       path(`M${r2(P.X(0))} ${r2(top + 6)}L${r2(P.X(0))} ${r2(top)}L${r2(P.X(2000))} ${r2(top)}L${r2(P.X(2000))} ${r2(top + 6)}`, { cls: 'c-bracket-accent' }),
       text(P.X(1000), top - 8, ph ? 'a peak every 2,000 Hz' : 'a peak every 2,000 Hz', { cls: 'k-num-accent' }),
     ];
@@ -185,14 +185,14 @@ export default k => {
   const echoWheel = L => {
     const ph = L.phone, R = ph ? 76 : 80;
     const stops = [500, 1000, 2000];
-    const P = ph ? plot({ x: 50, y: 594, w: 286, h: 120, xs: [0, 4000], ys: [0, 1.75] }) : plot({ x: 80, y: 300, w: 610, h: 120, xs: [0, 4000], ys: [0, 1.75] });
+    const P = ph ? plot({ x: 50, y: 520, w: 286, h: 120, xs: [0, 4000], ys: [0, 1.75] }) : plot({ x: 80, y: 300, w: 610, h: 120, xs: [0, 4000], ys: [0, 1.75] });
     const panel = (f, i) => {
       const th = 4 * 360 * f / FS, gn = gainAt(f, 4);
-      const ox = ph ? 34 : 34 + i * 235, oy = ph ? 92 + i * 160 : 136;
+      const ox = ph ? 34 : 34 + i * 235, oy = ph ? 92 + i * 136 : 136;
       const tx = ox + R, lift = th === 180 ? -10 : 0, drop = th === 360 ? 12 : th === 180 ? 10 : 0;
       const ex = tx + (R / 2) * cosd(-th), ey = oy + lift - (R / 2) * sind(-th);
       const d = i * 2.4;
-      const tagX = ph ? 222 : ox, tagY = ph ? oy - 34 : oy + 70;
+      const tagX = ph ? 184 : ox, tagY = ph ? oy - 34 : oy + 70;
       const tags = [`echo ${th}° behind`, `gain ${fmt(gn)}`];
       return [
         text(ph ? tagX : ox, ph ? tagY : 56, `${hz(f)} Hz`, { anchor: 'start', cls: 'k-name' }),
@@ -214,7 +214,7 @@ export default k => {
       text(P.x1, P.y1 + 36, 'tone (Hz)', { anchor: 'end', cls: 'k-tick' }),
       step(4, 'the whole gain curve: the sum arrow’s length as the tone climbs from 0 to 4,000 Hz',
         curve(P, f => gainAt(f, 4), { n: 300, anim: { k: 'draw', d: 7.4, len: 2 } })),
-      ph ? g({}, keyLine(20, 518, 'orig', 'original, length 1'), keyLine(20, 540, 'echo', 'echo, length 0.5'), keyLine(196, 518, 'sum', 'their sum'))
+      ph ? g({}, keyLine(20, 444, 'orig', 'original, length 1'), keyLine(20, 466, 'echo', 'echo, length 0.5'), keyLine(196, 444, 'sum', 'their sum'))
         : g({}, keyLine(80, 252, 'orig', 'original, length 1'), keyLine(270, 252, 'echo', 'echo, length 0.5, 4 samples back'), keyLine(590, 252, 'sum', 'their sum')),
     ];
   };
@@ -315,11 +315,10 @@ export default k => {
     const quarter = i => {
       const [tx, ty] = at(90 * i), d = (i - 1) * 2;
       return [
-        step(i, `${hz(2000 * i)} Hz: the tone's dot has gone ${i} quarter${i > 1 ? 's' : ''} round; the echo's dot has lapped it ${i} time${i > 1 ? 's' : ''} and is back at the start`,
+        step(i, `${hz(2000 * i)} Hz: the tone's dot has gone ${i} quarter${i > 1 ? 's' : ''} round; the echo's dot, 4 per-sample steps behind it, has lapped it ${i} time${i > 1 ? 's' : ''} and sits on it again`,
           g({ anim: { k: 'in', d, len: 0.3 } },
             g(i < 4 ? { cls: 'k-faint', anim: { k: 'fade', o0: 1, d: d + 2, len: 0.4 } } : {},
-              g(turnAt(cx, cy, 90, { d, len: 1.8 }), circle(tx, ty, 6, { cls: 'c-tone-dot' })),
-              g(turnAt(cx, cy, -360, { d, len: 1.8 }), circle(...at(0, R), 7, { cls: 'c-echo-dot' }))))),
+              g(turnAt(cx, cy, -270, { d, len: 1.8 }), circle(tx, ty, 9, { cls: 'c-echo-dot' })), g(turnAt(cx, cy, 90, { d, len: 1.8 }), circle(tx, ty, 5, { cls: 'c-tone-dot' }))))),
         step(i, `the log of the gain from ${hz(2000 * (i - 1))} to ${hz(2000 * i)} Hz: one bump, lap ${i}`,
           g({}, curve(P, f => logGain(f, 4), { from: 2000 * (i - 1), to: 2000 * i, n: 80, anim: { k: 'draw', d, len: 1.8 } }),
             g({ anim: { k: 'in', d: d + 1.6, len: 0.4 } }, text(P.X(2000 * i - 1000), P.Y(0.5) - 4, `lap ${i}`, { cls: 'k-num-accent' })))),
@@ -328,7 +327,7 @@ export default k => {
     const strip = range(0, 4).map(i => {
       const sx = ph ? 36 + i * 72 : 120 + i * 120, sy = ph ? 600 : 388, r = ph ? 22 : 26;
       const [tx, ty] = [sx + r * cosd(90 * i), sy - r * sind(90 * i)];
-      return g({}, circle(sx, sy, r, { cls: 'c-ring' }), circle(sx + r, sy, 5, { cls: 'c-echo-dot' }), circle(tx, ty, 3.5, { cls: 'c-tone-dot' }),
+      return g({}, circle(sx, sy, r, { cls: 'c-ring' }), circle(tx, ty, 7, { cls: 'c-echo-dot' }), circle(tx, ty, 3.5, { cls: 'c-tone-dot' }),
         text(sx, sy - r - 10, `${hz(2000 * i)} Hz`, { cls: ph ? 'c-small' : 'k-tick' }), text(sx, sy + r + 18, `${i} lap${i === 1 ? '' : 's'}`, { cls: 'k-num' }));
     });
     return [
@@ -339,7 +338,7 @@ export default k => {
       axes(P, { xTicks: hzTicks(ph ? [0, 4000, 8000] : [0, 2000, 4000, 6000, 8000]), yTicks: [[0.41, '0.41'], [0, '0'], [-0.69, `${M}0.69`]] }),
       text(P.x1, P.y1 + 36, 'tone (Hz), once round', { anchor: 'end', cls: 'k-tick' }),
       [1, 2, 3, 4].map(quarter),
-      text(ph ? 180 : 360, ph ? 542 : 330, ph ? 'every 2,000 Hz: back on the start' : 'every 2,000 Hz the echo is back on the start: five stops', { cls: 'k-label' }),
+      text(ph ? 180 : 360, ph ? 542 : 330, ph ? 'every 2,000 Hz: echo on the tone' : 'every 2,000 Hz the echo lands back on the tone: five stops', { cls: 'k-label' }),
       strip,
       ph ? g({}, keyLine(20, 676, 'tone-dot', 'the tone'), keyLine(150, 676, 'echo-dot', 'the echo, 4 samples back'))
         : g({}, keyLine(120, 470, 'tone-dot', 'the tone’s dot'), keyLine(320, 470, 'echo-dot', 'the echo’s dot, set back 4 per-sample steps')),
@@ -430,7 +429,7 @@ export default k => {
       k.masked(P.X(1200) + 10, P.Y(c[1200]) + 4, `echo: 1,200, ${fmt(c[1200])}`, { anchor: 'start', cls: 'k-num-accent' }),
       circle(P.X(2400), P.Y(c[2400]), 4, { cls: 'c-echo-dot' }),
       k.masked(P.X(2400) - 10, P.Y(c[2400]) + 26, ph ? `dip: 2,400, ${fmt(c[2400])}` : `lopsided-ripple dip: 2,400, ${fmt(c[2400])}`, { anchor: 'end', cls: 'k-num' }),
-      text(P.x1, P.Y(0.08) - 6, ph ? 'voice bumps stay under 0.08' : 'the voice’s own bumps stay under about 0.08', { anchor: 'end', cls: 'k-tick' }),
+      text(P.x1, P.Y(0.08) - 6, ph ? 'voice bumps' : 'the voice’s own bumps stay under about 0.08', { anchor: 'end', cls: 'k-tick' }),
     ];
   };
 
@@ -478,7 +477,7 @@ export default k => {
         k.box(fb ? tap - 32 : tap - 10, by - 18, 64, 36, { name: 'D' }),
         fb ? g({}, A([[tap - 32, by], [sx + 56, by]]), k.box(sx - 10, by - 18, 64, 36, { name: '× α' }), path(`M${sx - 10} ${by}L${sx - 40} ${by}L${sx - 40} ${oy + 30}L${sx} ${oy + 30}`, { cls: 'k-arrow' }), A([[sx, oy + 30], [sx, oy + 16]]))
           : g({}, A([[tap + 54, by], [sx - 22, by]]), k.box(sx - 20, by - 18, 64, 36, { name: '× α' }), path(`M${sx + 44} ${by}L${sx + 60} ${by}L${sx + 60} ${oy + 30}L${sx} ${oy + 30}`, { cls: 'k-arrow' }), A([[sx, oy + 30], [sx, oy + 16]])),
-        text(ox, by + 52, fb ? 'subtract a delayed copy of clean' : 'subtract a delayed copy of heard', { anchor: 'start', cls: 'k-name' }),
+        text(ox, by + 52, fb ? 'subtract a shifted copy of clean' : 'subtract a shifted copy of heard', { anchor: 'start', cls: 'k-name' }),
         fb ? text(ox, by + 72, 'overall: exactly 1', { anchor: 'start', cls: 'k-num' }) : `<text x="${ox}" y="${by + 72}" text-anchor="start" class="k-num">overall: 1 − α<tspan baseline-shift="super" font-size="9">2</tspan> z<tspan baseline-shift="super" font-size="9">−2D</tspan></text>`);
     };
     const resp = (ox, oy, fb) => {
@@ -514,7 +513,7 @@ export default k => {
     fig('gain-ripple', [340, 330], 'The echo’s gain ripples',
       'Gain against tone from 0 to 4,000 Hz for an echo 4 samples late at strength 0.5: a smooth curve between 0.5 and 1.5, with dots at 0, 500, 1,000, 2,000, 3,000 and 4,000 Hz reading 1.5, 1.12, 0.5, 1.5, 0.5 and 1.5. It peaks every 2,000 Hz.',
       'The gain of the 4-sample echo at every tone from 0 to 4,000 Hz, with the six values from the table as dots. It peaks every 2,000 Hz.', gainRipple),
-    fig('echo-wheel', [470, 760], 'The echo arrow swings round',
+    fig('echo-wheel', [470, 690], 'The echo arrow swings round',
       'The original arrow, length 1, with the echo’s half-length arrow hanging off its tip, set back by 4 per-sample steps. At 500 Hz the echo sits 90 degrees behind and the sum is 1.12 long; at 1,000 Hz 180 degrees, sum 0.5; at 2,000 Hz 360 degrees, sum 1.5. Below, the sum’s length against tone traces the gain curve.',
       'At each tone the echo arrow sits 4 per-sample steps behind the original: 90° at 500 Hz, 180° at 1,000 Hz, a full lap at 2,000 Hz. The sum arrow’s length is the gain.', echoWheel, 4),
     fig('delay-vs-ripple', [360, 360], 'A longer delay makes a finer ripple',
@@ -530,7 +529,7 @@ export default k => {
       'Left: the log of the gain at 16 tones as bars, repeating 0.41, 0.11, −0.69, 0.11, with the first block of four outlined. Right: its FFT divided by 16: bin 4 is 0.27, bin 8 is −0.13, and bin 12 is 0.27, the mirror of bin 4.',
       'The list repeats every 4 bins, so it goes round 4 times across all 16, and the FFT lights up bin 4: the delay. Bin 12 is its mirror.', listDft),
     fig('lapping-echo', [490, 700], 'The echo laps the tone D times',
-      'Left: the unit circle. As the tone climbs from 0 to 8,000 Hz its dot goes once round, a quarter every 2,000 Hz; the echo’s dot, 4 per-sample steps behind, laps it 4 times, back at the start every 2,000 Hz. Right: the log of the gain draws one bump per lap, 4 bumps. Below, five stops at 0, 2,000, 4,000, 6,000 and 8,000 Hz with 0 to 4 laps.',
+      'Left: the unit circle. As the tone climbs from 0 to 8,000 Hz its dot goes once round, a quarter every 2,000 Hz; the echo’s dot, 4 per-sample steps behind, laps it 4 times, landing back on the tone’s dot every 2,000 Hz. Right: the log of the gain draws one bump per lap, 4 bumps. Below, five stops at 0, 2,000, 4,000, 6,000 and 8,000 Hz with 0 to 4 laps.',
       'Once round the circle, the 4-sample echo laps the tone 4 times, so the log ripple has 4 bumps and the match lands on bin 4.', lappingEcho, 4),
     fig('cepstrum', [330, 770], 'The cepstrum: a spectrum of a spectrum',
       'Three panels. A call with an echo 1,200 samples late against time in samples; an arrow labelled FFT, then log; its log spectrum against tone, fuzzy with a ripple every 6.67 Hz; an arrow labelled FFT; its cepstrum against quefrency in samples, with one peak at 1,200 samples, 0.15 s.',
@@ -545,7 +544,7 @@ export default k => {
       'Left: the log of the gain for a 4-sample echo at strength 0.5, with peaks of 0.41 and dips of −0.69, beside a pure cosine of size 0.5. Right: three cosines, 0.5 cos, −0.125 cos at twice the speed and 0.042 cos at three times, and their sum, which matches the lopsided log.',
       'The log squashes the peaks and stretches the dips. Describing that lopsided ripple takes cosines at two and three times the speed: the smaller spikes at 2D and 3D.', lopsidedLog),
     fig('canceller', [450, 880], 'Two cancellers',
-      'Left: the feedforward canceller subtracts a delayed, scaled copy of heard; overall it multiplies by 1 minus α squared times z to the power −2D. Right: the feedback canceller subtracts a delayed, scaled copy of its own output, clean; overall exactly 1. Below each: one click through the echo. Feedforward leaves −0.25 at 2D; feedback leaves nothing.',
+      'Left: the feedforward canceller subtracts a shifted, scaled copy of heard; overall it multiplies by 1 minus α squared times z to the power −2D. Right: the feedback canceller subtracts a shifted, scaled copy of its own output, clean; overall exactly 1. Below each: one click through the echo. Feedforward leaves −0.25 at 2D; feedback leaves nothing.',
       'Subtract a shifted copy of heard and the echo’s own echo is left, −0.25 at 2D. Subtract a shifted copy of clean and nothing is left.', cancellerFig),
   ];
 };

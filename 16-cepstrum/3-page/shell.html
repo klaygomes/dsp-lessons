@@ -22,20 +22,21 @@
 .lab .control .row button { padding: 8px 12px; font-size: 15px; }
 .act2 { display: grid; }
 .k-inline-ask { border-left: 3px solid var(--input); padding-left: 16px; }
+header .topic { max-width: none; }
 table.worked { table-layout: fixed; }
 table.worked th:first-child, table.worked td:first-child { width: 11em; }
 @media (max-width: 600px) {
   .table:has(table.worked) { overflow-x: visible; }
   table.worked, table.worked thead, table.worked tbody { display: block; }
   table.worked tr { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding: 4px 0; }
-  table.worked th, table.worked td { flex: 1 1 0; min-width: 0; padding: 2px 0; border: 0; font-size: 12px; text-align: center; }
+  table.worked th, table.worked td { flex: 1 1 1px; min-width: 0; padding: 2px 3px; border: 0; font-size: 12px; text-align: center; white-space: normal; overflow-wrap: anywhere; }
   table.worked th:first-child, table.worked td:first-child { flex-basis: 100%; width: auto; min-width: 0; text-align: left; font-size: 14px; }
 }
 </style>
 
 <div class="wrap">
   <header>
-    <p class="topic">Discrete-Time Signal Processing · lesson 16 · chapter 12</p>
+    <p class="topic">Discrete-Time Signal Processing · lesson&nbsp;16 · chapter&nbsp;12</p>
     <h1>The Echo With No Address</h1>
     <p class="question">Calls through a partner network arrive with their echo already mixed in, and every route has its own delay. With no clean copy and nobody telling you the delay, can the recording itself say where the echo is?</p>
   </header>

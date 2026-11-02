@@ -35,7 +35,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 13 | FFT | built, learner judge running | to build |
 | 14 | Spectrum windows | builder running | to build |
 | 15 | Hilbert | builder running | to build |
-| 16 | Cepstrum | builder running | to build |
+| 16 | Cepstrum | ready | to build |
 
 ## Open items
 

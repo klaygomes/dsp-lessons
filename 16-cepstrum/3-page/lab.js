@@ -37,12 +37,12 @@
   }
 
   function arrowRight(pen, x, y, color) { pen.line([[x - 6, y - 4], [x, y], [x - 6, y + 4]], color, 1.5); }
-  function envelope(s, P, xs, valueAt, color, { dash = [], width = 1.6, smoothPx = 3, period = Infinity, rangeAt = null } = {}) {
+  function envelope(s, P, xs, valueAt, color, { dash = [], width = 1.6, smoothPx = 8, period = Infinity, rangeAt = null } = {}) {
     const { pen } = s, cols = Math.max(2, Math.round(P.w));
     const span = (xs[1] - xs[0]) / cols;
     if (period / span >= smoothPx) {
       const pts = [];
-      for (let c = 0; c <= cols; c++) { const x = xs[0] + c * span; pts.push([P.x + c, P.Y(valueAt(x))]); }
+      for (let c = 0; c <= cols * 4; c++) { const x = xs[0] + (c / 4) * span; pts.push([P.x + c / 4, P.Y(valueAt(x))]); }
       pen.line(pts, color, width, dash);
       return;
     }
@@ -72,6 +72,7 @@
   function yTicks(s, P, ticks) { ticks.forEach(([v, label]) => s.pen.text(label, P.x - 6, P.Y(v) + 4, { color: s.c.soft, size: 10, align: 'right' })); }
   function title(s, text, x, y) { s.pen.text(text, x, y, { align: 'left', color: s.c.ink, size: 13, font: 'body', weight: 600 }); }
 
+  let toneDone = false;
   K.ask($('predict-every-tone'), {
     question: 'Does every tone come out 1.5 times as loud?',
     options: [['all', 'Yes, every tone'], ['some', 'No: some louder, some quieter'], ['none', 'No: every tone quieter']],
@@ -81,7 +82,7 @@
       none: 'Take 2,000 Hz, which repeats every 4 samples. Where was it 4 samples back?',
     },
     explain: 'It depends on where the tone was 4 samples back. Where it was in the same place, the echo adds; where it was on the opposite side, the echo pulls against it. Here are two tones worked out.',
-    onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-every-tone' })),
+    onSolved: () => { document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-every-tone' })); if (!toneDone) { toneDone = true; ask1(); a1Render(); } },
   });
 
   const N1 = 65536, fft1 = makeFFT(N1), COS1 = Float64Array.from({ length: N1 }, (_, i) => Math.cos(2 * Math.PI * i / N1));
@@ -116,6 +117,7 @@
   const stage1 = K.stage($('a1-stage'), s => {
     const { c, w, pen } = s, phone = w < 560;
     const left = phone ? 40 : 52, pw = w - left - 14, ph = phone ? 108 : 112, gap = phone ? 176 : 172;
+    if (!toneDone) { pen.text('The plots open once you answer the question', w / 2, s.h / 2 - 9, { color: c.soft, size: 12 }); pen.text('in “A tiny echo, sample by sample”.', w / 2, s.h / 2 + 9, { color: c.soft, size: 12 }); return; }
     const xs = xRange(), period = FS / a1.D;
     const G = frame(left, 30, pw, ph, xs, [0, 1.95]);
     const Lg = frame(left, 30 + gap, pw, ph, xs, [-2.45, 0.75]);
@@ -141,7 +143,7 @@
     const Cy = 30 + 2 * gap;
     title(s, phone ? 'cepstrum (explained below)' : 'cepstrum: which periods the log of the gain repeats with (explained below)', 0, Cy - 14);
     if (a1.stage < 2) {
-      pen.text('this plot opens after the next question', left + pw / 2, Cy + ph / 2, { color: c.soft, size: 12 });
+      pen.text('this plot opens after the questions above the plots', left + pw / 2, Cy + ph / 2, { color: c.soft, size: 12 });
       return;
     }
     const Q = qRangeFor(a1.D), C = frame(left, Cy, pw, ph, [0, Q], [-0.25, 0.5]);
@@ -221,10 +223,10 @@
     const res = $('a1-result');
     res.textContent = `delay ${samples(a1.D)} (${ms(a1.D)}) · strength ${a1.a.toFixed(2)} · peak every ${perText(a1.D)} Hz`;
     if (a1.stage >= 2 && a1.a > 0) { const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = ` · spike at ${hz(a1.D)}`; res.append(sp); }
-    $('a1-why').textContent = a1.stage === 0 ? 'Answer the question above to move on.' : a1.stage === 1 ? 'Delay 8 now. One more question opens the cepstrum and the delay slider.' : a1Why();
+    $('a1-why').textContent = !toneDone ? 'Answer the question in “A tiny echo, sample by sample” first.' : a1.stage === 0 ? 'Answer the question above to move on.' : a1.stage === 1 ? 'Delay 8 now. One more question opens the cepstrum and the delay slider.' : a1Why();
     $('a1-compare').hidden = !a1.pinned;
     if (a1.pinned) $('a1-compare').textContent = a1Compare();
-    $('a1-stage').setAttribute('aria-label', `Delay ${a1.D} samples, strength ${a1.a.toFixed(2)}: the gain peaks every ${perText(a1.D)} Hz between ${fmt(Math.abs(1 - a1.a))} and ${fmt(1 + a1.a)}${a1.stage >= 2 && a1.a > 0 ? `; the cepstrum's tallest spike is at position ${a1.D}` : ''}.`);
+    $('a1-stage').setAttribute('aria-label', !toneDone ? 'The lab’s plots, not open yet.' : `Delay ${a1.D} samples, strength ${a1.a.toFixed(2)}: the gain peaks every ${perText(a1.D)} Hz between ${fmt(Math.abs(1 - a1.a))} and ${fmt(1 + a1.a)}${a1.stage >= 2 && a1.a > 0 ? `; the cepstrum's tallest spike is at position ${a1.D}` : ''}.`);
     stage1.redraw();
     if (audio1.playing) audio1.refresh();
     $('a1-now').textContent = now1();
@@ -258,7 +260,7 @@
         same: 'In the gain itself that is true: the peaks go from 1.5 to 1.9 and the dips from 0.5 to 0.1. Now take the log of 0.1.',
         peaks: 'The peaks go from 1.5 to 1.9 and the dips from 0.5 to 0.1. Which of those changes more in the log?',
       },
-      explain: 'The gain’s peaks go from 1.5 to 1.9 and its dips from 0.5 to 0.1. In the log the peaks only reach 0.64, but the dips sink to −2.30. Watch the smaller spikes at 2D and 3D grow too. The strength slider is yours.',
+      explain: 'The gain’s peaks go from 1.5 to 1.9 and its dips from 0.5 to 0.1. In the log the peaks only reach 0.64, but the dips sink to −2.30. Watch the small spikes further out grow too. The strength slider is yours.',
       onSolved: () => { a1.stage = 3; a1.a = 0.9; a1Render(); },
       focusAfter: () => $('a1-strength'),
     });
@@ -278,6 +280,8 @@
       focusAfter: () => $('a1-ask').querySelectorAll('.k-ask')[2]?.querySelector('button'),
     });
   }
+  function ask1() {
+  $('a1-ask').replaceChildren();
   K.ask(askBox(), {
     question: 'The lab starts at delay 4, a peak every 2,000 Hz. Double the delay to 8. Where is the first peak above 0 Hz?',
     options: [['4000', 'At 4,000 Hz'], ['2000', 'Still at 2,000 Hz'], ['1000', 'At 1,000 Hz'], ['500', 'At 500 Hz']],
@@ -291,6 +295,8 @@
     onSolved: () => { a1.stage = 1; a1.D = 8; a1Render(); ask2(); document.dispatchEvent(new CustomEvent('k:solved', { detail: 'a1-q1' })); },
     focusAfter: () => $('a1-ask').querySelectorAll('.k-ask')[1]?.querySelector('button'),
   });
+  }
+  $('a1-ask').innerHTML = '<p class="note">The lab opens once you answer the question in <a href="#a-tiny-echo-sample-by-sample">A tiny echo, sample by sample</a>.</p>';
 
   const setDelay = D => { a1.D = Math.max(1, Math.min(2400, D)); if (!zoomOK()) a1.zoom = false; a1Schedule(); };
   $('a1-delay').addEventListener('input', () => setDelay(Number($('a1-delay').value)));
@@ -415,7 +421,7 @@
   function a2Message(e) {
     const { H, cD, delayOK, cur } = e, mine = cur.c[a2.D];
     if (e.solved) {
-      const head = `Fixed. The echo was ${samples(H.D)} late, ${sec(H.D)}, and your canceller subtracts ${a2.s.toFixed(2)} of its own output from that far back. The cepstrum at ${hz(H.D)} reads ${fmt(cD)}, as flat as the voice alone.`;
+      const head = `Fixed. The echo was ${samples(H.D)} late, ${sec(H.D)}, and your canceller subtracts ${a2.s.toFixed(2)} of its own output from that far back. The cepstrum at ${hz(H.D)} reads ${fmt(cD, 3)}, as flat as the voice alone.`;
       return a2.round === 0 ? `${head} The far caller’s words come through once, and the partner tickets stop.` : head;
     }
     if (a2.s === 0) {
