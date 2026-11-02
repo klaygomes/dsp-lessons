@@ -7,6 +7,8 @@ import page
 ok = page.build(
     Path(__file__).resolve().parents[1],
     working=[
+        {"section": "cutting-it-short", "from": 'th scope="col">coefficients kept', "through": 'id="figure-truncation"', "unlock": "predict-zero", "auto": True,
+         "note": "Make your prediction above to see the running total, pair by pair."},
         {"section": "your-turn", "from": "The picture below is what done looks like", "through": 'id="figure-done"', "unlock": "act2",
          "note": "The next picture shows the answer for your own line. It opens once you have fixed your own line in the lab above."},
     ],

@@ -13,6 +13,9 @@ ok = page.build(
         {"section": "worked-example-2-the-three-notch-rule-on-the-chip", "from": "But the zeros aren't what makes the hum", "through": "gives each pole its own direction", "unlock": "predict-drift", "auto": True,
          "note": "Answer the question above to see where the poles land."},
     ],
+    more=[
+        {"section": "why-crowded-poles-jump", "from": "Work one out by hand", "through": "with tilted arrows instead of straight ones", "button": "Show the pencil version"},
+    ],
     still_text={
         "The figure draws both sets of poles on the unit circle. Watch the two outer pairs cross the rim.":
             "The figure shows both sets of poles on the unit circle, with arrows from each laptop pole to where the chip puts it: the two outer pairs end up outside the rim.",

@@ -4,13 +4,11 @@
   const hI = m => (m === 0 ? 0.5 : Math.sin(PI * m / 2) / (PI * m));
   const WEIGHT = {
     rect: () => 1,
-    hann: (m, N) => 0.5 + 0.5 * Math.cos(2 * PI * m / (N - 1)),
     hamming: (m, N) => 0.54 + 0.46 * Math.cos(2 * PI * m / (N - 1)),
   };
-  const NAME = { rect: 'plain cut', hann: 'Hann', hamming: 'Hamming' };
+  const NAME = { rect: 'plain cut', hamming: 'Hamming' };
   const f3 = v => fmt(v, 3);
   const pct = v => `${(v * 100).toFixed(2)}%`;
-  const dB = v => `${MINUS}${Math.round(-20 * Math.log10(Math.max(v, 1e-6)))} dB`;
   const odd = v => Math.round((v - 1) / 2) * 2 + 1;
 
   const coeffs = (kind, N) => Float64Array.from({ length: (N - 1) / 2 + 1 }, (_, m) => hI(m) * WEIGHT[kind](m, N));
@@ -28,10 +26,13 @@
     let peak = -1, peakF = 0;
     for (let f = 0; f <= 4000; f += 2) { const v = gainAt(c, f); if (v > peak) { peak = v; peakF = f; } }
     for (let f = Math.max(0, peakF - 2); f <= Math.min(4000, peakF + 2); f += 0.25) { const v = gainAt(c, f); if (v > peak) { peak = v; peakF = f; } }
+    let dip = 2, dipF = 4000;
+    for (let f = 4000; f <= FS / 2; f += 2) { const v = gainAt(c, f); if (v < dip) { dip = v; dipF = f; } }
+    for (let f = Math.max(4000, dipF - 2); f <= Math.min(FS / 2, dipF + 2); f += 0.25) { const v = gainAt(c, f); if (v < dip) { dip = v; dipF = f; } }
     let edgeLo = null, edgeHi = null;
     for (let f = 0; f <= 4000; f++) if (Math.abs(gainAt(c, f) - 1) > 0.01) { edgeLo = f - 1; break; }
     for (let f = 4000; f <= FS / 2; f++) if (Math.abs(gainAt(c, f)) < 0.01) { edgeHi = f; break; }
-    const a = { c, N, kind, P, curve, vb, fb, gh, fg, peak, peakF, edgeLo, edgeHi, at: f => gainAt(c, f) };
+    const a = { c, N, kind, P, curve, vb, fb, gh, fg, peak, peakF, dip, dipF, edgeLo, edgeHi, at: f => gainAt(c, f) };
     if (cache.size > 400) cache.clear();
     cache.set(key, a);
     return a;
@@ -52,10 +53,10 @@
   }
 
   const CASES = [
-    { P: 3500, budget: 63, band: 'Carried band', text: 'A second wideband bridge joins your line today. Its phones carry tones up to 3,500 Hz, so its job is: pass 0 to 3,500 Hz within 1%, and remove every tone above 4,500 Hz, which would land below 3,500 Hz, to below 1%. Its chip affords 63 coefficients. The sweep starts out through lesson 5’s plain cut of 31.' },
-    { P: 3400, budget: 63, band: 'Voice band', text: 'Back on your own line: pass the voice band, 0 to 3,400 Hz, within 1%, and remove every tone above 4,600 Hz to below 1%, with at most 63 coefficients.' },
-    { P: 3000, budget: 27, band: 'Carried band', text: 'An old radio link joins. Its handsets carry only up to 3,000 Hz, so everything above 5,000 Hz must go, to below 1%. Its chip is tiny: 27 coefficients at most.' },
-    { P: 3200, budget: 39, band: 'Carried band', text: 'A hotel exchange joins. Its band reaches 3,200 Hz, so everything above 4,800 Hz must go, to below 1%. Its chip affords 39 coefficients.' },
+    { P: 3500, budget: 63, start: 31, band: 'Carried band', text: 'A second wideband bridge joins your line today. Its phones carry tones up to 3,500 Hz, so its job is: pass 0 to 3,500 Hz within 1%, and remove every tone above 4,500 Hz, which would land below 3,500 Hz, to below 1%. Its chip affords 63 coefficients. The sweep starts out through lesson 5’s plain cut of 31.' },
+    { P: 3400, budget: 63, start: 31, band: 'Voice band', text: 'Back on your own line: pass the voice band, 0 to 3,400 Hz, within 1%, and remove every tone above 4,600 Hz to below 1%, with at most 63 coefficients.' },
+    { P: 3000, budget: 27, start: 21, band: 'Carried band', text: 'An old radio link joins. Its handsets carry only up to 3,000 Hz, so everything above 5,000 Hz must go, to below 1%. Its chip is tiny: 27 coefficients at most.' },
+    { P: 3200, budget: 39, start: 31, band: 'Carried band', text: 'A hotel exchange joins. Its band reaches 3,200 Hz, so everything above 4,800 Hz must go, to below 1%. Its chip affords 39 coefficients.' },
   ];
 
   function mount(host, mode) {
@@ -70,7 +71,7 @@
     const now = () => analyse(st.kind, st.N, job().P);
 
     const slider = $('len');
-    slider.min = 7; slider.max = explore ? 255 : 99; slider.step = 2;
+    slider.min = 7; slider.max = explore ? 255 : 99; slider.step = explore ? 4 : 2;
 
     const stage = K.stage($('stage'), s => draw(s), { height: w => (w < 560 ? 430 : 400) });
 
@@ -103,7 +104,6 @@
       } else {
         pen.line([[X(0), Y(1)], [X(4000), Y(1)], [X(4000), Y(0)], [X(8000), Y(0)]], c.soft, 1.5, [6, 5]);
       }
-      if (explore && !st.db) { pen.line([[X(4600), R.y], [X(4600), R.y + R.h]], c.rule, 1); pen.text('4,600', X(4600) + 4, R.y + R.h - 6, { align: 'left', color: c.soft, size: 10 }); }
       if (st.pinned) {
         const p = analyse(st.pinned.kind, st.pinned.N, J.P);
         pen.line(Array.from(p.curve, (v, i) => [X(i * 8), Y(v)]), c.input, 1.8, [5, 4]);
@@ -148,15 +148,15 @@
     const refreshSoon = () => { if (!audio.playing) return; clearTimeout(refreshTimer); refreshTimer = setTimeout(() => audio.refresh(), 150); };
     function nowText() {
       $('now').textContent = !audio.playing ? 'Not playing. Play the sweep to hear what reaches your side.'
-        : st.on ? `Playing the 4,000 to 8,000 Hz sweep through the ${NAME[st.kind]}, ${st.N} coefficients, then the downsampler: what you hear is the ghost.`
+        : st.on ? `Playing the 4,000 to 8,000 Hz sweep through the ${NAME[st.kind]}, ${st.N} coefficients, then the downsampler: ${!explore && clean(now()) ? `every leak stays below 1%, so the sweep leaves no ghost in the ${job().band.toLowerCase()}.` : 'what you hear is the ghost.'}`
           : 'Playing the sweep with the filter off: every tone folds straight into your line at full strength.';
     }
 
     function exploreWhy(a) {
-      const pk = `${f3(a.peak)} at ${hz(a.peakF)} Hz`, leak = `The worst leak above 4,600 Hz is ${pct(a.gh)}.`;
-      if (st.N === 7) return `The shortest the slider goes, three pairs and the middle. The cliff is a long gentle slope, and the bump sits far from the cutoff: ${pk}. ${leak}`;
+      const pk = `${f3(a.peak)} at ${hz(a.peakF)} Hz`, leak = `Past the cutoff the curve dips to ${f3(a.dip)} at ${hz(a.dipF)} Hz.`;
+      if (st.N === 7) return `The shortest the slider goes, the middle and two nonzero pairs. The cliff is a long gentle slope, and the bump sits far from the cutoff: ${pk}. ${leak}`;
       if (st.N < 31) return `Shorter than lesson 5’s filter: a gentler cliff, and the bump further from the cutoff, ${pk}. ${leak}`;
-      if (st.N === 31) return `Lesson 5’s filter, the bug. The bump is ${pk}: the swell the engineer heard in the voice band. ${leak}`;
+      if (st.N === 31) return `Lesson 5’s filter, the bug. The bump is ${pk}: the top of a wideband voice comes out 9% louder, as the engineer heard on real calls. ${leak}`;
       if (st.N === 255) return `The longest the slider goes, more than eight times lesson 5’s filter. The bump sits at ${hz(a.peakF)} Hz, only ${hz(4000 - a.peakF)} Hz below the cutoff, and it is still ${f3(a.peak)}. ${leak}`;
       return `Longer than lesson 5’s filter: the bump has moved to ${hz(a.peakF)} Hz, ${hz(4000 - a.peakF)} Hz below the cutoff, and got narrower. Its height: ${f3(a.peak)}. ${leak}`;
     }
@@ -166,9 +166,10 @@
       const same = Math.abs(p.peak - a.peak) < 0.005;
       return `Pinned ${p.N}: bump ${f3(p.peak)} at ${hz(p.peakF)} Hz. Now ${a.N}: bump ${f3(a.peak)} at ${hz(a.peakF)} Hz. ${same ? `Same height; the ${a.N > p.N ? 'longer' : 'shorter'} cut only moves the bump ${a.N > p.N ? 'closer to' : 'away from'} the cutoff.` : `The heights differ by ${f3(Math.abs(p.peak - a.peak))}, nowhere near the 9% you would need to lose.`}`;
     }
+    const clean = a => a.vb <= 0.01 && a.gh <= 0.01;
     function fixMessage(a) {
       const J = job(), S = 8000 - J.P, slope = `${hz(S - J.P)} Hz`;
-      const pass = a.vb <= 0.01 && a.gh <= 0.01;
+      const pass = clean(a);
       st.solved = false;
       if (st.N > J.budget) {
         return pass ? `${st.N} coefficients would do the job (band ${pct(a.vb)}, ghost ${pct(a.gh)}), but this chip affords only ${J.budget}. Find a shorter one that still passes.`
@@ -201,13 +202,13 @@
       const a = now(), J = job();
       slider.value = st.N; $('len-out').textContent = explore ? `${st.N} coefficients` : `${st.N} coefficients${st.N > J.budget ? `, over the budget of ${J.budget}` : ` of ${J.budget} allowed`}`;
       const locked = !st.unlocked;
-      slider.disabled = locked; $('play').disabled = locked; $('pin').disabled = locked; $('db').disabled = locked;
+      slider.disabled = locked; $('play').disabled = locked; $('on').disabled = locked; $('reset').disabled = locked; $('pin').disabled = locked; $('db').disabled = locked;
       host.querySelectorAll('[data-window]').forEach(b => { b.disabled = locked; b.setAttribute('aria-pressed', String(b.dataset.window === st.kind)); });
-      $('db').setAttribute('aria-pressed', String(st.db)); $('key-db').hidden = !st.db; $('key-step').hidden = st.db || !explore; $('on').setAttribute('aria-pressed', String(st.on));
+      $('db').setAttribute('aria-pressed', String(st.db)); $('key-db').hidden = explore || !st.db; $('key-step').hidden = st.db || !explore; $('on').setAttribute('aria-pressed', String(st.on));
       $('on').textContent = st.on ? 'Filter on' : 'Filter off';
       if (explore) {
         $('result').textContent = locked ? `${st.N} coefficients, lesson 5’s filter · bump ${f3(a.peak)} at ${hz(a.peakF)} Hz`
-          : `${st.N} coefficients · bump ${f3(a.peak)} at ${hz(a.peakF)} Hz · worst leak above 4,600 Hz ${pct(a.gh)}, ${dB(a.gh)}`;
+          : `${st.N} coefficients · bump ${f3(a.peak)} at ${hz(a.peakF)} Hz, ${((a.peak - 1) * 100).toFixed(1)}% too loud · dip ${f3(a.dip)} at ${hz(a.dipF)} Hz`;
         $('why').textContent = locked ? 'Answer the question above to unlock the slider.' : exploreWhy(a);
         $('compare').hidden = !st.pinned;
         if (st.pinned) $('compare').textContent = pinCompare(a);
@@ -262,9 +263,9 @@
     }
 
     if (explore) {
-      ['task', 'windows', 'meters', 'another'].forEach(k => { $(k).hidden = true; });
+      ['task', 'windows', 'meters', 'another', 'db', 'key-db'].forEach(k => { $(k).hidden = true; });
     } else {
-      ['pin', 'jump', 'key-step', 'key-pin', 'compare'].forEach(k => { $(k).hidden = true; });
+      ['pin', 'key-step', 'key-pin', 'compare'].forEach(k => { $(k).hidden = true; });
       $('task').hidden = false; $('windows').hidden = false; $('meters').hidden = false;
     }
     buildAsk();
@@ -278,17 +279,28 @@
     $('another').addEventListener('click', () => {
       audio.stop();
       st.caseIx = (st.caseIx % (CASES.length - 1)) + 1;
-      Object.assign(st, { kind: 'rect', N: 31, solved: false });
+      Object.assign(st, { kind: 'rect', N: job().start, solved: false });
       buildAsk(); render(); host.querySelector('[data-window="rect"]').focus();
     });
     $('reset').addEventListener('click', () => {
       audio.stop();
-      Object.assign(st, explore ? { N: 31, pinned: null, db: false, on: true } : { kind: 'rect', N: 31, db: true, on: true, solved: false });
+      Object.assign(st, explore ? { N: 31, pinned: null, db: false, on: true } : { kind: 'rect', N: job().start, db: true, on: true, solved: false });
       render(); $('reset').focus();
     });
     render();
     return { stop: () => audio.stop() };
   }
+
+  K.ask(document.getElementById('predict-zero'), {
+    question: 'Start from the middle coefficient, 0.5, and add the nonzero pairs one at a time: h[1] and h[−1], then h[3] and h[−3], and so on. How does the running total move toward 1?',
+    options: [['steady', 'It climbs steadily up to 1, never passing it'], ['swing', 'It passes 1, then swings around it, each swing a bit smaller'], ['short', 'It stays well short of 1 until many pairs are in']], right: 'swing',
+    hints: {
+      steady: 'The first pair alone adds 2 × 0.3183. Add that to 0.5: where does the total land?',
+      short: 'The first pair alone adds 2 × 0.3183. Add that to 0.5: is that short of 1?',
+    },
+    explain: 'It passes 1 with the very first pair, and the pairs alternate in sign, so the total swings around 1. Here it is, pair by pair.',
+    onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-zero' })),
+  });
 
   const act1 = mount(document.getElementById('lab'), 'explore');
   document.getElementById('start-act2').addEventListener('click', () => {

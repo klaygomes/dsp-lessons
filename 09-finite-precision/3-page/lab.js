@@ -185,8 +185,8 @@
       pen.line([[cx - R - 10, cy], [cx + R + 10, cy]], c.rule, 1);
       pen.line([[cx, cy - R - 14], [cx, cy + R + 14]], c.rule, 1);
       pen.ring(cx, cy, R, c.ink, 1.3);
-      pen.text('0 Hz', cx + R - 2, cy + 14, { align: 'center', color: c.soft, size: 10 });
-      pen.text('4,000', cx - R + 2, cy + 14, { align: 'center', color: c.soft, size: 10 });
+      pen.text('0 Hz', cx + R + 5, cy + 15, { align: 'left', color: c.soft, size: 10 });
+      pen.text('4,000', cx - R - 5, cy + 15, { align: 'right', color: c.soft, size: 10 });
     }
     pen.text('2,000 Hz', cx + 6, top ? 30 : cy - R - 16, { align: 'left', color: c.soft, size: 10 });
     const P = z => [cx + R * z[0], cy - R * z[1]];
@@ -407,8 +407,11 @@
         }
         $('compare').hidden = !st.pinned; $('key-pin').hidden = !st.pinned;
         if (st.pinned) {
-          const p = st.pinned;
-          $('compare').textContent = p.den === a.den ? `Pinned step 1/${p.den}. Move the step to compare.` : `Pinned step 1/${p.den}: poles ${fmt(p.r, 4)}, 1,900 Hz ${pct1(p.g(1900))}. Now step 1/${a.den}: poles ${fmt(a.r, 4)}, 1,900 Hz ${pct1(a.g(1900))}. ${a.r > p.r + 1e-9 ? 'The poles moved out: a narrower notch.' : a.r < p.r - 1e-9 ? 'The poles moved in: a wider notch, so the voice beside it loses more.' : 'Same pole radius: only the volume changed.'}`;
+          const p = st.pinned, rim = r => r >= 1 - 1e-9;
+          const change = rim(a.r) && !rim(p.r) ? 'The poles moved out onto the circle, on top of the zeros: the notch is gone, and every tone passes at 100%, the whine at 2,000 Hz included.'
+            : rim(p.r) && !rim(a.r) ? 'The poles moved back inside the circle, off the zeros: the notch is back, and the whine at 2,000 Hz is removed again.'
+            : a.r > p.r + 1e-9 ? 'The poles moved out: a narrower notch.' : a.r < p.r - 1e-9 ? 'The poles moved in: a wider notch, so the voice beside it loses more.' : 'Same pole radius: only the volume changed.';
+          $('compare').textContent = p.den === a.den ? `Pinned step 1/${p.den}. Move the step to compare.` : `Pinned step 1/${p.den}: poles ${fmt(p.r, 4)}, 1,900 Hz ${pct1(p.g(1900))}. Now step 1/${a.den}: poles ${fmt(a.r, 4)}, 1,900 Hz ${pct1(a.g(1900))}. ${change}`;
         }
         $('stage').setAttribute('aria-label', st.revealed ? `Unit circle and gain. On the chip at step 1/${a.den} the poles sit at radius ${fmt(a.r, 4)}, laptop 0.9.` : 'Unit circle with lesson 6’s notch on the laptop, and its gain from 0 to 4,000 Hz.');
       } else {
@@ -417,9 +420,10 @@
         host.querySelectorAll('[data-form]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.form === st.form)); b.disabled = b.dataset.form === 'cascade' && !st.unlocked; });
         $('sections').hidden = st.form !== 'cascade' || !st.unlocked;
         if (st.form === 'multi') {
-          const m = act2Multi(), outs = m.poles.filter(z => radius(z) >= 1 && z[1] >= 0).map(z => `${fmt(radius(z), 4)} at ${hz(toneOf(z))} Hz`);
+          const m = act2Multi(), outs = m.poles.filter(z => radius(z) >= 1 && z[1] >= 0), radii = [...new Set(outs.map(z => fmt(radius(z), 4)))];
+          const pairs = outs.length === 1 ? 'one pole pair lands' : `${outs.length === 2 ? 'two' : outs.length === 3 ? 'three' : outs.length} pole pairs land`;
           $('result').textContent = `multiplied-out rule · biggest coefficient ${fmt(Math.max(...m.cm.L.A.map(Math.abs)), 4)} forces step 1/${m.cm.den} · largest chip pole ${fmt(m.rmax, 4)}`;
-          $('why').textContent = outs.length ? `On the chip, pole pairs land on or outside the circle (${joinList(outs)}): one click grows until it pins at the limits, as the output strip shows. Play the call to hear the hum build. Then rebuild it as a cascade.` : 'All the chip poles are inside the circle.';
+          $('why').textContent = outs.length ? `On the chip, ${pairs} on or outside the circle, at radius ${joinList(radii)}: one click grows until it pins at the limits, as the output strip shows. Play the call to hear the hum build. Then rebuild it as a cascade.` : 'All the chip poles are inside the circle.';
           K.meter($('meter'), pinnedShare(), { max: 1 });
         } else {
           const cz = act2Cascade(), fb = act2Feedback(cz);
@@ -502,9 +506,9 @@
       const q = document.createElement('div');
       $('ask2').append(q);
       K.ask(q, {
-        question: 'Before you build: you will slide one section’s pole radius from 0.90 up to 1. What will its pole on the chip do?',
+        question: 'Before you build: each section’s pole radius starts at 0.85, and you will slide it anywhere from 0.80 up to 1. What will its pole on the chip do?',
         options: [['smooth', 'Follow the slider smoothly'], ['jumps', 'Hop between a few fixed radii'], ['drag', 'Pull the other poles along with it']], right: 'jumps',
-        hints: { smooth: 'The chip stores the section’s r² as a whole number of 64ths. Between r = 0.9 and r = 1, how many whole numbers can r² × 64 be?', drag: 'Which numbers does one section’s radius change? Does any other section store them?' },
+        hints: { smooth: 'The chip stores the section’s r² as a whole number of 64ths. Between r = 0.80 and r = 1, how many whole numbers can r² × 64 be?', drag: 'Which numbers does one section’s radius change? Does any other section store them?' },
         explain: 'The chip stores r² as a whole number of 64ths, so the pole can only sit at radii like √(61/64) = 0.9763, √(62/64) = 0.9843, √(63/64) = 0.9922 and √(64/64) = 1. Between those it stays put, then hops. Watch the circle and the chip line under each section while you slide.',
         onSolved: () => { st.unlocked = true; st.form = 'cascade'; buildSections(); render(); }, focusAfter: () => host.querySelector('.sec input'),
       });

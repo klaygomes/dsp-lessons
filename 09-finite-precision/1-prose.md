@@ -184,7 +184,9 @@ The three-notch rule has six poles, and three of them are crammed together near 
 
 so its multiplier is 1 ÷ 0.045 = 22. For the poles at 1,900 and 2,100 Hz, whose product is 0.089, the multiplier is 11. A lone pole pair, with only its mirror 1.96 away, has a multiplier of 0.5. So these crowded poles feel every rounding error 22 or 11 times over, where a lone pair would feel half of it.
 
-Each coefficient's error gives its own push, and the pushes add up like arrows, so a push has a direction as well as a size. Work one out by hand, for the 2,000 Hz pole at the very top of the circle, \(z = 0.98j\). Each rounded coefficient lifts \(P\) by its error times \(z^4\), \(z^2\) or 1. At the top of the circle those powers are plain numbers: \(z^2 = -0.96\) and \(z^4 = +0.92\).
+Each coefficient's error gives its own push, and the pushes add up like arrows, so a push has a direction as well as a size.
+
+Work one out by hand, for the 2,000 Hz pole at the very top of the circle, \(z = 0.98j\). Each rounded coefficient lifts \(P\) by its error times \(z^4\), \(z^2\) or 1. At the top of the circle those powers are plain numbers: \(z^2 = -0.96\) and \(z^4 = +0.92\).
 
 | coefficient, and the power of z it multiplies | error | lift: error × power |
 |---|---|---|
@@ -194,7 +196,9 @@ Each coefficient's error gives its own push, and the pushes add up like arrows, 
 
 All three lifts are negative: every error pulls the curve the same way. In step four's figure the curve rises through its crossing, and lifting it slid the crossing backward, so each slide is minus the lift divided by the steepness. That makes three positive numbers, 0.0127, 0.0054 and 0.0108, each divided by the steepness. The steepness is step five's product \((p_1 - p_2)\cdots(p_1 - p_6)\), and for the top pole it has size 0.045 and points straight up, like \(j\). (Lesson 6: multiplying points adds their angles. The two short arrows, from the neighbors to the top pole, point left and right, 180° and 0°. The three long ones, from the bottom half, each point straight up, 90°. In all 450°, a full turn and 90° more: straight up.) Dividing takes that angle away again: a positive number, at 0°, divided by something at 90° ends up at −90°, pointing straight down. So all three pushes point down, toward the middle of the circle, with sizes of about 0.0127 ÷ 0.045 = 0.28, then 0.12 and 0.24. (The figure, which uses the unrounded product 0.0445, reads 0.286, 0.121 and 0.244.)
 
-The other poles work the same way, with tilted arrows instead of straight ones. The figure draws every push as an arrow on the circle, starting from the laptop pole.
+The other poles work the same way, with tilted arrows instead of straight ones.
+
+The figure draws every push as an arrow on the circle, starting from the laptop pole.
 
 [[diagram:push]]
 

@@ -6,7 +6,7 @@ Remember lesson 5's wideband line? Its phones take 16,000 samples per second, an
 
 Today a test engineer from the wideband line calls. On the wideband side she plays a slow sweep, one pure tone gliding from 4,000 Hz up to 8,000 Hz over ten seconds. Every tone is above 4,000 Hz, so she expects silence.
 
-Here's what she hears. Right at the start there's a tone near the top of your line, loud at first, half the sweep's strength, gone within a second. She shrugs that off as the edge of the line. But then the ghost keeps coming, gliding downward through the range where voices live. It swells, fades to nothing, and swells again, a little more than a second apart, like a siren heard through a door that keeps opening. The biggest swell is 9% of the sweep's strength, heard at 3,500 Hz. Down at 3,000 Hz the swells are still 5%, and even at 1,000 Hz they're 2%. And on real calls, the top of a wideband voice, around 3,500 Hz, comes out a little louder on your side than it went in. Not quieter. Louder.
+Here's what she hears. Right at the start there's a tone near the top of your line, loud at first, half the sweep's strength, gone within a second. She shrugs that off as the edge of the line. But then the ghost keeps coming, gliding downward from the top of your line into the range where voices live. It swells, fades to nothing, and swells again, a little more than a second apart, like a siren heard through a door that keeps opening. The biggest swell is 9% of the sweep's strength, heard at 3,500 Hz, near the top of your line. Down at 3,000 Hz, where voices live, the swells are still 5%, and even at 1,000 Hz they're 2%. And on real calls, the top of a wideband voice, around 3,500 Hz, comes out a little louder on your side than it went in. Not quieter. Louder.
 
 You can already explain the direction: lesson 5 showed that downsampling turns a tone between 4,000 and 8,000 Hz into an alias at 8,000 minus that frequency, so the rising sweep comes out falling. The real questions are different. Why does anything get through the filter at all? Why does it come and go in waves? And how can a filter that only multiplies and adds make a tone louder than it was?
 
@@ -52,7 +52,9 @@ Notice three things. Every even coefficient except the middle one is zero. The l
 
 So you do what lesson 5's filter did. Keep the 31 coefficients in the middle, n from −15 to 15, and throw the rest away. That's **truncation**: keeping only part of a filter's coefficient list and setting the rest to zero. Then delay the whole thing by 15 samples so it never needs the future. The output arrives about 0.94 milliseconds late, and because the list is symmetric, every tone is delayed by the same 15 samples. That's lesson 8's linear phase, which comes free with any symmetric list.
 
-How good is the cut filter? Start with 0 Hz, a constant: feed in 1, 1, 1, 1 and every output is the sum of the coefficients. The ideal list adds up to exactly 1; ours adds only the ones we kept. Begin with the middle coefficient, then add the next nonzero pair, h[1] and h[−1], then h[3] and h[−3], and watch the total. Before you look: do you expect it to climb steadily up to 1?
+How good is the cut filter? Start with 0 Hz, a constant: feed in 1, 1, 1, 1 and every output is the sum of the coefficients. The ideal list adds up to exactly 1; ours adds only the ones we kept. Begin with the middle coefficient, then add the next nonzero pair, h[1] and h[−1], then h[3] and h[−3], and watch the total. Before you look, a prediction.
+
+[[predict-zero]]
 
 | coefficients kept | pair added | running total = gain at 0 Hz |
 |---|---|---|
@@ -78,7 +80,7 @@ So each pair contributes 2 h[m] cos(m × turn), a plain real number that can be 
 
 The gain at any tone is h[0] plus all those pair contributions. Try the cutoff, 4,000 Hz, a turn of 90° per sample. Every pair has odd m, and cos(90° × m) is zero for odd m. Only the middle coefficient survives, so the gain is exactly 0.5 at any length. Every cut filter passes half of the cutoff tone, sitting halfway down the cliff. That's the tone she heard right at the start of the sweep.
 
-The trouble lives on either side of the cliff. In the lab you get the plain cut and one slider, its length, from 7 to 255 coefficients. The curve shows the gain at every tone. Drag the slider and watch the bump just left of the cliff and the wiggles just right of it.
+The trouble lives on either side of the cliff. In the lab you get the plain cut and one slider, its length, from 7 to 255 coefficients. It moves in steps of four, one new nonzero pair at a time: the even coefficients are zero, so a step of two would change nothing every other time. The curve shows the gain at every tone. Drag the slider and watch the bump just left of the cliff and the wiggles just right of it.
 
 [[lab]]
 
@@ -219,7 +221,7 @@ The sweep's first moment still leaks, fading below 1% by 4,542 Hz, but it all la
 
 ## Your turn
 
-The lab gives you a chip that can afford at most 63 coefficients. You choose a window and a length, and the engineer's sweep plays through your filter and out the downsampler. A meter shows two bars: how far any voice-band tone strays from whole, and the loudest leak from any tone above 4,600 Hz. Your job:
+The lab gives you a chip that can afford at most 63 coefficients. You choose a window and a length, and the engineer's sweep plays through your filter and out the downsampler. A meter shows two bars: how far any voice-band tone strays from whole, and the loudest leak from any tone above 4,600 Hz. The two bars always show the same number: with every even coefficient but the middle one at zero, this kind of filter treats both sides of the cutoff the same way, so each tone that strays in the band has a mirror tone above the cutoff that leaks by exactly as much. Your job:
 
 1. Keep the voice-band bar within 1%.
 2. Keep the ghost bar below 1%, that is, below −40 dB.

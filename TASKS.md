@@ -28,7 +28,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 6 | Zeros and poles | ready | ready |
 | 7 | Ringing | ready | ready |
 | 8 | Phase and delay | ready | to build |
-| 9 | Finite precision | fixed after judge 1, judge 2 running | to build |
+| 9 | Finite precision | judge 2 not ready, round 3 fixes (open items) | to build |
 | 10 | FIR windows | judge 2 not ready, round 3 fixes (open items) | to build |
 | 11 | Bilinear transform | judge 1 ready with polish (open items) | to build |
 | 12 | DFT | judge 1 ready with polish (open items) | to build |
@@ -45,6 +45,13 @@ Rules the builders learned the hard way (they live in the builder brief):
 - [x] Lesson 6: decide whether to rebuild the reused `2-machine` figure with a dash-dot pole cord (dashed means input elsewhere); add "The voice meter averages how much of each tone from 300 to 3,400 Hz passes" to "Your turn".
 - [ ] Lesson 10 sheet: act 2 prediction and cases changed (second bridge 3,500/4,500 Hz first, then your own line).
 - [ ] Lesson 11 sheet: act 1 and act 2 designs changed (hidden aged-rack cases); add one prose sentence naming the aged rack; unify 0.707-style and %-style gains.
+- [ ] Lesson 9 page, learner judge 2 said "not ready" (2026-11-02), after the round 1 fixes:
+  - act 1's prediction "At which step do the poles first land past the rim, so the notch goes unstable?" marks 1/2 wrong ("on it, not past it"), but the lab draws "on or past the rim" in one red marker and the page later calls a pole on the circle "a ring that never dies"; drop "so the notch goes unstable" or accept 1/2 with the nuance;
+  - hidden act 1 copies of act 2's controls (`lab-centre` slider, "100 Hz wide") throw `TypeError ... reading 'whines'` in `spectrumOf`; remove them;
+  - the "Show the answer" toggle above lab 1 turns into "Show the working", shows a one-line "(Spoiler, for readers without the lab...)" and cannot close;
+  - the "About 0.03" hint says "these six poles sit 4.5° apart": only neighbours in each half are;
+  - at 500px the first recurrence `<pre>` hides `output[n - 6]` off its right edge; wrap it;
+  - "0.9418 × 2.9754 = 2.8021" should be 2.8022 (exact 2.8023; 0.9802³ = 0.94182, not 0.94177) in prose, sheet and page; the chip result is unchanged.
 - [ ] Lesson 10 page, learner judge 2 said "not ready" (2026-11-02), after the round 1 fixes:
   - "A window with soft edges" gives act 2's answer for your own line ("at 41 it scrapes through with 0.93%, at 45 there's room to spare"); lock it with `working`, or make your own line's case differ from the prose's;
   - act 1's ghost strip thins to grey dashes at 191 to 255 coefficients, which reads as "length fixes it" against the readout's "still 1.090", and the dashes look like the figure's "where the ghost would sit" guide;

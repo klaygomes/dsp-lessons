@@ -45,15 +45,29 @@ def append_blocks(body, here, append):
     return body
 
 
+def block_range(body, sid, first, last):
+    start, end = section_bounds(body, sid)
+    a = body.index(first, start, end)
+    a = body.rindex("\n", start, a) + 1
+    b = body.index(last, a, end)
+    if body.rfind("<figure", a, b) > body.rfind("</figure>", a, b):
+        b = body.index("</figure>", b) + len("</figure>")
+    return a, body.index("\n", b)
+
+
+def wrap_more(body, more):
+    for m in more or []:
+        a, b = block_range(body, m["section"], m["from"], m["through"])
+        label = html.escape(m.get("button", "Show more"))
+        box = (f'<details class="k-more"><summary>{label}</summary>'
+               f'<div class="k-more-body">\n{body[a:b]}\n</div></details>')
+        body = body[:a] + box + body[b:]
+    return body
+
+
 def wrap_working(body, working):
     for w in working or []:
-        start, end = section_bounds(body, w["section"])
-        a = body.index(w["from"], start, end)
-        a = body.rindex("\n", start, a) + 1
-        b = body.index(w["through"], a, end)
-        if body.rfind("<figure", a, b) > body.rfind("</figure>", a, b):
-            b = body.index("</figure>", b) + len("</figure>")
-        b = body.index("\n", b)
+        a, b = block_range(body, w["section"], w["from"], w["through"])
         note = w.get("note", "This part works out the answer to the lab's questions. It opens once you have solved them.")
         label = html.escape(w.get("button", "Show the working (opens after the lab)"))
         opened = f' data-opened="{html.escape(w["opened"], quote=True)}"' if w.get("opened") else ''
@@ -132,7 +146,7 @@ def motion_text(body, still):
     return body
 
 
-def build(lesson, figures=True, drop_heading=None, append=None, working=None, still_text=None):
+def build(lesson, figures=True, drop_heading=None, append=None, working=None, still_text=None, more=None):
     lesson = Path(lesson).resolve()
     here = lesson / "3-page"
     if figures and (lesson / "2-figures" / "figures.mjs").exists():
@@ -150,6 +164,7 @@ def build(lesson, figures=True, drop_heading=None, append=None, working=None, st
     if drop_heading:
         body = re.sub(rf'(<section id="{re.escape(drop_heading)}">\n)<h2>.*?</h2>\n', r"\1", body, count=1)
     body = append_blocks(body, here, append)
+    body = wrap_more(body, more)
     body = wrap_working(body, working)
     body = motion_text(body, still_text)
     page = fill((here / "shell.html").read_text(encoding="utf-8"), here, body)
