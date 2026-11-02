@@ -23,7 +23,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 1 | Signals and systems | ready | round 3 fixes after viewer judge |
 | 2 | Impulse response | ready | ready |
 | 3 | Frequency response | ready | ready |
-| 4 | Sampling and aliasing | ready | to build |
+| 4 | Sampling and aliasing | ready | ready |
 | 5 | Changing the rate | ready | to build |
 | 6 | Zeros and poles | built, learner judge running | to build |
 | 7 | Ringing | ready | to build |

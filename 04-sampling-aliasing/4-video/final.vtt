@@ -1,0 +1,313 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.380
+The east route sounds crisp again.
+
+2
+00:00:02.400 --> 00:00:03.760
+Then a hearing clinic calls.
+
+3
+00:00:03.780 --> 00:00:05.580
+They play test whistles down the line.
+
+4
+00:00:05.600 --> 00:00:06.900
+At five thousand hertz,
+
+5
+00:00:06.920 --> 00:00:08.140
+every patient hears a clear,
+
+6
+00:00:08.160 --> 00:00:10.320
+steady whistle,
+and matches it to three thousand.
+
+7
+00:00:10.420 --> 00:00:11.720
+Not a fuzzy five thousand.
+
+8
+00:00:11.740 --> 00:00:13.360
+A clean, wrong three thousand.
+
+9
+00:00:14.190 --> 00:00:17.030
+So a patient who can't hear
+five thousand still says yes.
+
+10
+00:00:17.050 --> 00:00:18.790
+The whistle really is five thousand.
+
+11
+00:00:18.870 --> 00:00:20.690
+And your boost is linear
+and time-invariant,
+
+12
+00:00:20.710 --> 00:00:22.810
+so it can't turn one tone into another.
+
+13
+00:00:22.910 --> 00:00:25.350
+It happens at the step
+where sound becomes numbers.
+
+14
+00:00:25.970 --> 00:00:29.050
+The sound going into the phone
+is the true tone, a smooth wobble.
+
+15
+00:00:29.070 --> 00:00:30.890
+But a phone only works with numbers.
+
+16
+00:00:30.910 --> 00:00:33.370
+Eight thousand times a second,
+it takes one sample.
+
+17
+00:00:33.390 --> 00:00:34.570
+That's the sampling rate.
+
+18
+00:00:34.590 --> 00:00:35.890
+In between, it looks away.
+
+19
+00:00:35.910 --> 00:00:37.850
+The list of samples
+is what the phone stores,
+
+20
+00:00:37.870 --> 00:00:39.370
+and nothing else survives.
+
+21
+00:00:40.230 --> 00:00:42.370
+Sample the whistle, five thousand hertz.
+
+22
+00:00:42.390 --> 00:00:44.930
+One, minus point seven one,
+zero, point seven one.
+
+23
+00:00:45.070 --> 00:00:46.710
+Now a real three thousand hertz tone.
+
+24
+00:00:46.730 --> 00:00:48.970
+One, minus point seven one,
+zero, point seven one.
+
+25
+00:00:49.010 --> 00:00:50.650
+The same list, sample for sample.
+
+26
+00:00:50.730 --> 00:00:52.310
+Two different waves, the same dots.
+
+27
+00:00:53.270 --> 00:00:53.850
+Why?
+
+28
+00:00:53.870 --> 00:00:55.030
+Lesson three's wheel.
+
+29
+00:00:55.050 --> 00:00:57.170
+Each sample,
+the dot turns forty-five degrees
+
+30
+00:00:57.190 --> 00:00:58.430
+for every thousand hertz,
+
+31
+00:00:58.450 --> 00:01:00.710
+and the sample
+is how far left or right it sits.
+
+32
+00:01:00.730 --> 00:01:02.890
+Three thousand turns
+one hundred thirty-five degrees,
+
+33
+00:01:02.910 --> 00:01:03.910
+to the upper left.
+
+34
+00:01:03.930 --> 00:01:05.650
+The whistle turns two hundred twenty-five,
+
+35
+00:01:05.670 --> 00:01:07.590
+past half a turn, to the lower left.
+
+36
+00:01:07.610 --> 00:01:09.350
+Mirror spots, the same reading.
+
+37
+00:01:09.900 --> 00:01:10.980
+Two hundred twenty-five
+
+38
+00:01:11.000 --> 00:01:12.560
+is one hundred thirty-five short
+
+39
+00:01:12.580 --> 00:01:13.560
+of a full turn.
+
+40
+00:01:13.760 --> 00:01:15.660
+So the whistle looks like
+a three thousand hertz dot
+
+41
+00:01:15.680 --> 00:01:18.740
+turning backwards, and samples
+can't tell backwards from forwards.
+
+42
+00:01:18.760 --> 00:01:19.860
+It's the cinema wheel.
+
+43
+00:01:20.020 --> 00:01:22.000
+A fast car wheel, filmed too rarely,
+
+44
+00:01:22.020 --> 00:01:23.460
+seems to creep backwards.
+
+45
+00:01:24.510 --> 00:01:25.830
+Sweep the true tone up.
+
+46
+00:01:25.850 --> 00:01:29.310
+The stored tone climbs with it
+to four thousand hertz, then turns round.
+
+47
+00:01:29.450 --> 00:01:31.390
+That's the limit, half the sampling rate.
+
+48
+00:01:31.650 --> 00:01:34.330
+Above it, the phone stores a lower,
+false tone with the same samples,
+
+49
+00:01:34.350 --> 00:01:35.250
+an alias.
+
+50
+00:01:35.310 --> 00:01:36.410
+Fold the strip at the limit.
+
+51
+00:01:36.430 --> 00:01:38.850
+Five thousand sits one thousand above.
+
+52
+00:01:39.150 --> 00:01:41.370
+So it lands one thousand below,
+on three thousand.
+
+53
+00:01:42.590 --> 00:01:43.890
+It doesn't blur the tone.
+
+54
+00:01:43.910 --> 00:01:45.890
+It moves it, to a perfectly clean one.
+
+55
+00:01:46.030 --> 00:01:47.370
+And no program can move it back,
+
+56
+00:01:47.390 --> 00:01:49.550
+because the whistle's list is,
+number for number,
+
+57
+00:01:49.630 --> 00:01:51.610
+the list of a real
+three thousand hertz tone.
+
+58
+00:01:52.500 --> 00:01:55.000
+The fix has to come before sampling,
+while five thousand
+
+59
+00:01:55.020 --> 00:01:56.540
+is still five thousand.
+
+60
+00:01:56.740 --> 00:01:58.180
+Put a filter in front of the sampler,
+
+61
+00:01:58.200 --> 00:01:59.920
+a small circuit that keeps the voice,
+
+62
+00:01:59.940 --> 00:02:01.620
+up to three thousand four hundred hertz,
+
+63
+00:02:01.640 --> 00:02:03.420
+and fades out the tones above it.
+
+64
+00:02:03.620 --> 00:02:06.380
+The tone where it switches
+from keeping to removing is its cutoff,
+
+65
+00:02:06.400 --> 00:02:07.580
+here four thousand.
+
+66
+00:02:07.960 --> 00:02:09.480
+The whistle never reaches the sampler,
+
+67
+00:02:09.500 --> 00:02:11.500
+and the clinic gets honest silence.
+
+68
+00:02:12.700 --> 00:02:13.820
+The line is clean.
+
+69
+00:02:13.840 --> 00:02:17.180
+Then it joins a wideband line
+at sixteen thousand samples a second.
+
+70
+00:02:17.320 --> 00:02:20.520
+Every voice that crosses over
+brings a faint ghost copy of itself
+
+71
+00:02:20.640 --> 00:02:22.880
+above four thousand hertz,
+where nobody was speaking.
+
+72
+00:02:23.140 --> 00:02:24.720
+Where do those ghosts come from?

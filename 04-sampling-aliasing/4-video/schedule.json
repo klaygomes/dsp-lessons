@@ -1,0 +1,1965 @@
+{
+ "fps": 30,
+ "duration": 145.2,
+ "wpm": 204,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The east route sounds crisp again. Then a hearing clinic calls. They play test whistles down the line. At five thousand hertz, every patient hears a clear, steady whistle, and matches it to three thousand. Not a fuzzy five thousand. A clean, wrong three thousand.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 13.39,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "The",
+     "frame": 18
+    },
+    {
+     "word": "east",
+     "frame": 26
+    },
+    {
+     "word": "root",
+     "frame": 33
+    },
+    {
+     "word": "sounds",
+     "frame": 38
+    },
+    {
+     "word": "crisp",
+     "frame": 47
+    },
+    {
+     "word": "again.",
+     "frame": 58
+    },
+    {
+     "word": "Then",
+     "frame": 72
+    },
+    {
+     "word": "a",
+     "frame": 80
+    },
+    {
+     "word": "hearing",
+     "frame": 83
+    },
+    {
+     "word": "clinic",
+     "frame": 89
+    },
+    {
+     "word": "calls.",
+     "frame": 97
+    },
+    {
+     "word": "They",
+     "frame": 113
+    },
+    {
+     "word": "play",
+     "frame": 119
+    },
+    {
+     "word": "test",
+     "frame": 125
+    },
+    {
+     "word": "whistles",
+     "frame": 134
+    },
+    {
+     "word": "down",
+     "frame": 143
+    },
+    {
+     "word": "the",
+     "frame": 151
+    },
+    {
+     "word": "line.",
+     "frame": 160
+    },
+    {
+     "word": "At",
+     "frame": 168
+    },
+    {
+     "word": "5",
+     "frame": 177
+    },
+    {
+     "word": ",000",
+     "frame": 185
+    },
+    {
+     "word": "hertz,",
+     "frame": 196
+    },
+    {
+     "word": "every",
+     "frame": 208
+    },
+    {
+     "word": "patient",
+     "frame": 212
+    },
+    {
+     "word": "hears",
+     "frame": 221
+    },
+    {
+     "word": "a",
+     "frame": 228
+    },
+    {
+     "word": "clear,",
+     "frame": 232
+    },
+    {
+     "word": "steady",
+     "frame": 245
+    },
+    {
+     "word": "whistle",
+     "frame": 250
+    },
+    {
+     "word": "and",
+     "frame": 260
+    },
+    {
+     "word": "matches",
+     "frame": 267
+    },
+    {
+     "word": "it",
+     "frame": 275
+    },
+    {
+     "word": "to",
+     "frame": 280
+    },
+    {
+     "word": "3",
+     "frame": 284
+    },
+    {
+     "word": ",000.",
+     "frame": 291
+    },
+    {
+     "word": "Not",
+     "frame": 313
+    },
+    {
+     "word": "a",
+     "frame": 317
+    },
+    {
+     "word": "fuzzy",
+     "frame": 319
+    },
+    {
+     "word": "5",
+     "frame": 326
+    },
+    {
+     "word": ",000.",
+     "frame": 335
+    },
+    {
+     "word": "A",
+     "frame": 352
+    },
+    {
+     "word": "clean,",
+     "frame": 359
+    },
+    {
+     "word": "wrong",
+     "frame": 370
+    },
+    {
+     "word": "3",
+     "frame": 376
+    },
+    {
+     "word": ",000.",
+     "frame": 383
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "So a patient who can't hear five thousand still says yes. The whistle really is five thousand. And your boost is linear and time-invariant, so it can't turn one tone into another. It happens at the step where sound becomes numbers.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix4/line01.wav",
+   "at": 14.19,
+   "start": 14.19,
+   "end": 25.37,
+   "start_frame": 426,
+   "words": [
+    {
+     "word": "So",
+     "frame": 426
+    },
+    {
+     "word": "a",
+     "frame": 435
+    },
+    {
+     "word": "patient",
+     "frame": 439
+    },
+    {
+     "word": "who",
+     "frame": 447
+    },
+    {
+     "word": "can't",
+     "frame": 451
+    },
+    {
+     "word": "hear",
+     "frame": 458
+    },
+    {
+     "word": "5000",
+     "frame": 462
+    },
+    {
+     "word": "still",
+     "frame": 477
+    },
+    {
+     "word": "says",
+     "frame": 491
+    },
+    {
+     "word": "yes,",
+     "frame": 499
+    },
+    {
+     "word": "the",
+     "frame": 512
+    },
+    {
+     "word": "whistle",
+     "frame": 516
+    },
+    {
+     "word": "really",
+     "frame": 522
+    },
+    {
+     "word": "is",
+     "frame": 530
+    },
+    {
+     "word": "5000.",
+     "frame": 537
+    },
+    {
+     "word": "And",
+     "frame": 566
+    },
+    {
+     "word": "your",
+     "frame": 569
+    },
+    {
+     "word": "boost",
+     "frame": 572
+    },
+    {
+     "word": "is",
+     "frame": 579
+    },
+    {
+     "word": "linear",
+     "frame": 584
+    },
+    {
+     "word": "and",
+     "frame": 593
+    },
+    {
+     "word": "time",
+     "frame": 600
+    },
+    {
+     "word": "invariant",
+     "frame": 606
+    },
+    {
+     "word": "so",
+     "frame": 621
+    },
+    {
+     "word": "it",
+     "frame": 626
+    },
+    {
+     "word": "can't",
+     "frame": 630
+    },
+    {
+     "word": "turn",
+     "frame": 636
+    },
+    {
+     "word": "one",
+     "frame": 642
+    },
+    {
+     "word": "tone",
+     "frame": 649
+    },
+    {
+     "word": "into",
+     "frame": 657
+    },
+    {
+     "word": "another.",
+     "frame": 664
+    },
+    {
+     "word": "It",
+     "frame": 687
+    },
+    {
+     "word": "happens",
+     "frame": 690
+    },
+    {
+     "word": "at",
+     "frame": 699
+    },
+    {
+     "word": "the",
+     "frame": 704
+    },
+    {
+     "word": "step",
+     "frame": 707
+    },
+    {
+     "word": "where",
+     "frame": 714
+    },
+    {
+     "word": "sound",
+     "frame": 720
+    },
+    {
+     "word": "becomes",
+     "frame": 728
+    },
+    {
+     "word": "numbers.",
+     "frame": 738
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "The sound going into the phone is the true tone, a smooth wobble. But a phone only works with numbers. Eight thousand times a second, it takes one sample. That's the sampling rate. In between, it looks away. The list of samples is what the phone stores, and nothing else survives.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix2/line01.wav",
+   "at": 25.97,
+   "start": 25.97,
+   "end": 39.43,
+   "start_frame": 779,
+   "words": [
+    {
+     "word": "The",
+     "frame": 779
+    },
+    {
+     "word": "sound",
+     "frame": 788
+    },
+    {
+     "word": "going",
+     "frame": 794
+    },
+    {
+     "word": "into",
+     "frame": 801
+    },
+    {
+     "word": "the",
+     "frame": 806
+    },
+    {
+     "word": "phone",
+     "frame": 810
+    },
+    {
+     "word": "is",
+     "frame": 816
+    },
+    {
+     "word": "the",
+     "frame": 820
+    },
+    {
+     "word": "true",
+     "frame": 824
+    },
+    {
+     "word": "tone,",
+     "frame": 829
+    },
+    {
+     "word": "a",
+     "frame": 842
+    },
+    {
+     "word": "smooth",
+     "frame": 848
+    },
+    {
+     "word": "wobble,",
+     "frame": 856
+    },
+    {
+     "word": "but",
+     "frame": 872
+    },
+    {
+     "word": "a",
+     "frame": 880
+    },
+    {
+     "word": "phone",
+     "frame": 883
+    },
+    {
+     "word": "only",
+     "frame": 889
+    },
+    {
+     "word": "works",
+     "frame": 896
+    },
+    {
+     "word": "with",
+     "frame": 903
+    },
+    {
+     "word": "numbers.",
+     "frame": 910
+    },
+    {
+     "word": "8",
+     "frame": 927
+    },
+    {
+     "word": ",000",
+     "frame": 938
+    },
+    {
+     "word": "times",
+     "frame": 947
+    },
+    {
+     "word": "a",
+     "frame": 954
+    },
+    {
+     "word": "second,",
+     "frame": 958
+    },
+    {
+     "word": "it",
+     "frame": 967
+    },
+    {
+     "word": "takes",
+     "frame": 970
+    },
+    {
+     "word": "one",
+     "frame": 977
+    },
+    {
+     "word": "sample.",
+     "frame": 983
+    },
+    {
+     "word": "That's",
+     "frame": 1002
+    },
+    {
+     "word": "the",
+     "frame": 1012
+    },
+    {
+     "word": "sampling",
+     "frame": 1016
+    },
+    {
+     "word": "rate.",
+     "frame": 1024
+    },
+    {
+     "word": "In",
+     "frame": 1038
+    },
+    {
+     "word": "between,",
+     "frame": 1046
+    },
+    {
+     "word": "it",
+     "frame": 1057
+    },
+    {
+     "word": "looks",
+     "frame": 1058
+    },
+    {
+     "word": "away.",
+     "frame": 1063
+    },
+    {
+     "word": "The",
+     "frame": 1077
+    },
+    {
+     "word": "list",
+     "frame": 1084
+    },
+    {
+     "word": "of",
+     "frame": 1090
+    },
+    {
+     "word": "samples",
+     "frame": 1094
+    },
+    {
+     "word": "is",
+     "frame": 1105
+    },
+    {
+     "word": "what",
+     "frame": 1110
+    },
+    {
+     "word": "the",
+     "frame": 1114
+    },
+    {
+     "word": "phone",
+     "frame": 1118
+    },
+    {
+     "word": "stores,",
+     "frame": 1124
+    },
+    {
+     "word": "and",
+     "frame": 1136
+    },
+    {
+     "word": "nothing",
+     "frame": 1143
+    },
+    {
+     "word": "else",
+     "frame": 1149
+    },
+    {
+     "word": "survives.",
+     "frame": 1156
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Sample the whistle, five thousand hertz. One, minus point seven one, zero, point seven one. Now a real three thousand hertz tone. One, minus point seven one, zero, point seven one. The same list, sample for sample. Two different waves, the same dots.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line04.wav",
+   "at": 40.23,
+   "start": 40.23,
+   "end": 52.27,
+   "start_frame": 1207,
+   "words": [
+    {
+     "word": "Sample",
+     "frame": 1207
+    },
+    {
+     "word": "the",
+     "frame": 1221
+    },
+    {
+     "word": "whistle,",
+     "frame": 1224
+    },
+    {
+     "word": "5",
+     "frame": 1238
+    },
+    {
+     "word": ",000",
+     "frame": 1245
+    },
+    {
+     "word": "Hz,",
+     "frame": 1257
+    },
+    {
+     "word": "1",
+     "frame": 1272
+    },
+    {
+     "word": "-0",
+     "frame": 1278
+    },
+    {
+     "word": ".71,",
+     "frame": 1291
+    },
+    {
+     "word": "0",
+     "frame": 1311
+    },
+    {
+     "word": ".71.",
+     "frame": 1317
+    },
+    {
+     "word": "Now",
+     "frame": 1352
+    },
+    {
+     "word": "a",
+     "frame": 1356
+    },
+    {
+     "word": "real",
+     "frame": 1360
+    },
+    {
+     "word": "3",
+     "frame": 1365
+    },
+    {
+     "word": ",000",
+     "frame": 1371
+    },
+    {
+     "word": "Hz",
+     "frame": 1381
+    },
+    {
+     "word": "tone,",
+     "frame": 1388
+    },
+    {
+     "word": "1",
+     "frame": 1402
+    },
+    {
+     "word": "-0",
+     "frame": 1406
+    },
+    {
+     "word": ".71,",
+     "frame": 1417
+    },
+    {
+     "word": "0",
+     "frame": 1436
+    },
+    {
+     "word": ".71.",
+     "frame": 1441
+    },
+    {
+     "word": "The",
+     "frame": 1470
+    },
+    {
+     "word": "same",
+     "frame": 1473
+    },
+    {
+     "word": "list,",
+     "frame": 1480
+    },
+    {
+     "word": "sample",
+     "frame": 1491
+    },
+    {
+     "word": "for",
+     "frame": 1497
+    },
+    {
+     "word": "sample.",
+     "frame": 1501
+    },
+    {
+     "word": "Two",
+     "frame": 1522
+    },
+    {
+     "word": "different",
+     "frame": 1524
+    },
+    {
+     "word": "waves,",
+     "frame": 1531
+    },
+    {
+     "word": "the",
+     "frame": 1540
+    },
+    {
+     "word": "same",
+     "frame": 1544
+    },
+    {
+     "word": "dots.",
+     "frame": 1550
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Why? Lesson three's wheel. Each sample, the dot turns forty-five degrees for every thousand hertz, and the sample is how far left or right it sits. Three thousand turns one hundred thirty-five degrees, to the upper left. The whistle turns two hundred twenty-five, past half a turn, to the lower left. Mirror spots, the same reading.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line05.wav",
+   "at": 53.27,
+   "start": 53.27,
+   "end": 69.3,
+   "start_frame": 1598,
+   "words": [
+    {
+     "word": "Why?",
+     "frame": 1598
+    },
+    {
+     "word": "Lesson",
+     "frame": 1616
+    },
+    {
+     "word": "3's",
+     "frame": 1629
+    },
+    {
+     "word": "Wheel.",
+     "frame": 1639
+    },
+    {
+     "word": "Each",
+     "frame": 1652
+    },
+    {
+     "word": "sample,",
+     "frame": 1660
+    },
+    {
+     "word": "the",
+     "frame": 1674
+    },
+    {
+     "word": "dot",
+     "frame": 1677
+    },
+    {
+     "word": "turns",
+     "frame": 1683
+    },
+    {
+     "word": "45",
+     "frame": 1691
+    },
+    {
+     "word": "degrees",
+     "frame": 1704
+    },
+    {
+     "word": "for",
+     "frame": 1716
+    },
+    {
+     "word": "every",
+     "frame": 1724
+    },
+    {
+     "word": "1000",
+     "frame": 1731
+    },
+    {
+     "word": "Hz,",
+     "frame": 1742
+    },
+    {
+     "word": "and",
+     "frame": 1754
+    },
+    {
+     "word": "the",
+     "frame": 1760
+    },
+    {
+     "word": "sample",
+     "frame": 1762
+    },
+    {
+     "word": "is",
+     "frame": 1770
+    },
+    {
+     "word": "how",
+     "frame": 1775
+    },
+    {
+     "word": "far",
+     "frame": 1779
+    },
+    {
+     "word": "left",
+     "frame": 1785
+    },
+    {
+     "word": "or",
+     "frame": 1794
+    },
+    {
+     "word": "right",
+     "frame": 1800
+    },
+    {
+     "word": "it",
+     "frame": 1806
+    },
+    {
+     "word": "sits.",
+     "frame": 1809
+    },
+    {
+     "word": "3000",
+     "frame": 1822
+    },
+    {
+     "word": "turns",
+     "frame": 1831
+    },
+    {
+     "word": "135",
+     "frame": 1847
+    },
+    {
+     "word": "degrees",
+     "frame": 1866
+    },
+    {
+     "word": "to",
+     "frame": 1887
+    },
+    {
+     "word": "the",
+     "frame": 1894
+    },
+    {
+     "word": "upper",
+     "frame": 1898
+    },
+    {
+     "word": "left.",
+     "frame": 1904
+    },
+    {
+     "word": "The",
+     "frame": 1918
+    },
+    {
+     "word": "whistle",
+     "frame": 1925
+    },
+    {
+     "word": "turns",
+     "frame": 1931
+    },
+    {
+     "word": "225",
+     "frame": 1941
+    },
+    {
+     "word": "past",
+     "frame": 1970
+    },
+    {
+     "word": "half",
+     "frame": 1980
+    },
+    {
+     "word": "a",
+     "frame": 1986
+    },
+    {
+     "word": "turn",
+     "frame": 1991
+    },
+    {
+     "word": "to",
+     "frame": 1996
+    },
+    {
+     "word": "the",
+     "frame": 2002
+    },
+    {
+     "word": "lower",
+     "frame": 2006
+    },
+    {
+     "word": "left.",
+     "frame": 2012
+    },
+    {
+     "word": "Mirror",
+     "frame": 2028
+    },
+    {
+     "word": "spots,",
+     "frame": 2038
+    },
+    {
+     "word": "the",
+     "frame": 2056
+    },
+    {
+     "word": "same",
+     "frame": 2060
+    },
+    {
+     "word": "reading.",
+     "frame": 2066
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Two hundred twenty-five is one hundred thirty-five short of a full turn. So the whistle looks like a three thousand hertz dot turning backwards, and samples can't tell backwards from forwards. It's the cinema wheel. A fast car wheel, filmed too rarely, seems to creep backwards.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line06.wav",
+   "at": 69.9,
+   "start": 69.9,
+   "end": 83.51,
+   "start_frame": 2097,
+   "words": [
+    {
+     "word": "225",
+     "frame": 2097
+    },
+    {
+     "word": "is",
+     "frame": 2130
+    },
+    {
+     "word": "135",
+     "frame": 2141
+    },
+    {
+     "word": "short",
+     "frame": 2161
+    },
+    {
+     "word": "of",
+     "frame": 2177
+    },
+    {
+     "word": "a",
+     "frame": 2182
+    },
+    {
+     "word": "full",
+     "frame": 2184
+    },
+    {
+     "word": "turn.",
+     "frame": 2189
+    },
+    {
+     "word": "So",
+     "frame": 2213
+    },
+    {
+     "word": "the",
+     "frame": 2215
+    },
+    {
+     "word": "whistle",
+     "frame": 2218
+    },
+    {
+     "word": "looks",
+     "frame": 2225
+    },
+    {
+     "word": "like",
+     "frame": 2232
+    },
+    {
+     "word": "a",
+     "frame": 2236
+    },
+    {
+     "word": "3000",
+     "frame": 2239
+    },
+    {
+     "word": "Hz",
+     "frame": 2252
+    },
+    {
+     "word": "dot",
+     "frame": 2263
+    },
+    {
+     "word": "turning",
+     "frame": 2270
+    },
+    {
+     "word": "backwards,",
+     "frame": 2279
+    },
+    {
+     "word": "and",
+     "frame": 2300
+    },
+    {
+     "word": "samples",
+     "frame": 2302
+    },
+    {
+     "word": "can't",
+     "frame": 2312
+    },
+    {
+     "word": "tell",
+     "frame": 2320
+    },
+    {
+     "word": "backwards",
+     "frame": 2324
+    },
+    {
+     "word": "from",
+     "frame": 2336
+    },
+    {
+     "word": "forwards.",
+     "frame": 2341
+    },
+    {
+     "word": "It's",
+     "frame": 2363
+    },
+    {
+     "word": "the",
+     "frame": 2368
+    },
+    {
+     "word": "cinema",
+     "frame": 2371
+    },
+    {
+     "word": "wheel.",
+     "frame": 2378
+    },
+    {
+     "word": "A",
+     "frame": 2401
+    },
+    {
+     "word": "fast",
+     "frame": 2404
+    },
+    {
+     "word": "car",
+     "frame": 2413
+    },
+    {
+     "word": "wheel,",
+     "frame": 2419
+    },
+    {
+     "word": "filmed",
+     "frame": 2431
+    },
+    {
+     "word": "too",
+     "frame": 2438
+    },
+    {
+     "word": "rarely,",
+     "frame": 2444
+    },
+    {
+     "word": "seems",
+     "frame": 2461
+    },
+    {
+     "word": "to",
+     "frame": 2469
+    },
+    {
+     "word": "creep",
+     "frame": 2473
+    },
+    {
+     "word": "backwards.",
+     "frame": 2480
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Sweep the true tone up. The stored tone climbs with it to four thousand hertz, then turns round. That's the limit, half the sampling rate. Above it, the phone stores a lower, false tone with the same samples, an alias. Fold the strip at the limit. Five thousand sits one thousand above. [surprise-oh] So it lands one thousand below, on three thousand.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line07.wav",
+   "at": 84.51,
+   "start": 84.51,
+   "end": 101.39,
+   "start_frame": 2535,
+   "words": [
+    {
+     "word": "Sweep",
+     "frame": 2535
+    },
+    {
+     "word": "the",
+     "frame": 2548
+    },
+    {
+     "word": "true",
+     "frame": 2552
+    },
+    {
+     "word": "tone",
+     "frame": 2557
+    },
+    {
+     "word": "up.",
+     "frame": 2564
+    },
+    {
+     "word": "The",
+     "frame": 2576
+    },
+    {
+     "word": "stored",
+     "frame": 2582
+    },
+    {
+     "word": "tone",
+     "frame": 2593
+    },
+    {
+     "word": "climbs",
+     "frame": 2599
+    },
+    {
+     "word": "with",
+     "frame": 2610
+    },
+    {
+     "word": "it",
+     "frame": 2614
+    },
+    {
+     "word": "to",
+     "frame": 2618
+    },
+    {
+     "word": "4000Hz,",
+     "frame": 2621
+    },
+    {
+     "word": "then",
+     "frame": 2649
+    },
+    {
+     "word": "turns",
+     "frame": 2654
+    },
+    {
+     "word": "round.",
+     "frame": 2662
+    },
+    {
+     "word": "That's",
+     "frame": 2684
+    },
+    {
+     "word": "the",
+     "frame": 2689
+    },
+    {
+     "word": "limit,",
+     "frame": 2692
+    },
+    {
+     "word": "half",
+     "frame": 2705
+    },
+    {
+     "word": "the",
+     "frame": 2710
+    },
+    {
+     "word": "sampling",
+     "frame": 2715
+    },
+    {
+     "word": "rate.",
+     "frame": 2724
+    },
+    {
+     "word": "Above",
+     "frame": 2750
+    },
+    {
+     "word": "it,",
+     "frame": 2750
+    },
+    {
+     "word": "the",
+     "frame": 2756
+    },
+    {
+     "word": "phone",
+     "frame": 2758
+    },
+    {
+     "word": "stores",
+     "frame": 2764
+    },
+    {
+     "word": "a",
+     "frame": 2774
+    },
+    {
+     "word": "lower",
+     "frame": 2778
+    },
+    {
+     "word": "false",
+     "frame": 2784
+    },
+    {
+     "word": "tone",
+     "frame": 2793
+    },
+    {
+     "word": "with",
+     "frame": 2802
+    },
+    {
+     "word": "the",
+     "frame": 2807
+    },
+    {
+     "word": "same",
+     "frame": 2810
+    },
+    {
+     "word": "samples",
+     "frame": 2817
+    },
+    {
+     "word": "and",
+     "frame": 2831
+    },
+    {
+     "word": "alias.",
+     "frame": 2837
+    },
+    {
+     "word": "Fold",
+     "frame": 2859
+    },
+    {
+     "word": "the",
+     "frame": 2864
+    },
+    {
+     "word": "strip",
+     "frame": 2869
+    },
+    {
+     "word": "at",
+     "frame": 2873
+    },
+    {
+     "word": "the",
+     "frame": 2877
+    },
+    {
+     "word": "limit.",
+     "frame": 2880
+    },
+    {
+     "word": "5000",
+     "frame": 2893
+    },
+    {
+     "word": "sits",
+     "frame": 2907
+    },
+    {
+     "word": "1000",
+     "frame": 2923
+    },
+    {
+     "word": "above.",
+     "frame": 2937
+    },
+    {
+     "word": "Oh,",
+     "frame": 2969
+    },
+    {
+     "word": "so",
+     "frame": 2974
+    },
+    {
+     "word": "it",
+     "frame": 2977
+    },
+    {
+     "word": "lands",
+     "frame": 2980
+    },
+    {
+     "word": "1000",
+     "frame": 2987
+    },
+    {
+     "word": "below",
+     "frame": 3000
+    },
+    {
+     "word": "on",
+     "frame": 3010
+    },
+    {
+     "word": "3000.",
+     "frame": 3017
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "It doesn't blur the tone. It moves it, to a perfectly clean one. And no program can move it back, because the whistle's list is, number for number, the list of a real three thousand hertz tone.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line08.wav",
+   "at": 102.59,
+   "start": 102.59,
+   "end": 111.7,
+   "start_frame": 3078,
+   "words": [
+    {
+     "word": "It",
+     "frame": 3078
+    },
+    {
+     "word": "doesn't",
+     "frame": 3086
+    },
+    {
+     "word": "blur",
+     "frame": 3093
+    },
+    {
+     "word": "the",
+     "frame": 3099
+    },
+    {
+     "word": "tone,",
+     "frame": 3104
+    },
+    {
+     "word": "it",
+     "frame": 3117
+    },
+    {
+     "word": "moves",
+     "frame": 3122
+    },
+    {
+     "word": "it",
+     "frame": 3130
+    },
+    {
+     "word": "to",
+     "frame": 3134
+    },
+    {
+     "word": "a",
+     "frame": 3138
+    },
+    {
+     "word": "perfectly",
+     "frame": 3142
+    },
+    {
+     "word": "clean",
+     "frame": 3152
+    },
+    {
+     "word": "one.",
+     "frame": 3161
+    },
+    {
+     "word": "And",
+     "frame": 3181
+    },
+    {
+     "word": "no",
+     "frame": 3184
+    },
+    {
+     "word": "program",
+     "frame": 3189
+    },
+    {
+     "word": "can",
+     "frame": 3197
+    },
+    {
+     "word": "move",
+     "frame": 3204
+    },
+    {
+     "word": "it",
+     "frame": 3209
+    },
+    {
+     "word": "back,",
+     "frame": 3212
+    },
+    {
+     "word": "because",
+     "frame": 3222
+    },
+    {
+     "word": "the",
+     "frame": 3231
+    },
+    {
+     "word": "whistle's",
+     "frame": 3235
+    },
+    {
+     "word": "list",
+     "frame": 3246
+    },
+    {
+     "word": "is",
+     "frame": 3253
+    },
+    {
+     "word": "number",
+     "frame": 3258
+    },
+    {
+     "word": "for",
+     "frame": 3266
+    },
+    {
+     "word": "number,",
+     "frame": 3271
+    },
+    {
+     "word": "the",
+     "frame": 3289
+    },
+    {
+     "word": "list",
+     "frame": 3290
+    },
+    {
+     "word": "of",
+     "frame": 3295
+    },
+    {
+     "word": "a",
+     "frame": 3299
+    },
+    {
+     "word": "real",
+     "frame": 3302
+    },
+    {
+     "word": "3000",
+     "frame": 3309
+    },
+    {
+     "word": "Hz",
+     "frame": 3322
+    },
+    {
+     "word": "tone.",
+     "frame": 3331
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "The fix has to come before sampling, while five thousand is still five thousand. Put a filter in front of the sampler, a small circuit that keeps the voice, up to three thousand four hundred hertz, and fades out the tones above it. The tone where it switches from keeping to removing is its cutoff, here four thousand. The whistle never reaches the sampler, and the clinic gets honest silence.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix4/line02.wav",
+   "at": 112.5,
+   "start": 112.5,
+   "end": 131.5,
+   "start_frame": 3375,
+   "words": [
+    {
+     "word": "The",
+     "frame": 3375
+    },
+    {
+     "word": "fix",
+     "frame": 3383
+    },
+    {
+     "word": "has",
+     "frame": 3388
+    },
+    {
+     "word": "to",
+     "frame": 3395
+    },
+    {
+     "word": "come",
+     "frame": 3398
+    },
+    {
+     "word": "before",
+     "frame": 3404
+    },
+    {
+     "word": "sampling,",
+     "frame": 3412
+    },
+    {
+     "word": "while",
+     "frame": 3431
+    },
+    {
+     "word": "5000",
+     "frame": 3436
+    },
+    {
+     "word": "is",
+     "frame": 3451
+    },
+    {
+     "word": "still",
+     "frame": 3458
+    },
+    {
+     "word": "5000.",
+     "frame": 3465
+    },
+    {
+     "word": "Put",
+     "frame": 3502
+    },
+    {
+     "word": "a",
+     "frame": 3505
+    },
+    {
+     "word": "filter",
+     "frame": 3508
+    },
+    {
+     "word": "in",
+     "frame": 3516
+    },
+    {
+     "word": "front",
+     "frame": 3522
+    },
+    {
+     "word": "of",
+     "frame": 3526
+    },
+    {
+     "word": "the",
+     "frame": 3530
+    },
+    {
+     "word": "sampler,",
+     "frame": 3533
+    },
+    {
+     "word": "a",
+     "frame": 3546
+    },
+    {
+     "word": "small",
+     "frame": 3554
+    },
+    {
+     "word": "circuit",
+     "frame": 3562
+    },
+    {
+     "word": "that",
+     "frame": 3572
+    },
+    {
+     "word": "keeps",
+     "frame": 3577
+    },
+    {
+     "word": "the",
+     "frame": 3584
+    },
+    {
+     "word": "voice",
+     "frame": 3588
+    },
+    {
+     "word": "up",
+     "frame": 3598
+    },
+    {
+     "word": "to",
+     "frame": 3605
+    },
+    {
+     "word": "3400",
+     "frame": 3609
+    },
+    {
+     "word": "Hz",
+     "frame": 3643
+    },
+    {
+     "word": "and",
+     "frame": 3649
+    },
+    {
+     "word": "fades",
+     "frame": 3656
+    },
+    {
+     "word": "out",
+     "frame": 3664
+    },
+    {
+     "word": "the",
+     "frame": 3668
+    },
+    {
+     "word": "tones",
+     "frame": 3671
+    },
+    {
+     "word": "above",
+     "frame": 3679
+    },
+    {
+     "word": "it.",
+     "frame": 3687
+    },
+    {
+     "word": "The",
+     "frame": 3709
+    },
+    {
+     "word": "tone",
+     "frame": 3712
+    },
+    {
+     "word": "where",
+     "frame": 3718
+    },
+    {
+     "word": "it",
+     "frame": 3722
+    },
+    {
+     "word": "switches",
+     "frame": 3725
+    },
+    {
+     "word": "from",
+     "frame": 3734
+    },
+    {
+     "word": "keeping",
+     "frame": 3741
+    },
+    {
+     "word": "to",
+     "frame": 3749
+    },
+    {
+     "word": "removing",
+     "frame": 3755
+    },
+    {
+     "word": "is",
+     "frame": 3766
+    },
+    {
+     "word": "its",
+     "frame": 3772
+    },
+    {
+     "word": "cutoff,",
+     "frame": 3775
+    },
+    {
+     "word": "here",
+     "frame": 3792
+    },
+    {
+     "word": "4000.",
+     "frame": 3799
+    },
+    {
+     "word": "The",
+     "frame": 3839
+    },
+    {
+     "word": "whistle",
+     "frame": 3842
+    },
+    {
+     "word": "never",
+     "frame": 3849
+    },
+    {
+     "word": "reaches",
+     "frame": 3857
+    },
+    {
+     "word": "the",
+     "frame": 3868
+    },
+    {
+     "word": "sampler",
+     "frame": 3873
+    },
+    {
+     "word": "and",
+     "frame": 3885
+    },
+    {
+     "word": "the",
+     "frame": 3892
+    },
+    {
+     "word": "clinic",
+     "frame": 3895
+    },
+    {
+     "word": "gets",
+     "frame": 3902
+    },
+    {
+     "word": "honest",
+     "frame": 3910
+    },
+    {
+     "word": "silence.",
+     "frame": 3920
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "The line is clean. Then it joins a wideband line at sixteen thousand samples a second. Every voice that crosses over brings a faint ghost copy of itself above four thousand hertz, where nobody was speaking. [sigh] Where do those ghosts come from?",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix3/line01.wav",
+   "at": 132.7,
+   "start": 132.7,
+   "end": 144.7,
+   "start_frame": 3981,
+   "words": [
+    {
+     "word": "The",
+     "frame": 3981
+    },
+    {
+     "word": "line",
+     "frame": 3989
+    },
+    {
+     "word": "is",
+     "frame": 3996
+    },
+    {
+     "word": "clean,",
+     "frame": 4000
+    },
+    {
+     "word": "then",
+     "frame": 4015
+    },
+    {
+     "word": "it",
+     "frame": 4021
+    },
+    {
+     "word": "joins",
+     "frame": 4025
+    },
+    {
+     "word": "a",
+     "frame": 4032
+    },
+    {
+     "word": "wideband",
+     "frame": 4036
+    },
+    {
+     "word": "line",
+     "frame": 4049
+    },
+    {
+     "word": "at",
+     "frame": 4057
+    },
+    {
+     "word": "16",
+     "frame": 4062
+    },
+    {
+     "word": ",000",
+     "frame": 4072
+    },
+    {
+     "word": "samples",
+     "frame": 4084
+    },
+    {
+     "word": "a",
+     "frame": 4094
+    },
+    {
+     "word": "second.",
+     "frame": 4099
+    },
+    {
+     "word": "Every",
+     "frame": 4120
+    },
+    {
+     "word": "voice",
+     "frame": 4125
+    },
+    {
+     "word": "that",
+     "frame": 4133
+    },
+    {
+     "word": "crosses",
+     "frame": 4138
+    },
+    {
+     "word": "over",
+     "frame": 4147
+    },
+    {
+     "word": "brings",
+     "frame": 4157
+    },
+    {
+     "word": "a",
+     "frame": 4169
+    },
+    {
+     "word": "faint",
+     "frame": 4174
+    },
+    {
+     "word": "ghost",
+     "frame": 4180
+    },
+    {
+     "word": "copy",
+     "frame": 4187
+    },
+    {
+     "word": "of",
+     "frame": 4198
+    },
+    {
+     "word": "itself",
+     "frame": 4203
+    },
+    {
+     "word": "above",
+     "frame": 4219
+    },
+    {
+     "word": "4",
+     "frame": 4223
+    },
+    {
+     "word": ",000",
+     "frame": 4231
+    },
+    {
+     "word": "Hz",
+     "frame": 4242
+    },
+    {
+     "word": "where",
+     "frame": 4247
+    },
+    {
+     "word": "nobody",
+     "frame": 4255
+    },
+    {
+     "word": "was",
+     "frame": 4263
+    },
+    {
+     "word": "speaking.",
+     "frame": 4268
+    },
+    {
+     "word": "I\u2026",
+     "frame": 4286
+    },
+    {
+     "word": "where",
+     "frame": 4294
+    },
+    {
+     "word": "do",
+     "frame": 4305
+    },
+    {
+     "word": "those",
+     "frame": 4308
+    },
+    {
+     "word": "ghosts",
+     "frame": 4313
+    },
+    {
+     "word": "come",
+     "frame": 4321
+    },
+    {
+     "word": "from?",
+     "frame": 4328
+    }
+   ]
+  }
+ ]
+}

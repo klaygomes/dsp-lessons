@@ -1,13 +1,20 @@
 import html
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LADDER = Path.home() / ".claude/skills/klay-learning-ladder"
 
 
+def tracked():
+    out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+    return set(out.splitlines())
+
+
 def lessons():
+    shipped = tracked()
     rows = []
     for line in (ROOT / "series.md").read_text(encoding="utf-8").splitlines():
         m = re.match(r"\| (\d+) \| ([^|]+) \| ([^|]+) \|", line)
@@ -22,9 +29,9 @@ def lessons():
             "n": n,
             "title": m.group(2).strip(),
             "bug": m.group(3).strip(),
-            "page": page.relative_to(ROOT).as_posix() if page and page.exists() else None,
+            "page": page.relative_to(ROOT).as_posix() if page and page.relative_to(ROOT).as_posix() in shipped else None,
             "page_ready": "page ready" in status,
-            "video": video.relative_to(ROOT).as_posix() if video and video.exists() else None,
+            "video": video.relative_to(ROOT).as_posix() if video and video.relative_to(ROOT).as_posix() in shipped else None,
             "video_ready": "video ready" in status,
         })
     return rows

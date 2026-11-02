@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Whistle That Changed Its Mind</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.dot { position: absolute; border-radius: 50%; }
+.box { position: absolute; background: var(--paper-2); border: 4px solid var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 50px; line-height: 62px; white-space: pre; }
+.box.hot { background: var(--accent-soft); border-color: var(--accent); }
+.box.good { background: var(--input-soft); border-color: var(--input); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":145.2,"wpm":204,"lines":[{"line":1,"text":"The east route sounds crisp again. Then a hearing clinic calls. They play test whistles down the line. At five thousand hertz, every patient hears a clear, steady whistle, and matches it to three thousand. Not a fuzzy five thousand. A clean, wrong three thousand.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line01.wav","at":0.6,"start":0.6,"end":13.39,"start_frame":18,"words":[{"word":"The","frame":18},{"word":"east","frame":26},{"word":"root","frame":33},{"word":"sounds","frame":38},{"word":"crisp","frame":47},{"word":"again.","frame":58},{"word":"Then","frame":72},{"word":"a","frame":80},{"word":"hearing","frame":83},{"word":"clinic","frame":89},{"word":"calls.","frame":97},{"word":"They","frame":113},{"word":"play","frame":119},{"word":"test","frame":125},{"word":"whistles","frame":134},{"word":"down","frame":143},{"word":"the","frame":151},{"word":"line.","frame":160},{"word":"At","frame":168},{"word":"5","frame":177},{"word":",000","frame":185},{"word":"hertz,","frame":196},{"word":"every","frame":208},{"word":"patient","frame":212},{"word":"hears","frame":221},{"word":"a","frame":228},{"word":"clear,","frame":232},{"word":"steady","frame":245},{"word":"whistle","frame":250},{"word":"and","frame":260},{"word":"matches","frame":267},{"word":"it","frame":275},{"word":"to","frame":280},{"word":"3","frame":284},{"word":",000.","frame":291},{"word":"Not","frame":313},{"word":"a","frame":317},{"word":"fuzzy","frame":319},{"word":"5","frame":326},{"word":",000.","frame":335},{"word":"A","frame":352},{"word":"clean,","frame":359},{"word":"wrong","frame":370},{"word":"3","frame":376},{"word":",000.","frame":383}]},{"line":2,"text":"So a patient who can't hear five thousand still says yes. The whistle really is five thousand. And your boost is linear and time-invariant, so it can't turn one tone into another. It happens at the step where sound becomes numbers.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix4/line01.wav","at":14.19,"start":14.19,"end":25.37,"start_frame":426,"words":[{"word":"So","frame":426},{"word":"a","frame":435},{"word":"patient","frame":439},{"word":"who","frame":447},{"word":"can't","frame":451},{"word":"hear","frame":458},{"word":"5000","frame":462},{"word":"still","frame":477},{"word":"says","frame":491},{"word":"yes,","frame":499},{"word":"the","frame":512},{"word":"whistle","frame":516},{"word":"really","frame":522},{"word":"is","frame":530},{"word":"5000.","frame":537},{"word":"And","frame":566},{"word":"your","frame":569},{"word":"boost","frame":572},{"word":"is","frame":579},{"word":"linear","frame":584},{"word":"and","frame":593},{"word":"time","frame":600},{"word":"invariant","frame":606},{"word":"so","frame":621},{"word":"it","frame":626},{"word":"can't","frame":630},{"word":"turn","frame":636},{"word":"one","frame":642},{"word":"tone","frame":649},{"word":"into","frame":657},{"word":"another.","frame":664},{"word":"It","frame":687},{"word":"happens","frame":690},{"word":"at","frame":699},{"word":"the","frame":704},{"word":"step","frame":707},{"word":"where","frame":714},{"word":"sound","frame":720},{"word":"becomes","frame":728},{"word":"numbers.","frame":738}]},{"line":3,"text":"The sound going into the phone is the true tone, a smooth wobble. But a phone only works with numbers. Eight thousand times a second, it takes one sample. That's the sampling rate. In between, it looks away. The list of samples is what the phone stores, and nothing else survives.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix2/line01.wav","at":25.97,"start":25.97,"end":39.43,"start_frame":779,"words":[{"word":"The","frame":779},{"word":"sound","frame":788},{"word":"going","frame":794},{"word":"into","frame":801},{"word":"the","frame":806},{"word":"phone","frame":810},{"word":"is","frame":816},{"word":"the","frame":820},{"word":"true","frame":824},{"word":"tone,","frame":829},{"word":"a","frame":842},{"word":"smooth","frame":848},{"word":"wobble,","frame":856},{"word":"but","frame":872},{"word":"a","frame":880},{"word":"phone","frame":883},{"word":"only","frame":889},{"word":"works","frame":896},{"word":"with","frame":903},{"word":"numbers.","frame":910},{"word":"8","frame":927},{"word":",000","frame":938},{"word":"times","frame":947},{"word":"a","frame":954},{"word":"second,","frame":958},{"word":"it","frame":967},{"word":"takes","frame":970},{"word":"one","frame":977},{"word":"sample.","frame":983},{"word":"That's","frame":1002},{"word":"the","frame":1012},{"word":"sampling","frame":1016},{"word":"rate.","frame":1024},{"word":"In","frame":1038},{"word":"between,","frame":1046},{"word":"it","frame":1057},{"word":"looks","frame":1058},{"word":"away.","frame":1063},{"word":"The","frame":1077},{"word":"list","frame":1084},{"word":"of","frame":1090},{"word":"samples","frame":1094},{"word":"is","frame":1105},{"word":"what","frame":1110},{"word":"the","frame":1114},{"word":"phone","frame":1118},{"word":"stores,","frame":1124},{"word":"and","frame":1136},{"word":"nothing","frame":1143},{"word":"else","frame":1149},{"word":"survives.","frame":1156}]},{"line":4,"text":"Sample the whistle, five thousand hertz. One, minus point seven one, zero, point seven one. Now a real three thousand hertz tone. One, minus point seven one, zero, point seven one. The same list, sample for sample. Two different waves, the same dots.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line04.wav","at":40.23,"start":40.23,"end":52.27,"start_frame":1207,"words":[{"word":"Sample","frame":1207},{"word":"the","frame":1221},{"word":"whistle,","frame":1224},{"word":"5","frame":1238},{"word":",000","frame":1245},{"word":"Hz,","frame":1257},{"word":"1","frame":1272},{"word":"-0","frame":1278},{"word":".71,","frame":1291},{"word":"0","frame":1311},{"word":".71.","frame":1317},{"word":"Now","frame":1352},{"word":"a","frame":1356},{"word":"real","frame":1360},{"word":"3","frame":1365},{"word":",000","frame":1371},{"word":"Hz","frame":1381},{"word":"tone,","frame":1388},{"word":"1","frame":1402},{"word":"-0","frame":1406},{"word":".71,","frame":1417},{"word":"0","frame":1436},{"word":".71.","frame":1441},{"word":"The","frame":1470},{"word":"same","frame":1473},{"word":"list,","frame":1480},{"word":"sample","frame":1491},{"word":"for","frame":1497},{"word":"sample.","frame":1501},{"word":"Two","frame":1522},{"word":"different","frame":1524},{"word":"waves,","frame":1531},{"word":"the","frame":1540},{"word":"same","frame":1544},{"word":"dots.","frame":1550}]},{"line":5,"text":"Why? Lesson three's wheel. Each sample, the dot turns forty-five degrees for every thousand hertz, and the sample is how far left or right it sits. Three thousand turns one hundred thirty-five degrees, to the upper left. The whistle turns two hundred twenty-five, past half a turn, to the lower left. Mirror spots, the same reading.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line05.wav","at":53.27,"start":53.27,"end":69.3,"start_frame":1598,"words":[{"word":"Why?","frame":1598},{"word":"Lesson","frame":1616},{"word":"3's","frame":1629},{"word":"Wheel.","frame":1639},{"word":"Each","frame":1652},{"word":"sample,","frame":1660},{"word":"the","frame":1674},{"word":"dot","frame":1677},{"word":"turns","frame":1683},{"word":"45","frame":1691},{"word":"degrees","frame":1704},{"word":"for","frame":1716},{"word":"every","frame":1724},{"word":"1000","frame":1731},{"word":"Hz,","frame":1742},{"word":"and","frame":1754},{"word":"the","frame":1760},{"word":"sample","frame":1762},{"word":"is","frame":1770},{"word":"how","frame":1775},{"word":"far","frame":1779},{"word":"left","frame":1785},{"word":"or","frame":1794},{"word":"right","frame":1800},{"word":"it","frame":1806},{"word":"sits.","frame":1809},{"word":"3000","frame":1822},{"word":"turns","frame":1831},{"word":"135","frame":1847},{"word":"degrees","frame":1866},{"word":"to","frame":1887},{"word":"the","frame":1894},{"word":"upper","frame":1898},{"word":"left.","frame":1904},{"word":"The","frame":1918},{"word":"whistle","frame":1925},{"word":"turns","frame":1931},{"word":"225","frame":1941},{"word":"past","frame":1970},{"word":"half","frame":1980},{"word":"a","frame":1986},{"word":"turn","frame":1991},{"word":"to","frame":1996},{"word":"the","frame":2002},{"word":"lower","frame":2006},{"word":"left.","frame":2012},{"word":"Mirror","frame":2028},{"word":"spots,","frame":2038},{"word":"the","frame":2056},{"word":"same","frame":2060},{"word":"reading.","frame":2066}]},{"line":6,"text":"Two hundred twenty-five is one hundred thirty-five short of a full turn. So the whistle looks like a three thousand hertz dot turning backwards, and samples can't tell backwards from forwards. It's the cinema wheel. A fast car wheel, filmed too rarely, seems to creep backwards.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line06.wav","at":69.9,"start":69.9,"end":83.51,"start_frame":2097,"words":[{"word":"225","frame":2097},{"word":"is","frame":2130},{"word":"135","frame":2141},{"word":"short","frame":2161},{"word":"of","frame":2177},{"word":"a","frame":2182},{"word":"full","frame":2184},{"word":"turn.","frame":2189},{"word":"So","frame":2213},{"word":"the","frame":2215},{"word":"whistle","frame":2218},{"word":"looks","frame":2225},{"word":"like","frame":2232},{"word":"a","frame":2236},{"word":"3000","frame":2239},{"word":"Hz","frame":2252},{"word":"dot","frame":2263},{"word":"turning","frame":2270},{"word":"backwards,","frame":2279},{"word":"and","frame":2300},{"word":"samples","frame":2302},{"word":"can't","frame":2312},{"word":"tell","frame":2320},{"word":"backwards","frame":2324},{"word":"from","frame":2336},{"word":"forwards.","frame":2341},{"word":"It's","frame":2363},{"word":"the","frame":2368},{"word":"cinema","frame":2371},{"word":"wheel.","frame":2378},{"word":"A","frame":2401},{"word":"fast","frame":2404},{"word":"car","frame":2413},{"word":"wheel,","frame":2419},{"word":"filmed","frame":2431},{"word":"too","frame":2438},{"word":"rarely,","frame":2444},{"word":"seems","frame":2461},{"word":"to","frame":2469},{"word":"creep","frame":2473},{"word":"backwards.","frame":2480}]},{"line":7,"text":"Sweep the true tone up. The stored tone climbs with it to four thousand hertz, then turns round. That's the limit, half the sampling rate. Above it, the phone stores a lower, false tone with the same samples, an alias. Fold the strip at the limit. Five thousand sits one thousand above. [surprise-oh] So it lands one thousand below, on three thousand.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line07.wav","at":84.51,"start":84.51,"end":101.39,"start_frame":2535,"words":[{"word":"Sweep","frame":2535},{"word":"the","frame":2548},{"word":"true","frame":2552},{"word":"tone","frame":2557},{"word":"up.","frame":2564},{"word":"The","frame":2576},{"word":"stored","frame":2582},{"word":"tone","frame":2593},{"word":"climbs","frame":2599},{"word":"with","frame":2610},{"word":"it","frame":2614},{"word":"to","frame":2618},{"word":"4000Hz,","frame":2621},{"word":"then","frame":2649},{"word":"turns","frame":2654},{"word":"round.","frame":2662},{"word":"That's","frame":2684},{"word":"the","frame":2689},{"word":"limit,","frame":2692},{"word":"half","frame":2705},{"word":"the","frame":2710},{"word":"sampling","frame":2715},{"word":"rate.","frame":2724},{"word":"Above","frame":2750},{"word":"it,","frame":2750},{"word":"the","frame":2756},{"word":"phone","frame":2758},{"word":"stores","frame":2764},{"word":"a","frame":2774},{"word":"lower","frame":2778},{"word":"false","frame":2784},{"word":"tone","frame":2793},{"word":"with","frame":2802},{"word":"the","frame":2807},{"word":"same","frame":2810},{"word":"samples","frame":2817},{"word":"and","frame":2831},{"word":"alias.","frame":2837},{"word":"Fold","frame":2859},{"word":"the","frame":2864},{"word":"strip","frame":2869},{"word":"at","frame":2873},{"word":"the","frame":2877},{"word":"limit.","frame":2880},{"word":"5000","frame":2893},{"word":"sits","frame":2907},{"word":"1000","frame":2923},{"word":"above.","frame":2937},{"word":"Oh,","frame":2969},{"word":"so","frame":2974},{"word":"it","frame":2977},{"word":"lands","frame":2980},{"word":"1000","frame":2987},{"word":"below","frame":3000},{"word":"on","frame":3010},{"word":"3000.","frame":3017}]},{"line":8,"text":"It doesn't blur the tone. It moves it, to a perfectly clean one. And no program can move it back, because the whistle's list is, number for number, the list of a real three thousand hertz tone.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo/line08.wav","at":102.59,"start":102.59,"end":111.7,"start_frame":3078,"words":[{"word":"It","frame":3078},{"word":"doesn't","frame":3086},{"word":"blur","frame":3093},{"word":"the","frame":3099},{"word":"tone,","frame":3104},{"word":"it","frame":3117},{"word":"moves","frame":3122},{"word":"it","frame":3130},{"word":"to","frame":3134},{"word":"a","frame":3138},{"word":"perfectly","frame":3142},{"word":"clean","frame":3152},{"word":"one.","frame":3161},{"word":"And","frame":3181},{"word":"no","frame":3184},{"word":"program","frame":3189},{"word":"can","frame":3197},{"word":"move","frame":3204},{"word":"it","frame":3209},{"word":"back,","frame":3212},{"word":"because","frame":3222},{"word":"the","frame":3231},{"word":"whistle's","frame":3235},{"word":"list","frame":3246},{"word":"is","frame":3253},{"word":"number","frame":3258},{"word":"for","frame":3266},{"word":"number,","frame":3271},{"word":"the","frame":3289},{"word":"list","frame":3290},{"word":"of","frame":3295},{"word":"a","frame":3299},{"word":"real","frame":3302},{"word":"3000","frame":3309},{"word":"Hz","frame":3322},{"word":"tone.","frame":3331}]},{"line":9,"text":"The fix has to come before sampling, while five thousand is still five thousand. Put a filter in front of the sampler, a small circuit that keeps the voice, up to three thousand four hundred hertz, and fades out the tones above it. The tone where it switches from keeping to removing is its cutoff, here four thousand. The whistle never reaches the sampler, and the clinic gets honest silence.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix4/line02.wav","at":112.5,"start":112.5,"end":131.5,"start_frame":3375,"words":[{"word":"The","frame":3375},{"word":"fix","frame":3383},{"word":"has","frame":3388},{"word":"to","frame":3395},{"word":"come","frame":3398},{"word":"before","frame":3404},{"word":"sampling,","frame":3412},{"word":"while","frame":3431},{"word":"5000","frame":3436},{"word":"is","frame":3451},{"word":"still","frame":3458},{"word":"5000.","frame":3465},{"word":"Put","frame":3502},{"word":"a","frame":3505},{"word":"filter","frame":3508},{"word":"in","frame":3516},{"word":"front","frame":3522},{"word":"of","frame":3526},{"word":"the","frame":3530},{"word":"sampler,","frame":3533},{"word":"a","frame":3546},{"word":"small","frame":3554},{"word":"circuit","frame":3562},{"word":"that","frame":3572},{"word":"keeps","frame":3577},{"word":"the","frame":3584},{"word":"voice","frame":3588},{"word":"up","frame":3598},{"word":"to","frame":3605},{"word":"3400","frame":3609},{"word":"Hz","frame":3643},{"word":"and","frame":3649},{"word":"fades","frame":3656},{"word":"out","frame":3664},{"word":"the","frame":3668},{"word":"tones","frame":3671},{"word":"above","frame":3679},{"word":"it.","frame":3687},{"word":"The","frame":3709},{"word":"tone","frame":3712},{"word":"where","frame":3718},{"word":"it","frame":3722},{"word":"switches","frame":3725},{"word":"from","frame":3734},{"word":"keeping","frame":3741},{"word":"to","frame":3749},{"word":"removing","frame":3755},{"word":"is","frame":3766},{"word":"its","frame":3772},{"word":"cutoff,","frame":3775},{"word":"here","frame":3792},{"word":"4000.","frame":3799},{"word":"The","frame":3839},{"word":"whistle","frame":3842},{"word":"never","frame":3849},{"word":"reaches","frame":3857},{"word":"the","frame":3868},{"word":"sampler","frame":3873},{"word":"and","frame":3885},{"word":"the","frame":3892},{"word":"clinic","frame":3895},{"word":"gets","frame":3902},{"word":"honest","frame":3910},{"word":"silence.","frame":3920}]},{"line":10,"text":"The line is clean. Then it joins a wideband line at sixteen thousand samples a second. Every voice that crosses over brings a faint ghost copy of itself above four thousand hertz, where nobody was speaking. [sigh] Where do those ghosts come from?","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/04-sampling-aliasing/4-video/vo-fix3/line01.wav","at":132.7,"start":132.7,"end":144.7,"start_frame":3981,"words":[{"word":"The","frame":3981},{"word":"line","frame":3989},{"word":"is","frame":3996},{"word":"clean,","frame":4000},{"word":"then","frame":4015},{"word":"it","frame":4021},{"word":"joins","frame":4025},{"word":"a","frame":4032},{"word":"wideband","frame":4036},{"word":"line","frame":4049},{"word":"at","frame":4057},{"word":"16","frame":4062},{"word":",000","frame":4072},{"word":"samples","frame":4084},{"word":"a","frame":4094},{"word":"second.","frame":4099},{"word":"Every","frame":4120},{"word":"voice","frame":4125},{"word":"that","frame":4133},{"word":"crosses","frame":4138},{"word":"over","frame":4147},{"word":"brings","frame":4157},{"word":"a","frame":4169},{"word":"faint","frame":4174},{"word":"ghost","frame":4180},{"word":"copy","frame":4187},{"word":"of","frame":4198},{"word":"itself","frame":4203},{"word":"above","frame":4219},{"word":"4","frame":4223},{"word":",000","frame":4231},{"word":"Hz","frame":4242},{"word":"where","frame":4247},{"word":"nobody","frame":4255},{"word":"was","frame":4263},{"word":"speaking.","frame":4268},{"word":"I\u2026","frame":4286},{"word":"where","frame":4294},{"word":"do","frame":4305},{"word":"those","frame":4308},{"word":"ghosts","frame":4313},{"word":"come","frame":4321},{"word":"from?","frame":4328}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const fmt = (v, d = 2) => (v < -0.0005 ? '−' : '') + Math.abs(v).toFixed(d);
+const num = v => Math.abs(v) < 0.005 ? '0' : Math.abs(Math.abs(v) - 1) < 0.005 ? (v < 0 ? '−1' : '1') : fmt(v);
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+const hz = f => f.toLocaleString('en-US');
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+function box(parent, text, x, y, w, h, cls = 'box') {
+  const id = 'X' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text;
+  Object.assign(e.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  return '#' + id;
+}
+function dot(parent, x, y, r, color, hollow) {
+  const id = 'D' + (++uid), e = el('div', { id, class: 'dot' }, parent);
+  Object.assign(e.style, { left: (x - r) + 'px', top: (y - r) + 'px', width: 2 * r + 'px', height: 2 * r + 'px', background: hollow ? C.paper : color, border: hollow ? `6px solid ${color}` : 'none' });
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const travel = (sel, pts) => { M.kf(sel, 'x', pts.map(([f, x, , e]) => [f, x, e])); M.kf(sel, 'y', pts.map(([f, , y, e]) => [f, y, e])); };
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const WAVE = { true: `fill="none" stroke="${C.soft}" stroke-width="6" stroke-dasharray="20 14"`, acc: `fill="none" stroke="${C.accent}" stroke-width="7" stroke-linejoin="round"` };
+const stemSvg = (x, base, y) => `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${C.ink}" stroke-width="7" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="15" fill="${C.ink}"/>`;
+function stem(c, x, base, y, at) {
+  const sel = layer(c, stemSvg(x, base, y));
+  origin(sel, x, base); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + 8, 1, 'softLand']]);
+  return sel;
+}
+const head = (x1, y1, x2, y2, len, half) => {
+  const d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d, bx = x2 - ux * len, by = y2 - uy * len;
+  return { bx, by, pts: `${x2.toFixed(1)},${y2.toFixed(1)} ${(bx - uy * half).toFixed(1)},${(by + ux * half).toFixed(1)} ${(bx + uy * half).toFixed(1)},${(by - ux * half).toFixed(1)}` };
+};
+const vecSvg = (x1, y1, x2, y2, color = C.ink, w = 6) => { const h = head(x1, y1, x2, y2, 28, 14); return `<line x1="${x1}" y1="${y1}" x2="${h.bx.toFixed(1)}" y2="${h.by.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${h.pts}" fill="${color}"/>`; };
+const arcArrow = (cx, cy, r, a0, a1, color = C.ink, w = 6, dash = '') => {
+  const dir = a1 >= a0 ? 1 : -1, back = a1 - dir * 9, [x1, y1] = pt(cx, cy, r, back), [x2, y2] = pt(cx, cy, r, a1);
+  const h = head(x1, y1, x2, y2, 26, 14);
+  return `<path d="${arcD(cx, cy, r, a0, back)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/><polygon points="${h.pts}" fill="${color}"/>`;
+};
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+function cross(c, x, y, s = 1) { return layer(c, `<g stroke="${C.accent}" stroke-width="9" stroke-linecap="round"><line x1="${x}" y1="${y - 20 * s}" x2="${x + 40 * s}" y2="${y + 20 * s}"/><line x1="${x + 40 * s}" y1="${y - 20 * s}" x2="${x}" y2="${y + 20 * s}"/></g>`); }
+const arrowH = (x1, x2, y, color = C.soft) => vecSvg(x1, y, x2, y, color, 5);
+
+function scrollWave(c, f, yc, amp, kind, start, end, pxPerSample = 150, speed = 5, jitter = 0) {
+  const len = 1920 + speed * (end - start) + 200, pts = [];
+  for (let x = -100; x <= len; x += 3) {
+    const n = x / pxPerSample, j = jitter ? jitter * (Math.sin(x * 0.37) * 0.6 + Math.sin(x * 0.113 + 1.3) * 0.4) : 0;
+    pts.push([x, yc - amp * (cosd(360 * f * n / 8000) + j)]);
+  }
+  const strip = sub(c);
+  M.kf('#' + strip.id, 'x', [[start, 0], [end, -speed * (end - start)]]);
+  return layer(strip, `<path d="${path(pts)}" ${WAVE[kind]}/>`);
+}
+function chain(c, names, x0, y, w, h, gap, cls = {}) {
+  const sels = names.map((n, i) => box(c, n, x0 + i * (w + gap), y, w, h, cls[i] ? 'box ' + cls[i] : 'box'));
+  const arrows = names.slice(1).map((_, i) => layer(c, arrowH(x0 + i * (w + gap) + w + 6, x0 + (i + 1) * (w + gap) - 8, y + h / 2)));
+  return { sels, arrows, x: i => x0 + i * (w + gap) };
+}
+
+{
+  const c = cam(1), s1 = 0, e1 = sceneEnd(1);
+  const cl = word(1, 'clinic'), f5 = word(1, '5'), t3 = word(1, '3'), fz = word(1, 'fuzzy'), cn = word(1, 'clean');
+  M.show(label(c, 'the east route: crisp again', 960, 440, 'lbl ok', 'center'), 0, cl);
+  M.show(tick(c, 1430, 480), 0, cl);
+  M.show(label(c, 'next ticket: a hearing clinic', 960, 40, 'lbl', 'center'), cl);
+  M.show(layer(c, hline(0, 1920, 370, C.rule) + hline(0, 1920, 720, C.rule)), cl);
+  M.show(scrollWave(c, 5000, 370, 110, 'true', s1, e1), word(1, 'whistles'));
+  M.show(label(c, 'the clinic plays 5,000 Hz', 120, 170, 'lbl'), f5);
+  M.show(scrollWave(c, 3000, 720, 110, 'acc', s1, e1), t3);
+  M.show(label(c, 'every patient hears 3,000 Hz', 120, 520, 'lbl acc'), t3);
+  M.show(label(c, 'fuzzy?', 1800, 170, 'lbl s', 'right'), fz, cn);
+  M.show(cross(c, 1810, 202), fz, cn);
+  M.show(label(c, 'clean, steady, wrong', 1800, 520, 'lbl acc', 'right'), cn);
+}
+{
+  const c = cam(2);
+  const ys = word(2, 'yes'), rl = word(2, 'really'), ln = word(2, 'linear'), fs = word(2, 'step');
+  M.show(label(c, 'a patient who can’t hear 5,000 Hz:', 960, 40, 'lbl s', 'center'), sceneStart(2));
+  M.show(label(c, '“Yes, I hear it.”', 960, 110, 'note', 'center'), ys);
+  M.show(cross(c, 1250, 150), ys + 6);
+  const K = chain(c, ['whistle', 'microphone', 'sampler', 'boost', 'earpiece'], 45, 400, 342, 130, 28);
+  K.sels.forEach((s, i) => M.show(s, sceneStart(2) + 20 + i * 4));
+  K.arrows.forEach((s, i) => M.show(s, sceneStart(2) + 22 + i * 4));
+  M.show(label(c, '5,000 Hz', K.x(0) + 171, 560, 'lbl', 'center'), rl);
+  M.show(tick(c, K.x(0) + 146, 680), rl);
+  M.show(label(c, 'linear,', K.x(3) + 171, 560, 'lbl s', 'center'), ln);
+  M.show(label(c, 'time-invariant', K.x(3) + 171, 618, 'lbl s', 'center'), ln);
+  M.show(label(c, 'no new tones', K.x(3) + 171, 690, 'lbl', 'center'), ln + 20);
+  M.show(tick(c, K.x(3) + 146, 790), ln + 20);
+  const hot = box(c, 'sampler', K.x(2), 400, 342, 130, 'box hot');
+  M.show(hot, fs);
+    M.show(layer(c, `<path d="M ${K.x(2) + 171} 270 L ${K.x(2) + 171} 380" stroke="${C.accent}" stroke-width="6"/><polygon points="${K.x(2) + 171},392 ${K.x(2) + 157},366 ${K.x(2) + 185},366" fill="${C.accent}"/>`), fs);
+  M.show(label(c, 'where sound becomes numbers', K.x(2) + 171, 200, 'lbl acc', 'center'), fs);
+  drift(2);
+}
+{
+  const c = cam(3), x0 = 310, dx = 168, base = 420, A = 175, X = n => x0 + n * dx, Y = v => base - v * A;
+  const tt = word(3, 'true'), et = word(3, '8'), sr = word(3, 'sampling'), lk = word(3, 'looks'), st = word(3, 'stores'), sv = word(3, 'survives');
+  const wpts = []; for (let t = -0.3; t <= 8.3; t += 0.02) wpts.push([X(t), Y(cosd(45 * t))]);
+  const wave = layer(c, `<path d="${path(wpts)}" ${WAVE.true}/>`, [X(-0.3) - 10, X(8.3) + 10]);
+  reveal(wave, tt - 4, tt + 40, 'cruise');
+  M.kf(wave, 'opacity', [[0, 1], [sv, 1], [sv + 20, 0.18, 'softInOut']]);
+  layer(c, hline(X(-0.4), X(8.4), base));
+  label(c, '1', X(-0.4) - 16, Y(1) - 29, 'lbl s', 'right'); label(c, '−1', X(-0.4) - 16, Y(-1) - 29, 'lbl s', 'right');
+  M.show(label(c, 'the true tone, 1,000 Hz', 960, 30, 'lbl', 'center'), tt);
+  M.show(layer(c, Array.from({ length: 8 }, (_, n) => `<rect x="${X(n) + 14}" y="${Y(1.15)}" width="${dx - 28}" height="${2.3 * A}" fill="${C.rule}" opacity="0.55"/>`).join('')), lk);
+  M.show(label(c, 'the phone looks away', 960, 800, 'lbl s', 'center'), lk);
+  M.show(layer(c, hline(X(0), X(1), 200, C.ink, 3) + vline(X(0), 188, 212, C.ink, 3) + vline(X(1), 188, 212, C.ink, 3)), et);
+  M.show(label(c, '125 µs', X(1) + 20, 170, 'lbl s'), et);
+  const gap = 7, first = et + 4;
+  const ph = layer(c, vline(X(0), Y(1.2), base + 10, C.ink, 2));
+  M.show(ph, first, first + 8 * gap + 6);
+  M.kf(ph, 'x', [[0, 0], [first, 0], [first + 8 * gap, 8 * dx]]);
+  for (let n = 0; n <= 8; n++) {
+    const v = cosd(45 * n), at = first + n * gap;
+    stem(c, X(n), base, Y(v), at);
+    label(c, String(n), X(n), 625, 'lbl s', 'center');
+    M.show(label(c, num(v), X(n), 705, 'lbl', 'center'), st + n * 2);
+  }
+  label(c, 'n', X(0) - 70, 625, 'lbl s', 'right');
+  M.show(label(c, 'stores', X(0) - 70, 705, 'lbl acc', 'right'), st);
+  M.show(label(c, '8,000 samples a second: the sampling rate', 960, 96, 'lbl s', 'center'), sr);
+  drift(3);
+}
+{
+  const c = cam(4), x0 = 400, dx = 160, base = 330, A = 170, X = n => x0 + n * dx, Y = v => base - v * A;
+  const w5 = word(4, 'whistle'), r3 = word(4, 'real'), sl = word(4, 'same'), dd = word(4, 'dots');
+  const said5 = [word(4, '1'), word(4, ['minus', '-0', '−']), word(4, ['zero', '0'], 0), word(4, ['point', '0.7', '.7'], 1)];
+  layer(c, hline(X(-0.3), X(8.3), base));
+  const p5 = [], p3 = []; for (let t = -0.25; t <= 8.25; t += 0.01) { p5.push([X(t), Y(cosd(225 * t))]); p3.push([X(t), Y(cosd(135 * t))]); }
+  const W5 = layer(c, `<path d="${path(p5)}" ${WAVE.true}/>`, [X(-0.25) - 10, X(8.25) + 10]);
+  reveal(W5, w5, w5 + 30, 'cruise');
+  const r3a = r3 + 2, r3b = r3 + 50;
+  const W3 = layer(c, `<path d="${path(p3)}" ${WAVE.acc}/>`, [X(-0.25) - 10, X(8.25) + 10]);
+  reveal(W3, r3a, r3b, 'linear');
+  M.show(label(c, '5,000 Hz', 300, 605, 'lbl', 'right'), w5);
+  M.show(label(c, '3,000 Hz', 300, 685, 'lbl acc', 'right'), r3);
+  const said3 = [word(4, '1', 1), word(4, ['minus', '-0', '−'], 1), word(4, ['zero', '0'], 1), word(4, ['point', '0.7', '.7'], 3)];
+  for (let n = 0; n <= 8; n++) {
+    const v = cosd(225 * n), at = n < 4 ? said5[n] : said5[3] + 8 + (n - 4) * 3, at3 = n < 4 ? said3[n] : said3[3] + 8 + (n - 4) * 3;
+    stem(c, X(n), base, Y(v), at);
+    label(c, String(n), X(n), 520, 'lbl s', 'center');
+    M.show(label(c, num(v), X(n), 605, 'lbl', 'center'), at);
+    M.show(label(c, num(v), X(n), 685, 'lbl acc', 'center'), at3);
+    const ring = layer(c, `<circle cx="${X(n)}" cy="${Y(v)}" r="30" fill="none" stroke="${C.accent}" stroke-width="5"/>`), pass = r3a + Math.round((r3b - r3a) * (n + 0.25) / 8.5);
+    M.show(ring, pass, pass + 10);
+  }
+  label(c, 'n', 300, 520, 'lbl s', 'right');
+  M.show(tick(c, 1180, 820), sl, dd);
+  layer(c, `<line x1="300" y1="70" x2="370" y2="70" ${WAVE.true}/>`);
+  M.show(label(c, 'the whistle, 5,000 Hz', 390, 40, 'lbl s'), sceneStart(4));
+  M.show(layer(c, `<line x1="1080" y1="70" x2="1150" y2="70" ${WAVE.acc}/>`), r3);
+  M.show(label(c, '3,000 Hz', 1170, 40, 'lbl s'), r3);
+  M.show(label(c, 'the same list', 960, 780, 'lbl ok', 'center'), sl, dd);
+  M.show(label(c, 'two waves, one set of dots', 960, 780, 'lbl', 'center'), dd);
+  drift(4);
+}
+{
+  const c = cam(5), R = 190, cy = 400, W = [{ cx: 660, a: 225, f: 'the whistle, 5,000 Hz', hollow: false }, { cx: 1400, a: 135, f: '3,000 Hz', hollow: true }];
+  const ft = word(5, ['45', 'forty']), lr = word(5, 'left'), t3 = word(5, '3000'), tw = word(5, 'whistle'), mr = word(5, 'mirror'), rd = word(5, 'reading');
+  M.show(label(c, '45° per sample for every 1,000 Hz', 960, 30, 'lbl', 'center'), ft, mr);
+  const go = { 135: t3 + 4, 225: tw + 4 };
+  W.forEach(w => {
+    const { cx, a } = w, sy = cy + R + 90;
+    layer(c, hline(cx - R - 40, cx + R + 40, cy, C.soft, 3, '10 10') + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/><circle cx="${cx + R}" cy="${cy}" r="8" fill="${C.soft}"/>`);
+    label(c, w.f, cx, 120, 'lbl', 'center');
+    M.show(layer(c, hline(cx - R, cx + R, sy, C.soft, 3) + [-1, 0, 1].map(v => vline(cx + v * R, sy - 12, sy + 12, C.soft, 3)).join('')), lr);
+    M.show(label(c, '−1', cx - R, sy + 18, 'lbl s', 'center'), lr);
+    M.show(label(c, '+1', cx + R, sy + 18, 'lbl s', 'center'), lr);
+    const spin = layer(c, `<line x1="${cx}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/><circle cx="${cx + R}" cy="${cy}" r="${w.hollow ? 18 : 20}" fill="${w.hollow ? C.paper : C.ink}" stroke="${C.ink}" stroke-width="${w.hollow ? 6 : 0}"/>`);
+    origin(spin, cx, cy);
+    M.kf(spin, 'rotation', [[0, 0], [go[a], 0], [go[a] + 24, -a, 'softInOut']]);
+    const arcSel = layer(c, arcArrow(cx, cy, 70, 0, a));
+    M.show(arcSel, go[a]);
+    const [lx, ly] = a > 180 ? pt(cx, cy, 115, 305) : pt(cx, cy, 118, a / 2);
+    M.show(label(c, `${a}°`, lx, ly - 31, 'lbl', a > 180 ? 'center' : 'center'), go[a] + 24);
+    const [dx, dy] = pt(cx, cy, R, a);
+    M.show(layer(c, vline(dx, dy + 24, sy - 10, C.soft, 3, '6 8') + `<circle cx="${dx}" cy="${sy}" r="12" fill="${C.ink}"/>`), mr);
+    M.show(label(c, 'reads −0.71', cx, sy + 80, 'lbl', 'center'), mr + 12);
+  });
+  const [mx, my] = pt(W[0].cx, cy, R, 135), [ex, ey] = pt(W[0].cx, cy, R, 225);
+  M.show(layer(c, `<circle cx="${mx}" cy="${my}" r="18" fill="${C.paper}" stroke="${C.ink}" stroke-width="6"/>` + vline(mx, my + 26, ey - 26, C.accent, 5)), mr);
+  M.show(label(c, 'mirror spots', mx - 50, cy - 120, 'lbl acc', 'right'), mr);
+  M.show(label(c, '135° and 225°, the same reading', 960, 30, 'lbl acc', 'center'), mr);
+  drift(5);
+}
+{
+  const c = cam(6), cn = word(6, 'cinema');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(6), cn); M.show('#' + b.id, cn);
+  const cx = 560, cy = 470, R = 280;
+  const st = word(6, 'short'), bk = word(6, 'backwards'), fw = word(6, 'forwards');
+  layer(a, hline(cx - R - 40, cx + R + 40, cy, C.soft, 3, '10 10') + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/><circle cx="${cx + R}" cy="${cy}" r="8" fill="${C.soft}"/>`);
+  label(a, 'the whistle, 5,000 Hz', 960, 30, 'lbl', 'center');
+  M.show(layer(a, arcArrow(cx, cy, 90, 0, 225)), sceneStart(6));
+  M.show(label(a, '225° counter-clockwise', 1000, 260, 'lbl'), sceneStart(6) + 4);
+  M.show(layer(a, arcArrow(cx, cy, 140, 0, -135, C.accent, 7, '2 14')), st);
+  M.show(label(a, '= 135° clockwise', 1000, 340, 'lbl acc'), st);
+  M.show(label(a, '360° − 225° = 135°', 1000, 420, 'lbl s'), st + 8);
+  const spin = layer(a, `<line x1="${cx}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="10 8"/><circle cx="${cx + R}" cy="${cy}" r="22" fill="${C.ink}"/>`);
+  origin(spin, cx, cy);
+  const s0 = word(6, 'looks'), gapF = 9, t1 = sceneStart(6) + 20, keys = [[0, 0], [sceneStart(6) + 2, 0], [t1, -225, 'softInOut']];
+  for (let j = 2; j <= 8; j++) { const f = s0 + (j - 2) * gapF; keys.push([f, -225 * (j - 1)], [f, -225 * j]); }
+  M.kf(spin, 'rotation', keys);
+  for (let j = 1; j <= 8; j++) {
+    const [sx, sy] = pt(cx, cy, R, 225 * j);
+    M.show(layer(a, `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="11" fill="${C.soft}"/>`), j === 1 ? t1 : s0 + (j - 2) * gapF);
+  }
+  M.show(label(a, 'one stop per sample:', 1000, 540, 'lbl s'), s0);
+  M.show(label(a, '135° backwards each time', 1000, 600, 'lbl acc'), s0);
+  M.show(label(a, 'looks like 3,000 Hz', 1000, 680, 'lbl'), bk);
+  M.show(label(a, 'a sample reads only left-right', 1000, 780, 'lbl s'), fw);
+  const n = 5, fw2 = 300, fh = 330, gx = 40, x0 = (1920 - (n * fw2 + (n - 1) * gx)) / 2, fy = 250, r = 105;
+  label(b, '23 turns a second, filmed 24 times a second', 960, 40, 'lbl s', 'center');
+  M.show(label(b, '345° counter-clockwise between pictures', 960, 110, 'lbl', 'center'), cn + 6);
+  layer(b, `<rect x="${x0 - 30}" y="${fy - 40}" width="${n * fw2 + (n - 1) * gx + 60}" height="${fh + 80}" fill="${C.paper2}" rx="8"/>` +
+    Array.from({ length: 27 }, (_, j) => `<rect x="${x0 - 10 + j * 64}" y="${fy - 30}" width="30" height="18" rx="4" fill="${C.paper}"/><rect x="${x0 - 10 + j * 64}" y="${fy + fh + 18}" width="30" height="18" rx="4" fill="${C.paper}"/>`).join(''));
+  const p0 = cn + 10;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * (fw2 + gx), ccx = x + fw2 / 2, ccy = fy + fh / 2, ang = 90 - 15 * i, at = p0 + i * 14;
+    const [sx, sy] = pt(ccx, ccy, r, ang);
+    let inner = `<rect x="${x}" y="${fy}" width="${fw2}" height="${fh}" rx="6" fill="${C.paper}" stroke="${C.rule}" stroke-width="3"/><circle cx="${ccx}" cy="${ccy}" r="${r}" fill="none" stroke="${C.ink}" stroke-width="4"/>`;
+    if (i) inner += `<line x1="${ccx}" y1="${ccy}" x2="${pt(ccx, ccy, r, ang + 15)[0].toFixed(1)}" y2="${pt(ccx, ccy, r, ang + 15)[1].toFixed(1)}" stroke="${C.soft}" stroke-width="4" opacity="0.4"/>` + arcArrow(ccx, ccy, r + 22, ang + 15, ang, C.accent, 6);
+    inner += `<line x1="${ccx}" y1="${ccy}" x2="${sx.toFixed(1)}" y2="${sy.toFixed(1)}" stroke="${C.ink}" stroke-width="7" stroke-linecap="round"/><circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="13" fill="${C.ink}"/><circle cx="${ccx}" cy="${ccy}" r="8" fill="${C.ink}"/>`;
+    M.show(layer(b, inner), at);
+    M.show(label(b, `picture ${i + 1}`, ccx, fy + fh + 60, 'lbl s', 'center'), at);
+  }
+  M.show(label(b, 'on screen: 15° backwards per picture', 960, 760, 'lbl acc', 'center'), word(6, 'creep'));
+  drift(6);
+}
+{
+  const c = cam(7), fo = word(7, 'fold');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(7), fo); M.show('#' + b.id, fo);
+  const X = f => 300 + f * 0.165, Y = s => 760 - s * 0.12;
+  const sw = word(7, 'sweep'), f4 = word(7, '4'), tr = word(7, 'round'), lm = word(7, 'limit'), al = word(7, 'alias');
+  layer(a, hline(X(0), X(8300), Y(0)) + vline(X(0), Y(0), Y(4500)));
+  [[0, '0'], [4000, '4,000'], [8000, '8,000']].forEach(([f, t]) => label(a, t, X(f), Y(0) + 14, 'lbl s', 'center'));
+  label(a, 'true tone, Hz', X(8300), Y(0) + 80, 'lbl s', 'right');
+  [[2000, '2,000'], [4000, '4,000']].forEach(([s, t]) => label(a, t, X(0) - 20, Y(s) - 29, 'lbl s', 'right'));
+  label(a, 'stored tone, Hz', X(0) + 20, 30, 'lbl s');
+  const tent = layer(a, `<path d="M${X(0)} ${Y(0)}L${X(4000)} ${Y(4000)}L${X(8000)} ${Y(0)}" fill="none" stroke="${C.ink}" stroke-width="8" stroke-linejoin="round"/>`, [X(0) - 10, X(8000) + 10]);
+  const ra = sw + 4, rm = f4, rb = tr + 22;
+  M.kf(tent, '--p', [[0, 0], [ra, 0], [rm, 0.5, 'softInOut'], [rb, 1, 'softInOut']]);
+  const mk = dot(a, 0, 0, 18, C.accent);
+  M.show(mk, ra, lm);
+  travel(mk, [[ra, X(0), Y(0)], [rm, X(4000), Y(4000), 'softInOut'], [rb, X(8000), Y(0), 'softInOut']]);
+  M.show(layer(a, vline(X(4000), Y(4300), Y(0), C.soft, 4, '12 10')), lm);
+  M.show(label(a, 'the limit: 8,000 ÷ 2 = 4,000 Hz', X(4000), 140, 'lbl', 'center'), lm);
+  M.show(label(a, 'stored = true', X(1300), Y(700), 'lbl ok'), lm + 20);
+  M.show(layer(a, `<circle cx="${X(5000)}" cy="${Y(3000)}" r="18" fill="${C.accent}"/>` + vline(X(5000), Y(3000) + 22, Y(0), C.accent, 4, '6 8')), al - 10);
+  M.show(label(a, 'an alias:', X(5000) + 50, Y(3000) - 100, 'lbl acc'), al - 10);
+  M.show(label(a, '5,000 → stored 3,000', X(5000) + 50, Y(3000) - 38, 'lbl acc'), al - 10);
+
+  const SX = f => 160 + f * 0.2, top = 330, low = 520, hgt = 80, piv = SX(4000);
+  const above = word(7, 'above', 1), bl = word(7, 'below'), on3 = word(7, '3');
+  M.show(label(b, 'the true tones, a strip of paper', 960, 40, 'lbl s', 'center'), fo, on3);
+  layer(b, `<rect x="${SX(0)}" y="${top}" width="${SX(4000) - SX(0)}" height="${hgt}" fill="${C.paper2}" stroke="${C.ink}" stroke-width="4"/>` +
+    [0, 1000, 2000, 3000, 4000].map(f => vline(SX(f), top, top + 18, C.ink, 3)).join(''));
+  [0, 1000, 2000, 3000, 4000].forEach(f => label(b, hz(f), SX(f), top - 70, f === 3000 ? 'lbl s' : 'lbl s', 'center'));
+  const flap = sub(b), fs = '#' + flap.id;
+  origin(fs, piv, top + hgt / 2);
+  layer(flap, `<rect x="${piv}" y="${top}" width="${SX(8000) - piv}" height="${hgt}" fill="${C.paper2}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="14 10"/>` +
+    [5000, 6000, 7000, 8000].map(f => vline(SX(f), top + hgt - 18, top + hgt, C.ink, 3)).join(''));
+  const f0 = fo + 4, f1 = fo + 34;
+  M.kf(fs, 'scaleX', [[0, 1], [f0, 1], [f1, -1, 'softInOut']]);
+  M.kf(fs, 'y', [[0, 0], [f0, 0], [f1, low - top, 'softInOut']]);
+  const upLbl = [5000, 6000, 7000, 8000].map(f => label(b, hz(f), SX(f), top - 70, 'lbl s', 'center'));
+  upLbl.forEach(s => M.show(s, fo, f0 + 4));
+  M.show(layer(b, `<path d="M ${piv} ${top + hgt / 2} A ${(low - top) / 2} ${(low - top) / 2} 0 0 1 ${piv} ${low + hgt / 2}" fill="none" stroke="${C.ink}" stroke-width="4"/>`), f1);
+  [5000, 6000, 7000, 8000].forEach(f => M.show(label(b, hz(f), SX(8000 - f), low + hgt + 14, 'lbl s', 'center'), f1));
+  M.show(layer(b, vline(piv, 230, 760, C.soft, 4, '12 10')), fo);
+  M.show(label(b, 'fold at the limit', piv + 30, 680, 'lbl'), fo);
+  M.show(layer(b, `<circle cx="${SX(3000)}" cy="${low + hgt / 2}" r="18" fill="${C.accent}"/>`), above);
+  M.show(layer(b, hline(SX(3000) + 24, piv, low + hgt / 2, C.accent, 6)), above);
+  M.show(label(b, '1,000 above', piv + 120, low + 10, 'lbl acc'), above);
+  M.show(layer(b, hline(SX(3000) + 28, piv, top + hgt / 2, C.accent, 6)), bl);
+  M.show(label(b, '1,000 below', piv + 120, top + 10, 'lbl acc'), bl);
+  M.show(layer(b, vecSvg(SX(3000), low - 6, SX(3000), top + hgt + 10, C.accent, 7)), bl);
+  M.show(layer(b, `<circle cx="${SX(3000)}" cy="${top + hgt / 2}" r="22" fill="none" stroke="${C.accent}" stroke-width="7"/>`), on3);
+  M.show(label(b, '5,000 Hz is stored as 3,000 Hz', 960, 140, 'lbl acc', 'center'), on3);
+  drift(7, 1, 1.04);
+}
+{
+  const c = cam(8), pr = word(8, 'program');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(8), pr); M.show('#' + b.id, pr);
+  const bl = word(8, 'blur'), mv = word(8, 'moves'), cl = word(8, 'clean');
+  M.show(scrollWave(a, 5000, 320, 110, 'true', sceneStart(8), pr, 150, 5, 0.35), sceneStart(8));
+  M.show(label(a, 'blurred, rough 5,000 Hz?', 120, 50, 'lbl s'), bl);
+  M.show(cross(a, 860, 82), bl);
+  M.show(scrollWave(a, 3000, 680, 110, 'acc', sceneStart(8), pr), mv);
+  M.show(label(a, 'moved: a clean 3,000 Hz', 120, 500, 'lbl acc'), mv);
+  M.show(tick(a, 860, 532), cl);
+  const vals = [1, -0.71, 0, 0.71, -1], lw = word(8, 'whistle'), rl = word(8, 'real'), bk = word(8, 'back');
+  const row = (y, name, cls, at) => { M.show(label(b, name, 740, y, cls, 'right'), at); vals.forEach((v, k) => M.show(label(b, num(v), 860 + k * 170, y, cls, 'center'), at + k * 2)); M.show(label(b, '…', 1700, y, cls, 'center'), at + 10); };
+  M.show(box(b, 'any program', 900, 440, 600, 130), pr);
+  M.show(layer(b, vecSvg(1200, 580, 1200, 680, C.soft, 5)), pr);
+  M.show(label(b, 'back to 5,000 Hz?', 1200, 690, 'lbl acc', 'center'), pr, rl + 14);
+  M.show(cross(b, 1500, 722), bk, rl + 14);
+  row(150, 'the whistle, 5,000 Hz', 'lbl', lw);
+  M.show(layer(b, vecSvg(1200, 330, 1200, 430, C.soft, 5)), lw);
+  row(250, 'a real 3,000 Hz', 'lbl acc', rl);
+  M.show(label(b, 'the same list in,', 1200, 690, 'lbl', 'center'), rl + 14);
+  M.show(label(b, 'the same answer out', 1200, 760, 'lbl', 'center'), rl + 14);
+  drift(8);
+}
+{
+  const c = cam(9);
+  const bf = word(9, 'before'), fl = word(9, 'filter'), kv = word(9, 'keeps'), rm = word(9, 'fades'), co = word(9, 'cutoff'), nv = word(9, 'never'), si = word(9, 'silence');
+  const X = f => 300 + f * 0.25, Y = g => 470 - g * 300;
+  const plotL = sub(c), ps = '#' + plotL.id;
+  M.show(ps, kv);
+  layer(plotL, `<rect x="${X(0)}" y="${Y(1)}" width="${X(3400) - X(0)}" height="300" fill="${C.paper2}"/>` + hline(X(0), X(5400), Y(0)) + vline(X(0), Y(0), Y(1.1)) + hline(X(0), X(5400), Y(1), C.soft, 2, '2 10'));
+  label(plotL, 'the voice', X(1700), Y(0.5) - 31, 'lbl s', 'center');
+  [[1, '100%'], [0, '0%']].forEach(([g, t]) => label(plotL, t, X(0) - 20, Y(g) - 29, 'lbl s', 'right'));
+  [[0, '0'], [3400, '3,400'], [4600, '4,600']].forEach(([f, t]) => label(plotL, t, X(f), Y(0) + 14, 'lbl s', 'center'));
+  label(plotL, 'Hz', X(5400) + 24, Y(0) - 29, 'lbl s');
+  label(plotL, 'the filter’s gain', X(0) + 20, Y(1.1) - 76, 'lbl s');
+  const curve = layer(plotL, `<path d="M${X(0)} ${Y(1)}L${X(3400)} ${Y(1)}L${X(4600)} ${Y(0)}L${X(5400)} ${Y(0)}" fill="none" stroke="${C.ink}" stroke-width="8" stroke-linejoin="round"/>`, [X(0) - 10, X(5400) + 10]);
+  reveal(curve, kv, rm + 20, 'cruise');
+  M.show(layer(plotL, vline(X(4000), Y(0.5) + 18, Y(0), C.input, 5, '14 10') + `<circle cx="${X(4000)}" cy="${Y(0.5)}" r="16" fill="${C.input}"/>`), co);
+  M.show(label(plotL, 'cutoff: 4,000 Hz', X(4000) + 30, Y(0.5) - 80, 'lbl ok'), co);
+  M.show(layer(plotL, `<circle cx="${X(5000)}" cy="${Y(0)}" r="16" fill="${C.paper}" stroke="${C.soft}" stroke-width="5"/>`), nv);
+  M.show(cross(plotL, X(5000) - 20, Y(0) - 50), nv);
+  M.show(label(plotL, '5,000', X(5000), Y(0) - 140, 'lbl s', 'center'), nv);
+  M.show(label(plotL, 'whistle: removed', X(5000) - 40, Y(0) + 72, 'lbl s', 'center'), nv);
+  const K = { x: i => 130 + i * 430, y: 640, w: 360, h: 120 };
+  ['microphone', '', 'sampler', 'stores'].forEach((n, i) => { if (n) box(c, n, K.x(i), K.y, K.w, K.h); });
+  [0, 1, 2].forEach(i => layer(c, arrowH(K.x(i) + K.w + 8, K.x(i + 1) - 10, K.y + K.h / 2)));
+  M.show(layer(c, `<rect x="${K.x(1)}" y="${K.y}" width="${K.w}" height="${K.h}" rx="10" fill="none" stroke="${C.input}" stroke-width="4" stroke-dasharray="14 10"/>`), bf, fl);
+  M.show(label(c, 'before sampling', K.x(1) + K.w / 2, K.y + K.h + 20, 'lbl ok', 'center'), bf, si);
+  const fb = box(c, 'filter', K.x(1), K.y, K.w, K.h, 'box good');
+  M.show(fb, fl);
+  M.kf(fb, 'y', [[0, -60], [fl, -60], [fl + 10, 0, 'softLand']]);
+  M.show(label(c, 'the clinic hears silence at 5,000 Hz', 960, K.y + K.h + 20, 'lbl ok', 'center'), si);
+  M.show(tick(c, 1550, K.y + K.h + 60), si);
+  drift(9);
+}
+{
+  const c = cam(10);
+  const jn = word(10, 'joins'), vc = word(10, 'voice'), cp = word(10, 'copy'), nb = word(10, 'nobody'), q = word(10, 'from');
+  M.show(label(c, 'next ticket: a wideband line', 960, 30, 'lbl s', 'center'), jn);
+  const lb = box(c, 'your line\n8,000 / s', 260, 120, 520, 150), rb = box(c, 'wideband line\n16,000 / s', 1140, 120, 520, 150);
+  M.show(lb, jn); M.show(rb, jn + 8);
+  M.show(layer(c, arrowH(790, 1128, 195)), jn + 8);
+  const X = f => 240 + f * 0.18, base = 700, H = 220;
+  layer(c, hline(X(0), X(8200), base));
+  [[0, '0'], [4000, '4,000'], [8000, '8,000 Hz']].forEach(([f, t]) => label(c, t, X(f), base + 14, 'lbl s', 'center'));
+  const shape = (f0, f1, h, mirror) => { const pts = []; for (let i = 0; i <= 80; i++) { const u = i / 80, f = f0 + (f1 - f0) * u, v = h * Math.sin(Math.PI * u) ** 0.5 * (1 - 0.45 * u); pts.push([X(mirror ? 8000 - f : f), base - v]); } return path(pts) + 'Z'; };
+  M.show(layer(c, `<path d="${shape(100, 3400, H, false)}" fill="${C.paper2}" stroke="${C.ink}" stroke-width="5"/>`), vc);
+  M.show(label(c, 'a voice', X(1700), base - H - 80, 'lbl', 'center'), vc);
+  M.show(layer(c, vline(X(4000), base - H - 40, base, C.soft, 4, '12 10')), cp);
+  const ghost = layer(c, `<path d="${shape(100, 3400, H * 0.45, true)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="5" stroke-dasharray="14 10"/>`);
+  M.show(ghost, cp);
+  M.kf(ghost, 'opacity', [[0, 0], [cp, 0], [cp + 16, 1, 'softInOut']]);
+  origin(ghost, 960, base);
+  M.kf(ghost, 'scaleY', [[0, 0.3], [cp, 0.3], [q + 4, 1, 'softInOut']]);
+  M.show(label(c, 'a ghost copy', X(6200), base - H * 0.45 - 140, 'lbl acc', 'center'), cp);
+  M.show(label(c, 'nobody spoke here', X(6200), base - H * 0.45 - 80, 'lbl s', 'center'), nb);
+  M.show(label(c, 'where from?', X(6200), 790, 'lbl big acc', 'center'), q);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>
