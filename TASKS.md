@@ -21,7 +21,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | # | Lesson | Page | Video |
 |---|---|---|---|
 | 1 | Signals and systems | ready | round 3 fixes after viewer judge |
-| 2 | Impulse response | ready | to build |
+| 2 | Impulse response | ready | ready |
 | 3 | Frequency response | ready | to build |
 | 4 | Sampling and aliasing | ready | to build |
 | 5 | Changing the rate | ready | to build |

@@ -1,0 +1,2029 @@
+{
+ "fps": 30,
+ "duration": 133.48,
+ "wpm": 217,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The buzz is fixed. Then a new ticket arrives: I can hear myself. Every word comes back to me, faint, a moment later, like talking in a canyon. You ring a test line and say hello. A beat later, quieter and a little blurry: hello.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 11.44,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "The",
+     "frame": 18
+    },
+    {
+     "word": "buzz",
+     "frame": 25
+    },
+    {
+     "word": "is",
+     "frame": 32
+    },
+    {
+     "word": "fixed.",
+     "frame": 37
+    },
+    {
+     "word": "Then",
+     "frame": 59
+    },
+    {
+     "word": "a",
+     "frame": 64
+    },
+    {
+     "word": "new",
+     "frame": 67
+    },
+    {
+     "word": "ticket",
+     "frame": 70
+    },
+    {
+     "word": "arrives.",
+     "frame": 77
+    },
+    {
+     "word": "I",
+     "frame": 94
+    },
+    {
+     "word": "can",
+     "frame": 96
+    },
+    {
+     "word": "hear",
+     "frame": 100
+    },
+    {
+     "word": "myself.",
+     "frame": 104
+    },
+    {
+     "word": "Every",
+     "frame": 128
+    },
+    {
+     "word": "word",
+     "frame": 133
+    },
+    {
+     "word": "comes",
+     "frame": 139
+    },
+    {
+     "word": "back",
+     "frame": 145
+    },
+    {
+     "word": "to",
+     "frame": 151
+    },
+    {
+     "word": "me",
+     "frame": 154
+    },
+    {
+     "word": "faint",
+     "frame": 157
+    },
+    {
+     "word": "a",
+     "frame": 166
+    },
+    {
+     "word": "moment",
+     "frame": 171
+    },
+    {
+     "word": "later",
+     "frame": 178
+    },
+    {
+     "word": "like",
+     "frame": 185
+    },
+    {
+     "word": "talking",
+     "frame": 191
+    },
+    {
+     "word": "in",
+     "frame": 200
+    },
+    {
+     "word": "a",
+     "frame": 206
+    },
+    {
+     "word": "canyon.",
+     "frame": 208
+    },
+    {
+     "word": "You",
+     "frame": 224
+    },
+    {
+     "word": "ring",
+     "frame": 227
+    },
+    {
+     "word": "a",
+     "frame": 232
+    },
+    {
+     "word": "test",
+     "frame": 235
+    },
+    {
+     "word": "line",
+     "frame": 241
+    },
+    {
+     "word": "and",
+     "frame": 247
+    },
+    {
+     "word": "say",
+     "frame": 251
+    },
+    {
+     "word": "hello.",
+     "frame": 256
+    },
+    {
+     "word": "A",
+     "frame": 274
+    },
+    {
+     "word": "beat",
+     "frame": 277
+    },
+    {
+     "word": "later,",
+     "frame": 283
+    },
+    {
+     "word": "quieter",
+     "frame": 296
+    },
+    {
+     "word": "and",
+     "frame": 304
+    },
+    {
+     "word": "a",
+     "frame": 310
+    },
+    {
+     "word": "little",
+     "frame": 313
+    },
+    {
+     "word": "blurry.",
+     "frame": 316
+    },
+    {
+     "word": "Hello.",
+     "frame": 332
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "You time the gap: a quarter of a second. At eight thousand samples a second, that's two thousand samples. Far down your line, a box on a street corner in another city leaks a little of the caller's voice back. You can't open it. But if you can predict the echo, you can subtract it.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line02.wav",
+   "at": 12.04,
+   "start": 12.04,
+   "end": 25.31,
+   "start_frame": 361,
+   "words": [
+    {
+     "word": "You",
+     "frame": 361
+    },
+    {
+     "word": "time",
+     "frame": 370
+    },
+    {
+     "word": "the",
+     "frame": 377
+    },
+    {
+     "word": "gap,",
+     "frame": 380
+    },
+    {
+     "word": "a",
+     "frame": 391
+    },
+    {
+     "word": "quarter",
+     "frame": 395
+    },
+    {
+     "word": "of",
+     "frame": 401
+    },
+    {
+     "word": "a",
+     "frame": 406
+    },
+    {
+     "word": "second.",
+     "frame": 409
+    },
+    {
+     "word": "At",
+     "frame": 422
+    },
+    {
+     "word": "8",
+     "frame": 428
+    },
+    {
+     "word": ",000",
+     "frame": 434
+    },
+    {
+     "word": "samples",
+     "frame": 443
+    },
+    {
+     "word": "a",
+     "frame": 454
+    },
+    {
+     "word": "second,",
+     "frame": 459
+    },
+    {
+     "word": "that's",
+     "frame": 469
+    },
+    {
+     "word": "2",
+     "frame": 477
+    },
+    {
+     "word": ",000",
+     "frame": 482
+    },
+    {
+     "word": "samples.",
+     "frame": 492
+    },
+    {
+     "word": "Far",
+     "frame": 520
+    },
+    {
+     "word": "down",
+     "frame": 525
+    },
+    {
+     "word": "your",
+     "frame": 530
+    },
+    {
+     "word": "line,",
+     "frame": 535
+    },
+    {
+     "word": "a",
+     "frame": 547
+    },
+    {
+     "word": "box",
+     "frame": 550
+    },
+    {
+     "word": "on",
+     "frame": 557
+    },
+    {
+     "word": "a",
+     "frame": 562
+    },
+    {
+     "word": "street",
+     "frame": 565
+    },
+    {
+     "word": "corner",
+     "frame": 570
+    },
+    {
+     "word": "in",
+     "frame": 578
+    },
+    {
+     "word": "another",
+     "frame": 584
+    },
+    {
+     "word": "city",
+     "frame": 592
+    },
+    {
+     "word": "leaks",
+     "frame": 601
+    },
+    {
+     "word": "a",
+     "frame": 611
+    },
+    {
+     "word": "little",
+     "frame": 615
+    },
+    {
+     "word": "of",
+     "frame": 620
+    },
+    {
+     "word": "the",
+     "frame": 625
+    },
+    {
+     "word": "caller's",
+     "frame": 627
+    },
+    {
+     "word": "voice",
+     "frame": 644
+    },
+    {
+     "word": "back.",
+     "frame": 645
+    },
+    {
+     "word": "You",
+     "frame": 656
+    },
+    {
+     "word": "can't",
+     "frame": 662
+    },
+    {
+     "word": "open",
+     "frame": 670
+    },
+    {
+     "word": "it,",
+     "frame": 676
+    },
+    {
+     "word": "but",
+     "frame": 684
+    },
+    {
+     "word": "if",
+     "frame": 689
+    },
+    {
+     "word": "you",
+     "frame": 692
+    },
+    {
+     "word": "can",
+     "frame": 695
+    },
+    {
+     "word": "predict",
+     "frame": 698
+    },
+    {
+     "word": "the",
+     "frame": 706
+    },
+    {
+     "word": "echo,",
+     "frame": 711
+    },
+    {
+     "word": "you",
+     "frame": 725
+    },
+    {
+     "word": "can",
+     "frame": 730
+    },
+    {
+     "word": "subtract",
+     "frame": 734
+    },
+    {
+     "word": "it.",
+     "frame": 744
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "And the box passes lesson one's two tests. Doubling the input doubles the echo, and two inputs added give their echoes added, so it's linear. Delaying the input only delays the echo, so it's time-invariant.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line03.wav",
+   "at": 26.11,
+   "start": 26.11,
+   "end": 36.07,
+   "start_frame": 783,
+   "words": [
+    {
+     "word": "and",
+     "frame": 783
+    },
+    {
+     "word": "the",
+     "frame": 792
+    },
+    {
+     "word": "box",
+     "frame": 795
+    },
+    {
+     "word": "passes",
+     "frame": 802
+    },
+    {
+     "word": "lesson",
+     "frame": 814
+    },
+    {
+     "word": "1's",
+     "frame": 824
+    },
+    {
+     "word": "two",
+     "frame": 834
+    },
+    {
+     "word": "tests.",
+     "frame": 839
+    },
+    {
+     "word": "Doubling",
+     "frame": 859
+    },
+    {
+     "word": "the",
+     "frame": 868
+    },
+    {
+     "word": "input",
+     "frame": 873
+    },
+    {
+     "word": "doubles",
+     "frame": 880
+    },
+    {
+     "word": "the",
+     "frame": 890
+    },
+    {
+     "word": "echo,",
+     "frame": 895
+    },
+    {
+     "word": "and",
+     "frame": 910
+    },
+    {
+     "word": "two",
+     "frame": 912
+    },
+    {
+     "word": "inputs",
+     "frame": 917
+    },
+    {
+     "word": "added",
+     "frame": 928
+    },
+    {
+     "word": "give",
+     "frame": 940
+    },
+    {
+     "word": "their",
+     "frame": 942
+    },
+    {
+     "word": "echoes",
+     "frame": 947
+    },
+    {
+     "word": "added",
+     "frame": 956
+    },
+    {
+     "word": "so",
+     "frame": 965
+    },
+    {
+     "word": "it's",
+     "frame": 970
+    },
+    {
+     "word": "linear.",
+     "frame": 975
+    },
+    {
+     "word": "Delaying",
+     "frame": 991
+    },
+    {
+     "word": "the",
+     "frame": 1000
+    },
+    {
+     "word": "input",
+     "frame": 1004
+    },
+    {
+     "word": "only",
+     "frame": 1012
+    },
+    {
+     "word": "delays",
+     "frame": 1020
+    },
+    {
+     "word": "the",
+     "frame": 1030
+    },
+    {
+     "word": "echo",
+     "frame": 1035
+    },
+    {
+     "word": "so",
+     "frame": 1042
+    },
+    {
+     "word": "it's",
+     "frame": 1049
+    },
+    {
+     "word": "time",
+     "frame": 1054
+    },
+    {
+     "word": "invariant.",
+     "frame": 1060
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "So what's the simplest thing you could send? Not a word, and not a tone. A single click: one sample at one, and every other sample at zero. That signal is called an impulse.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line04.wav",
+   "at": 36.57,
+   "start": 36.57,
+   "end": 44.85,
+   "start_frame": 1097,
+   "words": [
+    {
+     "word": "So",
+     "frame": 1097
+    },
+    {
+     "word": "what's",
+     "frame": 1104
+    },
+    {
+     "word": "the",
+     "frame": 1110
+    },
+    {
+     "word": "simplest",
+     "frame": 1113
+    },
+    {
+     "word": "thing",
+     "frame": 1123
+    },
+    {
+     "word": "you",
+     "frame": 1129
+    },
+    {
+     "word": "could",
+     "frame": 1132
+    },
+    {
+     "word": "send?",
+     "frame": 1137
+    },
+    {
+     "word": "Not",
+     "frame": 1149
+    },
+    {
+     "word": "a",
+     "frame": 1157
+    },
+    {
+     "word": "word",
+     "frame": 1160
+    },
+    {
+     "word": "and",
+     "frame": 1166
+    },
+    {
+     "word": "not",
+     "frame": 1170
+    },
+    {
+     "word": "a",
+     "frame": 1175
+    },
+    {
+     "word": "tone.",
+     "frame": 1179
+    },
+    {
+     "word": "A",
+     "frame": 1197
+    },
+    {
+     "word": "single",
+     "frame": 1197
+    },
+    {
+     "word": "click.",
+     "frame": 1206
+    },
+    {
+     "word": "One",
+     "frame": 1219
+    },
+    {
+     "word": "sample",
+     "frame": 1227
+    },
+    {
+     "word": "at",
+     "frame": 1236
+    },
+    {
+     "word": "1",
+     "frame": 1241
+    },
+    {
+     "word": "and",
+     "frame": 1246
+    },
+    {
+     "word": "every",
+     "frame": 1253
+    },
+    {
+     "word": "other",
+     "frame": 1260
+    },
+    {
+     "word": "sample",
+     "frame": 1267
+    },
+    {
+     "word": "at",
+     "frame": 1278
+    },
+    {
+     "word": "0.",
+     "frame": 1282
+    },
+    {
+     "word": "That",
+     "frame": 1294
+    },
+    {
+     "word": "signal",
+     "frame": 1301
+    },
+    {
+     "word": "is",
+     "frame": 1310
+    },
+    {
+     "word": "called",
+     "frame": 1315
+    },
+    {
+     "word": "an",
+     "frame": 1322
+    },
+    {
+     "word": "impulse.",
+     "frame": 1326
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Send it into the echo path and record what comes back. That's the impulse response, written h. Silence for two thousand samples, then point four, then point two, then silence for good. Can two sizes and a delay really predict the echo of a whole sentence?",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line05.wav",
+   "at": 45.45,
+   "start": 45.45,
+   "end": 57.81,
+   "start_frame": 1364,
+   "words": [
+    {
+     "word": "Send",
+     "frame": 1364
+    },
+    {
+     "word": "it",
+     "frame": 1374
+    },
+    {
+     "word": "into",
+     "frame": 1378
+    },
+    {
+     "word": "the",
+     "frame": 1383
+    },
+    {
+     "word": "echo",
+     "frame": 1387
+    },
+    {
+     "word": "path",
+     "frame": 1394
+    },
+    {
+     "word": "and",
+     "frame": 1402
+    },
+    {
+     "word": "record",
+     "frame": 1408
+    },
+    {
+     "word": "what",
+     "frame": 1417
+    },
+    {
+     "word": "comes",
+     "frame": 1422
+    },
+    {
+     "word": "back.",
+     "frame": 1429
+    },
+    {
+     "word": "That's",
+     "frame": 1445
+    },
+    {
+     "word": "the",
+     "frame": 1450
+    },
+    {
+     "word": "impulse",
+     "frame": 1454
+    },
+    {
+     "word": "response,",
+     "frame": 1462
+    },
+    {
+     "word": "written",
+     "frame": 1480
+    },
+    {
+     "word": "H.",
+     "frame": 1484
+    },
+    {
+     "word": "Silence",
+     "frame": 1506
+    },
+    {
+     "word": "for",
+     "frame": 1511
+    },
+    {
+     "word": "2000",
+     "frame": 1515
+    },
+    {
+     "word": "samples,",
+     "frame": 1527
+    },
+    {
+     "word": "then",
+     "frame": 1550
+    },
+    {
+     "word": ".4,",
+     "frame": 1555
+    },
+    {
+     "word": "then",
+     "frame": 1573
+    },
+    {
+     "word": ".2,",
+     "frame": 1577
+    },
+    {
+     "word": "then",
+     "frame": 1596
+    },
+    {
+     "word": "silence",
+     "frame": 1602
+    },
+    {
+     "word": "for",
+     "frame": 1614
+    },
+    {
+     "word": "good.",
+     "frame": 1619
+    },
+    {
+     "word": "Can",
+     "frame": 1632
+    },
+    {
+     "word": "two",
+     "frame": 1636
+    },
+    {
+     "word": "sizes",
+     "frame": 1641
+    },
+    {
+     "word": "and",
+     "frame": 1654
+    },
+    {
+     "word": "a",
+     "frame": 1661
+    },
+    {
+     "word": "delay",
+     "frame": 1664
+    },
+    {
+     "word": "really",
+     "frame": 1671
+    },
+    {
+     "word": "predict",
+     "frame": 1680
+    },
+    {
+     "word": "the",
+     "frame": 1689
+    },
+    {
+     "word": "echo",
+     "frame": 1695
+    },
+    {
+     "word": "of",
+     "frame": 1702
+    },
+    {
+     "word": "a",
+     "frame": 1707
+    },
+    {
+     "word": "whole",
+     "frame": 1709
+    },
+    {
+     "word": "sentence?",
+     "frame": 1713
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Try a very short word. A caller's hi lasts four samples: point eight, point four, minus point six, minus point two. You only know what the box does to a click, so turn the word into clicks: each sample is a click of its own size, at its own place. Add the four clicks, and you get the word back.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line06.wav",
+   "at": 59.01,
+   "start": 59.01,
+   "end": 72.8,
+   "start_frame": 1770,
+   "words": [
+    {
+     "word": "Try",
+     "frame": 1770
+    },
+    {
+     "word": "a",
+     "frame": 1780
+    },
+    {
+     "word": "very",
+     "frame": 1784
+    },
+    {
+     "word": "short",
+     "frame": 1788
+    },
+    {
+     "word": "word.",
+     "frame": 1797
+    },
+    {
+     "word": "A",
+     "frame": 1811
+    },
+    {
+     "word": "caller's",
+     "frame": 1817
+    },
+    {
+     "word": "high",
+     "frame": 1828
+    },
+    {
+     "word": "lasts",
+     "frame": 1833
+    },
+    {
+     "word": "four",
+     "frame": 1842
+    },
+    {
+     "word": "samples,",
+     "frame": 1848
+    },
+    {
+     "word": "0",
+     "frame": 1865
+    },
+    {
+     "word": ".8,",
+     "frame": 1870
+    },
+    {
+     "word": "0",
+     "frame": 1881
+    },
+    {
+     "word": ".4,",
+     "frame": 1884
+    },
+    {
+     "word": "minus",
+     "frame": 1896
+    },
+    {
+     "word": "0",
+     "frame": 1902
+    },
+    {
+     "word": ".6,",
+     "frame": 1909
+    },
+    {
+     "word": "minus",
+     "frame": 1922
+    },
+    {
+     "word": "0",
+     "frame": 1928
+    },
+    {
+     "word": ".2.",
+     "frame": 1934
+    },
+    {
+     "word": "You",
+     "frame": 1958
+    },
+    {
+     "word": "only",
+     "frame": 1960
+    },
+    {
+     "word": "know",
+     "frame": 1965
+    },
+    {
+     "word": "what",
+     "frame": 1970
+    },
+    {
+     "word": "the",
+     "frame": 1973
+    },
+    {
+     "word": "box",
+     "frame": 1976
+    },
+    {
+     "word": "does",
+     "frame": 1983
+    },
+    {
+     "word": "to",
+     "frame": 1988
+    },
+    {
+     "word": "a",
+     "frame": 1993
+    },
+    {
+     "word": "click,",
+     "frame": 1997
+    },
+    {
+     "word": "so",
+     "frame": 2007
+    },
+    {
+     "word": "turn",
+     "frame": 2009
+    },
+    {
+     "word": "the",
+     "frame": 2016
+    },
+    {
+     "word": "word",
+     "frame": 2019
+    },
+    {
+     "word": "into",
+     "frame": 2024
+    },
+    {
+     "word": "clicks.",
+     "frame": 2030
+    },
+    {
+     "word": "Each",
+     "frame": 2043
+    },
+    {
+     "word": "sample",
+     "frame": 2045
+    },
+    {
+     "word": "is",
+     "frame": 2055
+    },
+    {
+     "word": "a",
+     "frame": 2060
+    },
+    {
+     "word": "click",
+     "frame": 2063
+    },
+    {
+     "word": "of",
+     "frame": 2068
+    },
+    {
+     "word": "its",
+     "frame": 2072
+    },
+    {
+     "word": "own",
+     "frame": 2075
+    },
+    {
+     "word": "size,",
+     "frame": 2080
+    },
+    {
+     "word": "at",
+     "frame": 2094
+    },
+    {
+     "word": "its",
+     "frame": 2098
+    },
+    {
+     "word": "own",
+     "frame": 2102
+    },
+    {
+     "word": "place.",
+     "frame": 2106
+    },
+    {
+     "word": "Add",
+     "frame": 2126
+    },
+    {
+     "word": "the",
+     "frame": 2130
+    },
+    {
+     "word": "four",
+     "frame": 2133
+    },
+    {
+     "word": "clicks,",
+     "frame": 2138
+    },
+    {
+     "word": "and",
+     "frame": 2148
+    },
+    {
+     "word": "you",
+     "frame": 2152
+    },
+    {
+     "word": "get",
+     "frame": 2155
+    },
+    {
+     "word": "the",
+     "frame": 2158
+    },
+    {
+     "word": "word",
+     "frame": 2162
+    },
+    {
+     "word": "back.",
+     "frame": 2168
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Now each click launches its own copy of h. Linearity scales it by the click's size. Time-invariance starts it as many samples late as its click. Add the copies, sample by sample, and out comes the echo: five samples, starting at two thousand, peaking at point three two. [surprise-oh] One click just predicted the echo of a word you never sent.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line07.wav",
+   "at": 73.4,
+   "start": 73.4,
+   "end": 90.0,
+   "start_frame": 2202,
+   "words": [
+    {
+     "word": "Now",
+     "frame": 2202
+    },
+    {
+     "word": "each",
+     "frame": 2211
+    },
+    {
+     "word": "click",
+     "frame": 2218
+    },
+    {
+     "word": "launches",
+     "frame": 2224
+    },
+    {
+     "word": "its",
+     "frame": 2234
+    },
+    {
+     "word": "own",
+     "frame": 2240
+    },
+    {
+     "word": "copy",
+     "frame": 2246
+    },
+    {
+     "word": "of",
+     "frame": 2256
+    },
+    {
+     "word": "H.",
+     "frame": 2260
+    },
+    {
+     "word": "Linearity",
+     "frame": 2275
+    },
+    {
+     "word": "scales",
+     "frame": 2291
+    },
+    {
+     "word": "it",
+     "frame": 2301
+    },
+    {
+     "word": "by",
+     "frame": 2307
+    },
+    {
+     "word": "the",
+     "frame": 2311
+    },
+    {
+     "word": "click's",
+     "frame": 2314
+    },
+    {
+     "word": "size.",
+     "frame": 2324
+    },
+    {
+     "word": "Time",
+     "frame": 2344
+    },
+    {
+     "word": "Invariance",
+     "frame": 2349
+    },
+    {
+     "word": "starts",
+     "frame": 2366
+    },
+    {
+     "word": "at",
+     "frame": 2375
+    },
+    {
+     "word": "as",
+     "frame": 2379
+    },
+    {
+     "word": "many",
+     "frame": 2383
+    },
+    {
+     "word": "samples",
+     "frame": 2389
+    },
+    {
+     "word": "late",
+     "frame": 2402
+    },
+    {
+     "word": "as",
+     "frame": 2408
+    },
+    {
+     "word": "its",
+     "frame": 2413
+    },
+    {
+     "word": "click.",
+     "frame": 2417
+    },
+    {
+     "word": "Add",
+     "frame": 2435
+    },
+    {
+     "word": "the",
+     "frame": 2438
+    },
+    {
+     "word": "copies,",
+     "frame": 2441
+    },
+    {
+     "word": "sample",
+     "frame": 2456
+    },
+    {
+     "word": "by",
+     "frame": 2467
+    },
+    {
+     "word": "sample,",
+     "frame": 2471
+    },
+    {
+     "word": "and",
+     "frame": 2486
+    },
+    {
+     "word": "out",
+     "frame": 2489
+    },
+    {
+     "word": "comes",
+     "frame": 2495
+    },
+    {
+     "word": "the",
+     "frame": 2500
+    },
+    {
+     "word": "echo.",
+     "frame": 2505
+    },
+    {
+     "word": "Five",
+     "frame": 2524
+    },
+    {
+     "word": "samples,",
+     "frame": 2528
+    },
+    {
+     "word": "starting",
+     "frame": 2545
+    },
+    {
+     "word": "at",
+     "frame": 2552
+    },
+    {
+     "word": "2000,",
+     "frame": 2557
+    },
+    {
+     "word": "peaking",
+     "frame": 2575
+    },
+    {
+     "word": "at",
+     "frame": 2584
+    },
+    {
+     "word": "0",
+     "frame": 2587
+    },
+    {
+     "word": ".32.",
+     "frame": 2592
+    },
+    {
+     "word": "Oh,",
+     "frame": 2616
+    },
+    {
+     "word": "one",
+     "frame": 2623
+    },
+    {
+     "word": "click",
+     "frame": 2626
+    },
+    {
+     "word": "just",
+     "frame": 2633
+    },
+    {
+     "word": "predicted",
+     "frame": 2639
+    },
+    {
+     "word": "the",
+     "frame": 2650
+    },
+    {
+     "word": "echo",
+     "frame": 2656
+    },
+    {
+     "word": "of",
+     "frame": 2662
+    },
+    {
+     "word": "a",
+     "frame": 2666
+    },
+    {
+     "word": "word",
+     "frame": 2669
+    },
+    {
+     "word": "you",
+     "frame": 2674
+    },
+    {
+     "word": "never",
+     "frame": 2678
+    },
+    {
+     "word": "sent.",
+     "frame": 2684
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "That's convolution: building the output as a sum of shifted copies of the impulse response, each scaled by one input sample. The book writes it x star h, and that star is not multiplication. Multiply hi by h sample by sample, and every product has a zero in it. No echo at all.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line08.wav",
+   "at": 91.0,
+   "start": 91.0,
+   "end": 104.27,
+   "start_frame": 2730,
+   "words": [
+    {
+     "word": "That's",
+     "frame": 2730
+    },
+    {
+     "word": "convolution,",
+     "frame": 2741
+    },
+    {
+     "word": "building",
+     "frame": 2764
+    },
+    {
+     "word": "the",
+     "frame": 2770
+    },
+    {
+     "word": "output",
+     "frame": 2774
+    },
+    {
+     "word": "as",
+     "frame": 2783
+    },
+    {
+     "word": "a",
+     "frame": 2789
+    },
+    {
+     "word": "sum",
+     "frame": 2792
+    },
+    {
+     "word": "of",
+     "frame": 2797
+    },
+    {
+     "word": "shifted",
+     "frame": 2801
+    },
+    {
+     "word": "copies",
+     "frame": 2809
+    },
+    {
+     "word": "of",
+     "frame": 2821
+    },
+    {
+     "word": "the",
+     "frame": 2825
+    },
+    {
+     "word": "impulse",
+     "frame": 2828
+    },
+    {
+     "word": "response,",
+     "frame": 2836
+    },
+    {
+     "word": "each",
+     "frame": 2855
+    },
+    {
+     "word": "scaled",
+     "frame": 2859
+    },
+    {
+     "word": "by",
+     "frame": 2867
+    },
+    {
+     "word": "one",
+     "frame": 2872
+    },
+    {
+     "word": "input",
+     "frame": 2878
+    },
+    {
+     "word": "sample.",
+     "frame": 2885
+    },
+    {
+     "word": "The",
+     "frame": 2899
+    },
+    {
+     "word": "book",
+     "frame": 2902
+    },
+    {
+     "word": "writes",
+     "frame": 2906
+    },
+    {
+     "word": "at",
+     "frame": 2912
+    },
+    {
+     "word": "x",
+     "frame": 2916
+    },
+    {
+     "word": "star",
+     "frame": 2922
+    },
+    {
+     "word": "h,",
+     "frame": 2927
+    },
+    {
+     "word": "and",
+     "frame": 2940
+    },
+    {
+     "word": "that",
+     "frame": 2946
+    },
+    {
+     "word": "star",
+     "frame": 2950
+    },
+    {
+     "word": "is",
+     "frame": 2956
+    },
+    {
+     "word": "not",
+     "frame": 2959
+    },
+    {
+     "word": "multiplication.",
+     "frame": 2963
+    },
+    {
+     "word": "Multiply",
+     "frame": 2994
+    },
+    {
+     "word": "hi",
+     "frame": 3004
+    },
+    {
+     "word": "by",
+     "frame": 3011
+    },
+    {
+     "word": "h",
+     "frame": 3019
+    },
+    {
+     "word": "sample",
+     "frame": 3025
+    },
+    {
+     "word": "by",
+     "frame": 3032
+    },
+    {
+     "word": "sample,",
+     "frame": 3037
+    },
+    {
+     "word": "and",
+     "frame": 3051
+    },
+    {
+     "word": "every",
+     "frame": 3053
+    },
+    {
+     "word": "product",
+     "frame": 3059
+    },
+    {
+     "word": "has",
+     "frame": 3067
+    },
+    {
+     "word": "a",
+     "frame": 3073
+    },
+    {
+     "word": "zero",
+     "frame": 3076
+    },
+    {
+     "word": "in",
+     "frame": 3082
+    },
+    {
+     "word": "it.",
+     "frame": 3088
+    },
+    {
+     "word": "No",
+     "frame": 3095
+    },
+    {
+     "word": "echo",
+     "frame": 3106
+    },
+    {
+     "word": "at",
+     "frame": 3113
+    },
+    {
+     "word": "all.",
+     "frame": 3118
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Here's the fix. Your equipment saw every sample of the caller's voice, and you measured h. So compute the echo yourself: point four times the voice two thousand samples back, plus point two times the voice two thousand and one samples back. Subtract that guess from what arrives. The echo is gone, and the far voice comes through at full size.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo/line09.wav",
+   "at": 105.07,
+   "start": 105.07,
+   "end": 121.53,
+   "start_frame": 3152,
+   "words": [
+    {
+     "word": "here's",
+     "frame": 3152
+    },
+    {
+     "word": "the",
+     "frame": 3163
+    },
+    {
+     "word": "fix",
+     "frame": 3167
+    },
+    {
+     "word": "your",
+     "frame": 3176
+    },
+    {
+     "word": "equipment",
+     "frame": 3189
+    },
+    {
+     "word": "saw",
+     "frame": 3199
+    },
+    {
+     "word": "every",
+     "frame": 3207
+    },
+    {
+     "word": "sample",
+     "frame": 3214
+    },
+    {
+     "word": "of",
+     "frame": 3223
+    },
+    {
+     "word": "the",
+     "frame": 3229
+    },
+    {
+     "word": "caller's",
+     "frame": 3232
+    },
+    {
+     "word": "voice",
+     "frame": 3244
+    },
+    {
+     "word": "and",
+     "frame": 3250
+    },
+    {
+     "word": "you",
+     "frame": 3256
+    },
+    {
+     "word": "measured",
+     "frame": 3259
+    },
+    {
+     "word": "h",
+     "frame": 3267
+    },
+    {
+     "word": "so",
+     "frame": 3280
+    },
+    {
+     "word": "compute",
+     "frame": 3288
+    },
+    {
+     "word": "the",
+     "frame": 3297
+    },
+    {
+     "word": "echo",
+     "frame": 3302
+    },
+    {
+     "word": "yourself",
+     "frame": 3309
+    },
+    {
+     "word": "point",
+     "frame": 3324
+    },
+    {
+     "word": "four",
+     "frame": 3339
+    },
+    {
+     "word": "times",
+     "frame": 3344
+    },
+    {
+     "word": "the",
+     "frame": 3352
+    },
+    {
+     "word": "voice",
+     "frame": 3357
+    },
+    {
+     "word": "2000",
+     "frame": 3366
+    },
+    {
+     "word": "samples",
+     "frame": 3378
+    },
+    {
+     "word": "back",
+     "frame": 3396
+    },
+    {
+     "word": "plus",
+     "frame": 3406
+    },
+    {
+     "word": "point",
+     "frame": 3423
+    },
+    {
+     "word": "two",
+     "frame": 3428
+    },
+    {
+     "word": "times",
+     "frame": 3433
+    },
+    {
+     "word": "the",
+     "frame": 3439
+    },
+    {
+     "word": "voice",
+     "frame": 3444
+    },
+    {
+     "word": "2000",
+     "frame": 3450
+    },
+    {
+     "word": "and",
+     "frame": 3463
+    },
+    {
+     "word": "one",
+     "frame": 3472
+    },
+    {
+     "word": "samples",
+     "frame": 3478
+    },
+    {
+     "word": "back",
+     "frame": 3489
+    },
+    {
+     "word": "subtract",
+     "frame": 3499
+    },
+    {
+     "word": "that",
+     "frame": 3517
+    },
+    {
+     "word": "guess",
+     "frame": 3527
+    },
+    {
+     "word": "from",
+     "frame": 3534
+    },
+    {
+     "word": "what",
+     "frame": 3539
+    },
+    {
+     "word": "arrives",
+     "frame": 3543
+    },
+    {
+     "word": "the",
+     "frame": 3553
+    },
+    {
+     "word": "echo",
+     "frame": 3564
+    },
+    {
+     "word": "is",
+     "frame": 3570
+    },
+    {
+     "word": "gone",
+     "frame": 3574
+    },
+    {
+     "word": "and",
+     "frame": 3580
+    },
+    {
+     "word": "the",
+     "frame": 3588
+    },
+    {
+     "word": "far",
+     "frame": 3590
+    },
+    {
+     "word": "voice",
+     "frame": 3596
+    },
+    {
+     "word": "comes",
+     "frame": 3604
+    },
+    {
+     "word": "through",
+     "frame": 3610
+    },
+    {
+     "word": "at",
+     "frame": 3615
+    },
+    {
+     "word": "full",
+     "frame": 3619
+    },
+    {
+     "word": "size",
+     "frame": 3625
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "Callers stop stammering. Then a new complaint: everyone sounds muffled, like they're talking through a wall. The line is linear and time-invariant, so nothing was invented. Something was taken away. But what?",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/02-impulse-response/4-video/vo-fix/line01.wav",
+   "at": 122.73,
+   "start": 122.73,
+   "end": 132.98,
+   "start_frame": 3682,
+   "words": [
+    {
+     "word": "Caller",
+     "frame": 3682
+    },
+    {
+     "word": "stops",
+     "frame": 3697
+    },
+    {
+     "word": "stammering,",
+     "frame": 3706
+    },
+    {
+     "word": "then",
+     "frame": 3725
+    },
+    {
+     "word": "a",
+     "frame": 3729
+    },
+    {
+     "word": "new",
+     "frame": 3732
+    },
+    {
+     "word": "complaint.",
+     "frame": 3736
+    },
+    {
+     "word": "Everyone",
+     "frame": 3760
+    },
+    {
+     "word": "sounds",
+     "frame": 3768
+    },
+    {
+     "word": "muffled",
+     "frame": 3778
+    },
+    {
+     "word": "like",
+     "frame": 3790
+    },
+    {
+     "word": "they're",
+     "frame": 3795
+    },
+    {
+     "word": "talking",
+     "frame": 3799
+    },
+    {
+     "word": "through",
+     "frame": 3808
+    },
+    {
+     "word": "a",
+     "frame": 3814
+    },
+    {
+     "word": "wall.",
+     "frame": 3819
+    },
+    {
+     "word": "The",
+     "frame": 3834
+    },
+    {
+     "word": "line",
+     "frame": 3837
+    },
+    {
+     "word": "is",
+     "frame": 3844
+    },
+    {
+     "word": "linear",
+     "frame": 3851
+    },
+    {
+     "word": "and",
+     "frame": 3861
+    },
+    {
+     "word": "time",
+     "frame": 3868
+    },
+    {
+     "word": "invariant,",
+     "frame": 3876
+    },
+    {
+     "word": "so",
+     "frame": 3897
+    },
+    {
+     "word": "nothing",
+     "frame": 3898
+    },
+    {
+     "word": "was",
+     "frame": 3906
+    },
+    {
+     "word": "invented.",
+     "frame": 3912
+    },
+    {
+     "word": "Something",
+     "frame": 3934
+    },
+    {
+     "word": "was",
+     "frame": 3940
+    },
+    {
+     "word": "taken",
+     "frame": 3945
+    },
+    {
+     "word": "away.",
+     "frame": 3951
+    },
+    {
+     "word": "But",
+     "frame": 3973
+    },
+    {
+     "word": "what?",
+     "frame": 3978
+    }
+   ]
+  }
+ ]
+}

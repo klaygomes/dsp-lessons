@@ -1,0 +1,311 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:01.880
+The buzz is fixed.
+
+2
+00:00:01.980 --> 00:00:03.100
+Then a new ticket arrives:
+
+3
+00:00:03.120 --> 00:00:04.160
+I can hear myself.
+
+4
+00:00:04.260 --> 00:00:05.220
+Every word comes back to me,
+
+5
+00:00:05.240 --> 00:00:06.160
+faint, a moment later,
+
+6
+00:00:06.180 --> 00:00:07.440
+like talking in a canyon.
+
+7
+00:00:07.460 --> 00:00:09.100
+You ring a test line and say hello.
+
+8
+00:00:09.120 --> 00:00:11.480
+A beat later,
+quieter and a little blurry: hello.
+
+9
+00:00:12.040 --> 00:00:14.060
+You time the gap: a quarter of a second.
+
+10
+00:00:14.080 --> 00:00:15.600
+At eight thousand samples a second,
+
+11
+00:00:15.620 --> 00:00:17.160
+that's two thousand samples.
+
+12
+00:00:17.320 --> 00:00:18.200
+Far down your line,
+
+13
+00:00:18.220 --> 00:00:21.860
+a box on a street corner in another city
+leaks a little of the caller's voice back.
+
+14
+00:00:21.880 --> 00:00:22.780
+You can't open it.
+
+15
+00:00:22.800 --> 00:00:24.160
+But if you can predict the echo,
+
+16
+00:00:24.180 --> 00:00:25.280
+you can subtract it.
+
+17
+00:00:26.110 --> 00:00:28.610
+And the box passes lesson one's two tests.
+
+18
+00:00:28.630 --> 00:00:30.310
+Doubling the input doubles the echo,
+
+19
+00:00:30.330 --> 00:00:32.150
+and two inputs added
+give their echoes added,
+
+20
+00:00:32.170 --> 00:00:33.030
+so it's linear.
+
+21
+00:00:33.050 --> 00:00:34.730
+Delaying the input only delays the echo,
+
+22
+00:00:34.750 --> 00:00:36.090
+so it's time-invariant.
+
+23
+00:00:36.570 --> 00:00:38.270
+So what's the simplest
+thing you could send?
+
+24
+00:00:38.290 --> 00:00:39.810
+Not a word, and not a tone.
+
+25
+00:00:39.890 --> 00:00:41.530
+A single click: one sample at one,
+
+26
+00:00:41.550 --> 00:00:43.110
+and every other sample at zero.
+
+27
+00:00:43.130 --> 00:00:44.890
+That signal is called an impulse.
+
+28
+00:00:45.450 --> 00:00:48.150
+Send it into the echo path
+and record what comes back.
+
+29
+00:00:48.170 --> 00:00:50.030
+That's the impulse response, written h.
+
+30
+00:00:50.190 --> 00:00:51.630
+Silence for two thousand samples,
+
+31
+00:00:51.650 --> 00:00:53.190
+then point four, then point two,
+
+32
+00:00:53.210 --> 00:00:54.370
+then silence for good.
+
+33
+00:00:54.390 --> 00:00:57.790
+Can two sizes and a delay really predict
+the echo of a whole sentence?
+
+34
+00:00:59.010 --> 00:01:00.330
+Try a very short word.
+
+35
+00:01:00.350 --> 00:01:02.270
+A caller's “hi” lasts four samples:
+
+36
+00:01:02.330 --> 00:01:03.190
+point eight, point four,
+
+37
+00:01:03.210 --> 00:01:05.070
+minus point six, minus point two.
+
+38
+00:01:05.270 --> 00:01:06.890
+You only know what the box
+does to a click,
+
+39
+00:01:06.910 --> 00:01:08.070
+so turn the word into clicks:
+
+40
+00:01:08.090 --> 00:01:09.790
+each sample is a click of its own size,
+
+41
+00:01:09.810 --> 00:01:10.830
+at its own place.
+
+42
+00:01:10.870 --> 00:01:11.590
+Add the four clicks,
+
+43
+00:01:11.610 --> 00:01:12.770
+and you get the word back.
+
+44
+00:01:13.400 --> 00:01:15.820
+Now each click launches its own copy of h.
+
+45
+00:01:15.840 --> 00:01:17.960
+Linearity scales it by the click's size.
+
+46
+00:01:17.980 --> 00:01:21.100
+Time-invariance starts it
+as many samples late as its click.
+
+47
+00:01:21.180 --> 00:01:22.840
+Add the copies, sample by sample,
+
+48
+00:01:22.860 --> 00:01:24.080
+and out comes the echo:
+
+49
+00:01:24.120 --> 00:01:25.820
+five samples, starting at two thousand,
+
+50
+00:01:25.840 --> 00:01:27.140
+peaking at point three two.
+
+51
+00:01:27.420 --> 00:01:30.000
+One click just predicted the echo
+of a word you never sent.
+
+52
+00:01:31.000 --> 00:01:32.100
+That's convolution:
+
+53
+00:01:32.120 --> 00:01:35.120
+building the output as a sum
+of shifted copies of the impulse response,
+
+54
+00:01:35.160 --> 00:01:36.600
+each scaled by one input sample.
+
+55
+00:01:36.620 --> 00:01:37.980
+The book writes it x star h,
+
+56
+00:01:38.000 --> 00:01:39.680
+and that star is not multiplication.
+
+57
+00:01:39.800 --> 00:01:41.680
+Multiply “hi” by h sample by sample,
+
+58
+00:01:41.700 --> 00:01:43.140
+and every product has a zero in it.
+
+59
+00:01:43.160 --> 00:01:44.260
+No echo at all.
+
+60
+00:01:45.070 --> 00:01:45.850
+Here's the fix.
+
+61
+00:01:45.870 --> 00:01:48.310
+Your equipment saw every sample
+of the caller's voice,
+
+62
+00:01:48.330 --> 00:01:49.310
+and you measured h.
+
+63
+00:01:49.350 --> 00:01:50.770
+So compute the echo yourself:
+
+64
+00:01:50.790 --> 00:01:53.510
+point four times the voice
+two thousand samples back,
+
+65
+00:01:53.530 --> 00:01:56.610
+plus point two times the voice
+two thousand and one samples back.
+
+66
+00:01:56.630 --> 00:01:58.430
+Subtract that guess from what arrives.
+
+67
+00:01:58.450 --> 00:02:01.330
+The echo is gone, and the far voice
+comes through at full size.
+
+68
+00:02:02.730 --> 00:02:04.150
+Callers stop stammering.
+
+69
+00:02:04.170 --> 00:02:05.230
+Then a new complaint:
+
+70
+00:02:05.330 --> 00:02:06.310
+everyone sounds muffled,
+
+71
+00:02:06.330 --> 00:02:07.770
+like they're talking through a wall.
+
+72
+00:02:07.790 --> 00:02:09.870
+The line is linear and time-invariant,
+
+73
+00:02:09.890 --> 00:02:11.070
+so nothing was invented.
+
+74
+00:02:11.130 --> 00:02:12.990
+Something was taken away. But what?
