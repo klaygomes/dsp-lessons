@@ -1,0 +1,299 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:01.700
+The bridge is clean.
+
+2
+00:00:01.720 --> 00:00:02.840
+Then the tickets start.
+
+3
+00:00:02.860 --> 00:00:04.740
+A thin, high whine on every call.
+
+4
+00:00:04.840 --> 00:00:07.200
+The meter says exactly
+four thousand hertz, the limit.
+
+5
+00:00:07.220 --> 00:00:09.900
+A cheap clock chip leaks
+its tick into your samples.
+
+6
+00:00:09.980 --> 00:00:12.840
+Can a few lines of code remove
+the whine and leave the voice alone?
+
+7
+00:00:13.820 --> 00:00:15.260
+Try the laziest idea.
+
+8
+00:00:15.280 --> 00:00:17.300
+Average each sample
+with the one before it.
+
+9
+00:00:17.320 --> 00:00:19.020
+The whine's samples flip,
+up, down, up, down,
+
+10
+00:00:19.040 --> 00:00:20.860
+so every average is zero. Gone.
+
+11
+00:00:20.880 --> 00:00:23.480
+A slow voice tone, five hundred hertz,
+comes out a touch smaller,
+
+12
+00:00:23.500 --> 00:00:24.520
+half a sample late.
+
+13
+00:00:25.170 --> 00:00:25.790
+Why?
+
+14
+00:00:25.810 --> 00:00:26.710
+Lesson three's wheel.
+
+15
+00:00:26.790 --> 00:00:28.490
+Put every tone on one wheel at once,
+
+16
+00:00:28.510 --> 00:00:30.810
+at the spot its dot
+reaches after one sample.
+
+17
+00:00:30.830 --> 00:00:31.850
+That's the unit circle.
+
+18
+00:00:32.090 --> 00:00:34.170
+Zero hertz at the right,
+two thousand at the top,
+
+19
+00:00:34.190 --> 00:00:35.290
+four thousand at the left.
+
+20
+00:00:35.310 --> 00:00:37.290
+The whine flips,
+so it sits at the far left.
+
+21
+00:00:37.850 --> 00:00:39.550
+There the average's output is zero,
+
+22
+00:00:39.570 --> 00:00:41.010
+so the point is called a zero.
+
+23
+00:00:41.070 --> 00:00:44.050
+How much of a tone passes
+is its distance to the zero over two,
+
+24
+00:00:44.070 --> 00:00:45.450
+the distance of zero hertz.
+
+25
+00:00:45.470 --> 00:00:47.450
+Two thousand hertz
+is one point four one away,
+
+26
+00:00:47.470 --> 00:00:49.070
+so seventy-one percent passes.
+
+27
+00:00:49.110 --> 00:00:50.410
+The whine sits on the zero.
+
+28
+00:00:50.430 --> 00:00:51.290
+Nothing passes.
+
+29
+00:00:52.290 --> 00:00:55.210
+Then the chip is swapped, and the whine
+comes back at two thousand hertz,
+
+30
+00:00:55.230 --> 00:00:56.130
+at the top.
+
+31
+00:00:56.250 --> 00:00:58.850
+A real tone is two half-size
+arrows turning opposite ways,
+
+32
+00:00:58.870 --> 00:01:00.650
+the mirror arrow on the bottom half.
+
+33
+00:01:00.890 --> 00:01:02.110
+So it needs a zero pair.
+
+34
+00:01:02.130 --> 00:01:05.050
+Average each sample with the one two back,
+and it's gone again.
+
+35
+00:01:05.920 --> 00:01:06.680
+Next ticket.
+
+36
+00:01:06.700 --> 00:01:09.000
+Everyone sounds like they're
+talking through a sock.
+
+37
+00:01:09.320 --> 00:01:10.860
+Zeros weaken their neighbors too.
+
+38
+00:01:10.880 --> 00:01:12.860
+Fifteen hundred hertz
+is zero point three nine
+
+39
+00:01:12.880 --> 00:01:15.020
+and one point nine six from the zeros.
+
+40
+00:01:15.100 --> 00:01:17.980
+That's zero point seven seven,
+against two for zero hertz.
+
+41
+00:01:18.060 --> 00:01:19.000
+Just thirty-eight percent.
+
+42
+00:01:20.240 --> 00:01:24.140
+So let the filter listen to itself,
+reusing its own output, two samples back.
+
+43
+00:01:24.240 --> 00:01:27.420
+That feedback puts poles just
+inside the rim, beside the zeros.
+
+44
+00:01:27.560 --> 00:01:29.380
+Divide by the distance to each pole.
+
+45
+00:01:29.520 --> 00:01:30.760
+From fifteen hundred hertz,
+
+46
+00:01:30.780 --> 00:01:33.300
+the zero and the pole look equally far,
+so they cancel.
+
+47
+00:01:33.700 --> 00:01:34.360
+Ninety-seven percent.
+
+48
+00:01:34.380 --> 00:01:35.920
+The whine still sits on its zero.
+
+49
+00:01:35.940 --> 00:01:36.940
+That's a notch.
+
+50
+00:01:37.810 --> 00:01:40.050
+Move the poles out
+from the center toward the rim,
+
+51
+00:01:40.070 --> 00:01:41.570
+and the notch gets narrower.
+
+52
+00:01:41.630 --> 00:01:42.710
+At zero point nine,
+
+53
+00:01:42.730 --> 00:01:44.690
+nineteen hundred hertz
+keeps sixty percent.
+
+54
+00:01:45.110 --> 00:01:46.890
+At zero point nine eight,
+it keeps ninety-seven.
+
+55
+00:01:47.350 --> 00:01:48.930
+So why not put the poles on the rim?
+
+56
+00:01:50.120 --> 00:01:51.960
+Send the feedback loop one click.
+
+57
+00:01:52.020 --> 00:01:54.300
+Every sample, its echo keeps
+zero point nine of itself,
+
+58
+00:01:54.320 --> 00:01:55.420
+the pole's radius.
+
+59
+00:01:55.580 --> 00:01:57.220
+Inside the circle, the echo dies out.
+
+60
+00:01:57.240 --> 00:01:58.660
+On the rim, it rings forever.
+
+61
+00:01:58.700 --> 00:01:59.720
+Outside, it blows up.
+
+62
+00:01:59.740 --> 00:02:01.760
+A filter with every pole inside is stable.
+
+63
+00:02:02.720 --> 00:02:04.460
+The filter never hunts for the whine.
+
+64
+00:02:04.480 --> 00:02:06.860
+It treats every tone
+by its point on the circle,
+
+65
+00:02:06.920 --> 00:02:08.740
+even a sung two thousand hertz note.
+
+66
+00:02:09.100 --> 00:02:10.120
+Then a new ticket.
+
+67
+00:02:10.320 --> 00:02:12.620
+Every time a call starts,
+a faint ring at two thousand hertz
+
+68
+00:02:12.640 --> 00:02:14.060
+is left behind, like a bell.

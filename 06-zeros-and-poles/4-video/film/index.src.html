@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Whine on Line Two</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+.box { position: absolute; background: var(--paper-2); border: 4px solid var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 50px; line-height: 62px; white-space: pre; }
+.box.hot { background: var(--accent-soft); border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const fmt = (v, d = 2) => (v < -0.0005 ? '−' : '') + Math.abs(v).toFixed(d);
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+function box(parent, text, x, y, w, h, cls = 'box') {
+  const id = 'X' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text;
+  Object.assign(e.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DIST0 = '18 12', DASHDOT = '26 10 6 10';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="${r}" fill="${color}"/>`;
+const hollowStem = (x, base, y) => `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${C.soft}" stroke-width="5" stroke-dasharray="8 8"/><circle cx="${x}" cy="${y}" r="15" fill="${C.paper}" stroke="${C.soft}" stroke-width="5"/>`;
+const zeroSvg = (x, y, r = 20) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${C.ink}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18) => seg(x - s, y - s, x + s, y + s, C.ink, 7) + seg(x - s, y + s, x + s, y - s, C.ink, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const head = (x1, y1, x2, y2, len, half) => {
+  const d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d, bx = x2 - ux * len, by = y2 - uy * len;
+  return { bx, by, pts: `${x2.toFixed(1)},${y2.toFixed(1)} ${(bx - uy * half).toFixed(1)},${(by + ux * half).toFixed(1)} ${(bx + uy * half).toFixed(1)},${(by - ux * half).toFixed(1)}` };
+};
+const vecSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '') => { const h = head(x1, y1, x2, y2, 28, 14); return `<line x1="${x1}" y1="${y1}" x2="${h.bx.toFixed(1)}" y2="${h.by.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/><polygon points="${h.pts}" fill="${color}"/>`; };
+const arcArrow = (cx, cy, r, a0, a1, color = C.ink, w = 6, dash = '') => {
+  const dir = a1 >= a0 ? 1 : -1, back = a1 - dir * 9, [x1, y1] = pt(cx, cy, r, back), [x2, y2] = pt(cx, cy, r, a1);
+  const h = head(x1, y1, x2, y2, 26, 14);
+  return `<path d="${arcD(cx, cy, r, a0, back)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/><polygon points="${h.pts}" fill="${color}"/>`;
+};
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+function cross(c, x, y, s = 22) { return layer(c, seg(x - s, y - s, x + s, y + s, C.accent, 9) + seg(x - s, y + s, x + s, y - s, C.accent, 9)); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0) => { origin(sel, x, y); const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'scaleY', keys); };
+const voiceShape = (X, base, H, f0 = 300, f1 = 3400) => {
+  const pts = [];
+  for (let i = 0; i <= 80; i++) { const u = i / 80, f = f0 + (f1 - f0) * u, v = H * Math.sin(Math.PI * u) ** 0.5 * (1 - 0.45 * u); pts.push([X(f), base - v]); }
+  return path(pts) + 'Z';
+};
+
+const U = { cx: 620, cy: 500, R: 300 };
+const up = (r, a) => pt(U.cx, U.cy, U.R * r, a);
+function unitCircle(c, marks = [0, 90, 180]) {
+  const { cx, cy, R } = U;
+  const names = { 0: '0 Hz', 45: '1,000', 90: '2,000 Hz', 135: '3,000', 180: '4,000 Hz' };
+  layer(c, hline(cx - R - 40, cx + R + 40, cy, C.rule, 3) + `<path d="${arcD(cx, cy, R, 0, 180)}" fill="none" stroke="${C.ink}" stroke-width="5"/>` + `<path d="${arcD(cx, cy, R, 180, 360)}" fill="none" stroke="${C.soft}" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/>`);
+  marks.forEach(a => {
+    const [x, y] = up(1, a);
+    layer(c, seg(...up(0.95, a), ...up(1.05, a), C.ink, 4));
+    if (a === 0) label(c, names[a], x + 44, y - 29, 'lbl s');
+    else if (a === 180) label(c, names[a], x - 44, y - 29, 'lbl s', 'right');
+    else if (a === 90) label(c, names[a], x, y - 104, 'lbl s', 'center');
+    else label(c, names[a], x + (a < 90 ? 24 : -24), y - 66, 'lbl s', a < 90 ? 'left' : 'right');
+  });
+}
+const spinSvg = (color = C.ink, r = 18, ring = false) => `<line x1="${U.cx}" y1="${U.cy}" x2="${U.cx + U.R}" y2="${U.cy}" stroke="${color}" stroke-width="5"/>` + (ring ? `<circle cx="${U.cx + U.R}" cy="${U.cy}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>` : dotSvg(U.cx + U.R, U.cy, r, color));
+function spinner(c, svg) { const s = layer(c, svg); origin(s, U.cx, U.cy); return s; }
+const turn = (sel, keys) => M.kf(sel, 'rotation', [[0, -keys[0][1]], ...keys.map(([f, a, e]) => [f, -a, e])]);
+const gainAt = (f, r, th = 90, zeros = true) => {
+  const w = 360 * f / 8000, z = [cosd(w), sind(w)], d = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+  const at = p => (zeros ? d(p, [cosd(th), sind(th)]) * d(p, [cosd(th), -sind(th)]) : 1) / (d(p, [r * cosd(th), r * sind(th)]) * d(p, [r * cosd(th), -r * sind(th)]));
+  return at(z) / at([1, 0]);
+};
+
+{
+  const c = cam(1), FX = f => 200 + f * 0.19, base = 620, H = 260;
+  const a = sub(c), b = sub(c);
+  const mt = word(1, 'meter'), ex = word(1, 'exactly'), li = word(1, 'limit'), ch = word(1, 'cheap'), sm = word(1, 'samples'), cd = word(1, 'code'), vo = word(1, 'voice'), th = word(1, 'thin');
+  M.show('#' + a.id, 0, mt); M.show('#' + b.id, mt);
+  layer(a, hline(FX(0) - 20, FX(8200), base));
+  [[0, '0'], [4000, '4,000'], [8000, '8,000 Hz']].forEach(([f, t]) => label(a, t, FX(f), base + 14, 'lbl s', 'center'));
+  const vs = layer(a, `<path d="${voiceShape(FX, base, H)}" fill="${C.paper2}" stroke="${C.ink}" stroke-width="5"/>`);
+  M.kf(vs, 'opacity', [[0, 0.4]]);
+  flicker(vs, FX(1850), base, 0, mt, 0.8, 3);
+  layer(a, vline(FX(4000), 140, base, C.soft, 4, '12 10'));
+  label(a, 'next ticket: a thin whine', 960, 30, 'lbl s', 'center');
+  const sp = layer(a, `<rect x="${FX(4000) - 14}" y="${base - 420}" width="28" height="420" fill="${C.accent}"/>`);
+  flicker(sp, FX(4000), base, 0, mt, 0.85, 9);
+  label(a, '4,000 Hz', FX(4000) + 40, base - 300, 'lbl acc');
+  M.show(label(a, '“a thin, high whine”', FX(6000), 170, 'note', 'center'), th);
+
+  const X = f => 260 + f * 0.34, b0 = 640;
+  M.show(label(b, 'your line, on a frequency meter', 960, 30, 'lbl s', 'center'), mt);
+  layer(b, hline(X(0) - 20, X(4250), b0));
+  [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000']].forEach(([f, t]) => label(b, t, X(f), b0 + 14, 'lbl s', 'center'));
+  label(b, '4,000 Hz', X(4000) + 20, b0 + 14, 'lbl s', 'center');
+  const v2 = layer(b, `<path d="${voiceShape(X, b0, 300)}" fill="${C.paper2}" stroke="${C.ink}" stroke-width="5"/>`);
+  flicker(v2, X(1850), b0, mt, sceneEnd(1), 0.78, 5);
+  M.show(label(b, 'the voice', X(1500), 220, 'lbl', 'center'), mt + 4);
+  M.show(label(b, '300 to 3,400 Hz', X(1500), 290, 'lbl s', 'center'), mt + 4);
+  const s2 = layer(b, `<rect x="${X(4000) - 14}" y="${b0 - 440}" width="28" height="440" fill="${C.accent}"/>`);
+  origin(s2, X(4000), b0);
+  M.show(s2, ex);
+  M.kf(s2, 'scaleY', [[0, 0], [ex, 0], [ex + 10, 1, 'softLand']].concat(Array.from({ length: Math.max(0, Math.floor((sceneEnd(1) - ex - 16) / 2)) }, (_, k) => [ex + 14 + 2 * k, 0.85 + 0.15 * rnd(ex + 14 + 2 * k + 13)])));
+  M.show(label(b, 'the whine', X(4000) - 40, 130, 'lbl acc', 'right'), ex);
+  M.show(label(b, 'exactly the limit', X(4000) - 40, 200, 'lbl acc', 'right'), li);
+  M.show(label(b, 'a clock chip’s tick, inside your samples', 960, 800, 'lbl s', 'center'), sm, cd);
+  M.show(label(b, 'remove it, keep the voice?', 960, 800, 'lbl', 'center'), cd);
+  drift(1);
+}
+{
+  const c = cam(2), a = sub(c), b = sub(c);
+  const av = word(2, 'average'), fl = word(2, 'flip'), ev = word(2, 'every'), gn = word(2, 'gone'), sl = word(2, 'slow'), fh = word(2, ['500', 'five']), tc = word(2, 'touch'), hs = word(2, 'half');
+  M.show('#' + a.id, sceneStart(2), sl); M.show('#' + b.id, sl);
+  M.show(label(c, 'output[n] = (input[n] + input[n − 1]) ÷ 2', 960, 30, 'lbl', 'center'), av);
+  const x0 = 330, dx = 180, X = n => x0 + n * dx, A = 120;
+  const strip = (p, fn, title, accent, at0, pairAt, ti, to) => {
+    label(p, title, 120, 110, 'lbl s');
+    layer(p, hline(X(-0.5), X(7.5), ti) + hline(X(-0.5), X(7.5), to));
+    label(p, 'in', X(-0.5) - 20, ti - 29, 'lbl s', 'right');
+    label(p, 'out', X(-0.5) - 20, to - 29, 'lbl s', 'right');
+    for (let n = 0; n < 8; n++) {
+      const s = layer(p, hollowStem(X(n), ti, ti - A * fn(n)));
+      grow(s, X(n), ti, at0 + n * 2, 6);
+      label(p, String(n), X(n), to + (accent ? 40 : 150), 'lbl s', 'center');
+    }
+    for (let n = 1; n < 8; n++) {
+      const at = pairAt + (n - 1) * 5, v = (fn(n) + fn(n - 1)) / 2;
+      const br = layer(p, `<path d="M${X(n - 1)} ${ti + (accent ? 150 : 60)}V${ti + (accent ? 170 : 80)}H${X(n)}V${ti + (accent ? 150 : 60)}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+      M.show(br, at, at + 8);
+      const o = accent ? layer(p, dotSvg(X(n), to, 16, C.accent)) : layer(p, stemSvg(X(n), to, to - A * v));
+      M.show(o, at + 4);
+      M.kf(o, 'y', [[0, -40], [at + 4, -40], [at + 12, 0, 'softLand']]);
+    }
+  };
+  strip(a, n => (n % 2 ? -1 : 1), 'the 4,000 Hz whine', true, sceneStart(2) + 6, fl + 6, 360, 700);
+  M.show(label(a, 'every average: 0', X(7.5), 575, 'lbl acc', 'right'), ev);
+  M.show(label(a, 'gone', 1130, 555, 'lbl big acc', 'right'), gn);
+  strip(b, n => cosd(22.5 * n), 'a 500 Hz voice tone', false, sl + 2, fh + 4, 330, 610);
+  M.show(label(b, 'a touch smaller,', 940, 830, 'lbl', 'right'), tc);
+  M.show(label(b, 'half a sample late', 980, 830, 'lbl'), hs);
+  const lp = []; for (let s = -0.3; s <= 7.3; s += 0.02) lp.push([X(s), 610 - A * 0.98 * cosd(22.5 * (s - 0.5))]);
+  const lc = layer(b, `<path d="${path(lp)}" fill="none" stroke="${C.soft}" stroke-width="5" stroke-dasharray="14 10"/>`, [X(-0.3) - 10, X(7.3) + 10]);
+  reveal(lc, hs - 6, hs + 20, 'cruise');
+  M.show(layer(b, vline(X(0.5), 610 - A * 0.98 - 30, 610 + 20, C.accent, 4, '4 8') + vline(X(0), 330 - A - 30, 330 + 20, C.accent, 4, '4 8')), hs + 4);
+  M.show(label(b, 'peak: n = ½', X(0.5) + 20, 610 - A - 70, 'lbl acc'), hs + 4);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const wl = word(3, 'wheel'), pu = word(3, 'put'), sp = word(3, 'spot'), uc = word(3, 'unit'), fl = word(3, 'flips'), fa = word(3, 'far');
+  unitCircle(c, []);
+  const marks = [0, 45, 90, 135, 180];
+  const sw0 = pu, sw1 = uc;
+  marks.forEach((a, k) => {
+    const at = sw0 + Math.round((sw1 - sw0) * k / 4);
+    const [x, y] = up(1, a);
+    M.show(layer(c, seg(...up(0.95, a), ...up(1.05, a), C.ink, 4)), at);
+    const names = ['0 Hz', '1,000', '2,000 Hz', '3,000', '4,000 Hz'];
+    if (a === 0) M.show(label(c, names[k], x + 30, y - 29, 'lbl s'), at);
+    else if (a === 180) M.show(label(c, names[k], x - 30, y - 29, 'lbl s', 'right'), at);
+    else if (a === 90) M.show(label(c, names[k], x, y - 84, 'lbl s', 'center'), at);
+    else M.show(label(c, names[k], x + (a < 90 ? 24 : -24), y - 66, 'lbl s', a < 90 ? 'left' : 'right'), at);
+  });
+  const d = spinner(c, spinSvg());
+  turn(d, [[wl, 0], [wl + 10, 45, 'softInOut'], [wl + 22, 45], [wl + 32, 90, 'softInOut'], [wl + 44, 90], [wl + 54, 135, 'softInOut'], [pu - 8, 135], [pu - 2, 0, 'softInOut'], [sw0 + 2, 0], [sw1, 180, 'cruise'], [sw1 + 12, 180], [sw1 + 24, 0, 'softInOut']]);
+  M.hide(d, fl - 4);
+  M.show(label(c, 'lesson 3: a tone is a dot', 1100, 150, 'lbl s'), wl, pu);
+  M.show(label(c, 'turning on a wheel', 1100, 215, 'lbl s'), wl, pu);
+  M.show(label(c, 'every tone on one wheel,', 1100, 150, 'lbl s'), pu);
+  M.show(label(c, 'where its dot is', 1100, 215, 'lbl s'), sp);
+  M.show(label(c, 'after one sample', 1100, 280, 'lbl s'), sp);
+  M.show(label(c, 'the unit circle', 1100, 380, 'lbl'), uc);
+  const w = spinner(c, spinSvg(C.accent, 20, true));
+  M.show(w, fl - 4);
+  turn(w, [[fl, 0], [fl + 20, 180, 'softInOut']]);
+  M.show(layer(c, arcArrow(U.cx, U.cy, 150, 5, 175, C.accent, 6)), fl + 16);
+  M.show(label(c, 'the whine: a flip,', 1100, 520, 'lbl acc'), fl + 6);
+  M.show(label(c, '180° per sample', 1100, 590, 'lbl acc'), fl + 6);
+  M.show(label(c, 'radius 1', U.cx + 150, U.cy + 14, 'lbl s', 'center'), uc, fl);
+  drift(3);
+}
+{
+  const c = cam(4);
+  unitCircle(c, [0, 90, 180]);
+  const zr = word(4, 'zero', 1), ps = word(4, 'passes'), tw = word(4, 'two'), t2 = word(4, ['2']), f41 = word(4, ['.41', '1.41']), sv = word(4, ['71', 'seventy']), ws = word(4, ['whine', 'wine']), nt = word(4, 'nothing');
+  const [zx, zy] = up(1, 180), [ox, oy] = up(1, 0), [tx, ty] = up(1, 90);
+  const z = layer(c, zeroSvg(zx, zy, 22));
+  M.show(z, sceneStart(4) + 4);
+  M.show(label(c, 'output 0', zx - 20, zy + 50, 'lbl acc', 'right'), sceneStart(4) + 4, zr);
+  M.show(label(c, 'a zero', zx - 20, zy + 50, 'lbl', 'right'), zr);
+  M.show(label(c, 'passes = distance ÷ 2', 1080, 150, 'lbl'), ps);
+  const l0 = layer(c, seg(ox, oy + 2, zx + 22, zy + 2, C.soft, 5, DIST0), [zx, ox]);
+  reveal(l0, tw - 4, tw + 14);
+  M.show(label(c, '2.00', U.cx, U.cy + 14, 'lbl s', 'center'), tw + 8);
+  M.show(label(c, '0 Hz:     2.00 ÷ 2 = 100%', 1080, 240, 'lbl s'), tw + 8);
+  M.show(layer(c, dotSvg(tx, ty, 16)), t2);
+  const l1 = layer(c, seg(tx, ty, zx + 14, zy - 14, C.ink, 6), [zx, tx]);
+  reveal(l1, t2, f41);
+  M.show(label(c, '1.41', (tx + zx) / 2 + 40, (ty + zy) / 2 + 10, 'lbl'), f41);
+  M.show(label(c, '2,000 Hz: 1.41 ÷ 2 = 71%', 1080, 320, 'lbl'), sv);
+  M.show(layer(c, `<circle cx="${zx}" cy="${zy}" r="34" fill="none" stroke="${C.accent}" stroke-width="6"/>`), ws);
+  M.show(label(c, '4,000 Hz: on the zero, 0%', 1080, 400, 'lbl acc'), nt);
+  drift(4);
+}
+{
+  const c = cam(5);
+  unitCircle(c, [0, 90, 180]);
+  const sw = word(5, 'swapped'), tp = word(5, 'top'), rt = word(5, 'real'), mi = word(5, 'mirror'), pr = word(5, 'pair'), av = word(5, 'average'), gn = word(5, 'gone');
+  const [zx, zy] = up(1, 180), [tx, ty] = up(1, 90), [bx, by] = up(1, -90);
+  const z0 = layer(c, zeroSvg(zx, zy, 22));
+  M.kf(z0, 'opacity', [[0, 1], [sw, 1], [sw + 10, 0]]);
+  M.show(layer(c, `<circle cx="${tx}" cy="${ty}" r="34" fill="none" stroke="${C.accent}" stroke-width="6"/>`), tp);
+  M.show(label(c, 'the whine, now 2,000 Hz', 1080, 150, 'lbl acc'), sw + 6);
+  const h = U.R / 2;
+  const top = layer(c, vecSvg(U.cx, U.cy, U.cx + h, U.cy, C.ink, 7)), mir = layer(c, vecSvg(U.cx, U.cy, U.cx + h, U.cy, C.ink, 7, '2 12'));
+  origin(top, U.cx, U.cy); origin(mir, U.cx, U.cy);
+  M.show(top, rt); M.show(mir, rt);
+  M.kf(top, 'rotation', [[0, 0], [rt + 6, 0], [rt + 36, -90, 'softInOut']]);
+  M.kf(mir, 'rotation', [[0, 0], [rt + 6, 0], [rt + 36, 90, 'softInOut']]);
+  M.show(label(c, 'a real tone:', 1080, 245, 'lbl'), rt);
+  M.show(label(c, 'two half-size arrows', 1080, 315, 'lbl'), rt);
+  M.show(label(c, 'mirror', U.cx - 30, U.cy + 50, 'lbl s', 'right'), mi);
+  M.show(label(c, 'arrow', U.cx - 30, U.cy + 116, 'lbl s', 'right'), mi);
+  M.show(label(c, 'bottom half: mirror arrows', 1080, 395, 'lbl s'), mi, av);
+  [[tx, ty], [bx, by]].forEach(([x, y], k) => { const s = layer(c, zeroSvg(x, y, 22)); M.show(s, pr + k * 4); M.kf(s, 'scale', [[0, 1.8], [pr + k * 4, 1.8], [pr + k * 4 + 10, 1, 'softLand']]); origin(s, x, y); });
+  M.show(label(c, 'a zero pair', bx, by + 40, 'lbl', 'center'), pr + 6);
+  M.show(label(c, '(this + two back) ÷ 2', 1080, 560, 'lbl'), av);
+  M.show(label(c, 'in:  1, 0, −1, 0, 1, 0', 1080, 640, 'lbl s'), av + 10);
+  M.show(label(c, 'out: 0, 0, 0, 0', 1080, 710, 'lbl acc'), gn);
+  drift(5);
+}
+{
+  const c = cam(6);
+  unitCircle(c, [0, 180]);
+  layer(c, seg(...up(0.95, 90), ...up(1.05, 90), C.ink, 4));
+  const sk = word(6, 'sock'), we = word(6, 'weaken'), ff = word(6, ['1500', 'fifteen']), d39 = word(6, ['.39', '0.39']), d96 = word(6, ['.96', '1.96']), th = word(6, "that's"), tw = word(6, ['two', '2']), te = word(6, ['38', 'thirty']);
+  const [tx, ty] = up(1, 90), [bx, by] = up(1, -90), [ox, oy] = up(1, 0), [px, py] = up(1, 67.5);
+  layer(c, zeroSvg(tx, ty, 22) + zeroSvg(bx, by, 22));
+  M.show(label(c, '“talking through a sock”', 1010, 60, 'note'), sceneStart(6) + 4);
+  M.show(label(c, 'zeros weaken their neighbors', 1010, 240, 'lbl s'), we, th);
+  M.show(layer(c, dotSvg(px, py, 16)), ff);
+  M.show(label(c, '1,500 Hz', px + 24, py - 66, 'lbl'), ff);
+  const a1 = layer(c, seg(px, py, tx + 16, ty + 6, C.ink, 6), [tx, px]); reveal(a1, d39 - 6, d39 + 6);
+  M.show(label(c, '0.39', (px + tx) / 2, 110, 'lbl', 'center'), d39);
+  const a2 = layer(c, seg(px, py, bx + 4, by - 20, C.ink, 6), [bx, px]); reveal(a2, d96 - 8, d96 + 6);
+  M.show(label(c, '1.96', U.cx + 10, U.cy + 60, 'lbl', 'right'), d96);
+  M.show(label(c, '1,500 Hz: 0.39 × 1.96 = 0.77', 1010, 240, 'lbl m'), th);
+  const b1 = layer(c, seg(ox, oy, tx + 14, ty + 14, C.soft, 5, DIST0) + seg(ox, oy, bx + 14, by - 14, C.soft, 5, DIST0));
+  fadeIn(b1, tw);
+  M.show(label(c, '0 Hz:     1.41 × 1.41 = 2', 1010, 320, 'lbl s'), tw + 4);
+  M.show(label(c, '0.77 ÷ 2: keeps 38%', 1010, 400, 'lbl acc'), te);
+  drift(6);
+}
+{
+  const c = cam(7), a = sub(c), b = sub(c), d = sub(c);
+  const ls = word(7, 'listen'), ro = word(7, 'reusing'), fb = word(7, 'feedback'), pl = word(7, 'poles'), dv = word(7, 'divide'), fr = word(7, 'from'), eq = word(7, 'equally'), cn = word(7, 'cancel'), ns = word(7, ['ninety', '97']), ws = word(7, ['whine', 'wine']), nh = word(7, 'notch');
+  M.show('#' + a.id, sceneStart(7), pl); M.show('#' + b.id, pl, fr); M.show('#' + d.id, fr);
+  M.show(label(a, 'y[n] = 0.905 (x[n] + x[n − 2])', 960, 260, 'lbl', 'center'), sceneStart(7));
+  M.show(label(a, '− 0.81 · y[n − 2]', 1260, 360, 'lbl acc'), ro);
+  M.show(layer(a, `<path d="M 560 330 C 420 470, 900 560, 1300 430" fill="none" stroke="${C.accent}" stroke-width="6" stroke-dasharray="2 0"/>` + vecSvg(1240, 450, 1300, 430, C.accent, 6)), ro + 6);
+  M.show(label(a, 'its own output, two samples back', 960, 600, 'lbl s', 'center'), ro + 10);
+  M.show(label(a, 'feedback', 960, 690, 'lbl big acc', 'center'), fb);
+  M.show(label(a, 'x: input · y: output', 960, 140, 'lbl s', 'center'), sceneStart(7));
+  M.show(label(a, '0.905 keeps 0 Hz at 100%', 960, 810, 'lbl s', 'center'), fb + 10);
+
+  unitCircle(b, [0, 180]);
+  label(b, 'zero, 2,000 Hz', U.cx, U.cy - U.R - 84, 'lbl s', 'center');
+  const [tx, ty] = up(1, 90), [bx, by] = up(1, -90), [p1x, p1y] = up(0.9, 90), [p2x, p2y] = up(0.9, -90);
+  layer(b, zeroSvg(tx, ty, 22) + zeroSvg(bx, by, 22));
+  const pp = layer(b, poleSvg(p1x, p1y) + poleSvg(p2x, p2y));
+  M.show(pp, pl + 4);
+  M.kf(pp, 'opacity', [[0, 0], [pl + 4, 0], [pl + 12, 1]]);
+  M.show(label(b, 'poles: radius 0.9,', 1080, 200, 'lbl'), pl + 4);
+  M.show(label(b, 'just inside the rim', 1080, 270, 'lbl'), pl + 10);
+  M.show(label(b, '0.81 = 0.9 × 0.9', 1080, 370, 'lbl s'), pl + 20);
+  M.show(label(b, 'pole', p1x, p1y + 30, 'lbl s', 'center'), pl + 4);
+  M.show(label(b, '÷ distance to each pole', 1110, 480, 'lbl acc'), dv);
+  M.show(label(b, 'then compare with 0 Hz', 1110, 560, 'lbl s'), dv + 20);
+
+  const cx = 960, cy = 1620, R = 1300, Z = (r, a) => pt(cx, cy, R * r, a);
+  layer(d, `<path d="${arcD(cx, cy, R, 38, 142)}" fill="none" stroke="${C.ink}" stroke-width="6"/>`);
+  const [zx, zy] = Z(1, 90), [qx, qy] = Z(0.9, 90), [fx, fy] = Z(1, 67.5);
+  layer(d, zeroSvg(zx, zy, 24) + poleSvg(qx, qy, 22));
+  label(d, 'zero, 2,000 Hz', zx - 50, zy - 100, 'lbl', 'right');
+  label(d, 'pole, radius 0.9', qx - 50, qy + 10, 'lbl', 'right');
+  M.show(layer(d, dotSvg(fx, fy, 18)), fr);
+  M.show(label(d, '1,500 Hz', fx + 30, fy - 90, 'lbl'), fr);
+  const l1 = layer(d, seg(fx, fy, zx + 20, zy + 6, C.ink, 7), [zx, fx]); reveal(l1, fr + 2, fr + 14);
+  const l2 = layer(d, seg(fx, fy, qx + 24, qy, C.ink, 7, DASHDOT), [qx, fx]); reveal(l2, fr + 10, fr + 22);
+  M.show(label(d, '0.39', (fx + zx) / 2, (fy + zy) / 2 - 140, 'lbl', 'center'), fr + 10);
+  M.show(label(d, '0.38', (fx + qx) / 2 + 20, (fy + qy) / 2 + 30, 'lbl'), fr + 20);
+  M.show(label(d, 'solid: to the zero', 420, 560, 'lbl s'), fr + 20);
+  M.show(label(d, 'dash-dot: to the pole', 420, 625, 'lbl s'), fr + 20);
+  M.show(label(d, '0.39 ÷ 0.38 ≈ 1', 1080, 540, 'lbl'), cn);
+  M.show(label(d, '1,500 Hz keeps 97%', 1080, 620, 'lbl ok'), ns);
+  M.show(label(d, 'zeros alone: 38%', 1080, 700, 'lbl s'), ns + 10);
+  M.show(layer(d, `<circle cx="${zx}" cy="${zy}" r="40" fill="none" stroke="${C.accent}" stroke-width="6"/>`), ws);
+  M.show(label(d, 'whine: 0%', zx - 50, zy - 170, 'lbl acc', 'right'), ws);
+  M.show(label(d, 'a notch', 960, 800, 'lbl big', 'center'), nh);
+  drift(7, 1, 1.04);
+}
+{
+  const c = cam(8), X = f => 220 + f * 0.3, Y = g => 790 - g * 470;
+  const mv = word(8, 'move'), rm = word(8, 'rim'), nr = word(8, 'narrower'), z9 = word(8, ['.9', '0.9']), ns = word(8, ['1900', '1,900', 'nineteen']), sx = word(8, ['60', 'sixty']), z98 = word(8, ['.98', '0.98']), n97 = word(8, ['97', 'ninety']), wy = word(8, 'why');
+  layer(c, `<rect x="${X(300)}" y="${Y(1.08)}" width="${X(3400) - X(300)}" height="${Y(0) - Y(1.08)}" fill="${C.paper2}"/>`);
+  label(c, 'the voice, 300 to 3,400 Hz', X(300) + 10, Y(1.08) - 64, 'lbl s');
+  layer(c, hline(X(0), X(4100), Y(0)) + vline(X(0), Y(0), Y(1.1)) + hline(X(0), X(4000), Y(1), C.rule, 2, '4 10'));
+  [[0, '0%'], [1, '100%']].forEach(([v, t]) => label(c, t, X(0) - 20, Y(v) - 29, 'lbl s', 'right'));
+  [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(c, t, X(f), Y(0) + 14, 'lbl s', 'center'));
+  const curve = r => { const p = []; for (let f = 0; f <= 4000; f += 5) p.push([X(f), Y(gainAt(f, r))]); return path(p); };
+  const c0 = layer(c, `<path d="${curve(0)}" fill="none" stroke="${C.ink}" stroke-width="6" stroke-dasharray="2 12" stroke-linecap="round"/>`);
+  M.show(label(c, 'zeros alone', X(320), Y(0.36), 'lbl s'), sceneStart(8), nr + 20);
+  const c9 = layer(c, `<path d="${curve(0.9)}" fill="none" stroke="${C.accent}" stroke-width="7"/>`, [X(0) - 10, X(4000) + 10]);
+  reveal(c9, nr - 10, nr + 20, 'cruise');
+  M.kf(c0, 'opacity', [[0, 1], [nr, 1], [nr + 12, 0.35], [sx - 8, 0.35], [sx, 0]]);
+  const c98 = layer(c, `<path d="${curve(0.98)}" fill="none" stroke="${C.ink}" stroke-width="5"/>`, [X(0) - 10, X(4000) + 10]);
+  reveal(c98, z98, z98 + 24, 'cruise');
+  M.kf(c9, 'opacity', [[0, 1], [z98, 1], [z98 + 12, 0.45]]);
+  const g9 = gainAt(1900, 0.9), g98 = gainAt(1900, 0.98);
+  M.show(layer(c, dotSvg(X(1900), Y(g9), 15, C.accent)), sx, z98);
+  M.show(label(c, '1,900 Hz: 60%', X(2150), Y(0.45), 'lbl acc'), sx, z98);
+  M.show(layer(c, dotSvg(X(1900), Y(g98), 15, C.ink)), n97);
+  M.show(label(c, '1,900 Hz: 97%', X(2150), Y(0.45), 'lbl'), n97);
+  const icx = 1640, icy = 430, iR = 190;
+  layer(c, hline(icx - iR - 20, icx + iR + 20, icy, C.rule, 3) + `<path d="${arcD(icx, icy, iR, 0, 180)}" fill="none" stroke="${C.ink}" stroke-width="5"/><path d="${arcD(icx, icy, iR, 180, 360)}" fill="none" stroke="${C.soft}" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/>` + zeroSvg(icx, icy - iR, 18) + zeroSvg(icx, icy + iR, 18));
+  const pu = layer(c, poleSvg(icx, icy, 16)), pd = layer(c, poleSvg(icx, icy, 16));
+  M.kf(pu, 'y', [[0, 0], [mv, 0], [nr + 10, -0.9 * iR, 'softInOut'], [z98, -0.9 * iR], [z98 + 16, -0.98 * iR, 'softInOut']]);
+  M.kf(pd, 'y', [[0, 0], [mv, 0], [nr + 10, 0.9 * iR, 'softInOut'], [z98, 0.9 * iR], [z98 + 16, 0.98 * iR, 'softInOut']]);
+  M.show(label(c, 'poles: 0', icx, icy + iR + 40, 'lbl s', 'center'), sceneStart(8), mv + 6);
+  M.show(label(c, 'poles: 0.9', icx, icy + iR + 40, 'lbl acc', 'center'), nr + 10, z98);
+  M.show(label(c, 'poles: 0.98', icx, icy + iR + 40, 'lbl', 'center'), z98);
+  M.show(label(c, 'toward the rim', icx, 120, 'lbl s', 'center'), mv, wy);
+  M.show(label(c, 'on the rim?', icx, 120, 'lbl', 'center'), wy);
+  drift(8);
+}
+{
+  const c = cam(9);
+  const sd = word(9, 'send'), kp = word(9, 'keeps'), ins = word(9, 'inside'), rm = word(9, 'rim'), ou = word(9, 'outside'), st = word(9, 'stable');
+  M.show(label(c, 'the feedback loop alone, one click in', 960, 20, 'lbl s', 'center'), sceneStart(9));
+  const rows = [[0.9, 270, 'radius 0.9: dies out', ins, 'ok'], [1, 510, 'radius 1: rings forever', rm, ''], [1.1, 750, 'radius 1.1: blows up', ou, 'acc']];
+  const X = n => 400 + n * 29, A = 45;
+  rows.forEach(([r, y, name, at, cls], k) => {
+    const t0 = k === 0 ? sd + 4 : at;
+    layer(c, hline(X(-1), X(51), y, C.soft, 3));
+    const pcx = 200, pR = 70;
+    layer(c, `<circle cx="${pcx}" cy="${y}" r="${pR}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(pcx - pR - 10, pcx + pR + 10, y, C.rule, 2) + poleSvg(pcx, y - r * pR, 12) + poleSvg(pcx, y + r * pR, 12));
+    M.show(label(c, name, X(0), y - 162, cls ? 'lbl ' + cls : 'lbl'), at);
+    for (let n = 0; n <= 50; n++) {
+      if (n % 2) { const zd = layer(c, `<circle cx="${X(n)}" cy="${y}" r="5" fill="${C.paper}" stroke="${C.soft}" stroke-width="3"/>`); M.show(zd, t0 + n); continue; }
+      const v = Math.pow(r, n) * (n % 4 ? -1 : 1), cv = Math.max(-1.9, Math.min(1.9, v));
+      if (Math.abs(v) < 0.005) continue;
+      const color = Math.abs(v) > 1.001 ? C.accent : C.ink;
+      const s = layer(c, stemSvg(X(n), y, y - A * cv, color, 5, 9));
+      grow(s, X(n), y, t0 + n, 4);
+    }
+  });
+  M.show(label(c, '× 0.9 every sample', 1860, 108, 'lbl ok', 'right'), kp, rm);
+  M.show(label(c, 'every pole inside: stable', 1860, 108, 'lbl ok', 'right'), st);
+  M.show(tick(c, 1040, 200), ins + 30);
+  M.show(cross(c, 1080, 618), ou + 60);
+  drift(9);
+}
+{
+  const c = cam(10), a = sub(c), b = sub(c);
+  const tr = word(10, 'treats'), pc = word(10, 'circle'), sg = word(10, 'sung'), tk = word(10, 'ticket'), ev = word(10, 'every', 1), ri = word(10, 'ring'), bl = word(10, 'bell');
+  M.show('#' + a.id, sceneStart(10), tk); M.show('#' + b.id, tk);
+  unitCircle(a, [0, 90, 180]);
+  const [tx, ty] = up(1, 90), [bx, by] = up(1, -90);
+  layer(a, zeroSvg(tx, ty, 22) + zeroSvg(bx, by, 22) + poleSvg(...up(0.9, 90)) + poleSvg(...up(0.9, -90)));
+  label(a, 'no whine detector', 1080, 160, 'lbl s');
+  const wk = spinner(a, spinSvg(C.ink, 18));
+  M.show(wk, tr);
+  turn(wk, [[tr, 0], [pc + 10, 60, 'softInOut'], [sg - 6, 60], [sg + 14, 90, 'softInOut']]);
+  M.show(label(a, 'each tone: its point', 1080, 250, 'lbl'), tr);
+  M.show(label(a, 'a sung 2,000 Hz note', 1080, 330, 'lbl'), sg);
+  M.show(label(a, 'removed too', 1080, 400, 'lbl acc'), sg + 14);
+  M.show(label(b, 'next ticket: a faint ring at 2,000 Hz', 960, 30, 'lbl s', 'center'), tk);
+  const X = n => 180 + n * 40, y0 = 480, A = 300;
+  const x = n => (n === 0 ? 1 : 0), yv = [];
+  for (let n = 0; n <= 40; n++) yv.push(0.905 * (x(n) + (n >= 2 ? x(n - 2) : 0)) - 0.81 * (n >= 2 ? yv[n - 2] : 0));
+  layer(b, hline(X(-0.5), X(40.5), y0));
+  label(b, 'call starts', X(0) - 10, y0 + 90, 'lbl s');
+  const last = END - 36;
+  for (let n = 0; n <= 40; n++) {
+    const at = Math.round(ev + (last - ev) * n / 40);
+    if (n % 2) { M.show(layer(b, `<circle cx="${X(n)}" cy="${y0}" r="6" fill="${C.paper}" stroke="${C.soft}" stroke-width="3"/>`), at); continue; }
+    grow(layer(b, stemSvg(X(n), y0, y0 - A * yv[n], n === 0 ? C.ink : C.accent, 6, 11)), X(n), y0, at, 6);
+  }
+  M.show(label(b, 'a faint ring', X(14), 200, 'lbl acc'), ri);
+  M.show(label(b, 'like a bell', 960, 690, 'note big', 'center'), bl);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

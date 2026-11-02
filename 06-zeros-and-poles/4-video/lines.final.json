@@ -1,0 +1,2412 @@
+[
+ {
+  "i": 1,
+  "text": "The bridge is clean. Then the tickets start. A thin, high whine on every call. The meter says exactly four thousand hertz, the limit. A cheap clock chip leaks its tick into your samples. Can a few lines of code remove the whine and leave the voice alone?",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line01.wav",
+  "dur": 12.22,
+  "coverage": 1.0,
+  "start": 0.0,
+  "end": 12.22,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.28
+   },
+   {
+    "word": "bridge",
+    "start": 0.28,
+    "end": 0.5
+   },
+   {
+    "word": "is",
+    "start": 0.5,
+    "end": 0.64
+   },
+   {
+    "word": "clean.",
+    "start": 0.64,
+    "end": 1.12
+   },
+   {
+    "word": "Then",
+    "start": 1.12,
+    "end": 1.4
+   },
+   {
+    "word": "the",
+    "start": 1.4,
+    "end": 1.52
+   },
+   {
+    "word": "tickets",
+    "start": 1.52,
+    "end": 1.78
+   },
+   {
+    "word": "start.",
+    "start": 1.78,
+    "end": 2.26
+   },
+   {
+    "word": "A",
+    "start": 2.26,
+    "end": 2.46
+   },
+   {
+    "word": "thin,",
+    "start": 2.46,
+    "end": 2.82
+   },
+   {
+    "word": "high",
+    "start": 2.82,
+    "end": 2.96
+   },
+   {
+    "word": "whine",
+    "start": 2.96,
+    "end": 3.2
+   },
+   {
+    "word": "on",
+    "start": 3.2,
+    "end": 3.34
+   },
+   {
+    "word": "every",
+    "start": 3.34,
+    "end": 3.56
+   },
+   {
+    "word": "call.",
+    "start": 3.56,
+    "end": 4.04
+   },
+   {
+    "word": "The",
+    "start": 4.24,
+    "end": 4.32
+   },
+   {
+    "word": "meter",
+    "start": 4.32,
+    "end": 4.52
+   },
+   {
+    "word": "says",
+    "start": 4.52,
+    "end": 4.78
+   },
+   {
+    "word": "exactly",
+    "start": 4.78,
+    "end": 5.2
+   },
+   {
+    "word": "4000",
+    "start": 5.2,
+    "end": 5.74
+   },
+   {
+    "word": "Hz",
+    "start": 5.74,
+    "end": 6.06
+   },
+   {
+    "word": "the",
+    "start": 6.06,
+    "end": 6.28
+   },
+   {
+    "word": "limit.",
+    "start": 6.28,
+    "end": 6.62
+   },
+   {
+    "word": "A",
+    "start": 6.62,
+    "end": 6.8
+   },
+   {
+    "word": "cheap",
+    "start": 6.8,
+    "end": 7.04
+   },
+   {
+    "word": "clock",
+    "start": 7.04,
+    "end": 7.3
+   },
+   {
+    "word": "chip",
+    "start": 7.3,
+    "end": 7.56
+   },
+   {
+    "word": "leaks",
+    "start": 7.56,
+    "end": 7.8
+   },
+   {
+    "word": "its",
+    "start": 7.8,
+    "end": 8.0
+   },
+   {
+    "word": "tick",
+    "start": 8.0,
+    "end": 8.2
+   },
+   {
+    "word": "into",
+    "start": 8.2,
+    "end": 8.4
+   },
+   {
+    "word": "your",
+    "start": 8.4,
+    "end": 8.56
+   },
+   {
+    "word": "samples.",
+    "start": 8.56,
+    "end": 9.2
+   },
+   {
+    "word": "Can",
+    "start": 9.38,
+    "end": 9.48
+   },
+   {
+    "word": "a",
+    "start": 9.48,
+    "end": 9.58
+   },
+   {
+    "word": "few",
+    "start": 9.58,
+    "end": 9.7
+   },
+   {
+    "word": "lines",
+    "start": 9.7,
+    "end": 9.96
+   },
+   {
+    "word": "of",
+    "start": 9.96,
+    "end": 10.1
+   },
+   {
+    "word": "code",
+    "start": 10.1,
+    "end": 10.36
+   },
+   {
+    "word": "remove",
+    "start": 10.36,
+    "end": 10.62
+   },
+   {
+    "word": "the",
+    "start": 10.62,
+    "end": 10.82
+   },
+   {
+    "word": "whine",
+    "start": 10.82,
+    "end": 11.08
+   },
+   {
+    "word": "and",
+    "start": 11.08,
+    "end": 11.2
+   },
+   {
+    "word": "leave",
+    "start": 11.2,
+    "end": 11.38
+   },
+   {
+    "word": "the",
+    "start": 11.38,
+    "end": 11.48
+   },
+   {
+    "word": "voice",
+    "start": 11.48,
+    "end": 11.72
+   },
+   {
+    "word": "alone?",
+    "start": 11.72,
+    "end": 12.14
+   }
+  ]
+ },
+ {
+  "i": 2,
+  "text": "Try the laziest idea. Average each sample with the one before it. The whine's samples flip, up, down, up, down, so every average is zero. Gone. A slow voice tone, five hundred hertz, comes out a touch smaller, half a sample late.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line02.wav",
+  "dur": 10.75,
+  "coverage": 0.97,
+  "start": 12.22,
+  "end": 22.97,
+  "words": [
+   {
+    "word": "Try",
+    "start": 0.0,
+    "end": 0.34
+   },
+   {
+    "word": "the",
+    "start": 0.34,
+    "end": 0.46
+   },
+   {
+    "word": "laziest",
+    "start": 0.46,
+    "end": 0.8
+   },
+   {
+    "word": "idea.",
+    "start": 0.8,
+    "end": 1.46
+   },
+   {
+    "word": "Average",
+    "start": 1.46,
+    "end": 1.86
+   },
+   {
+    "word": "each",
+    "start": 1.86,
+    "end": 2.06
+   },
+   {
+    "word": "sample",
+    "start": 2.06,
+    "end": 2.36
+   },
+   {
+    "word": "with",
+    "start": 2.36,
+    "end": 2.52
+   },
+   {
+    "word": "the",
+    "start": 2.52,
+    "end": 2.62
+   },
+   {
+    "word": "one",
+    "start": 2.62,
+    "end": 2.76
+   },
+   {
+    "word": "before",
+    "start": 2.76,
+    "end": 3.0
+   },
+   {
+    "word": "it.",
+    "start": 3.0,
+    "end": 3.4
+   },
+   {
+    "word": "The",
+    "start": 3.5,
+    "end": 3.56
+   },
+   {
+    "word": "wine",
+    "start": 3.56,
+    "end": 3.76
+   },
+   {
+    "word": "samples",
+    "start": 3.76,
+    "end": 4.12
+   },
+   {
+    "word": "flip",
+    "start": 4.12,
+    "end": 4.44
+   },
+   {
+    "word": "up",
+    "start": 4.44,
+    "end": 4.64
+   },
+   {
+    "word": "down",
+    "start": 4.64,
+    "end": 4.82
+   },
+   {
+    "word": "up",
+    "start": 4.82,
+    "end": 4.98
+   },
+   {
+    "word": "down",
+    "start": 4.98,
+    "end": 5.22
+   },
+   {
+    "word": "so",
+    "start": 5.22,
+    "end": 5.4
+   },
+   {
+    "word": "every",
+    "start": 5.4,
+    "end": 5.62
+   },
+   {
+    "word": "average",
+    "start": 5.62,
+    "end": 5.94
+   },
+   {
+    "word": "is",
+    "start": 5.94,
+    "end": 6.1
+   },
+   {
+    "word": "zero.",
+    "start": 6.1,
+    "end": 6.64
+   },
+   {
+    "word": "Gone.",
+    "start": 6.72,
+    "end": 7.06
+   },
+   {
+    "word": "A",
+    "start": 7.06,
+    "end": 7.2
+   },
+   {
+    "word": "slow",
+    "start": 7.2,
+    "end": 7.4
+   },
+   {
+    "word": "voice",
+    "start": 7.4,
+    "end": 7.66
+   },
+   {
+    "word": "tone",
+    "start": 7.66,
+    "end": 7.92
+   },
+   {
+    "word": "500",
+    "start": 7.92,
+    "end": 8.3
+   },
+   {
+    "word": "Hz",
+    "start": 8.3,
+    "end": 8.62
+   },
+   {
+    "word": "comes",
+    "start": 8.62,
+    "end": 8.92
+   },
+   {
+    "word": "out",
+    "start": 8.92,
+    "end": 9.06
+   },
+   {
+    "word": "a",
+    "start": 9.06,
+    "end": 9.16
+   },
+   {
+    "word": "touch",
+    "start": 9.16,
+    "end": 9.32
+   },
+   {
+    "word": "smaller",
+    "start": 9.32,
+    "end": 9.68
+   },
+   {
+    "word": "half",
+    "start": 9.68,
+    "end": 9.9
+   },
+   {
+    "word": "a",
+    "start": 9.9,
+    "end": 10.02
+   },
+   {
+    "word": "sample",
+    "start": 10.02,
+    "end": 10.28
+   },
+   {
+    "word": "late.",
+    "start": 10.28,
+    "end": 10.6
+   }
+  ]
+ },
+ {
+  "i": 3,
+  "text": "Why? Lesson three's wheel. Put every tone on one wheel at once, at the spot its dot reaches after one sample. That's the unit circle. Zero hertz at the right, two thousand at the top, four thousand at the left. The whine flips, so it sits at the far left.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line03.wav",
+  "dur": 12.08,
+  "coverage": 0.95,
+  "start": 22.97,
+  "end": 35.05,
+  "words": [
+   {
+    "word": "Why?",
+    "start": 0.0,
+    "end": 0.58
+   },
+   {
+    "word": "Lesson",
+    "start": 0.64,
+    "end": 0.92
+   },
+   {
+    "word": "3's",
+    "start": 0.92,
+    "end": 1.24
+   },
+   {
+    "word": "Wheel",
+    "start": 1.24,
+    "end": 1.44
+   },
+   {
+    "word": "Put",
+    "start": 1.62,
+    "end": 1.8
+   },
+   {
+    "word": "every",
+    "start": 1.8,
+    "end": 2.02
+   },
+   {
+    "word": "tone",
+    "start": 2.02,
+    "end": 2.22
+   },
+   {
+    "word": "on",
+    "start": 2.22,
+    "end": 2.42
+   },
+   {
+    "word": "one",
+    "start": 2.42,
+    "end": 2.64
+   },
+   {
+    "word": "wheel",
+    "start": 2.64,
+    "end": 2.84
+   },
+   {
+    "word": "at",
+    "start": 2.84,
+    "end": 3.0
+   },
+   {
+    "word": "once,",
+    "start": 3.0,
+    "end": 3.34
+   },
+   {
+    "word": "at",
+    "start": 3.34,
+    "end": 3.54
+   },
+   {
+    "word": "the",
+    "start": 3.54,
+    "end": 3.64
+   },
+   {
+    "word": "spot",
+    "start": 3.64,
+    "end": 3.9
+   },
+   {
+    "word": "its",
+    "start": 3.9,
+    "end": 4.1
+   },
+   {
+    "word": "dot",
+    "start": 4.1,
+    "end": 4.26
+   },
+   {
+    "word": "reaches",
+    "start": 4.26,
+    "end": 4.54
+   },
+   {
+    "word": "after",
+    "start": 4.54,
+    "end": 4.84
+   },
+   {
+    "word": "one",
+    "start": 4.84,
+    "end": 5.06
+   },
+   {
+    "word": "sample.",
+    "start": 5.06,
+    "end": 5.54
+   },
+   {
+    "word": "That's",
+    "start": 5.66,
+    "end": 5.78
+   },
+   {
+    "word": "the",
+    "start": 5.78,
+    "end": 5.88
+   },
+   {
+    "word": "unit",
+    "start": 5.88,
+    "end": 6.08
+   },
+   {
+    "word": "circle.",
+    "start": 6.08,
+    "end": 6.58
+   },
+   {
+    "word": "0",
+    "start": 6.92,
+    "end": 6.92
+   },
+   {
+    "word": "Hz",
+    "start": 6.92,
+    "end": 7.16
+   },
+   {
+    "word": "at",
+    "start": 7.16,
+    "end": 7.36
+   },
+   {
+    "word": "the",
+    "start": 7.36,
+    "end": 7.46
+   },
+   {
+    "word": "right,",
+    "start": 7.46,
+    "end": 7.9
+   },
+   {
+    "word": "2",
+    "start": 7.9,
+    "end": 8.08
+   },
+   {
+    "word": ",000",
+    "start": 8.08,
+    "end": 8.4
+   },
+   {
+    "word": "at",
+    "start": 8.4,
+    "end": 8.52
+   },
+   {
+    "word": "the",
+    "start": 8.52,
+    "end": 8.64
+   },
+   {
+    "word": "top,",
+    "start": 8.64,
+    "end": 9.02
+   },
+   {
+    "word": "4",
+    "start": 9.02,
+    "end": 9.2
+   },
+   {
+    "word": ",000",
+    "start": 9.2,
+    "end": 9.52
+   },
+   {
+    "word": "at",
+    "start": 9.52,
+    "end": 9.66
+   },
+   {
+    "word": "the",
+    "start": 9.66,
+    "end": 9.78
+   },
+   {
+    "word": "left.",
+    "start": 9.78,
+    "end": 10.1
+   },
+   {
+    "word": "The",
+    "start": 10.14,
+    "end": 10.22
+   },
+   {
+    "word": "wind",
+    "start": 10.22,
+    "end": 10.44
+   },
+   {
+    "word": "flips",
+    "start": 10.44,
+    "end": 10.84
+   },
+   {
+    "word": "so",
+    "start": 10.84,
+    "end": 11.0
+   },
+   {
+    "word": "it",
+    "start": 11.0,
+    "end": 11.12
+   },
+   {
+    "word": "sits",
+    "start": 11.12,
+    "end": 11.32
+   },
+   {
+    "word": "at",
+    "start": 11.32,
+    "end": 11.44
+   },
+   {
+    "word": "the",
+    "start": 11.44,
+    "end": 11.52
+   },
+   {
+    "word": "far",
+    "start": 11.52,
+    "end": 11.72
+   },
+   {
+    "word": "left.",
+    "start": 11.72,
+    "end": 12.02
+   }
+  ]
+ },
+ {
+  "i": 4,
+  "text": "There the average's output is zero, so the point is called a zero. How much of a tone passes is its distance to the zero over two, the distance of zero hertz. Two thousand hertz is one point four one away, so seventy-one percent passes. The whine sits on the zero. Nothing passes.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo-fix/line01.wav",
+  "dur": 13.44,
+  "coverage": 0.93,
+  "start": 0.0,
+  "end": 13.44,
+  "words": [
+   {
+    "word": "There,",
+    "start": 0.0,
+    "end": 0.4
+   },
+   {
+    "word": "the",
+    "start": 0.4,
+    "end": 0.46
+   },
+   {
+    "word": "average's",
+    "start": 0.46,
+    "end": 0.84
+   },
+   {
+    "word": "output",
+    "start": 0.84,
+    "end": 1.1
+   },
+   {
+    "word": "is",
+    "start": 1.1,
+    "end": 1.3
+   },
+   {
+    "word": "zero,",
+    "start": 1.3,
+    "end": 1.72
+   },
+   {
+    "word": "so",
+    "start": 1.72,
+    "end": 1.84
+   },
+   {
+    "word": "the",
+    "start": 1.84,
+    "end": 1.94
+   },
+   {
+    "word": "point",
+    "start": 1.94,
+    "end": 2.14
+   },
+   {
+    "word": "is",
+    "start": 2.14,
+    "end": 2.28
+   },
+   {
+    "word": "called",
+    "start": 2.28,
+    "end": 2.48
+   },
+   {
+    "word": "a",
+    "start": 2.48,
+    "end": 2.64
+   },
+   {
+    "word": "zero.",
+    "start": 2.64,
+    "end": 3.06
+   },
+   {
+    "word": "How",
+    "start": 3.22,
+    "end": 3.28
+   },
+   {
+    "word": "much",
+    "start": 3.28,
+    "end": 3.46
+   },
+   {
+    "word": "of",
+    "start": 3.46,
+    "end": 3.56
+   },
+   {
+    "word": "a",
+    "start": 3.56,
+    "end": 3.66
+   },
+   {
+    "word": "tone",
+    "start": 3.66,
+    "end": 3.8
+   },
+   {
+    "word": "passes",
+    "start": 3.8,
+    "end": 4.18
+   },
+   {
+    "word": "is",
+    "start": 4.18,
+    "end": 4.44
+   },
+   {
+    "word": "its",
+    "start": 4.44,
+    "end": 4.6
+   },
+   {
+    "word": "distance",
+    "start": 4.6,
+    "end": 5.0
+   },
+   {
+    "word": "to",
+    "start": 5.0,
+    "end": 5.2
+   },
+   {
+    "word": "the",
+    "start": 5.2,
+    "end": 5.3
+   },
+   {
+    "word": "zero",
+    "start": 5.3,
+    "end": 5.56
+   },
+   {
+    "word": "over",
+    "start": 5.56,
+    "end": 5.82
+   },
+   {
+    "word": "two,",
+    "start": 5.82,
+    "end": 6.22
+   },
+   {
+    "word": "the",
+    "start": 6.22,
+    "end": 6.36
+   },
+   {
+    "word": "distance",
+    "start": 6.36,
+    "end": 6.64
+   },
+   {
+    "word": "of",
+    "start": 6.64,
+    "end": 6.8
+   },
+   {
+    "word": "zero",
+    "start": 6.8,
+    "end": 7.06
+   },
+   {
+    "word": "hertz.",
+    "start": 7.06,
+    "end": 7.52
+   },
+   {
+    "word": "2",
+    "start": 7.62,
+    "end": 7.72
+   },
+   {
+    "word": ",000",
+    "start": 7.72,
+    "end": 8.1
+   },
+   {
+    "word": "hertz",
+    "start": 8.1,
+    "end": 8.26
+   },
+   {
+    "word": "is",
+    "start": 8.26,
+    "end": 8.48
+   },
+   {
+    "word": "1",
+    "start": 8.48,
+    "end": 8.68
+   },
+   {
+    "word": ".41",
+    "start": 8.68,
+    "end": 9.18
+   },
+   {
+    "word": "away,",
+    "start": 9.18,
+    "end": 9.62
+   },
+   {
+    "word": "so",
+    "start": 9.62,
+    "end": 9.7
+   },
+   {
+    "word": "71",
+    "start": 9.7,
+    "end": 10.14
+   },
+   {
+    "word": "percent",
+    "start": 10.14,
+    "end": 10.44
+   },
+   {
+    "word": "passes.",
+    "start": 10.44,
+    "end": 11.12
+   },
+   {
+    "word": "The",
+    "start": 11.26,
+    "end": 11.32
+   },
+   {
+    "word": "wine",
+    "start": 11.32,
+    "end": 11.52
+   },
+   {
+    "word": "sits",
+    "start": 11.52,
+    "end": 11.78
+   },
+   {
+    "word": "on",
+    "start": 11.78,
+    "end": 11.92
+   },
+   {
+    "word": "the",
+    "start": 11.92,
+    "end": 12.04
+   },
+   {
+    "word": "zero,",
+    "start": 12.04,
+    "end": 12.58
+   },
+   {
+    "word": "nothing",
+    "start": 12.58,
+    "end": 12.8
+   },
+   {
+    "word": "passes.",
+    "start": 12.8,
+    "end": 13.34
+   }
+  ]
+ },
+ {
+  "i": 5,
+  "text": "Then the chip is swapped, and the whine comes back at two thousand hertz, at the top. A real tone is two half-size arrows turning opposite ways, the mirror arrow on the bottom half. So it needs a zero pair. Average each sample with the one two back, and it's gone again.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line05.wav",
+  "dur": 12.83,
+  "coverage": 0.96,
+  "start": 48.95,
+  "end": 61.78,
+  "words": [
+   {
+    "word": "Then",
+    "start": 0.0,
+    "end": 0.28
+   },
+   {
+    "word": "the",
+    "start": 0.28,
+    "end": 0.4
+   },
+   {
+    "word": "chip",
+    "start": 0.4,
+    "end": 0.56
+   },
+   {
+    "word": "is",
+    "start": 0.56,
+    "end": 0.72
+   },
+   {
+    "word": "swapped",
+    "start": 0.72,
+    "end": 1.06
+   },
+   {
+    "word": "and",
+    "start": 1.06,
+    "end": 1.28
+   },
+   {
+    "word": "the",
+    "start": 1.28,
+    "end": 1.38
+   },
+   {
+    "word": "wine",
+    "start": 1.38,
+    "end": 1.6
+   },
+   {
+    "word": "comes",
+    "start": 1.6,
+    "end": 1.88
+   },
+   {
+    "word": "back",
+    "start": 1.88,
+    "end": 2.06
+   },
+   {
+    "word": "at",
+    "start": 2.06,
+    "end": 2.24
+   },
+   {
+    "word": "2000",
+    "start": 2.24,
+    "end": 2.6
+   },
+   {
+    "word": "Hz",
+    "start": 2.6,
+    "end": 2.94
+   },
+   {
+    "word": "at",
+    "start": 2.94,
+    "end": 3.18
+   },
+   {
+    "word": "the",
+    "start": 3.18,
+    "end": 3.3
+   },
+   {
+    "word": "top.",
+    "start": 3.3,
+    "end": 3.74
+   },
+   {
+    "word": "A",
+    "start": 3.96,
+    "end": 4.02
+   },
+   {
+    "word": "real",
+    "start": 4.02,
+    "end": 4.22
+   },
+   {
+    "word": "tone",
+    "start": 4.22,
+    "end": 4.44
+   },
+   {
+    "word": "is",
+    "start": 4.44,
+    "end": 4.6
+   },
+   {
+    "word": "two",
+    "start": 4.6,
+    "end": 4.78
+   },
+   {
+    "word": "half",
+    "start": 4.78,
+    "end": 4.98
+   },
+   {
+    "word": "-size",
+    "start": 4.98,
+    "end": 5.18
+   },
+   {
+    "word": "arrows",
+    "start": 5.18,
+    "end": 5.5
+   },
+   {
+    "word": "turning",
+    "start": 5.5,
+    "end": 5.78
+   },
+   {
+    "word": "opposite",
+    "start": 5.78,
+    "end": 6.16
+   },
+   {
+    "word": "ways,",
+    "start": 6.16,
+    "end": 6.58
+   },
+   {
+    "word": "the",
+    "start": 6.58,
+    "end": 6.76
+   },
+   {
+    "word": "mirror",
+    "start": 6.76,
+    "end": 7.0
+   },
+   {
+    "word": "arrow",
+    "start": 7.0,
+    "end": 7.3
+   },
+   {
+    "word": "on",
+    "start": 7.3,
+    "end": 7.44
+   },
+   {
+    "word": "the",
+    "start": 7.44,
+    "end": 7.54
+   },
+   {
+    "word": "bottom",
+    "start": 7.54,
+    "end": 7.76
+   },
+   {
+    "word": "half.",
+    "start": 7.76,
+    "end": 8.26
+   },
+   {
+    "word": "So",
+    "start": 8.6,
+    "end": 8.7
+   },
+   {
+    "word": "it",
+    "start": 8.7,
+    "end": 8.78
+   },
+   {
+    "word": "needs",
+    "start": 8.78,
+    "end": 8.94
+   },
+   {
+    "word": "a",
+    "start": 8.94,
+    "end": 9.06
+   },
+   {
+    "word": "zero",
+    "start": 9.06,
+    "end": 9.3
+   },
+   {
+    "word": "pair.",
+    "start": 9.3,
+    "end": 9.84
+   },
+   {
+    "word": "Average",
+    "start": 9.84,
+    "end": 10.26
+   },
+   {
+    "word": "each",
+    "start": 10.26,
+    "end": 10.5
+   },
+   {
+    "word": "sample",
+    "start": 10.5,
+    "end": 10.84
+   },
+   {
+    "word": "with",
+    "start": 10.84,
+    "end": 11.0
+   },
+   {
+    "word": "the",
+    "start": 11.0,
+    "end": 11.12
+   },
+   {
+    "word": "one",
+    "start": 11.12,
+    "end": 11.28
+   },
+   {
+    "word": "two",
+    "start": 11.28,
+    "end": 11.48
+   },
+   {
+    "word": "back",
+    "start": 11.48,
+    "end": 11.76
+   },
+   {
+    "word": "and",
+    "start": 11.76,
+    "end": 11.92
+   },
+   {
+    "word": "it's",
+    "start": 11.92,
+    "end": 12.08
+   },
+   {
+    "word": "gone",
+    "start": 12.08,
+    "end": 12.22
+   },
+   {
+    "word": "again.",
+    "start": 12.22,
+    "end": 12.66
+   }
+  ]
+ },
+ {
+  "i": 6,
+  "text": "Next ticket. Everyone sounds like they're talking through a sock. Zeros weaken their neighbors too. Fifteen hundred hertz is zero point three nine and one point nine six from the zeros. That's zero point seven seven, against two for zero hertz. Just thirty-eight percent.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo-fix/line02.wav",
+  "dur": 13.32,
+  "coverage": 0.8,
+  "start": 13.44,
+  "end": 26.76,
+  "words": [
+   {
+    "word": "Next",
+    "start": 0.0,
+    "end": 0.38
+   },
+   {
+    "word": "ticket.",
+    "start": 0.38,
+    "end": 0.78
+   },
+   {
+    "word": "Everyone",
+    "start": 0.78,
+    "end": 1.08
+   },
+   {
+    "word": "sounds",
+    "start": 1.08,
+    "end": 1.42
+   },
+   {
+    "word": "like",
+    "start": 1.42,
+    "end": 1.6
+   },
+   {
+    "word": "they're",
+    "start": 1.6,
+    "end": 1.76
+   },
+   {
+    "word": "talking",
+    "start": 1.76,
+    "end": 2.02
+   },
+   {
+    "word": "through",
+    "start": 2.02,
+    "end": 2.24
+   },
+   {
+    "word": "a",
+    "start": 2.24,
+    "end": 2.4
+   },
+   {
+    "word": "sock.",
+    "start": 2.4,
+    "end": 2.98
+   },
+   {
+    "word": "Zeros",
+    "start": 3.4,
+    "end": 3.72
+   },
+   {
+    "word": "weaken",
+    "start": 3.72,
+    "end": 4.0
+   },
+   {
+    "word": "their",
+    "start": 4.0,
+    "end": 4.2
+   },
+   {
+    "word": "neighbors,",
+    "start": 4.2,
+    "end": 4.64
+   },
+   {
+    "word": "too.",
+    "start": 4.64,
+    "end": 4.96
+   },
+   {
+    "word": "1500",
+    "start": 5.38,
+    "end": 5.38
+   },
+   {
+    "word": "hertz",
+    "start": 5.38,
+    "end": 5.74
+   },
+   {
+    "word": "is",
+    "start": 5.74,
+    "end": 6.04
+   },
+   {
+    "word": "0",
+    "start": 6.04,
+    "end": 6.32
+   },
+   {
+    "word": ".39",
+    "start": 6.32,
+    "end": 6.96
+   },
+   {
+    "word": "and",
+    "start": 6.96,
+    "end": 7.38
+   },
+   {
+    "word": "1",
+    "start": 7.38,
+    "end": 7.56
+   },
+   {
+    "word": ".96",
+    "start": 7.56,
+    "end": 8.1
+   },
+   {
+    "word": "from",
+    "start": 8.1,
+    "end": 8.36
+   },
+   {
+    "word": "the",
+    "start": 8.36,
+    "end": 8.5
+   },
+   {
+    "word": "zeros.",
+    "start": 8.5,
+    "end": 9.0
+   },
+   {
+    "word": "That's",
+    "start": 9.18,
+    "end": 9.34
+   },
+   {
+    "word": "0",
+    "start": 9.34,
+    "end": 9.58
+   },
+   {
+    "word": ".77",
+    "start": 9.58,
+    "end": 10.32
+   },
+   {
+    "word": "against",
+    "start": 10.32,
+    "end": 10.84
+   },
+   {
+    "word": "2",
+    "start": 10.84,
+    "end": 11.1
+   },
+   {
+    "word": "for",
+    "start": 11.1,
+    "end": 11.26
+   },
+   {
+    "word": "0",
+    "start": 11.26,
+    "end": 11.5
+   },
+   {
+    "word": "hertz.",
+    "start": 11.5,
+    "end": 11.96
+   },
+   {
+    "word": "Just",
+    "start": 12.14,
+    "end": 12.24
+   },
+   {
+    "word": "38%.",
+    "start": 12.24,
+    "end": 12.98
+   }
+  ]
+ },
+ {
+  "i": 7,
+  "text": "So let the filter listen to itself, reusing its own output, two samples back. That feedback puts poles just inside the rim, beside the zeros. Divide by the distance to each pole. From fifteen hundred hertz, the zero and the pole look equally far, so they cancel. [surprise-oh] Ninety-seven percent. The whine still sits on its zero. That's a notch.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo-fix/line03.wav",
+  "dur": 16.77,
+  "coverage": 0.91,
+  "start": 26.76,
+  "end": 43.53,
+  "words": [
+   {
+    "word": "So",
+    "start": 0.0,
+    "end": 0.28
+   },
+   {
+    "word": "let",
+    "start": 0.28,
+    "end": 0.44
+   },
+   {
+    "word": "the",
+    "start": 0.44,
+    "end": 0.56
+   },
+   {
+    "word": "filter",
+    "start": 0.56,
+    "end": 0.78
+   },
+   {
+    "word": "listen",
+    "start": 0.78,
+    "end": 1.08
+   },
+   {
+    "word": "to",
+    "start": 1.08,
+    "end": 1.24
+   },
+   {
+    "word": "itself,",
+    "start": 1.24,
+    "end": 1.74
+   },
+   {
+    "word": "reusing",
+    "start": 1.74,
+    "end": 2.1
+   },
+   {
+    "word": "its",
+    "start": 2.1,
+    "end": 2.3
+   },
+   {
+    "word": "own",
+    "start": 2.3,
+    "end": 2.4
+   },
+   {
+    "word": "output,",
+    "start": 2.4,
+    "end": 2.82
+   },
+   {
+    "word": "two",
+    "start": 2.82,
+    "end": 2.98
+   },
+   {
+    "word": "samples",
+    "start": 2.98,
+    "end": 3.3
+   },
+   {
+    "word": "back.",
+    "start": 3.3,
+    "end": 3.8
+   },
+   {
+    "word": "That",
+    "start": 4.0,
+    "end": 4.14
+   },
+   {
+    "word": "feedback",
+    "start": 4.14,
+    "end": 4.4
+   },
+   {
+    "word": "puts",
+    "start": 4.4,
+    "end": 4.7
+   },
+   {
+    "word": "poles",
+    "start": 4.7,
+    "end": 4.98
+   },
+   {
+    "word": "just",
+    "start": 4.98,
+    "end": 5.28
+   },
+   {
+    "word": "inside",
+    "start": 5.28,
+    "end": 5.58
+   },
+   {
+    "word": "the",
+    "start": 5.58,
+    "end": 5.74
+   },
+   {
+    "word": "rim,",
+    "start": 5.74,
+    "end": 6.08
+   },
+   {
+    "word": "beside",
+    "start": 6.08,
+    "end": 6.32
+   },
+   {
+    "word": "the",
+    "start": 6.32,
+    "end": 6.48
+   },
+   {
+    "word": "zeros.",
+    "start": 6.48,
+    "end": 7.08
+   },
+   {
+    "word": "Divide",
+    "start": 7.32,
+    "end": 7.54
+   },
+   {
+    "word": "by",
+    "start": 7.54,
+    "end": 7.66
+   },
+   {
+    "word": "the",
+    "start": 7.66,
+    "end": 7.78
+   },
+   {
+    "word": "distance",
+    "start": 7.78,
+    "end": 8.1
+   },
+   {
+    "word": "to",
+    "start": 8.1,
+    "end": 8.3
+   },
+   {
+    "word": "each",
+    "start": 8.3,
+    "end": 8.52
+   },
+   {
+    "word": "pole.",
+    "start": 8.52,
+    "end": 9.04
+   },
+   {
+    "word": "From",
+    "start": 9.28,
+    "end": 9.4
+   },
+   {
+    "word": "1500",
+    "start": 9.4,
+    "end": 9.94
+   },
+   {
+    "word": "Hz,",
+    "start": 9.94,
+    "end": 10.54
+   },
+   {
+    "word": "the",
+    "start": 10.54,
+    "end": 10.64
+   },
+   {
+    "word": "zero",
+    "start": 10.64,
+    "end": 10.86
+   },
+   {
+    "word": "in",
+    "start": 10.86,
+    "end": 10.98
+   },
+   {
+    "word": "the",
+    "start": 10.98,
+    "end": 11.04
+   },
+   {
+    "word": "pole",
+    "start": 11.04,
+    "end": 11.22
+   },
+   {
+    "word": "look",
+    "start": 11.22,
+    "end": 11.38
+   },
+   {
+    "word": "equally",
+    "start": 11.38,
+    "end": 11.66
+   },
+   {
+    "word": "far,",
+    "start": 11.66,
+    "end": 12.06
+   },
+   {
+    "word": "so",
+    "start": 12.06,
+    "end": 12.18
+   },
+   {
+    "word": "they",
+    "start": 12.18,
+    "end": 12.3
+   },
+   {
+    "word": "cancel.",
+    "start": 12.3,
+    "end": 12.96
+   },
+   {
+    "word": "Oh,",
+    "start": 13.24,
+    "end": 13.46
+   },
+   {
+    "word": "97%.",
+    "start": 13.46,
+    "end": 14.14
+   },
+   {
+    "word": "The",
+    "start": 14.14,
+    "end": 14.36
+   },
+   {
+    "word": "wine",
+    "start": 14.36,
+    "end": 14.58
+   },
+   {
+    "word": "still",
+    "start": 14.58,
+    "end": 14.78
+   },
+   {
+    "word": "sits",
+    "start": 14.78,
+    "end": 15.04
+   },
+   {
+    "word": "on",
+    "start": 15.04,
+    "end": 15.16
+   },
+   {
+    "word": "its",
+    "start": 15.16,
+    "end": 15.28
+   },
+   {
+    "word": "zero.",
+    "start": 15.28,
+    "end": 15.7
+   },
+   {
+    "word": "That's",
+    "start": 15.7,
+    "end": 16.08
+   },
+   {
+    "word": "a",
+    "start": 16.08,
+    "end": 16.12
+   },
+   {
+    "word": "notch.",
+    "start": 16.12,
+    "end": 16.6
+   }
+  ]
+ },
+ {
+  "i": 8,
+  "text": "Move the poles out from the center toward the rim, and the notch gets narrower. At zero point nine, nineteen hundred hertz keeps sixty percent. At zero point nine eight, it keeps ninety-seven. So why not put the poles on the rim?",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo-fix/line04.wav",
+  "dur": 11.11,
+  "coverage": 0.83,
+  "start": 43.53,
+  "end": 54.64,
+  "words": [
+   {
+    "word": "Move",
+    "start": 0.0,
+    "end": 0.36
+   },
+   {
+    "word": "the",
+    "start": 0.36,
+    "end": 0.5
+   },
+   {
+    "word": "poles",
+    "start": 0.5,
+    "end": 0.76
+   },
+   {
+    "word": "out",
+    "start": 0.76,
+    "end": 0.98
+   },
+   {
+    "word": "from",
+    "start": 0.98,
+    "end": 1.16
+   },
+   {
+    "word": "the",
+    "start": 1.16,
+    "end": 1.28
+   },
+   {
+    "word": "center",
+    "start": 1.28,
+    "end": 1.52
+   },
+   {
+    "word": "toward",
+    "start": 1.52,
+    "end": 1.8
+   },
+   {
+    "word": "the",
+    "start": 1.8,
+    "end": 1.92
+   },
+   {
+    "word": "rim,",
+    "start": 1.92,
+    "end": 2.26
+   },
+   {
+    "word": "and",
+    "start": 2.26,
+    "end": 2.44
+   },
+   {
+    "word": "the",
+    "start": 2.44,
+    "end": 2.54
+   },
+   {
+    "word": "notch",
+    "start": 2.54,
+    "end": 2.8
+   },
+   {
+    "word": "gets",
+    "start": 2.8,
+    "end": 3.04
+   },
+   {
+    "word": "narrower.",
+    "start": 3.04,
+    "end": 3.66
+   },
+   {
+    "word": "At",
+    "start": 3.82,
+    "end": 3.96
+   },
+   {
+    "word": "0",
+    "start": 3.96,
+    "end": 4.18
+   },
+   {
+    "word": ".9,",
+    "start": 4.18,
+    "end": 4.92
+   },
+   {
+    "word": "1900",
+    "start": 4.92,
+    "end": 5.38
+   },
+   {
+    "word": "Hz",
+    "start": 5.38,
+    "end": 5.86
+   },
+   {
+    "word": "keeps",
+    "start": 5.86,
+    "end": 6.18
+   },
+   {
+    "word": "60%.",
+    "start": 6.18,
+    "end": 6.78
+   },
+   {
+    "word": "At",
+    "start": 7.3,
+    "end": 7.38
+   },
+   {
+    "word": "0",
+    "start": 7.38,
+    "end": 7.6
+   },
+   {
+    "word": ".98,",
+    "start": 7.6,
+    "end": 8.26
+   },
+   {
+    "word": "it",
+    "start": 8.26,
+    "end": 8.36
+   },
+   {
+    "word": "keeps",
+    "start": 8.36,
+    "end": 8.6
+   },
+   {
+    "word": "97.",
+    "start": 8.6,
+    "end": 8.98
+   },
+   {
+    "word": "So",
+    "start": 9.54,
+    "end": 9.66
+   },
+   {
+    "word": "why",
+    "start": 9.66,
+    "end": 9.82
+   },
+   {
+    "word": "not",
+    "start": 9.82,
+    "end": 10.0
+   },
+   {
+    "word": "put",
+    "start": 10.0,
+    "end": 10.16
+   },
+   {
+    "word": "the",
+    "start": 10.16,
+    "end": 10.28
+   },
+   {
+    "word": "poles",
+    "start": 10.28,
+    "end": 10.54
+   },
+   {
+    "word": "on",
+    "start": 10.54,
+    "end": 10.66
+   },
+   {
+    "word": "the",
+    "start": 10.66,
+    "end": 10.76
+   },
+   {
+    "word": "rim?",
+    "start": 10.76,
+    "end": 11.02
+   }
+  ]
+ },
+ {
+  "i": 9,
+  "text": "Send the feedback loop one click. Every sample, its echo keeps zero point nine of itself, the pole's radius. Inside the circle, the echo dies out. On the rim, it rings forever. Outside, it blows up. A filter with every pole inside is stable.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line09.wav",
+  "dur": 11.6,
+  "coverage": 0.98,
+  "start": 102.47,
+  "end": 114.07,
+  "words": [
+   {
+    "word": "Send",
+    "start": 0.0,
+    "end": 0.36
+   },
+   {
+    "word": "the",
+    "start": 0.36,
+    "end": 0.48
+   },
+   {
+    "word": "feedback",
+    "start": 0.48,
+    "end": 0.76
+   },
+   {
+    "word": "loop",
+    "start": 0.76,
+    "end": 1.06
+   },
+   {
+    "word": "one",
+    "start": 1.06,
+    "end": 1.28
+   },
+   {
+    "word": "click.",
+    "start": 1.28,
+    "end": 1.74
+   },
+   {
+    "word": "Every",
+    "start": 1.9,
+    "end": 2.02
+   },
+   {
+    "word": "sample",
+    "start": 2.02,
+    "end": 2.34
+   },
+   {
+    "word": "its",
+    "start": 2.34,
+    "end": 2.54
+   },
+   {
+    "word": "echo",
+    "start": 2.54,
+    "end": 2.78
+   },
+   {
+    "word": "keeps",
+    "start": 2.78,
+    "end": 3.04
+   },
+   {
+    "word": "0",
+    "start": 3.04,
+    "end": 3.28
+   },
+   {
+    "word": ".9",
+    "start": 3.28,
+    "end": 3.7
+   },
+   {
+    "word": "of",
+    "start": 3.7,
+    "end": 3.82
+   },
+   {
+    "word": "itself,",
+    "start": 3.82,
+    "end": 4.2
+   },
+   {
+    "word": "the",
+    "start": 4.2,
+    "end": 4.32
+   },
+   {
+    "word": "pole's",
+    "start": 4.32,
+    "end": 4.62
+   },
+   {
+    "word": "radius.",
+    "start": 4.62,
+    "end": 5.2
+   },
+   {
+    "word": "Inside",
+    "start": 5.46,
+    "end": 5.64
+   },
+   {
+    "word": "the",
+    "start": 5.64,
+    "end": 5.82
+   },
+   {
+    "word": "circle",
+    "start": 5.82,
+    "end": 6.12
+   },
+   {
+    "word": "the",
+    "start": 6.12,
+    "end": 6.3
+   },
+   {
+    "word": "echo",
+    "start": 6.3,
+    "end": 6.56
+   },
+   {
+    "word": "dies",
+    "start": 6.56,
+    "end": 6.8
+   },
+   {
+    "word": "out,",
+    "start": 6.8,
+    "end": 7.12
+   },
+   {
+    "word": "on",
+    "start": 7.12,
+    "end": 7.32
+   },
+   {
+    "word": "the",
+    "start": 7.32,
+    "end": 7.4
+   },
+   {
+    "word": "rim",
+    "start": 7.4,
+    "end": 7.58
+   },
+   {
+    "word": "it",
+    "start": 7.58,
+    "end": 7.68
+   },
+   {
+    "word": "rings",
+    "start": 7.68,
+    "end": 7.88
+   },
+   {
+    "word": "forever.",
+    "start": 7.88,
+    "end": 8.44
+   },
+   {
+    "word": "Outside",
+    "start": 8.58,
+    "end": 8.82
+   },
+   {
+    "word": "it",
+    "start": 8.82,
+    "end": 9.04
+   },
+   {
+    "word": "blows",
+    "start": 9.04,
+    "end": 9.26
+   },
+   {
+    "word": "up,",
+    "start": 9.26,
+    "end": 9.62
+   },
+   {
+    "word": "a",
+    "start": 9.62,
+    "end": 9.74
+   },
+   {
+    "word": "filter",
+    "start": 9.74,
+    "end": 10.0
+   },
+   {
+    "word": "with",
+    "start": 10.0,
+    "end": 10.22
+   },
+   {
+    "word": "every",
+    "start": 10.22,
+    "end": 10.46
+   },
+   {
+    "word": "pole",
+    "start": 10.46,
+    "end": 10.68
+   },
+   {
+    "word": "inside",
+    "start": 10.68,
+    "end": 10.94
+   },
+   {
+    "word": "is",
+    "start": 10.94,
+    "end": 11.16
+   },
+   {
+    "word": "stable.",
+    "start": 11.16,
+    "end": 11.54
+   }
+  ]
+ },
+ {
+  "i": 10,
+  "text": "The filter never hunts for the whine. It treats every tone by its point on the circle, even a sung two thousand hertz note. [sigh] Then a new ticket. Every time a call starts, a faint ring at two thousand hertz is left behind, like a bell.",
+  "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/06-zeros-and-poles/4-video/vo/line10.wav",
+  "dur": 11.38,
+  "coverage": 0.97,
+  "start": 114.07,
+  "end": 125.45,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.26
+   },
+   {
+    "word": "filter",
+    "start": 0.26,
+    "end": 0.52
+   },
+   {
+    "word": "never",
+    "start": 0.52,
+    "end": 0.78
+   },
+   {
+    "word": "hunts",
+    "start": 0.78,
+    "end": 1.08
+   },
+   {
+    "word": "for",
+    "start": 1.08,
+    "end": 1.2
+   },
+   {
+    "word": "the",
+    "start": 1.2,
+    "end": 1.3
+   },
+   {
+    "word": "wine.",
+    "start": 1.3,
+    "end": 1.76
+   },
+   {
+    "word": "It",
+    "start": 1.76,
+    "end": 1.96
+   },
+   {
+    "word": "treats",
+    "start": 1.96,
+    "end": 2.18
+   },
+   {
+    "word": "every",
+    "start": 2.18,
+    "end": 2.46
+   },
+   {
+    "word": "tone",
+    "start": 2.46,
+    "end": 2.68
+   },
+   {
+    "word": "by",
+    "start": 2.68,
+    "end": 2.9
+   },
+   {
+    "word": "its",
+    "start": 2.9,
+    "end": 3.08
+   },
+   {
+    "word": "point",
+    "start": 3.08,
+    "end": 3.3
+   },
+   {
+    "word": "on",
+    "start": 3.3,
+    "end": 3.42
+   },
+   {
+    "word": "the",
+    "start": 3.42,
+    "end": 3.52
+   },
+   {
+    "word": "circle,",
+    "start": 3.52,
+    "end": 4.04
+   },
+   {
+    "word": "even",
+    "start": 4.2,
+    "end": 4.36
+   },
+   {
+    "word": "a",
+    "start": 4.36,
+    "end": 4.5
+   },
+   {
+    "word": "sung",
+    "start": 4.5,
+    "end": 4.72
+   },
+   {
+    "word": "2000",
+    "start": 4.72,
+    "end": 5.08
+   },
+   {
+    "word": "Hz",
+    "start": 5.08,
+    "end": 5.38
+   },
+   {
+    "word": "note.",
+    "start": 5.38,
+    "end": 5.92
+   },
+   {
+    "word": "Aye,",
+    "start": 5.92,
+    "end": 6.38
+   },
+   {
+    "word": "then",
+    "start": 6.38,
+    "end": 6.5
+   },
+   {
+    "word": "a",
+    "start": 6.5,
+    "end": 6.6
+   },
+   {
+    "word": "new",
+    "start": 6.6,
+    "end": 6.72
+   },
+   {
+    "word": "ticket.",
+    "start": 6.72,
+    "end": 7.3
+   },
+   {
+    "word": "Every",
+    "start": 7.6,
+    "end": 7.74
+   },
+   {
+    "word": "time",
+    "start": 7.74,
+    "end": 7.9
+   },
+   {
+    "word": "a",
+    "start": 7.9,
+    "end": 8.06
+   },
+   {
+    "word": "call",
+    "start": 8.06,
+    "end": 8.22
+   },
+   {
+    "word": "starts,",
+    "start": 8.22,
+    "end": 8.7
+   },
+   {
+    "word": "a",
+    "start": 8.7,
+    "end": 8.78
+   },
+   {
+    "word": "faint",
+    "start": 8.78,
+    "end": 8.98
+   },
+   {
+    "word": "ring",
+    "start": 8.98,
+    "end": 9.18
+   },
+   {
+    "word": "at",
+    "start": 9.18,
+    "end": 9.3
+   },
+   {
+    "word": "2000",
+    "start": 9.3,
+    "end": 9.64
+   },
+   {
+    "word": "Hz",
+    "start": 9.64,
+    "end": 9.92
+   },
+   {
+    "word": "is",
+    "start": 9.92,
+    "end": 10.14
+   },
+   {
+    "word": "left",
+    "start": 10.14,
+    "end": 10.3
+   },
+   {
+    "word": "behind",
+    "start": 10.3,
+    "end": 10.62
+   },
+   {
+    "word": "like",
+    "start": 10.62,
+    "end": 10.8
+   },
+   {
+    "word": "a",
+    "start": 10.8,
+    "end": 10.88
+   },
+   {
+    "word": "bell.",
+    "start": 10.88,
+    "end": 11.24
+   }
+  ]
+ }
+]

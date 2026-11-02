@@ -25,7 +25,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 3 | Frequency response | ready | ready |
 | 4 | Sampling and aliasing | ready | ready |
 | 5 | Changing the rate | ready | ready |
-| 6 | Zeros and poles | ready | to build |
+| 6 | Zeros and poles | ready | ready |
 | 7 | Ringing | ready | to build |
 | 8 | Phase and delay | ready | to build |
 | 9 | Finite precision | fixed after judge 1, judge 2 running | to build |
