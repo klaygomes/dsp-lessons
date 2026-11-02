@@ -1,0 +1,1917 @@
+{
+ "fps": 30,
+ "duration": 137.38,
+ "wpm": 211,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The notch from the last lesson is live on every call, and the whine at two thousand hertz is gone. Then new tickets arrive. Every time a call connects, I hear a little tink, like someone tapped a tiny bell.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 10.43,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "The",
+     "frame": 18
+    },
+    {
+     "word": "notch",
+     "frame": 26
+    },
+    {
+     "word": "from",
+     "frame": 34
+    },
+    {
+     "word": "the",
+     "frame": 38
+    },
+    {
+     "word": "last",
+     "frame": 42
+    },
+    {
+     "word": "lesson",
+     "frame": 49
+    },
+    {
+     "word": "is",
+     "frame": 59
+    },
+    {
+     "word": "live",
+     "frame": 64
+    },
+    {
+     "word": "on",
+     "frame": 73
+    },
+    {
+     "word": "every",
+     "frame": 78
+    },
+    {
+     "word": "call",
+     "frame": 85
+    },
+    {
+     "word": "and",
+     "frame": 95
+    },
+    {
+     "word": "the",
+     "frame": 101
+    },
+    {
+     "word": "wine",
+     "frame": 103
+    },
+    {
+     "word": "at",
+     "frame": 109
+    },
+    {
+     "word": "2000",
+     "frame": 113
+    },
+    {
+     "word": "Hz",
+     "frame": 123
+    },
+    {
+     "word": "is",
+     "frame": 132
+    },
+    {
+     "word": "gone.",
+     "frame": 139
+    },
+    {
+     "word": "Then",
+     "frame": 157
+    },
+    {
+     "word": "new",
+     "frame": 161
+    },
+    {
+     "word": "tickets",
+     "frame": 167
+    },
+    {
+     "word": "arrive.",
+     "frame": 176
+    },
+    {
+     "word": "Every",
+     "frame": 194
+    },
+    {
+     "word": "time",
+     "frame": 204
+    },
+    {
+     "word": "a",
+     "frame": 209
+    },
+    {
+     "word": "call",
+     "frame": 214
+    },
+    {
+     "word": "connects,",
+     "frame": 219
+    },
+    {
+     "word": "I",
+     "frame": 236
+    },
+    {
+     "word": "hear",
+     "frame": 238
+    },
+    {
+     "word": "a",
+     "frame": 243
+    },
+    {
+     "word": "little",
+     "frame": 247
+    },
+    {
+     "word": "tink,",
+     "frame": 251
+    },
+    {
+     "word": "like",
+     "frame": 264
+    },
+    {
+     "word": "someone",
+     "frame": 269
+    },
+    {
+     "word": "tapped",
+     "frame": 277
+    },
+    {
+     "word": "a",
+     "frame": 285
+    },
+    {
+     "word": "tiny",
+     "frame": 289
+    },
+    {
+     "word": "bell.",
+     "frame": 295
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Calls start with a relay click. A click should light every tone a little, a flat line on the frequency meter. Instead the meter shows one thin spike, at two thousand hertz. The filter whose whole job is removing two thousand hertz is making it.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line02.wav",
+   "at": 11.03,
+   "start": 11.03,
+   "end": 22.77,
+   "start_frame": 331,
+   "words": [
+    {
+     "word": "Calls",
+     "frame": 331
+    },
+    {
+     "word": "start",
+     "frame": 346
+    },
+    {
+     "word": "with",
+     "frame": 352
+    },
+    {
+     "word": "a",
+     "frame": 357
+    },
+    {
+     "word": "relay",
+     "frame": 360
+    },
+    {
+     "word": "click.",
+     "frame": 367
+    },
+    {
+     "word": "A",
+     "frame": 387
+    },
+    {
+     "word": "click",
+     "frame": 389
+    },
+    {
+     "word": "should",
+     "frame": 396
+    },
+    {
+     "word": "light",
+     "frame": 402
+    },
+    {
+     "word": "every",
+     "frame": 408
+    },
+    {
+     "word": "tone",
+     "frame": 417
+    },
+    {
+     "word": "a",
+     "frame": 424
+    },
+    {
+     "word": "little,",
+     "frame": 429
+    },
+    {
+     "word": "a",
+     "frame": 438
+    },
+    {
+     "word": "flat",
+     "frame": 443
+    },
+    {
+     "word": "line",
+     "frame": 450
+    },
+    {
+     "word": "on",
+     "frame": 458
+    },
+    {
+     "word": "the",
+     "frame": 461
+    },
+    {
+     "word": "frequency",
+     "frame": 464
+    },
+    {
+     "word": "meter.",
+     "frame": 474
+    },
+    {
+     "word": "Instead,",
+     "frame": 496
+    },
+    {
+     "word": "the",
+     "frame": 506
+    },
+    {
+     "word": "meter",
+     "frame": 507
+    },
+    {
+     "word": "shows",
+     "frame": 513
+    },
+    {
+     "word": "one",
+     "frame": 522
+    },
+    {
+     "word": "thin",
+     "frame": 531
+    },
+    {
+     "word": "spike",
+     "frame": 538
+    },
+    {
+     "word": "at",
+     "frame": 550
+    },
+    {
+     "word": "2000",
+     "frame": 559
+    },
+    {
+     "word": "Hz.",
+     "frame": 571
+    },
+    {
+     "word": "The",
+     "frame": 590
+    },
+    {
+     "word": "filter",
+     "frame": 591
+    },
+    {
+     "word": "whose",
+     "frame": 600
+    },
+    {
+     "word": "whole",
+     "frame": 606
+    },
+    {
+     "word": "job",
+     "frame": 613
+    },
+    {
+     "word": "is",
+     "frame": 620
+    },
+    {
+     "word": "removing",
+     "frame": 624
+    },
+    {
+     "word": "2000",
+     "frame": 634
+    },
+    {
+     "word": "Hz",
+     "frame": 644
+    },
+    {
+     "word": "is",
+     "frame": 658
+    },
+    {
+     "word": "making",
+     "frame": 663
+    },
+    {
+     "word": "it.",
+     "frame": 670
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Do what lesson two taught. Send one click through the notch and record what comes back. Point nine oh five, then zero, point one seven two, zero, minus point one three nine. The click lasts one sample. The output keeps going. That's feedback.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line03.wav",
+   "at": 23.77,
+   "start": 23.77,
+   "end": 35.43,
+   "start_frame": 713,
+   "words": [
+    {
+     "word": "Do",
+     "frame": 713
+    },
+    {
+     "word": "what",
+     "frame": 721
+    },
+    {
+     "word": "lesson",
+     "frame": 726
+    },
+    {
+     "word": "two",
+     "frame": 733
+    },
+    {
+     "word": "taught,",
+     "frame": 740
+    },
+    {
+     "word": "send",
+     "frame": 754
+    },
+    {
+     "word": "one",
+     "frame": 760
+    },
+    {
+     "word": "click",
+     "frame": 766
+    },
+    {
+     "word": "through",
+     "frame": 774
+    },
+    {
+     "word": "the",
+     "frame": 779
+    },
+    {
+     "word": "notch",
+     "frame": 783
+    },
+    {
+     "word": "and",
+     "frame": 791
+    },
+    {
+     "word": "record",
+     "frame": 796
+    },
+    {
+     "word": "what",
+     "frame": 806
+    },
+    {
+     "word": "comes",
+     "frame": 812
+    },
+    {
+     "word": "back.",
+     "frame": 819
+    },
+    {
+     "word": "0",
+     "frame": 842
+    },
+    {
+     "word": ".905",
+     "frame": 844
+    },
+    {
+     "word": "then",
+     "frame": 867
+    },
+    {
+     "word": "0",
+     "frame": 874
+    },
+    {
+     "word": ".17220",
+     "frame": 881
+    },
+    {
+     "word": "minus",
+     "frame": 920
+    },
+    {
+     "word": "0",
+     "frame": 933
+    },
+    {
+     "word": ".139.",
+     "frame": 941
+    },
+    {
+     "word": "The",
+     "frame": 964
+    },
+    {
+     "word": "click",
+     "frame": 974
+    },
+    {
+     "word": "lasts",
+     "frame": 980
+    },
+    {
+     "word": "one",
+     "frame": 987
+    },
+    {
+     "word": "sample.",
+     "frame": 993
+    },
+    {
+     "word": "The",
+     "frame": 1009
+    },
+    {
+     "word": "output",
+     "frame": 1012
+    },
+    {
+     "word": "keeps",
+     "frame": 1019
+    },
+    {
+     "word": "going.",
+     "frame": 1026
+    },
+    {
+     "word": "That's",
+     "frame": 1040
+    },
+    {
+     "word": "feedback.",
+     "frame": 1046
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Up, nothing, down, nothing. That's a dot turning ninety degrees per sample, which is two thousand hertz. There's the tink. Over two samples the ring keeps point eight one, so point nine per sample, the poles' radius.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix2/line01.wav",
+   "at": 35.93,
+   "start": 35.93,
+   "end": 46.32,
+   "start_frame": 1078,
+   "words": [
+    {
+     "word": "Up",
+     "frame": 1078
+    },
+    {
+     "word": "nothing,",
+     "frame": 1089
+    },
+    {
+     "word": "down",
+     "frame": 1104
+    },
+    {
+     "word": "nothing.",
+     "frame": 1108
+    },
+    {
+     "word": "That's",
+     "frame": 1124
+    },
+    {
+     "word": "a",
+     "frame": 1132
+    },
+    {
+     "word": "dot",
+     "frame": 1137
+    },
+    {
+     "word": "turning",
+     "frame": 1143
+    },
+    {
+     "word": "90",
+     "frame": 1152
+    },
+    {
+     "word": "degrees",
+     "frame": 1161
+    },
+    {
+     "word": "per",
+     "frame": 1170
+    },
+    {
+     "word": "sample,",
+     "frame": 1177
+    },
+    {
+     "word": "which",
+     "frame": 1192
+    },
+    {
+     "word": "is",
+     "frame": 1196
+    },
+    {
+     "word": "2",
+     "frame": 1200
+    },
+    {
+     "word": ",000",
+     "frame": 1207
+    },
+    {
+     "word": "hertz.",
+     "frame": 1216
+    },
+    {
+     "word": "There's",
+     "frame": 1234
+    },
+    {
+     "word": "the",
+     "frame": 1242
+    },
+    {
+     "word": "tink.",
+     "frame": 1245
+    },
+    {
+     "word": "Over",
+     "frame": 1257
+    },
+    {
+     "word": "two",
+     "frame": 1263
+    },
+    {
+     "word": "samples,",
+     "frame": 1268
+    },
+    {
+     "word": "the",
+     "frame": 1285
+    },
+    {
+     "word": "ring",
+     "frame": 1287
+    },
+    {
+     "word": "keeps",
+     "frame": 1292
+    },
+    {
+     "word": "0",
+     "frame": 1300
+    },
+    {
+     "word": ".81,",
+     "frame": 1306
+    },
+    {
+     "word": "so",
+     "frame": 1320
+    },
+    {
+     "word": "0",
+     "frame": 1329
+    },
+    {
+     "word": ".9",
+     "frame": 1334
+    },
+    {
+     "word": "per",
+     "frame": 1343
+    },
+    {
+     "word": "sample,",
+     "frame": 1350
+    },
+    {
+     "word": "the",
+     "frame": 1362
+    },
+    {
+     "word": "pole's",
+     "frame": 1364
+    },
+    {
+     "word": "radius.",
+     "frame": 1373
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Now take the wheel, and after every ninety degree turn, shrink the dot to point nine. It spirals in. Its shadow, the left-right position, swings up, nothing, down, nothing, smaller each time. The turn sets the pitch. The shrink sets how fast it dies. That spiral is a pole, in time.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line05.wav",
+   "at": 47.12,
+   "start": 47.12,
+   "end": 60.56,
+   "start_frame": 1414,
+   "words": [
+    {
+     "word": "Now",
+     "frame": 1414
+    },
+    {
+     "word": "take",
+     "frame": 1423
+    },
+    {
+     "word": "the",
+     "frame": 1430
+    },
+    {
+     "word": "wheel",
+     "frame": 1433
+    },
+    {
+     "word": "and",
+     "frame": 1440
+    },
+    {
+     "word": "after",
+     "frame": 1445
+    },
+    {
+     "word": "every",
+     "frame": 1451
+    },
+    {
+     "word": "90",
+     "frame": 1459
+    },
+    {
+     "word": "-degree",
+     "frame": 1466
+    },
+    {
+     "word": "turn,",
+     "frame": 1474
+    },
+    {
+     "word": "shrink",
+     "frame": 1487
+    },
+    {
+     "word": "the",
+     "frame": 1494
+    },
+    {
+     "word": "dot",
+     "frame": 1498
+    },
+    {
+     "word": "to",
+     "frame": 1503
+    },
+    {
+     "word": "0",
+     "frame": 1508
+    },
+    {
+     "word": ".9.",
+     "frame": 1513
+    },
+    {
+     "word": "It",
+     "frame": 1529
+    },
+    {
+     "word": "spirals",
+     "frame": 1532
+    },
+    {
+     "word": "in.",
+     "frame": 1544
+    },
+    {
+     "word": "Its",
+     "frame": 1557
+    },
+    {
+     "word": "shadow,",
+     "frame": 1560
+    },
+    {
+     "word": "the",
+     "frame": 1569
+    },
+    {
+     "word": "left",
+     "frame": 1573
+    },
+    {
+     "word": "-right",
+     "frame": 1579
+    },
+    {
+     "word": "position,",
+     "frame": 1583
+    },
+    {
+     "word": "swings",
+     "frame": 1601
+    },
+    {
+     "word": "up,",
+     "frame": 1609
+    },
+    {
+     "word": "nothing",
+     "frame": 1619
+    },
+    {
+     "word": "down,",
+     "frame": 1627
+    },
+    {
+     "word": "nothing",
+     "frame": 1640
+    },
+    {
+     "word": "smaller",
+     "frame": 1646
+    },
+    {
+     "word": "each",
+     "frame": 1659
+    },
+    {
+     "word": "time.",
+     "frame": 1666
+    },
+    {
+     "word": "The",
+     "frame": 1682
+    },
+    {
+     "word": "turn",
+     "frame": 1685
+    },
+    {
+     "word": "sets",
+     "frame": 1691
+    },
+    {
+     "word": "the",
+     "frame": 1698
+    },
+    {
+     "word": "pitch.",
+     "frame": 1703
+    },
+    {
+     "word": "The",
+     "frame": 1716
+    },
+    {
+     "word": "shrink",
+     "frame": 1718
+    },
+    {
+     "word": "sets",
+     "frame": 1725
+    },
+    {
+     "word": "how",
+     "frame": 1732
+    },
+    {
+     "word": "fast",
+     "frame": 1736
+    },
+    {
+     "word": "it",
+     "frame": 1746
+    },
+    {
+     "word": "dies.",
+     "frame": 1750
+    },
+    {
+     "word": "That",
+     "frame": 1763
+    },
+    {
+     "word": "spiral",
+     "frame": 1767
+    },
+    {
+     "word": "is",
+     "frame": 1777
+    },
+    {
+     "word": "a",
+     "frame": 1783
+    },
+    {
+     "word": "pole",
+     "frame": 1785
+    },
+    {
+     "word": "in",
+     "frame": 1794
+    },
+    {
+     "word": "time.",
+     "frame": 1804
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "The decay time is how long the ring takes to shrink to one percent of where it started. Radius point nine gives five and a half milliseconds. Point nine eight gives twenty-eight and a half, five times as long. Halve the gap from pole to circle, and the decay time doubles.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix2/line02.wav",
+   "at": 61.56,
+   "start": 61.56,
+   "end": 74.62,
+   "start_frame": 1847,
+   "words": [
+    {
+     "word": "The",
+     "frame": 1847
+    },
+    {
+     "word": "decay",
+     "frame": 1855
+    },
+    {
+     "word": "time",
+     "frame": 1862
+    },
+    {
+     "word": "is",
+     "frame": 1871
+    },
+    {
+     "word": "how",
+     "frame": 1876
+    },
+    {
+     "word": "long",
+     "frame": 1880
+    },
+    {
+     "word": "the",
+     "frame": 1886
+    },
+    {
+     "word": "ring",
+     "frame": 1891
+    },
+    {
+     "word": "takes",
+     "frame": 1895
+    },
+    {
+     "word": "to",
+     "frame": 1904
+    },
+    {
+     "word": "shrink",
+     "frame": 1910
+    },
+    {
+     "word": "to",
+     "frame": 1916
+    },
+    {
+     "word": "1",
+     "frame": 1921
+    },
+    {
+     "word": "%",
+     "frame": 1927
+    },
+    {
+     "word": "of",
+     "frame": 1934
+    },
+    {
+     "word": "where",
+     "frame": 1942
+    },
+    {
+     "word": "it",
+     "frame": 1946
+    },
+    {
+     "word": "started.",
+     "frame": 1950
+    },
+    {
+     "word": "Radius",
+     "frame": 1974
+    },
+    {
+     "word": "0",
+     "frame": 1981
+    },
+    {
+     "word": ".9",
+     "frame": 1987
+    },
+    {
+     "word": "gives",
+     "frame": 1997
+    },
+    {
+     "word": "5",
+     "frame": 2004
+    },
+    {
+     "word": ".5",
+     "frame": 2014
+    },
+    {
+     "word": "milliseconds.",
+     "frame": 2024
+    },
+    {
+     "word": "0",
+     "frame": 2051
+    },
+    {
+     "word": ".98",
+     "frame": 2060
+    },
+    {
+     "word": "gives",
+     "frame": 2073
+    },
+    {
+     "word": "28",
+     "frame": 2083
+    },
+    {
+     "word": ".5,",
+     "frame": 2095
+    },
+    {
+     "word": "five",
+     "frame": 2109
+    },
+    {
+     "word": "times",
+     "frame": 2118
+    },
+    {
+     "word": "as",
+     "frame": 2128
+    },
+    {
+     "word": "long.",
+     "frame": 2132
+    },
+    {
+     "word": "Halve",
+     "frame": 2150
+    },
+    {
+     "word": "the",
+     "frame": 2155
+    },
+    {
+     "word": "gap",
+     "frame": 2158
+    },
+    {
+     "word": "from",
+     "frame": 2164
+    },
+    {
+     "word": "pole",
+     "frame": 2169
+    },
+    {
+     "word": "to",
+     "frame": 2175
+    },
+    {
+     "word": "circle,",
+     "frame": 2179
+    },
+    {
+     "word": "and",
+     "frame": 2193
+    },
+    {
+     "word": "the",
+     "frame": 2198
+    },
+    {
+     "word": "decay",
+     "frame": 2201
+    },
+    {
+     "word": "time",
+     "frame": 2208
+    },
+    {
+     "word": "doubles.",
+     "frame": 2217
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Closer poles make the notch narrower. The bandwidth is the width of the notch, in hertz, between the two tones on either side that it passes at seventy-one percent. Radius point nine gives two hundred sixty-six hertz. Point nine eight gives fifty-one. Bandwidth times decay time, in seconds, stays near one point four six.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix/line03.wav",
+   "at": 75.22,
+   "start": 75.22,
+   "end": 90.89,
+   "start_frame": 2257,
+   "words": [
+    {
+     "word": "Closer",
+     "frame": 2257
+    },
+    {
+     "word": "poles",
+     "frame": 2272
+    },
+    {
+     "word": "make",
+     "frame": 2279
+    },
+    {
+     "word": "the",
+     "frame": 2285
+    },
+    {
+     "word": "notch",
+     "frame": 2289
+    },
+    {
+     "word": "narrower.",
+     "frame": 2297
+    },
+    {
+     "word": "The",
+     "frame": 2322
+    },
+    {
+     "word": "bandwidth",
+     "frame": 2323
+    },
+    {
+     "word": "is",
+     "frame": 2332
+    },
+    {
+     "word": "the",
+     "frame": 2339
+    },
+    {
+     "word": "width",
+     "frame": 2342
+    },
+    {
+     "word": "of",
+     "frame": 2348
+    },
+    {
+     "word": "the",
+     "frame": 2351
+    },
+    {
+     "word": "notch",
+     "frame": 2355
+    },
+    {
+     "word": "in",
+     "frame": 2363
+    },
+    {
+     "word": "hertz",
+     "frame": 2369
+    },
+    {
+     "word": "between",
+     "frame": 2375
+    },
+    {
+     "word": "the",
+     "frame": 2386
+    },
+    {
+     "word": "two",
+     "frame": 2390
+    },
+    {
+     "word": "tones",
+     "frame": 2395
+    },
+    {
+     "word": "on",
+     "frame": 2404
+    },
+    {
+     "word": "either",
+     "frame": 2409
+    },
+    {
+     "word": "side",
+     "frame": 2417
+    },
+    {
+     "word": "that",
+     "frame": 2426
+    },
+    {
+     "word": "it",
+     "frame": 2431
+    },
+    {
+     "word": "passes",
+     "frame": 2434
+    },
+    {
+     "word": "at",
+     "frame": 2441
+    },
+    {
+     "word": "71%.",
+     "frame": 2447
+    },
+    {
+     "word": "Radius",
+     "frame": 2488
+    },
+    {
+     "word": "0",
+     "frame": 2497
+    },
+    {
+     "word": ".9",
+     "frame": 2503
+    },
+    {
+     "word": "gives",
+     "frame": 2512
+    },
+    {
+     "word": "266",
+     "frame": 2519
+    },
+    {
+     "word": "hertz.",
+     "frame": 2552
+    },
+    {
+     "word": "0",
+     "frame": 2570
+    },
+    {
+     "word": ".98",
+     "frame": 2572
+    },
+    {
+     "word": "gives",
+     "frame": 2584
+    },
+    {
+     "word": "51.",
+     "frame": 2593
+    },
+    {
+     "word": "Bandwidth",
+     "frame": 2617
+    },
+    {
+     "word": "times",
+     "frame": 2629
+    },
+    {
+     "word": "decay",
+     "frame": 2637
+    },
+    {
+     "word": "time",
+     "frame": 2647
+    },
+    {
+     "word": "in",
+     "frame": 2657
+    },
+    {
+     "word": "seconds",
+     "frame": 2662
+    },
+    {
+     "word": "stays",
+     "frame": 2675
+    },
+    {
+     "word": "near",
+     "frame": 2683
+    },
+    {
+     "word": "1",
+     "frame": 2690
+    },
+    {
+     "word": ".46.",
+     "frame": 2697
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "Why that number? The notch is a click minus a ring. In tones, a click is a flat line. The ring is a narrow peak at two thousand hertz. Take it away, and you've bitten two thousand hertz out. [surprise-oh] The ring is how the notch works. A narrow bite needs a narrow peak, and a narrow peak needs a long ring.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line08.wav",
+   "at": 92.09,
+   "start": 92.09,
+   "end": 106.59,
+   "start_frame": 2763,
+   "words": [
+    {
+     "word": "Why",
+     "frame": 2763
+    },
+    {
+     "word": "that",
+     "frame": 2772
+    },
+    {
+     "word": "number?",
+     "frame": 2778
+    },
+    {
+     "word": "The",
+     "frame": 2799
+    },
+    {
+     "word": "notch",
+     "frame": 2800
+    },
+    {
+     "word": "is",
+     "frame": 2807
+    },
+    {
+     "word": "a",
+     "frame": 2811
+    },
+    {
+     "word": "click",
+     "frame": 2814
+    },
+    {
+     "word": "minus",
+     "frame": 2820
+    },
+    {
+     "word": "a",
+     "frame": 2829
+    },
+    {
+     "word": "ring.",
+     "frame": 2835
+    },
+    {
+     "word": "In",
+     "frame": 2850
+    },
+    {
+     "word": "tones,",
+     "frame": 2854
+    },
+    {
+     "word": "a",
+     "frame": 2865
+    },
+    {
+     "word": "click",
+     "frame": 2867
+    },
+    {
+     "word": "is",
+     "frame": 2872
+    },
+    {
+     "word": "a",
+     "frame": 2877
+    },
+    {
+     "word": "flat",
+     "frame": 2879
+    },
+    {
+     "word": "line.",
+     "frame": 2886
+    },
+    {
+     "word": "The",
+     "frame": 2903
+    },
+    {
+     "word": "ring",
+     "frame": 2905
+    },
+    {
+     "word": "is",
+     "frame": 2910
+    },
+    {
+     "word": "a",
+     "frame": 2913
+    },
+    {
+     "word": "narrow",
+     "frame": 2916
+    },
+    {
+     "word": "peak",
+     "frame": 2922
+    },
+    {
+     "word": "at",
+     "frame": 2930
+    },
+    {
+     "word": "2000",
+     "frame": 2935
+    },
+    {
+     "word": "Hz.",
+     "frame": 2946
+    },
+    {
+     "word": "Take",
+     "frame": 2970
+    },
+    {
+     "word": "it",
+     "frame": 2976
+    },
+    {
+     "word": "away",
+     "frame": 2978
+    },
+    {
+     "word": "and",
+     "frame": 2985
+    },
+    {
+     "word": "you've",
+     "frame": 2992
+    },
+    {
+     "word": "bitten",
+     "frame": 2997
+    },
+    {
+     "word": "2000",
+     "frame": 3002
+    },
+    {
+     "word": "Hz",
+     "frame": 3015
+    },
+    {
+     "word": "out.",
+     "frame": 3024
+    },
+    {
+     "word": "Oh,",
+     "frame": 3046
+    },
+    {
+     "word": "the",
+     "frame": 3052
+    },
+    {
+     "word": "ring",
+     "frame": 3055
+    },
+    {
+     "word": "is",
+     "frame": 3059
+    },
+    {
+     "word": "how",
+     "frame": 3063
+    },
+    {
+     "word": "the",
+     "frame": 3068
+    },
+    {
+     "word": "notch",
+     "frame": 3071
+    },
+    {
+     "word": "works.",
+     "frame": 3078
+    },
+    {
+     "word": "A",
+     "frame": 3098
+    },
+    {
+     "word": "narrow",
+     "frame": 3101
+    },
+    {
+     "word": "bite",
+     "frame": 3107
+    },
+    {
+     "word": "needs",
+     "frame": 3114
+    },
+    {
+     "word": "a",
+     "frame": 3122
+    },
+    {
+     "word": "narrow",
+     "frame": 3124
+    },
+    {
+     "word": "peak",
+     "frame": 3131
+    },
+    {
+     "word": "and",
+     "frame": 3141
+    },
+    {
+     "word": "a",
+     "frame": 3146
+    },
+    {
+     "word": "narrow",
+     "frame": 3149
+    },
+    {
+     "word": "peak",
+     "frame": 3156
+    },
+    {
+     "word": "needs",
+     "frame": 3164
+    },
+    {
+     "word": "a",
+     "frame": 3171
+    },
+    {
+     "word": "long",
+     "frame": 3175
+    },
+    {
+     "word": "ring.",
+     "frame": 3182
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "The support lead wants the ring under one percent within four milliseconds, and eighteen hundred hertz kept at ninety percent. On the curve, no notch meets both. The lead settles for fifteen hundred. You ship radius point eight five. The ring fades in three and a half milliseconds, and fifteen hundred keeps ninety-three percent.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line09.wav",
+   "at": 107.79,
+   "start": 107.79,
+   "end": 124.02,
+   "start_frame": 3234,
+   "words": [
+    {
+     "word": "The",
+     "frame": 3234
+    },
+    {
+     "word": "support",
+     "frame": 3242
+    },
+    {
+     "word": "lead",
+     "frame": 3251
+    },
+    {
+     "word": "wants",
+     "frame": 3258
+    },
+    {
+     "word": "the",
+     "frame": 3266
+    },
+    {
+     "word": "ring",
+     "frame": 3270
+    },
+    {
+     "word": "under",
+     "frame": 3276
+    },
+    {
+     "word": "1",
+     "frame": 3282
+    },
+    {
+     "word": "%",
+     "frame": 3290
+    },
+    {
+     "word": "within",
+     "frame": 3297
+    },
+    {
+     "word": "4",
+     "frame": 3306
+    },
+    {
+     "word": "milliseconds,",
+     "frame": 3315
+    },
+    {
+     "word": "and",
+     "frame": 3341
+    },
+    {
+     "word": "1800",
+     "frame": 3348
+    },
+    {
+     "word": "Hz",
+     "frame": 3360
+    },
+    {
+     "word": "kept",
+     "frame": 3375
+    },
+    {
+     "word": "at",
+     "frame": 3384
+    },
+    {
+     "word": "90%.",
+     "frame": 3389
+    },
+    {
+     "word": "On",
+     "frame": 3417
+    },
+    {
+     "word": "the",
+     "frame": 3418
+    },
+    {
+     "word": "curve,",
+     "frame": 3422
+    },
+    {
+     "word": "no",
+     "frame": 3437
+    },
+    {
+     "word": "notch",
+     "frame": 3447
+    },
+    {
+     "word": "meets",
+     "frame": 3454
+    },
+    {
+     "word": "both.",
+     "frame": 3462
+    },
+    {
+     "word": "The",
+     "frame": 3483
+    },
+    {
+     "word": "lead",
+     "frame": 3485
+    },
+    {
+     "word": "settles",
+     "frame": 3491
+    },
+    {
+     "word": "for",
+     "frame": 3501
+    },
+    {
+     "word": "1500.",
+     "frame": 3506
+    },
+    {
+     "word": "You",
+     "frame": 3538
+    },
+    {
+     "word": "ship",
+     "frame": 3540
+    },
+    {
+     "word": "radius",
+     "frame": 3546
+    },
+    {
+     "word": "0",
+     "frame": 3557
+    },
+    {
+     "word": ".85.",
+     "frame": 3566
+    },
+    {
+     "word": "The",
+     "frame": 3592
+    },
+    {
+     "word": "ring",
+     "frame": 3596
+    },
+    {
+     "word": "fades",
+     "frame": 3601
+    },
+    {
+     "word": "in",
+     "frame": 3610
+    },
+    {
+     "word": "3",
+     "frame": 3615
+    },
+    {
+     "word": ".5",
+     "frame": 3620
+    },
+    {
+     "word": "milliseconds,",
+     "frame": 3631
+    },
+    {
+     "word": "and",
+     "frame": 3657
+    },
+    {
+     "word": "1500",
+     "frame": 3660
+    },
+    {
+     "word": "keeps",
+     "frame": 3672
+    },
+    {
+     "word": "93%.",
+     "frame": 3689
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "No patch removes the tink. The ring cancels a steady whine. After a click, it rings alone. You only choose its length. Now it hides in the relay's click. [sigh] Then a fax customer calls. Its tones arrive loud, but smeared. Something is too late.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix5/line01.wav",
+   "at": 125.02,
+   "start": 125.02,
+   "end": 136.78,
+   "start_frame": 3751,
+   "words": [
+    {
+     "word": "No",
+     "frame": 3751
+    },
+    {
+     "word": "patch",
+     "frame": 3761
+    },
+    {
+     "word": "removes",
+     "frame": 3769
+    },
+    {
+     "word": "the",
+     "frame": 3778
+    },
+    {
+     "word": "tink,",
+     "frame": 3784
+    },
+    {
+     "word": "the",
+     "frame": 3797
+    },
+    {
+     "word": "ring",
+     "frame": 3802
+    },
+    {
+     "word": "cancels",
+     "frame": 3808
+    },
+    {
+     "word": "a",
+     "frame": 3819
+    },
+    {
+     "word": "steady",
+     "frame": 3824
+    },
+    {
+     "word": "whine,",
+     "frame": 3831
+    },
+    {
+     "word": "after",
+     "frame": 3844
+    },
+    {
+     "word": "a",
+     "frame": 3848
+    },
+    {
+     "word": "click",
+     "frame": 3851
+    },
+    {
+     "word": "it",
+     "frame": 3857
+    },
+    {
+     "word": "rings",
+     "frame": 3861
+    },
+    {
+     "word": "alone,",
+     "frame": 3866
+    },
+    {
+     "word": "you",
+     "frame": 3881
+    },
+    {
+     "word": "only",
+     "frame": 3883
+    },
+    {
+     "word": "choose",
+     "frame": 3888
+    },
+    {
+     "word": "its",
+     "frame": 3895
+    },
+    {
+     "word": "length,",
+     "frame": 3900
+    },
+    {
+     "word": "now",
+     "frame": 3914
+    },
+    {
+     "word": "it",
+     "frame": 3917
+    },
+    {
+     "word": "hides",
+     "frame": 3921
+    },
+    {
+     "word": "in",
+     "frame": 3929
+    },
+    {
+     "word": "the",
+     "frame": 3933
+    },
+    {
+     "word": "relay's",
+     "frame": 3935
+    },
+    {
+     "word": "click.",
+     "frame": 3947
+    },
+    {
+     "word": "Right,",
+     "frame": 3968
+    },
+    {
+     "word": "then",
+     "frame": 3975
+    },
+    {
+     "word": "a",
+     "frame": 3978
+    },
+    {
+     "word": "fax",
+     "frame": 3982
+    },
+    {
+     "word": "customer",
+     "frame": 3989
+    },
+    {
+     "word": "calls.",
+     "frame": 4000
+    },
+    {
+     "word": "Its",
+     "frame": 4023
+    },
+    {
+     "word": "tones",
+     "frame": 4027
+    },
+    {
+     "word": "arrive",
+     "frame": 4033
+    },
+    {
+     "word": "loud",
+     "frame": 4041
+    },
+    {
+     "word": "but",
+     "frame": 4050
+    },
+    {
+     "word": "smeared,",
+     "frame": 4055
+    },
+    {
+     "word": "something",
+     "frame": 4072
+    },
+    {
+     "word": "is",
+     "frame": 4079
+    },
+    {
+     "word": "too",
+     "frame": 4085
+    },
+    {
+     "word": "late.",
+     "frame": 4090
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Bell After the Click</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 72px; line-height: 84px; white-space: pre; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":137.38,"wpm":211,"lines":[{"line":1,"text":"The notch from the last lesson is live on every call, and the whine at two thousand hertz is gone. Then new tickets arrive. Every time a call connects, I hear a little tink, like someone tapped a tiny bell.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line01.wav","at":0.6,"start":0.6,"end":10.43,"start_frame":18,"words":[{"word":"The","frame":18},{"word":"notch","frame":26},{"word":"from","frame":34},{"word":"the","frame":38},{"word":"last","frame":42},{"word":"lesson","frame":49},{"word":"is","frame":59},{"word":"live","frame":64},{"word":"on","frame":73},{"word":"every","frame":78},{"word":"call","frame":85},{"word":"and","frame":95},{"word":"the","frame":101},{"word":"wine","frame":103},{"word":"at","frame":109},{"word":"2000","frame":113},{"word":"Hz","frame":123},{"word":"is","frame":132},{"word":"gone.","frame":139},{"word":"Then","frame":157},{"word":"new","frame":161},{"word":"tickets","frame":167},{"word":"arrive.","frame":176},{"word":"Every","frame":194},{"word":"time","frame":204},{"word":"a","frame":209},{"word":"call","frame":214},{"word":"connects,","frame":219},{"word":"I","frame":236},{"word":"hear","frame":238},{"word":"a","frame":243},{"word":"little","frame":247},{"word":"tink,","frame":251},{"word":"like","frame":264},{"word":"someone","frame":269},{"word":"tapped","frame":277},{"word":"a","frame":285},{"word":"tiny","frame":289},{"word":"bell.","frame":295}]},{"line":2,"text":"Calls start with a relay click. A click should light every tone a little, a flat line on the frequency meter. Instead the meter shows one thin spike, at two thousand hertz. The filter whose whole job is removing two thousand hertz is making it.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line02.wav","at":11.03,"start":11.03,"end":22.77,"start_frame":331,"words":[{"word":"Calls","frame":331},{"word":"start","frame":346},{"word":"with","frame":352},{"word":"a","frame":357},{"word":"relay","frame":360},{"word":"click.","frame":367},{"word":"A","frame":387},{"word":"click","frame":389},{"word":"should","frame":396},{"word":"light","frame":402},{"word":"every","frame":408},{"word":"tone","frame":417},{"word":"a","frame":424},{"word":"little,","frame":429},{"word":"a","frame":438},{"word":"flat","frame":443},{"word":"line","frame":450},{"word":"on","frame":458},{"word":"the","frame":461},{"word":"frequency","frame":464},{"word":"meter.","frame":474},{"word":"Instead,","frame":496},{"word":"the","frame":506},{"word":"meter","frame":507},{"word":"shows","frame":513},{"word":"one","frame":522},{"word":"thin","frame":531},{"word":"spike","frame":538},{"word":"at","frame":550},{"word":"2000","frame":559},{"word":"Hz.","frame":571},{"word":"The","frame":590},{"word":"filter","frame":591},{"word":"whose","frame":600},{"word":"whole","frame":606},{"word":"job","frame":613},{"word":"is","frame":620},{"word":"removing","frame":624},{"word":"2000","frame":634},{"word":"Hz","frame":644},{"word":"is","frame":658},{"word":"making","frame":663},{"word":"it.","frame":670}]},{"line":3,"text":"Do what lesson two taught. Send one click through the notch and record what comes back. Point nine oh five, then zero, point one seven two, zero, minus point one three nine. The click lasts one sample. The output keeps going. That's feedback.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line03.wav","at":23.77,"start":23.77,"end":35.43,"start_frame":713,"words":[{"word":"Do","frame":713},{"word":"what","frame":721},{"word":"lesson","frame":726},{"word":"two","frame":733},{"word":"taught,","frame":740},{"word":"send","frame":754},{"word":"one","frame":760},{"word":"click","frame":766},{"word":"through","frame":774},{"word":"the","frame":779},{"word":"notch","frame":783},{"word":"and","frame":791},{"word":"record","frame":796},{"word":"what","frame":806},{"word":"comes","frame":812},{"word":"back.","frame":819},{"word":"0","frame":842},{"word":".905","frame":844},{"word":"then","frame":867},{"word":"0","frame":874},{"word":".17220","frame":881},{"word":"minus","frame":920},{"word":"0","frame":933},{"word":".139.","frame":941},{"word":"The","frame":964},{"word":"click","frame":974},{"word":"lasts","frame":980},{"word":"one","frame":987},{"word":"sample.","frame":993},{"word":"The","frame":1009},{"word":"output","frame":1012},{"word":"keeps","frame":1019},{"word":"going.","frame":1026},{"word":"That's","frame":1040},{"word":"feedback.","frame":1046}]},{"line":4,"text":"Up, nothing, down, nothing. That's a dot turning ninety degrees per sample, which is two thousand hertz. There's the tink. Over two samples the ring keeps point eight one, so point nine per sample, the poles' radius.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix2/line01.wav","at":35.93,"start":35.93,"end":46.32,"start_frame":1078,"words":[{"word":"Up","frame":1078},{"word":"nothing,","frame":1089},{"word":"down","frame":1104},{"word":"nothing.","frame":1108},{"word":"That's","frame":1124},{"word":"a","frame":1132},{"word":"dot","frame":1137},{"word":"turning","frame":1143},{"word":"90","frame":1152},{"word":"degrees","frame":1161},{"word":"per","frame":1170},{"word":"sample,","frame":1177},{"word":"which","frame":1192},{"word":"is","frame":1196},{"word":"2","frame":1200},{"word":",000","frame":1207},{"word":"hertz.","frame":1216},{"word":"There's","frame":1234},{"word":"the","frame":1242},{"word":"tink.","frame":1245},{"word":"Over","frame":1257},{"word":"two","frame":1263},{"word":"samples,","frame":1268},{"word":"the","frame":1285},{"word":"ring","frame":1287},{"word":"keeps","frame":1292},{"word":"0","frame":1300},{"word":".81,","frame":1306},{"word":"so","frame":1320},{"word":"0","frame":1329},{"word":".9","frame":1334},{"word":"per","frame":1343},{"word":"sample,","frame":1350},{"word":"the","frame":1362},{"word":"pole's","frame":1364},{"word":"radius.","frame":1373}]},{"line":5,"text":"Now take the wheel, and after every ninety degree turn, shrink the dot to point nine. It spirals in. Its shadow, the left-right position, swings up, nothing, down, nothing, smaller each time. The turn sets the pitch. The shrink sets how fast it dies. That spiral is a pole, in time.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line05.wav","at":47.12,"start":47.12,"end":60.56,"start_frame":1414,"words":[{"word":"Now","frame":1414},{"word":"take","frame":1423},{"word":"the","frame":1430},{"word":"wheel","frame":1433},{"word":"and","frame":1440},{"word":"after","frame":1445},{"word":"every","frame":1451},{"word":"90","frame":1459},{"word":"-degree","frame":1466},{"word":"turn,","frame":1474},{"word":"shrink","frame":1487},{"word":"the","frame":1494},{"word":"dot","frame":1498},{"word":"to","frame":1503},{"word":"0","frame":1508},{"word":".9.","frame":1513},{"word":"It","frame":1529},{"word":"spirals","frame":1532},{"word":"in.","frame":1544},{"word":"Its","frame":1557},{"word":"shadow,","frame":1560},{"word":"the","frame":1569},{"word":"left","frame":1573},{"word":"-right","frame":1579},{"word":"position,","frame":1583},{"word":"swings","frame":1601},{"word":"up,","frame":1609},{"word":"nothing","frame":1619},{"word":"down,","frame":1627},{"word":"nothing","frame":1640},{"word":"smaller","frame":1646},{"word":"each","frame":1659},{"word":"time.","frame":1666},{"word":"The","frame":1682},{"word":"turn","frame":1685},{"word":"sets","frame":1691},{"word":"the","frame":1698},{"word":"pitch.","frame":1703},{"word":"The","frame":1716},{"word":"shrink","frame":1718},{"word":"sets","frame":1725},{"word":"how","frame":1732},{"word":"fast","frame":1736},{"word":"it","frame":1746},{"word":"dies.","frame":1750},{"word":"That","frame":1763},{"word":"spiral","frame":1767},{"word":"is","frame":1777},{"word":"a","frame":1783},{"word":"pole","frame":1785},{"word":"in","frame":1794},{"word":"time.","frame":1804}]},{"line":6,"text":"The decay time is how long the ring takes to shrink to one percent of where it started. Radius point nine gives five and a half milliseconds. Point nine eight gives twenty-eight and a half, five times as long. Halve the gap from pole to circle, and the decay time doubles.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix2/line02.wav","at":61.56,"start":61.56,"end":74.62,"start_frame":1847,"words":[{"word":"The","frame":1847},{"word":"decay","frame":1855},{"word":"time","frame":1862},{"word":"is","frame":1871},{"word":"how","frame":1876},{"word":"long","frame":1880},{"word":"the","frame":1886},{"word":"ring","frame":1891},{"word":"takes","frame":1895},{"word":"to","frame":1904},{"word":"shrink","frame":1910},{"word":"to","frame":1916},{"word":"1","frame":1921},{"word":"%","frame":1927},{"word":"of","frame":1934},{"word":"where","frame":1942},{"word":"it","frame":1946},{"word":"started.","frame":1950},{"word":"Radius","frame":1974},{"word":"0","frame":1981},{"word":".9","frame":1987},{"word":"gives","frame":1997},{"word":"5","frame":2004},{"word":".5","frame":2014},{"word":"milliseconds.","frame":2024},{"word":"0","frame":2051},{"word":".98","frame":2060},{"word":"gives","frame":2073},{"word":"28","frame":2083},{"word":".5,","frame":2095},{"word":"five","frame":2109},{"word":"times","frame":2118},{"word":"as","frame":2128},{"word":"long.","frame":2132},{"word":"Halve","frame":2150},{"word":"the","frame":2155},{"word":"gap","frame":2158},{"word":"from","frame":2164},{"word":"pole","frame":2169},{"word":"to","frame":2175},{"word":"circle,","frame":2179},{"word":"and","frame":2193},{"word":"the","frame":2198},{"word":"decay","frame":2201},{"word":"time","frame":2208},{"word":"doubles.","frame":2217}]},{"line":7,"text":"Closer poles make the notch narrower. The bandwidth is the width of the notch, in hertz, between the two tones on either side that it passes at seventy-one percent. Radius point nine gives two hundred sixty-six hertz. Point nine eight gives fifty-one. Bandwidth times decay time, in seconds, stays near one point four six.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix/line03.wav","at":75.22,"start":75.22,"end":90.89,"start_frame":2257,"words":[{"word":"Closer","frame":2257},{"word":"poles","frame":2272},{"word":"make","frame":2279},{"word":"the","frame":2285},{"word":"notch","frame":2289},{"word":"narrower.","frame":2297},{"word":"The","frame":2322},{"word":"bandwidth","frame":2323},{"word":"is","frame":2332},{"word":"the","frame":2339},{"word":"width","frame":2342},{"word":"of","frame":2348},{"word":"the","frame":2351},{"word":"notch","frame":2355},{"word":"in","frame":2363},{"word":"hertz","frame":2369},{"word":"between","frame":2375},{"word":"the","frame":2386},{"word":"two","frame":2390},{"word":"tones","frame":2395},{"word":"on","frame":2404},{"word":"either","frame":2409},{"word":"side","frame":2417},{"word":"that","frame":2426},{"word":"it","frame":2431},{"word":"passes","frame":2434},{"word":"at","frame":2441},{"word":"71%.","frame":2447},{"word":"Radius","frame":2488},{"word":"0","frame":2497},{"word":".9","frame":2503},{"word":"gives","frame":2512},{"word":"266","frame":2519},{"word":"hertz.","frame":2552},{"word":"0","frame":2570},{"word":".98","frame":2572},{"word":"gives","frame":2584},{"word":"51.","frame":2593},{"word":"Bandwidth","frame":2617},{"word":"times","frame":2629},{"word":"decay","frame":2637},{"word":"time","frame":2647},{"word":"in","frame":2657},{"word":"seconds","frame":2662},{"word":"stays","frame":2675},{"word":"near","frame":2683},{"word":"1","frame":2690},{"word":".46.","frame":2697}]},{"line":8,"text":"Why that number? The notch is a click minus a ring. In tones, a click is a flat line. The ring is a narrow peak at two thousand hertz. Take it away, and you've bitten two thousand hertz out. [surprise-oh] The ring is how the notch works. A narrow bite needs a narrow peak, and a narrow peak needs a long ring.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line08.wav","at":92.09,"start":92.09,"end":106.59,"start_frame":2763,"words":[{"word":"Why","frame":2763},{"word":"that","frame":2772},{"word":"number?","frame":2778},{"word":"The","frame":2799},{"word":"notch","frame":2800},{"word":"is","frame":2807},{"word":"a","frame":2811},{"word":"click","frame":2814},{"word":"minus","frame":2820},{"word":"a","frame":2829},{"word":"ring.","frame":2835},{"word":"In","frame":2850},{"word":"tones,","frame":2854},{"word":"a","frame":2865},{"word":"click","frame":2867},{"word":"is","frame":2872},{"word":"a","frame":2877},{"word":"flat","frame":2879},{"word":"line.","frame":2886},{"word":"The","frame":2903},{"word":"ring","frame":2905},{"word":"is","frame":2910},{"word":"a","frame":2913},{"word":"narrow","frame":2916},{"word":"peak","frame":2922},{"word":"at","frame":2930},{"word":"2000","frame":2935},{"word":"Hz.","frame":2946},{"word":"Take","frame":2970},{"word":"it","frame":2976},{"word":"away","frame":2978},{"word":"and","frame":2985},{"word":"you've","frame":2992},{"word":"bitten","frame":2997},{"word":"2000","frame":3002},{"word":"Hz","frame":3015},{"word":"out.","frame":3024},{"word":"Oh,","frame":3046},{"word":"the","frame":3052},{"word":"ring","frame":3055},{"word":"is","frame":3059},{"word":"how","frame":3063},{"word":"the","frame":3068},{"word":"notch","frame":3071},{"word":"works.","frame":3078},{"word":"A","frame":3098},{"word":"narrow","frame":3101},{"word":"bite","frame":3107},{"word":"needs","frame":3114},{"word":"a","frame":3122},{"word":"narrow","frame":3124},{"word":"peak","frame":3131},{"word":"and","frame":3141},{"word":"a","frame":3146},{"word":"narrow","frame":3149},{"word":"peak","frame":3156},{"word":"needs","frame":3164},{"word":"a","frame":3171},{"word":"long","frame":3175},{"word":"ring.","frame":3182}]},{"line":9,"text":"The support lead wants the ring under one percent within four milliseconds, and eighteen hundred hertz kept at ninety percent. On the curve, no notch meets both. The lead settles for fifteen hundred. You ship radius point eight five. The ring fades in three and a half milliseconds, and fifteen hundred keeps ninety-three percent.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo/line09.wav","at":107.79,"start":107.79,"end":124.02,"start_frame":3234,"words":[{"word":"The","frame":3234},{"word":"support","frame":3242},{"word":"lead","frame":3251},{"word":"wants","frame":3258},{"word":"the","frame":3266},{"word":"ring","frame":3270},{"word":"under","frame":3276},{"word":"1","frame":3282},{"word":"%","frame":3290},{"word":"within","frame":3297},{"word":"4","frame":3306},{"word":"milliseconds,","frame":3315},{"word":"and","frame":3341},{"word":"1800","frame":3348},{"word":"Hz","frame":3360},{"word":"kept","frame":3375},{"word":"at","frame":3384},{"word":"90%.","frame":3389},{"word":"On","frame":3417},{"word":"the","frame":3418},{"word":"curve,","frame":3422},{"word":"no","frame":3437},{"word":"notch","frame":3447},{"word":"meets","frame":3454},{"word":"both.","frame":3462},{"word":"The","frame":3483},{"word":"lead","frame":3485},{"word":"settles","frame":3491},{"word":"for","frame":3501},{"word":"1500.","frame":3506},{"word":"You","frame":3538},{"word":"ship","frame":3540},{"word":"radius","frame":3546},{"word":"0","frame":3557},{"word":".85.","frame":3566},{"word":"The","frame":3592},{"word":"ring","frame":3596},{"word":"fades","frame":3601},{"word":"in","frame":3610},{"word":"3","frame":3615},{"word":".5","frame":3620},{"word":"milliseconds,","frame":3631},{"word":"and","frame":3657},{"word":"1500","frame":3660},{"word":"keeps","frame":3672},{"word":"93%.","frame":3689}]},{"line":10,"text":"No patch removes the tink. The ring cancels a steady whine. After a click, it rings alone. You only choose its length. Now it hides in the relay's click. [sigh] Then a fax customer calls. Its tones arrive loud, but smeared. Something is too late.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/07-ringing/4-video/vo-fix5/line01.wav","at":125.02,"start":125.02,"end":136.78,"start_frame":3751,"words":[{"word":"No","frame":3751},{"word":"patch","frame":3761},{"word":"removes","frame":3769},{"word":"the","frame":3778},{"word":"tink,","frame":3784},{"word":"the","frame":3797},{"word":"ring","frame":3802},{"word":"cancels","frame":3808},{"word":"a","frame":3819},{"word":"steady","frame":3824},{"word":"whine,","frame":3831},{"word":"after","frame":3844},{"word":"a","frame":3848},{"word":"click","frame":3851},{"word":"it","frame":3857},{"word":"rings","frame":3861},{"word":"alone,","frame":3866},{"word":"you","frame":3881},{"word":"only","frame":3883},{"word":"choose","frame":3888},{"word":"its","frame":3895},{"word":"length,","frame":3900},{"word":"now","frame":3914},{"word":"it","frame":3917},{"word":"hides","frame":3921},{"word":"in","frame":3929},{"word":"the","frame":3933},{"word":"relay's","frame":3935},{"word":"click.","frame":3947},{"word":"Right,","frame":3968},{"word":"then","frame":3975},{"word":"a","frame":3978},{"word":"fax","frame":3982},{"word":"customer","frame":3989},{"word":"calls.","frame":4000},{"word":"Its","frame":4023},{"word":"tones","frame":4027},{"word":"arrive","frame":4033},{"word":"loud","frame":4041},{"word":"but","frame":4050},{"word":"smeared,","frame":4055},{"word":"something","frame":4072},{"word":"is","frame":4079},{"word":"too","frame":4085},{"word":"late.","frame":4090}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const fmt = (v, d = 2) => (v < -0.0005 ? '−' : '') + Math.abs(v).toFixed(d);
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+
+const FS = 8000;
+const gainAt = (r, f) => { const w = 2 * Math.PI * f / FS, r2 = r * r; return ((1 + r2) / 2) * Math.abs(2 * Math.cos(w)) / Math.hypot(1 + r2 * Math.cos(2 * w), r2 * Math.sin(2 * w)); };
+const peakAt = (r, f) => { const w = 2 * Math.PI * f / FS, r2 = r * r, b = (1 + r2) / 2; return b * (1 - r2) / r2 / Math.hypot(1 + r2 * Math.cos(2 * w), r2 * Math.sin(2 * w)); };
+const decayMs = r => Math.log(0.01) / Math.log(r) / 8;
+const edge = (r, level, side) => { let lo = side < 0 ? 0 : 2000, hi = side < 0 ? 2000 : 4000; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if ((side < 0) === (gainAt(r, m) > level)) lo = m; else hi = m; } return (lo + hi) / 2; };
+const bandwidth = r => edge(r, Math.SQRT1_2, 1) - edge(r, Math.SQRT1_2, -1);
+const respond = (x, r) => { const b = (1 + r * r) / 2, y = []; x.forEach((v, n) => y.push(b * (v + (n >= 2 ? x[n - 2] : 0)) - (n >= 2 ? r * r * y[n - 2] : 0))); return y; };
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1, 'softInOut']]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const hatch = () => { const id = 'h' + (++uid); return { id, defs: `<defs><pattern id="${id}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="${C.accentSoft}"/><line x1="0" y1="0" x2="0" y2="18" stroke="${C.accent}" stroke-width="5"/></pattern></defs>` }; };
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 14) => `<line x1="${x}" y1="${base}" x2="${x}" y2="${y}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="${r}" fill="${color}"/>`;
+const zeroDot = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.ink}"/>`;
+const poleX = (x, y, s = 16, color = C.ink, w = 7) => `<line x1="${x - s}" y1="${y - s}" x2="${x + s}" y2="${y + s}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><line x1="${x - s}" y1="${y + s}" x2="${x + s}" y2="${y - s}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+const zeroO = (x, y, r = 16) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.paper}" stroke="${C.ink}" stroke-width="6"/>`;
+const STYLE = {
+  0.9: `fill="none" stroke="${C.ink}" stroke-width="6" stroke-linejoin="round"`,
+  0.95: `fill="none" stroke="${C.ink}" stroke-width="6" stroke-dasharray="27 9 6 9"`,
+  0.98: `fill="none" stroke="${C.ink}" stroke-width="7" stroke-dasharray="1 13" stroke-linecap="round"`,
+};
+const SHAPE = { 0.9: 'circle', 0.95: 'square', 0.98: 'triangle' };
+const markSvg = (shape, x, y, s = 13, fill = C.ink) => {
+  if (shape === 'square') return `<rect x="${x - s}" y="${y - s}" width="${2 * s}" height="${2 * s}" fill="${fill}" stroke="${C.paper}" stroke-width="3"/>`;
+  if (shape === 'triangle') return `<path d="M${x} ${y - s - 3}L${x + s + 2} ${y + s - 1}L${x - s - 2} ${y + s - 1}Z" fill="${fill}" stroke="${C.paper}" stroke-width="3"/>`;
+  return `<circle cx="${x}" cy="${y}" r="${s}" fill="${fill}" stroke="${C.paper}" stroke-width="3"/>`;
+};
+const ENV = `fill="none" stroke="${C.soft}" stroke-width="4.5" stroke-dasharray="18 14"`;
+const LEVEL = (x1, x2, y) => hline(x1, x2, y, C.soft, 3, '9 12');
+const head = (x1, y1, x2, y2, len, half) => {
+  const d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d, bx = x2 - ux * len, by = y2 - uy * len;
+  return { bx, by, pts: `${x2.toFixed(1)},${y2.toFixed(1)} ${(bx - uy * half).toFixed(1)},${(by + ux * half).toFixed(1)} ${(bx + uy * half).toFixed(1)},${(by - ux * half).toFixed(1)}` };
+};
+const vecSvg = (x1, y1, x2, y2, color = C.ink, w = 6) => { const h = head(x1, y1, x2, y2, 28, 14); return `<line x1="${x1}" y1="${y1}" x2="${h.bx.toFixed(1)}" y2="${h.by.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><polygon points="${h.pts}" fill="${color}"/>`; };
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const bracketH = (x1, x2, y, style = `stroke="${C.ink}" stroke-width="4"`, t = 14) => `<path d="M${x1} ${y - t}V${y + t}M${x1} ${y}H${x2}M${x2} ${y - t}V${y + t}" fill="none" ${style}/>`;
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0) => { origin(sel, x, y); const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'scaleY', keys); };
+const curveD = (X, Y, f, a, b, n = 400) => path(range(0, n).map(i => { const u = a + (b - a) * i / n; return [X(u), Y(f(u))]; }));
+
+{
+  const c = cam(1), cx = 470, cy = 470, R = 300;
+  const wh = word(1, ['wine', 'whine']), gn = word(1, 'gone'), tk = word(1, 'tickets'), cn = word(1, 'connects'), ti = word(1, ['tink', 'tank']), be = word(1, 'bell');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, 0, tk); M.show('#' + b.id, tk);
+  label(a, 'the notch on your line', 960, 24, 'lbl s', 'center');
+  layer(a, hline(cx - R - 50, cx + R + 50, cy, C.soft, 3, '10 10') + vline(cx, cy - R - 20, cy + R + 20, C.rule, 3) + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  layer(a, zeroO(cx, cy - R) + zeroO(cx, cy + R) + poleX(cx, cy - 0.9 * R) + poleX(cx, cy + 0.9 * R));
+  label(a, '2,000 Hz', cx - 30, 92, 'lbl s', 'right');
+  label(a, 'zero pair: on the whine', 860, 130, 'lbl');
+  label(a, 'pole pair: radius 0.9', 860, 210, 'lbl');
+  label(a, 'y[n] = 0.905 (x[n] + x[n−2])', 860, 360, 'lbl');
+  label(a, '     − 0.81 y[n−2]', 860, 430, 'lbl');
+  M.show(label(a, 'whine at 2,000 Hz: 0%', 860, 600, 'lbl ok'), wh);
+  M.show(tick(a, 1520, 640), gn);
+  M.show(label(b, 'next ticket', 960, 24, 'lbl s', 'center'), tk);
+  M.show(label(b, '“a little tink,', 960, 150, 'note', 'center'), ti);
+  M.show(label(b, 'like someone tapped a tiny bell”', 960, 256, 'note', 'center'), ti);
+  const x0 = 380, base = 600;
+  M.show(layer(b, stemSvg(x0, base, base - 230, C.ink, 9, 0)), cn);
+  M.show(label(b, 'a call connects: a click', x0 - 40, 720, 'lbl s'), cn);
+  const wp = []; for (let x = x0 + 16; x <= 1560; x += 2) { const t = (x - x0 - 16) / 40; wp.push([x, base - 80 * Math.exp(-t / 9) * Math.sin(t * Math.PI)]); }
+  const wave = layer(b, `<path d="${path(wp)}" fill="none" stroke="${C.accent}" stroke-width="5"/>`, [x0, 1570]);
+  reveal(wave, ti, ti + 40, 'cruise');
+  flicker(wave, 960, base, ti + 40, sceneEnd(1), 0.55, 3);
+  layer(b, hline(x0 - 20, 1580, base, C.soft, 3));
+  drift(1);
+}
+{
+  const c = cam(2), base = 700, Y = v => base - v * 480, FX = f => 260 + f * 0.34;
+  const fl = word(2, 'flat'), ins = word(2, 'instead'), sp = word(2, 'spike'), rm = word(2, 'removing'), mk = word(2, 'making');
+  M.show(label(c, 'the frequency meter, just after the click', 960, 24, 'lbl s', 'center'), sceneStart(2));
+  layer(c, hline(FX(0) - 20, FX(4000) + 20, base, C.ink, 3) + vline(FX(0), base, Y(1.12), C.ink, 3));
+  label(c, 'strength', FX(0) + 20, Y(1.12) - 20, 'lbl s');
+  [[0, '0'], [2000, '2,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(c, t, FX(f), base + 14, 'lbl s', 'center'));
+  const full = layer(c, hline(FX(0), FX(4000), Y(0.3), C.soft, 5, '16 12'), [FX(0) - 10, FX(4000) + 10]);
+  reveal(full, fl - 4, fl + 22, 'cruise');
+  M.show(full, 0, sp);
+  M.show(layer(c, hline(FX(0), FX(1650), Y(0.3), C.soft, 5, '16 12') + hline(FX(2350), FX(4000), Y(0.3), C.soft, 5, '16 12')), sp);
+  M.show(label(c, 'a click should be', FX(0) + 30, Y(0.3) - 262, 'lbl s'), fl);
+  M.show(label(c, 'every tone a little', FX(0) + 30, Y(0.3) - 188, 'lbl s'), fl);
+  const hz = hatch(), pk = f => peakAt(0.9, f) / 1.1173 * 0.95;
+  const pts = range(0, 400).map(i => [FX(4000 * i / 400), Y(pk(4000 * i / 400))]);
+  const spike = layer(c, hz.defs + `<path d="M${FX(0)} ${base}${pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join('')}L${FX(4000)} ${base}Z" fill="url(#${hz.id})" stroke="${C.accent}" stroke-width="5"/>`);
+  grow(spike, FX(2000), base, sp - 6, 14);
+  flicker(spike, FX(2000), base, sp + 10, sceneEnd(2), 0.3, 9);
+  M.show(label(c, 'one thin spike', FX(2000) + 60, Y(1.05), 'lbl acc'), sp);
+  M.show(label(c, 'the tone the notch removes', FX(2000) + 60, Y(1.05) + 72, 'lbl s'), rm);
+  drift(2);
+}
+{
+  const c = cam(3), X = n => 300 + n * 125, tb = 270, bb = 600, A = 300;
+  const ck = word(3, 'click'), pt1 = word(3, ['0', '.905', 'point']), z1 = word(3, ['zero', '0'], 1), n2 = word(3, ['.17', 'point'], 0), mi = word(3, 'minus'), la = word(3, 'lasts'), kp = word(3, 'keeps'), fb = word(3, 'feedback');
+  const y = respond(range(0, 12).map(n => (n ? 0 : 1)), 0.9);
+  M.show(label(c, 'y[n] = 0.905 (x[n] + x[n−2]) − 0.81 y[n−2]', 960, 20, 'lbl s', 'center'), sceneStart(3));
+  layer(c, hline(X(-0.5), X(12.4), tb) + hline(X(-0.5), X(12.4), bb));
+  label(c, 'x[n]', X(-0.5) - 20, tb - 29, 'lbl s', 'right');
+  label(c, 'y[n]', X(-0.5) - 20, bb - 29, 'lbl', 'right');
+  grow(layer(c, stemSvg(X(0), tb, tb - 130)), X(0), tb, ck);
+  M.show(layer(c, range(1, 12).map(n => zeroDot(X(n), tb)).join('')), ck + 4);
+  label(c, '1', X(0) + 24, tb - 150, 'lbl s');
+  const oc = label(c, 'one click, then zeros', X(1) - 20, tb - 120, 'lbl s');
+  M.show(oc, ck + 4, la);
+  const at = [pt1, z1, n2, Math.round((n2 + mi) / 2) + 4, mi];
+  for (let n = 0; n <= 12; n++) {
+    const t = n <= 4 ? at[n] : kp + (n - 5) * 4;
+    if (Math.abs(y[n]) < 1e-9) M.show(layer(c, zeroDot(X(n), bb)), t);
+    else grow(layer(c, stemSvg(X(n), bb, bb - A * y[n])), X(n), bb, t);
+    if (n <= 4) M.show(label(c, Math.abs(y[n]) < 1e-9 ? '0' : fmt(y[n], 3), X(n), 670, 'lbl', 'center'), t);
+    M.show(label(c, String(n), X(n), 750, 'lbl s', 'center'), ck + 4);
+  }
+  M.show(label(c, 'n', X(-0.5) - 20, 750, 'lbl s', 'right'), ck + 4);
+  M.show(label(c, 'the click is over after n = 0', X(4) - 20, tb - 120, 'lbl s'), la);
+  const arc = layer(c, `<path d="M${X(2) + 6} ${bb - A * y[2] - 26}Q${X(3)} ${bb - 170} ${X(4) - 10} ${bb - 40}" fill="none" stroke="${C.accent}" stroke-width="5" stroke-dasharray="12 9"/>` + `<polygon points="${head(X(3.6), bb - 80, X(4) - 10, bb - 40, 24, 12).pts}" fill="${C.accent}"/>`);
+  M.show(arc, fb - 4);
+  M.show(label(c, 'feedback: − 0.81 × y[n−2]', X(4) + 60, bb - 230, 'lbl acc'), fb);
+  drift(3);
+}
+{
+  const c = cam(4), X = n => 230 + n * 38, base = 450, A = 1300, last = 40;
+  const y = respond(range(0, last).map(n => (n ? 0 : 1)), 0.9);
+  const ni = word(4, ['90', 'ninety']), tk = word(4, ['tink', 'tank']), e81 = word(4, ['.81', '0', 'eight']), e9 = word(4, ['.9', 'nine'], 0), rd = word(4, 'radius');
+  layer(c, hline(X(-0.6), X(last + 0.6), base));
+  layer(c, vline(X(0), base, 140, C.soft, 9) + `<rect x="${X(0) - 13}" y="${127}" width="26" height="26" fill="${C.paper}" stroke="${C.soft}" stroke-width="5"/>`);
+  label(c, 'n = 0: click + ring start, off the scale', X(0) + 40, 30, 'lbl s');
+  label(c, 'from n = 2: the ring alone', 900, 100, 'lbl');
+  for (let n = 1; n <= last; n++) {
+    const t = n <= 5 ? sceneStart(4) : sceneStart(4) + 10 + (n - 5) * 5;
+    if (Math.abs(y[n]) < 1e-9) M.show(layer(c, zeroDot(X(n), base, 6)), t);
+    else grow(layer(c, stemSvg(X(n), base, base - A * y[n], C.ink, 6, 11)), X(n), base, t, 6);
+  }
+  label(c, '0.172', X(2) + 20, base - A * y[2] - 80, 'lbl s');
+  label(c, '−0.139', X(4) + 24, base - A * y[4] + 14, 'lbl s');
+  [[0, 'n = 0'], [10, '10'], [20, '20'], [30, '30'], [40, '40']].forEach(([n, t]) => label(c, t, X(n), 690, 'lbl s', 'center'));
+  M.show(label(c, '90° per sample: 2,000 Hz', 960, 790, 'lbl', 'center'), ni);
+  const up = range(2, last).map(n => [X(n), base - A * 0.172 * 0.9 ** (n - 2)]), dn = range(4, last).map(n => [X(n), base + A * 0.172 * 0.9 ** (n - 2)]);
+  const env = layer(c, `<path d="${path(up)}" ${ENV}/><path d="${path(dn)}" ${ENV}/>`, [X(2) - 10, X(last) + 10]);
+  reveal(env, e81, e81 + 30, 'cruise');
+  M.show(label(c, '× 0.81 every 2 samples', 900, 170, 'lbl'), e81);
+  M.show(label(c, '× 0.9 per sample', 900, 240, 'lbl'), e9 + 4);
+  M.show(label(c, 'the poles’ radius', 900, 310, 'lbl ok'), rd);
+  drift(4);
+}
+{
+  const c = cam(5), cx = 480, cy = 470, R = 300, X = n => 1120 + n * 42, base = 380, A = 200;
+  const tn = word(5, 'turn'), sh = word(5, 'shadow'), pi = word(5, 'pitch'), di = word(5, 'dies'), po = word(5, 'pole');
+  const at = n => [cx + R * 0.9 ** n * cosd(90 * n), cy - R * 0.9 ** n * sind(90 * n)];
+  layer(c, hline(cx - R - 50, cx + R + 50, cy, C.ink, 3) + vline(cx, cy - R - 20, cy + R + 20, C.rule, 3) + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="3"/>`);
+  layer(c, poleX(cx, cy - 0.9 * R, 15));
+  layer(c, hline(X(-0.5), X(16.5), base));
+  label(c, '1', X(-0.5) - 16, base - A - 29, 'lbl s', 'right');
+  label(c, '−1', X(-0.5) - 16, base + A - 29, 'lbl s', 'right');
+  label(c, 'its shadow, per sample', X(-0.5), 40, 'lbl s');
+  [[0, '0'], [8, '8'], [16, 'n = 16']].forEach(([n, t]) => label(c, t, X(n), base + A + 40, 'lbl s', n === 16 ? 'right' : 'center'));
+  const step = 12, T = k => tn + (k - 1) * step;
+  const dot = layer(c, `<circle cx="${cx}" cy="${cy}" r="18" fill="${C.ink}"/>`);
+  const keys = { x: [[0, R]], y: [[0, 0]] };
+  for (let k = 1; k <= 16; k++) {
+    const [px, py] = at(k - 1), [qx, qy] = at(k);
+    keys.x.push([T(k), px - cx], [T(k) + 8, qx - cx, 'softInOut']); keys.y.push([T(k), py - cy], [T(k) + 8, qy - cy, 'softInOut']);
+    M.show(layer(c, `<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="${qx.toFixed(1)}" y2="${qy.toFixed(1)}" stroke="${C.ink}" stroke-width="4"/>`), T(k) + 8);
+  }
+  M.kf(dot, 'x', keys.x); M.kf(dot, 'y', keys.y);
+  for (let k = 0; k <= 16; k++) {
+    const s = 0.9 ** k * cosd(90 * k), [qx, qy] = at(k), t = k ? T(k) + 8 : sceneStart(5), t2 = k < 16 ? T(k + 1) + 8 : END;
+    if (Math.abs(s) > 1e-9) grow(layer(c, stemSvg(X(k), base, base - A * s, C.ink, 6, 11)), X(k), base, t, 6);
+    else M.show(layer(c, zeroDot(X(k), base, 6)), t);
+    if (k && Math.abs(qy - cy) > 30) M.show(layer(c, vline(qx, qy + (qy < cy ? 22 : -22), cy, C.soft, 4, '4 8') + `<circle cx="${qx}" cy="${cy}" r="10" fill="${C.ink}"/>`), Math.max(t, sh), t2);
+  }
+  M.show(label(c, 'shadow: left-right position', cx, cy + R + 30, 'lbl s', 'center'), sh);
+  M.show(label(c, 'each sample: turn 90°, × 0.9', 1000, 692, 'lbl'), tn + 4);
+  M.show(label(c, 'turn 90° → pitch: 2,000 Hz', 1000, 762, 'lbl'), pi);
+  M.show(label(c, '× 0.9 → how fast it dies', 1000, 832, 'lbl'), di);
+  M.show(label(c, 'pole: 0.9, at 90°', cx + 40, 92, 'lbl ok'), po);
+  drift(5);
+}
+{
+  const c = cam(6), T = ms => 240 + ms * 44, base = 640, Y = v => base - v * 440;
+  const dt = word(6, 'decay'), sk = word(6, 'shrink'), op = word(6, ['one', '1%', '1']), g9 = word(6, 'gives'), fv = word(6, ['five', '5'], 0), g98 = word(6, 'gives', 1), tw = word(6, ['twenty', '28']), ti = word(6, 'times'), hv = word(6, 'halve'), db = word(6, 'doubles');
+  M.show(label(c, 'decay time: down to 1% of its start', 960, 24, 'lbl', 'center'), dt);
+  layer(c, hline(T(0) - 10, T(31), base, C.ink, 3) + vline(T(0), base, Y(1.08), C.ink, 3));
+  label(c, 'ring size, share of its start', T(0) + 20, 120, 'lbl s');
+  [[1, '100%'], [0.5, '50%'], [0, '0']].forEach(([v, t]) => label(c, t, T(0) - 18, Y(v) - 29, 'lbl s', 'right'));
+  [[0, '0'], [10, '10'], [20, '20 ms']].forEach(([m, t]) => label(c, t, T(m), base + 14, 'lbl s', 'center'));
+  const curve = (r, a, b) => { const s = layer(c, `<path d="${curveD(T, Y, t => r ** (8 * t), 0, 31, 500)}" ${STYLE[r]}/>`, [T(0) - 10, T(31) + 10]); reveal(s, a, b, 'cruise'); return s; };
+  const crossing = (r, at, txt) => {
+    const x = T(decayMs(r));
+    M.show(layer(c, vline(x, base, base + 70, C.soft, 3) + markSvg(SHAPE[r], x, base, 14)), at);
+    M.show(label(c, txt, x, base + 80, 'lbl', 'center'), at);
+  };
+  curve(0.9, sk, g9 + 10);
+  M.show(label(c, 'marks: where each falls to 1%', 960, 820, 'lbl s', 'center'), op);
+  crossing(0.9, fv, '5.5 ms');
+  curve(0.98, g98 - 6, tw + 20);
+  crossing(0.98, tw + 6, '28.5 ms');
+  M.show(label(c, 'about 5× as long', 900, 400, 'lbl'), ti);
+  curve(0.95, hv, hv + 24);
+  crossing(0.95, hv + 18, '11.2 ms');
+  const leg = (r, y, at, txt) => { M.show(layer(c, `<line x1="1000" y1="${y}" x2="1100" y2="${y}" ${STYLE[r]}/>` + markSvg(SHAPE[r], 1050, y, 12)), at); M.show(label(c, txt, 1120, y - 29, 'lbl s'), at); };
+  leg(0.9, 200, g9, 'radius 0.90, gap 0.10');
+  leg(0.98, 340, g98, 'radius 0.98, gap 0.02');
+  leg(0.95, 270, hv, 'radius 0.95, gap 0.05');
+  M.show(label(c, 'gap 0.10 → 0.05: 5.5 → 11.2 ms', 700, 470, 'lbl ok'), db);
+  drift(6);
+}
+{
+  const c = cam(7), b2 = word(7, 'times');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(7), b2); M.show('#' + b.id, b2);
+  const GX = f => 300 + (f - 1500) * 1.25, base = 700, Y = v => base - v * 420, l = Math.SQRT1_2;
+  const cl = word(7, 'closer'), bw = word(7, 'bandwidth'), sv = word(7, ['seventy', '71']), g9 = word(7, 'gives'), g98 = word(7, 'gives', 1), st = word(7, 'stays'), fs = word(7, ['four', '1', 'one'], 0);
+  label(a, 'how much the notch passes', 960, 24, 'lbl s', 'center');
+  layer(a, hline(GX(1500), GX(2500) + 10, base, C.ink, 3) + vline(GX(1500), base, Y(1.08), C.ink, 3));
+  [[1, '100%'], [0, '0%']].forEach(([v, t]) => label(a, t, GX(1500) - 18, Y(v) - (v ? 29 : 50), 'lbl s', 'right'));
+  M.show(label(a, '71%', GX(1500) - 18, Y(l) - 29, 'lbl s', 'right'), bw);
+  [[1500, '1,500'], [2000, '2,000'], [2500, '2,500 Hz']].forEach(([f, t]) => label(a, t, GX(f), base + 14, 'lbl s', 'center'));
+  layer(a, `<path d="${curveD(GX, Y, f => gainAt(0.9, f), 1500, 2500, 800)}" ${STYLE[0.9]}/>`);
+  reveal(layer(a, `<path d="${curveD(GX, Y, f => gainAt(0.98, f), 1500, 2500, 800)}" ${STYLE[0.98]}/>`, [GX(1500) - 10, GX(2500) + 10]), cl, cl + 30, 'cruise');
+  M.show(layer(a, LEVEL(GX(1500), GX(2500), Y(l))), bw);
+  M.show(label(a, 'radius', 1610, 230, 'lbl s'), sceneStart(7));
+  M.show(layer(a, `<line x1="1610" y1="330" x2="1690" y2="330" ${STYLE[0.9]}/>` + markSvg('circle', 1650, 330, 11)), sceneStart(7));
+  M.show(label(a, '0.90', 1710, 301, 'lbl s'), sceneStart(7));
+  M.show(layer(a, `<line x1="1610" y1="400" x2="1690" y2="400" ${STYLE[0.98]}/>` + markSvg('triangle', 1650, 400, 11)), cl);
+  M.show(label(a, '0.98', 1710, 371, 'lbl s'), cl);
+  const e9 = [edge(0.9, l, -1), edge(0.9, l, 1)], e98 = [edge(0.98, l, -1), edge(0.98, l, 1)], y9 = 200, y98 = 130;
+  M.show(layer(a, e9.map(f => vline(GX(f), Y(l) - 16, y9 + 16, C.soft, 3, '4 8') + markSvg('circle', GX(f), Y(l), 11)).join('') + bracketH(GX(e9[0]), GX(e9[1]), y9)), sv);
+  M.show(label(a, '266 Hz', GX(e9[1]) + 24, y9 - 31, 'lbl'), g9 + 4);
+  M.show(layer(a, e98.map(f => vline(GX(f), Y(l) - 16, y98 + 16, C.soft, 3, '4 8') + markSvg('triangle', GX(f), Y(l), 11)).join('') + bracketH(GX(e98[0]), GX(e98[1]), y98, `stroke="${C.ink}" stroke-width="4"`)), g98);
+  M.show(label(a, '51 Hz', GX(e98[1]) + 24, y98 - 31, 'lbl'), g98 + 4);
+
+  const DX = ms => 300 + ms * 42, BY = h => 700 - h * 0.75;
+  layer(b, hline(DX(0), DX(31), BY(0), C.ink, 3) + vline(DX(0), BY(0), BY(640), C.ink, 3));
+  [[600, '600'], [400, '400'], [200, '200'], [0, '0']].forEach(([h, t]) => label(b, t, DX(0) - 18, BY(h) - 29, 'lbl s', 'right'));
+  [[0, '0'], [10, '10'], [20, '20'], [30, '30']].forEach(([m, t]) => label(b, t, DX(m), BY(0) + 14, 'lbl s', 'center'));
+  label(b, 'bandwidth, Hz', DX(0) + 20, 110, 'lbl s');
+  label(b, 'decay time, ms', DX(30), BY(0) + 84, 'lbl s', 'right');
+  const rs = range(0, 300).map(i => 0.8 + 0.182 * i / 300);
+  const cur = layer(b, `<path d="${path(rs.map(r => [DX(decayMs(r)), BY(bandwidth(r))]))}" ${STYLE[0.9]}/>`, [DX(0), DX(31)]);
+  reveal(cur, b2, b2 + 36, 'cruise');
+  [0.8, 0.85, 0.9, 0.95, 0.98].forEach((r, i) => M.show(layer(b, markSvg('circle', DX(decayMs(r)), BY(bandwidth(r)), 12)), b2 + 4 + i * 6));
+  [[0.8, 26, -24, 'left'], [0.85, -24, 10, 'right'], [0.9, 26, -50, 'left'], [0.95, 0, -80, 'center'], [0.98, 0, -80, 'center']].forEach(([r, dx, dy, an], i) => M.show(label(b, fmt(r), DX(decayMs(r)) + dx, BY(bandwidth(r)) + dy, 'lbl s', an), b2 + 6 + i * 6));
+  M.show(label(b, 'bandwidth × decay time ≈ 1.46', 800, 250, 'lbl ok'), fs);
+  M.show(label(b, 'dots: pole radius', 1100, 470, 'lbl s'), b2 + 40);
+  M.show(label(b, '0.90: 266 Hz × 0.00546 s = 1.45', 800, 330, 'lbl s'), st);
+  M.show(label(b, '0.98: 51.4 Hz × 0.0285 s = 1.46', 800, 400, 'lbl s'), st + 10);
+  drift(7);
+}
+{
+  const c = cam(8), FX = f => 280 + f * 0.33, base = 600, Y = v => base - v * 320, K = 1.1173;
+  const cm = word(8, 'minus'), fl = word(8, 'flat'), pk = word(8, 'peak'), tk = word(8, 'take'), bt = word(8, 'out'), nb = word(8, 'narrow', 1), lg = word(8, 'long');
+  M.show(label(c, 'in tones: how strong each tone comes out', 960, 20, 'lbl s', 'center'), sceneStart(8));
+  layer(c, hline(FX(0) - 10, FX(4000) + 20, base, C.ink, 3) + vline(FX(0), base, Y(1.3), C.ink, 3));
+  label(c, '0', FX(0) - 18, base - 29, 'lbl s', 'right');
+  [[0, '0'], [2000, '2,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(c, t, FX(f), base + 26, 'lbl s', 'center'));
+  const flat = layer(c, hline(FX(0), FX(4000), Y(K), C.ink, 6), [FX(0) - 10, FX(4000) + 10]);
+  reveal(flat, fl - 6, fl + 18, 'cruise');
+  M.kf(flat, 'opacity', [[0, 1], [tk, 1], [tk + 12, 0.35]]);
+  M.show(label(c, 'click: every tone, the same', FX(0) + 30, Y(K) - 80, 'lbl'), fl - 6);
+  const hz = hatch(), pts = range(0, 400).map(i => [FX(4000 * i / 400), Y(peakAt(0.9, 4000 * i / 400))]);
+  const pkS = layer(c, hz.defs + `<path d="M${FX(0)} ${base}${pts.map(p => `L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join('')}L${FX(4000)} ${base}Z" fill="url(#${hz.id})" stroke="${C.accent}" stroke-width="5"/>`);
+  const rg8 = word(8, 'ring', 1);
+  grow(pkS, FX(2000), base, rg8 - 4, 16);
+  const pkH = sub(c), pkF = sub(pkH); pkF.appendChild(document.querySelector(pkS));
+  flicker('#' + pkF.id, FX(2000), base, rg8 + 14, tk - 2, 0.85, 4);
+  flicker('#' + pkH.id, FX(2000), Y(K), tk + 18, bt + 10, 0.7, 5);
+  const lift = Y(K) - base;
+  M.kf(pkS, 'y', [[0, 0], [tk, 0], [tk + 16, lift, 'softInOut']]);
+  M.kf(pkS, 'rotationX', [[0, 0], [tk, 0], [tk + 16, 180, 'softInOut']]);
+  M.kf(pkS, 'opacity', [[0, 1], [bt - 4, 1], [bt + 14, 0, 'softInOut']]);
+  M.show(label(c, 'ring: a peak at 2,000 Hz', FX(2000) + 90, Y(0.95), 'lbl acc'), rg8, tk);
+  const notch = layer(c, `<path d="${curveD(FX, Y, f => gainAt(0.9, f), 0, 4000, 800)}" ${STYLE[0.9]} stroke-width="7"/>`, [FX(0) - 10, FX(4000) + 10]);
+  reveal(notch, bt - 6, bt + 26, 'cruise');
+  M.show(layer(c, `<circle cx="${FX(2000)}" cy="${base}" r="14" fill="${C.paper}" stroke="${C.ink}" stroke-width="5"/>`), bt + 10);
+  M.show(label(c, 'notch: click − ring = 0', FX(2000) + 60, 420, 'lbl'), bt + 16);
+  const n98 = layer(c, `<path d="${curveD(FX, Y, f => gainAt(0.98, f), 0, 4000, 1600)}" ${STYLE[0.98]}/>`, [FX(0) - 10, FX(4000) + 10]);
+  reveal(n98, nb, nb + 20, 'cruise');
+  M.show(label(c, 'dotted: radius 0.98', FX(2000) - 60, 420, 'lbl s', 'right'), nb + 6);
+  const TX = ms => 280 + ms * 44, cy = 790;
+  const ring = (r, n) => range(0, n).map(i => { const ms = 30 * i / n, s = ms * 8; return [TX(ms), cy - 62 * r ** s * Math.cos(Math.PI * s / 2)]; });
+  const tr = sub(c); M.show('#' + tr.id, lg - 4);
+  layer(tr, hline(TX(0), TX(30), cy, C.rule, 2));
+  const rw = sub(tr);
+  layer(rw, `<path d="${path(ring(0.98, 2400))}" fill="none" stroke="${C.soft}" stroke-width="2"/>`);
+  layer(rw, `<path d="${path(ring(0.9, 2400))}" fill="none" stroke="${C.ink}" stroke-width="3"/>`);
+  flicker('#' + rw.id, TX(0), cy, lg, sceneEnd(8), 0.4, 8);
+  label(tr, '0.98: 28.5 ms', TX(17), cy - 100, 'lbl s');
+  drift(8, 1, 1.04);
+}
+{
+  const c = cam(9), DX = ms => 320 + ms * 105, BY = h => 720 - h * 0.8;
+  const wa = word(9, 'wants'), ei = word(9, ['eighteen', '1800']), bo = word(9, 'both'), se = word(9, 'settles'), sh = word(9, 'ship'), fd = word(9, 'fades'), nt = word(9, ['ninety-three', '93']);
+  M.show(label(c, 'the support lead’s requests', 960, 20, 'lbl s', 'center'), sceneStart(9));
+  layer(c, hline(DX(0), DX(12.3), BY(0), C.ink, 3) + vline(DX(0), BY(0), BY(620), C.ink, 3));
+  [[600, '600'], [400, '400'], [200, '200'], [0, '0']].forEach(([h, t]) => label(c, t, DX(0) - 18, BY(h) - 29, 'lbl s', 'right'));
+  [[0, '0'], [4, '4'], [8, '8'], [12, '12']].forEach(([m, t]) => label(c, t, DX(m), BY(0) + 14, 'lbl s', 'center'));
+  label(c, 'bandwidth, Hz', DX(0) + 20, 100, 'lbl s');
+  label(c, 'decay time, ms', DX(12), BY(0) + 84, 'lbl s', 'right');
+  const shade = layer(c, `<rect x="${DX(0)}" y="${BY(620)}" width="${DX(4) - DX(0)}" height="${BY(0) - BY(620)}" fill="${C.inputSoft}" opacity="0.6"/>`);
+  M.show(shade, wa + 6);
+  M.kf(shade, 'opacity', [[0, 0], [wa + 6, 0], [wa + 30, 1, 'softInOut']]);
+  const rr = range(0, 300).map(i => 0.8 + 0.157 * i / 300).filter(r => decayMs(r) <= 12.2);
+  layer(c, `<path d="${path(rr.map(r => [DX(decayMs(r)), BY(bandwidth(r))]))}" ${STYLE[0.9]}/>`);
+  const r4 = 0.01 ** (1 / 32), r18 = 0.926, r15 = 0.816;
+  const sA = layer(c, vline(DX(4), BY(620), BY(0), C.input, 4, '14 10'));
+  M.show(sA, wa + 6);
+  M.show(label(c, '← ring under 1% in 4 ms', DX(4) + 20, 160, 'lbl ok'), wa + 6);
+  const seg = (r0, r1, color, w) => `<path d="${path(range(0, 60).map(i => r0 + (r1 - r0) * i / 60).map(r => [DX(decayMs(r)), BY(bandwidth(r))]))}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+  const rTop = 0.957;
+  M.show(layer(c, seg(r18, rTop, C.accent, 14)), ei, se);
+  M.show(label(c, '1,800 Hz at 90%:', 1100, 400, 'lbl acc'), ei, se);
+  M.show(label(c, 'radius 0.926 and up', 1100, 470, 'lbl acc'), ei, se);
+  M.show(label(c, 'no notch meets both', DX(4.4), 330, 'lbl acc'), bo, se);
+  M.show(layer(c, seg(r15, r4, C.input, 16)), se + 6);
+  M.show(label(c, '1,500 Hz at 90%: 0.816 up', DX(6.4), 236, 'lbl ok'), se);
+  M.show(label(c, 'both: radius 0.816 to 0.866', DX(6.4), 306, 'lbl ok'), se + 6);
+  M.show(layer(c, markSvg('circle', DX(decayMs(0.85)), BY(bandwidth(0.85)), 16, C.ink)), sh);
+  M.show(label(c, 'ship 0.85: 1% in 3.5 ms', DX(6.4), 376, 'lbl'), fd);
+  M.show(label(c, 'ship 0.85', DX(6.4), 376, 'lbl'), sh, fd);
+  M.show(label(c, '1,500 Hz kept: 93%', DX(6.4), 446, 'lbl'), nt);
+  M.show(tick(c, DX(6.4) + 590, 476), nt);
+  drift(9);
+}
+{
+  const c = cam(10), fx = word(10, 'fax');
+  const a = sub(c), b = sub(c);
+  M.show('#' + a.id, sceneStart(10), fx); M.show('#' + b.id, fx);
+  const pa = word(10, 'patch'), ln = word(10, 'length'), hd = word(10, 'hides'), ar = word(10, 'arrive'), ld = word(10, 'loud'), sm = word(10, 'smeared'), lt = word(10, 'late');
+  const TX = ms => 300 + ms * 130, base = 450;
+  M.show(label(a, 'your line, radius 0.85', 960, 20, 'lbl s', 'center'), sceneStart(10));
+  const band = layer(a, `<rect x="${TX(0)}" y="130" width="${TX(4) - TX(0)}" height="460" fill="${C.paper2}"/>`);
+  M.show(band, hd);
+  M.kf(band, 'opacity', [[0, 0], [hd, 0], [hd + 24, 1, 'softInOut']]);
+  layer(a, hline(TX(-0.3), TX(10), base, C.ink, 3));
+  [[0, '0'], [5, '5'], [10, '10 ms']].forEach(([m, t]) => label(a, t, TX(m), 610, 'lbl s', 'center'));
+  layer(a, vline(TX(0), base, 160, C.ink, 10));
+  label(a, 'relay click', TX(0) + 30, 150, 'lbl');
+  const rp = range(0, 1200).map(i => { const ms = 0.25 + 9.75 * i / 1200, s = ms * 8; return [TX(ms), base + 72 * 0.85 ** (s - 2) * Math.cos(Math.PI * s / 2)]; });
+  const rg = layer(a, `<path d="${path(rp)}" fill="none" stroke="${C.accent}" stroke-width="4"/>`, [TX(0.2), TX(10.1)]);
+  reveal(rg, sceneStart(10) + 4, sceneStart(10) + 34, 'cruise');
+  flicker(rg, TX(0), base, sceneStart(10) + 34, fx, 0.5, 6);
+  const sd = word(10, 'steady'), al = word(10, 'alone');
+  M.show(label(a, 'steady whine: the ring cancels it', TX(4.4), 230, 'lbl s'), sd);
+  M.show(label(a, 'after a click: the ring alone', TX(4.4), 300, 'lbl acc'), al - 8);
+  M.show(label(a, 'its length: 1% by 3.5 ms', TX(4.4), 370, 'lbl'), ln);
+  M.show(label(a, 'under 4 ms: heard as the click', TX(0) + 20, 680, 'lbl'), hd);
+
+  M.show(label(b, 'next ticket: a fax modem', 960, 20, 'lbl s', 'center'), fx);
+  const X = u => 300 + u * 130, rowS = 270, rowR = 620;
+  label(b, 'sent', X(0), rowS - 150, 'lbl s');
+  label(b, 'received', X(0), rowR - 150, 'lbl s');
+  layer(b, hline(X(0), X(10), rowS, C.rule, 2) + hline(X(0), X(10), rowR, C.rule, 2));
+  const bursts = [[0.3, 2.4, 0.22], [3.5, 2.4, 0.34], [6.7, 2.4, 0.16]];
+  const burst = (x0, len, per, spread, yb, color, w) => {
+    const pts = [];
+    for (let u = x0 - spread; u <= x0 + len + spread; u += 0.01) {
+      let e;
+      if (!spread) e = u >= x0 && u <= x0 + len ? 1 : 0;
+      else e = Math.min(1, Math.max(0, (u - x0 + spread) / (2 * spread))) * Math.min(1, Math.max(0, (x0 + len + spread - u) / (2 * spread)));
+      pts.push([X(u), yb - 80 * e * Math.sin(2 * Math.PI * (u - x0) / per)]);
+    }
+    return `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+  };
+  bursts.forEach(([x0, len, per]) => layer(b, burst(x0, len, per, 0, rowS, C.ink, 4)));
+  const delays = [0.2, 1.5, 0.7];
+  bursts.forEach(([x0, len, per], i) => {
+    const s = layer(b, burst(x0, len, per, 0.6, rowR, i === 1 ? C.accent : C.ink, 4));
+    M.kf(s, 'x', [[0, 0], [sm - 10, 0], [END - 30, X(delays[i]) - X(0), 'softInOut']]);
+  });
+  M.show(label(b, 'every tone: loud enough', X(10), rowS + 110, 'lbl ok', 'right'), ld);
+  M.show(label(b, 'smeared', X(10), rowR + 100, 'lbl acc', 'right'), sm);
+  M.show(label(b, 'late, by different amounts', 960, 800, 'lbl big acc', 'center'), lt);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

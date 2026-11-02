@@ -1,0 +1,303 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:03.140
+The notch from the last
+lesson is live on every call,
+
+2
+00:00:03.160 --> 00:00:04.380
+and the whine at two thousand hertz
+
+3
+00:00:04.400 --> 00:00:05.120
+is gone.
+
+4
+00:00:05.240 --> 00:00:06.440
+Then new tickets arrive.
+
+5
+00:00:06.460 --> 00:00:08.780
+Every time a call connects,
+I hear a little tink,
+
+6
+00:00:08.800 --> 00:00:10.380
+like someone tapped a tiny bell.
+
+7
+00:00:11.030 --> 00:00:12.850
+Calls start with a relay click.
+
+8
+00:00:12.910 --> 00:00:14.570
+A click should light every tone a little,
+
+9
+00:00:14.590 --> 00:00:16.390
+a flat line on the frequency meter.
+
+10
+00:00:16.550 --> 00:00:19.450
+Instead the meter shows one thin spike,
+at two thousand hertz.
+
+11
+00:00:19.650 --> 00:00:22.750
+The filter whose whole job is removing
+two thousand hertz is making it.
+
+12
+00:00:23.770 --> 00:00:25.110
+Do what lesson two taught.
+
+13
+00:00:25.130 --> 00:00:27.910
+Send one click through the notch
+and record what comes back.
+
+14
+00:00:28.130 --> 00:00:30.323
+Point nine oh five, then zero,
+point one seven two,
+
+15
+00:00:30.437 --> 00:00:32.110
+zero, minus point one three nine.
+
+16
+00:00:32.130 --> 00:00:33.610
+The click lasts one sample.
+
+17
+00:00:33.630 --> 00:00:34.650
+The output keeps going.
+
+18
+00:00:34.670 --> 00:00:35.430
+That's feedback.
+
+19
+00:00:35.930 --> 00:00:37.450
+Up, nothing, down, nothing.
+
+20
+00:00:37.470 --> 00:00:39.710
+That's a dot turning ninety
+degrees per sample,
+
+21
+00:00:39.730 --> 00:00:41.130
+which is two thousand hertz.
+
+22
+00:00:41.150 --> 00:00:41.870
+There's the tink.
+
+23
+00:00:41.890 --> 00:00:43.970
+Over two samples the ring
+keeps point eight one,
+
+24
+00:00:43.990 --> 00:00:46.350
+so point nine per sample,
+the poles' radius.
+
+25
+00:00:47.120 --> 00:00:49.560
+Now take the wheel,
+and after every ninety degree turn,
+
+26
+00:00:49.580 --> 00:00:50.960
+shrink the dot to point nine.
+
+27
+00:00:50.980 --> 00:00:51.880
+It spirals in.
+
+28
+00:00:51.900 --> 00:00:54.220
+Its shadow, the left-right position,
+swings up, nothing,
+
+29
+00:00:54.240 --> 00:00:56.040
+down, nothing, smaller each time.
+
+30
+00:00:56.060 --> 00:00:57.180
+The turn sets the pitch.
+
+31
+00:00:57.200 --> 00:00:58.760
+The shrink sets how fast it dies.
+
+32
+00:00:58.780 --> 00:01:00.600
+That spiral is a pole, in time.
+
+33
+00:01:01.560 --> 00:01:04.980
+The decay time is how long the ring takes
+to shrink to one percent of where it
+
+34
+00:01:05.000 --> 00:01:05.660
+started.
+
+35
+00:01:05.800 --> 00:01:08.460
+Radius point nine gives
+five and a half milliseconds.
+
+36
+00:01:08.680 --> 00:01:10.280
+Point nine eight gives
+twenty-eight and a half,
+
+37
+00:01:10.300 --> 00:01:11.600
+five times as long.
+
+38
+00:01:11.660 --> 00:01:13.080
+Halve the gap from pole to circle,
+
+39
+00:01:13.100 --> 00:01:14.560
+and the decay time doubles.
+
+40
+00:01:15.220 --> 00:01:17.280
+Closer poles make the notch narrower.
+
+41
+00:01:17.400 --> 00:01:18.760
+The bandwidth is the width of the notch,
+
+42
+00:01:18.780 --> 00:01:21.930
+in hertz, between the two tones on
+either side that it passes at seventy-one
+
+43
+00:01:21.950 --> 00:01:22.440
+percent.
+
+44
+00:01:22.920 --> 00:01:25.640
+Radius point nine gives
+two hundred sixty-six hertz.
+
+45
+00:01:25.740 --> 00:01:27.220
+Point nine eight gives fifty-one.
+
+46
+00:01:27.240 --> 00:01:28.540
+Bandwidth times decay time,
+
+47
+00:01:28.560 --> 00:01:30.880
+in seconds, stays near one point four six.
+
+48
+00:01:32.090 --> 00:01:33.150
+Why that number?
+
+49
+00:01:33.290 --> 00:01:34.970
+The notch is a click minus a ring.
+
+50
+00:01:35.010 --> 00:01:36.710
+In tones, a click is a flat line.
+
+51
+00:01:36.770 --> 00:01:38.950
+The ring is a narrow peak
+at two thousand hertz.
+
+52
+00:01:39.010 --> 00:01:41.310
+Take it away,
+and you've bitten two thousand hertz out.
+
+53
+00:01:41.730 --> 00:01:43.230
+The ring is how the notch works.
+
+54
+00:01:43.250 --> 00:01:44.670
+A narrow bite needs a narrow peak,
+
+55
+00:01:44.690 --> 00:01:46.570
+and a narrow peak needs a long ring.
+
+56
+00:01:47.790 --> 00:01:51.350
+The support lead wants the ring under
+one percent within four milliseconds,
+
+57
+00:01:51.370 --> 00:01:53.650
+and eighteen hundred hertz
+kept at ninety percent.
+
+58
+00:01:53.890 --> 00:01:56.010
+On the curve, no notch meets both.
+
+59
+00:01:56.110 --> 00:01:57.810
+The lead settles for fifteen hundred.
+
+60
+00:01:57.930 --> 00:01:59.690
+You ship radius point eight five.
+
+61
+00:01:59.750 --> 00:02:01.870
+The ring fades
+in three and a half milliseconds,
+
+62
+00:02:01.890 --> 00:02:03.890
+and fifteen hundred keeps
+ninety-three percent.
+
+63
+00:02:05.020 --> 00:02:06.540
+No patch removes the tink.
+
+64
+00:02:06.560 --> 00:02:08.100
+The ring cancels a steady whine.
+
+65
+00:02:08.120 --> 00:02:09.360
+After a click, it rings alone.
+
+66
+00:02:09.380 --> 00:02:10.440
+You only choose its length.
+
+67
+00:02:10.460 --> 00:02:12.200
+Now it hides in the relay's click.
+
+68
+00:02:12.500 --> 00:02:14.040
+Then a fax customer calls.
+
+69
+00:02:14.100 --> 00:02:15.720
+Its tones arrive loud, but smeared.
+
+70
+00:02:15.740 --> 00:02:16.800
+Something is too late.

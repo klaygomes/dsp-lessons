@@ -26,12 +26,12 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 4 | Sampling and aliasing | ready | ready |
 | 5 | Changing the rate | ready | ready |
 | 6 | Zeros and poles | ready | ready |
-| 7 | Ringing | ready | to build |
+| 7 | Ringing | ready | ready |
 | 8 | Phase and delay | ready | to build |
 | 9 | Finite precision | fixed after judge 1, judge 2 running | to build |
-| 10 | FIR windows | built, learner judge running | to build |
-| 11 | Bilinear transform | built, learner judge running | to build |
-| 12 | DFT | built, learner judge running | to build |
+| 10 | FIR windows | judge 2 not ready, round 3 fixes (open items) | to build |
+| 11 | Bilinear transform | judge 1 ready with polish (open items) | to build |
+| 12 | DFT | judge 1 ready with polish (open items) | to build |
 | 13 | FFT | built, learner judge running | to build |
 | 14 | Spectrum windows | builder running | to build |
 | 15 | Hilbert | builder running | to build |
@@ -45,6 +45,28 @@ Rules the builders learned the hard way (they live in the builder brief):
 - [x] Lesson 6: decide whether to rebuild the reused `2-machine` figure with a dash-dot pole cord (dashed means input elsewhere); add "The voice meter averages how much of each tone from 300 to 3,400 Hz passes" to "Your turn".
 - [ ] Lesson 10 sheet: act 2 prediction and cases changed (second bridge 3,500/4,500 Hz first, then your own line).
 - [ ] Lesson 11 sheet: act 1 and act 2 designs changed (hidden aged-rack cases); add one prose sentence naming the aged rack; unify 0.707-style and %-style gains.
+- [ ] Lesson 10 page, learner judge 2 said "not ready" (2026-11-02), after the round 1 fixes:
+  - "A window with soft edges" gives act 2's answer for your own line ("at 41 it scrapes through with 0.93%, at 45 there's room to spare"); lock it with `working`, or make your own line's case differ from the prose's;
+  - act 1's ghost strip thins to grey dashes at 191 to 255 coefficients, which reads as "length fixes it" against the readout's "still 1.090", and the dashes look like the figure's "where the ghost would sit" guide;
+  - act 2 is binary (rectangle never passes, so the task is "click Hamming, find the shortest length"); the sheet planned a different prediction (Hamming against the plain cut at 4,300 Hz); bring the sheet and page together;
+  - the dB view's -40 dB line starts at 4,000 Hz instead of the remove edge;
+  - terms before their definition: "voice band" in the subtitle, "Hamming window's response" in the rectangle figure, "taper" never defined, "mirror arrows" leans on lesson 6, act 1's "Filter on" unexplained; the status line never says the sweep loops.
+- [ ] Lesson 11 page, learner judge 1 said "ready" (2026-11-02) with polish:
+  - act 2 says "much higher" even when 35 Hz short; show it only when far below;
+  - "What people get wrong" echo caption says it "flips sign every sample", but the stems run 0.7157, 0.4660, -0.2807, so it flips from n = 1 on;
+  - typing the prose's 10,607 Hz in act 2 gets a generic "too high"; say it is the 3,400 Hz answer and this exchange needs the same backward calculation;
+  - act 1's "same gain as" label is clipped at the right edge at the 100,000 Hz preset;
+  - the slider cannot land on 3,400 Hz (706 gives 3,387, 707 gives 3,427);
+  - Reset after Pin leaves the stale pin text in the live region;
+  - the sheet's act 2 still plans the fixed 3,400 Hz case, and it says "cutoff" was defined in lesson 4 in one place and lesson 10 in another.
+- [ ] Lesson 12 page, learner judge 1 said "ready" (2026-11-02) with polish:
+  - the 2,500 Hz prediction's caption ("its match spreads over its neighbors") is visible while the question is open; show it after the answer;
+  - act 2 draws press strength at random (0.55 to 1.0, `lab.js` line 76), so winning bins score 46% to 72% while the prose says at least 86%; say presses arrive at different strengths (same as the item below);
+  - 0 Hz starting a quarter turn behind says "both halves pile up" next to a match of 0.00; say the samples are all zero;
+  - the phase label "345° behind the right, clockwise" should read "15° above the right";
+  - guard against four identical digits in a call;
+  - the lab names whole-turn wheels and leakage before "Which test wheels?" introduces them; "alias" has no gloss;
+  - the sentence before the first prediction says the products "cancel", which gives the answer away.
 - [ ] Lesson 12: builder changed the mirror-arrow wording (two half arrows laid tip to tail land on the sample, not halfway between tips); check lesson 6 and series.md use the same picture. Sheet act 1 predictions changed (half turn, N = 16). Add "presses arrive at different loudness" to the act 2 task.
 - [ ] Lesson 13 sheet: goertzel-final value is (-129.3, 91.8), not (-129.4, 91.0); act 1 first prediction moved inline before the odd-walk figure.
 - [ ] Read-aloud long-sentence fixes for lessons 1, 2, 4 and 5 (reports in each `read-aloud-final/report.json`, ignored by git).
