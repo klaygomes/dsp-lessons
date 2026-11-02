@@ -24,7 +24,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 2 | Impulse response | ready | ready |
 | 3 | Frequency response | ready | ready |
 | 4 | Sampling and aliasing | ready | ready |
-| 5 | Changing the rate | ready | to build |
+| 5 | Changing the rate | ready | ready |
 | 6 | Zeros and poles | built, learner judge running | to build |
 | 7 | Ringing | ready | to build |
 | 8 | Phase and delay | ready | to build |

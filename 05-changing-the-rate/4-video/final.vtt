@@ -1,0 +1,301 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.720
+Your line now joins a wideband line,
+
+2
+00:00:02.740 --> 00:00:05.440
+sixteen thousand samples a second,
+and you build the bridge.
+
+3
+00:00:05.580 --> 00:00:06.820
+Then the tickets arrive.
+
+4
+00:00:06.880 --> 00:00:09.120
+A second voice under every voice,
+thin and high.
+
+5
+00:00:09.140 --> 00:00:11.940
+One customer says it goes down
+when her mother's voice goes up.
+
+6
+00:00:12.590 --> 00:00:13.390
+You test it.
+
+7
+00:00:13.410 --> 00:00:14.990
+A colleague hums one thousand hertz
+
+8
+00:00:15.010 --> 00:00:17.510
+into a frequency meter
+on the wideband side.
+
+9
+00:00:17.550 --> 00:00:18.670
+The hum arrives at half height.
+
+10
+00:00:18.690 --> 00:00:21.410
+And a second tone,
+just as strong, at seven thousand.
+
+11
+00:00:21.550 --> 00:00:22.810
+Slide the hum down to five hundred,
+
+12
+00:00:22.830 --> 00:00:24.150
+and the ghost slides up,
+
+13
+00:00:24.170 --> 00:00:25.590
+to seven thousand five hundred.
+
+14
+00:00:26.450 --> 00:00:28.410
+Your line can't even store seven thousand.
+
+15
+00:00:28.430 --> 00:00:29.510
+Where does it come from?
+
+16
+00:00:29.530 --> 00:00:30.430
+Look at the bridge.
+
+17
+00:00:30.450 --> 00:00:33.610
+It passes each sample through
+and puts a zero between every two,
+
+18
+00:00:33.630 --> 00:00:36.550
+so eight thousand samples
+a second become sixteen thousand.
+
+19
+00:00:36.570 --> 00:00:37.890
+That's upsampling by two.
+
+20
+00:00:37.910 --> 00:00:39.470
+The zeros look like silence.
+
+21
+00:00:40.040 --> 00:00:41.160
+Lesson three's wheel.
+
+22
+00:00:41.360 --> 00:00:44.500
+A tone is a turning dot,
+and a sample is its left-right shadow.
+
+23
+00:00:44.600 --> 00:00:46.240
+Twice the samples, half the turn.
+
+24
+00:00:46.260 --> 00:00:48.880
+One thousand hertz turns
+twenty-two and a half degrees.
+
+25
+00:00:48.980 --> 00:00:51.000
+Seven thousand turns
+one hundred fifty-seven and a half,
+
+26
+00:00:51.020 --> 00:00:53.320
+under half a turn,
+so here it's a real tone.
+
+27
+00:00:53.930 --> 00:00:55.390
+Push the hum through the bridge.
+
+28
+00:00:55.410 --> 00:00:57.290
+Even samples sit on the true tone.
+
+29
+00:00:57.310 --> 00:00:58.370
+Odd samples are zero.
+
+30
+00:00:58.390 --> 00:00:59.750
+Now add half of one thousand hertz
+
+31
+00:00:59.770 --> 00:01:01.170
+to half of seven thousand.
+
+32
+00:01:01.290 --> 00:01:03.210
+On even samples the halves
+agree and add up.
+
+33
+00:01:03.230 --> 00:01:05.950
+On odd samples they're opposite,
+and cancel to zero.
+
+34
+00:01:05.970 --> 00:01:07.210
+Exactly the bridge output.
+
+35
+00:01:08.020 --> 00:01:08.540
+Why?
+
+36
+00:01:08.560 --> 00:01:10.080
+Each step of the seven thousand dot
+
+37
+00:01:10.100 --> 00:01:11.400
+is a flip, a half turn,
+
+38
+00:01:11.420 --> 00:01:13.100
+then twenty-two and a half degrees back.
+
+39
+00:01:13.140 --> 00:01:15.380
+On even samples the flips
+pair up into whole turns,
+
+40
+00:01:15.400 --> 00:01:17.860
+so it sits at the hum's mirror spot,
+the same shadow.
+
+41
+00:01:17.880 --> 00:01:20.880
+On odd samples one flip is left,
+so the shadow is opposite.
+
+42
+00:01:22.040 --> 00:01:23.920
+So the zeros were never silence.
+
+43
+00:01:23.940 --> 00:01:27.400
+They're your tone at half height,
+plus a second tone, called an image.
+
+44
+00:01:27.480 --> 00:01:29.560
+Upsampling makes one for every tone,
+
+45
+00:01:29.580 --> 00:01:31.540
+at eight thousand hertz minus the tone,
+
+46
+00:01:31.560 --> 00:01:33.120
+mirrored across four thousand.
+
+47
+00:01:33.280 --> 00:01:36.360
+A whole voice comes back upside down,
+from four thousand six hundred
+
+48
+00:01:36.380 --> 00:01:38.320
+to seven thousand seven hundred hertz.
+
+49
+00:01:39.120 --> 00:01:41.560
+After the zeros,
+the bridge needs a low-pass filter,
+
+50
+00:01:41.580 --> 00:01:42.820
+gain two below four thousand
+
+51
+00:01:42.840 --> 00:01:45.040
+to undo the halving, and zero above.
+
+52
+00:01:45.140 --> 00:01:47.640
+Averaging a gap's two neighbors
+slopes too gently.
+
+53
+00:01:47.760 --> 00:01:49.520
+A longer rule steps more steeply.
+
+54
+00:01:49.660 --> 00:01:50.920
+Thirty-one samples keeps the voice,
+
+55
+00:01:50.940 --> 00:01:52.460
+and every image under eight percent.
+
+56
+00:01:53.400 --> 00:01:55.600
+Going down,
+the bridge keeps every other sample.
+
+57
+00:01:55.620 --> 00:01:56.840
+That's downsampling.
+
+58
+00:01:56.900 --> 00:01:58.420
+The hiss of an S, at six thousand hertz,
+
+59
+00:01:58.440 --> 00:02:00.700
+lands on your line
+as a two thousand hertz squeal,
+
+60
+00:02:00.720 --> 00:02:02.720
+an alias across the same mirror.
+
+61
+00:02:02.780 --> 00:02:04.400
+So the low-pass filter goes first,
+
+62
+00:02:04.420 --> 00:02:05.700
+gain one, while six thousand
+
+63
+00:02:05.720 --> 00:02:06.960
+is still six thousand.
+
+64
+00:02:08.140 --> 00:02:09.940
+Upsampling never adds detail.
+
+65
+00:02:09.960 --> 00:02:12.240
+The best bridge adds
+almost nothing above four thousand,
+
+66
+00:02:12.260 --> 00:02:14.280
+and ours leaves a faint seven percent.
+
+67
+00:02:14.620 --> 00:02:15.400
+Then a new ticket.
+
+68
+00:02:15.420 --> 00:02:16.820
+A thin whine on every call,
+
+69
+00:02:16.840 --> 00:02:19.200
+exactly four thousand hertz,
+on the mirror line.
