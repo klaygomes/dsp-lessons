@@ -27,7 +27,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 5 | Changing the rate | ready | ready |
 | 6 | Zeros and poles | ready | ready |
 | 7 | Ringing | ready | ready |
-| 8 | Phase and delay | ready | to build |
+| 8 | Phase and delay | ready | ready |
 | 9 | Finite precision | judge 2 not ready, round 3 fixes (open items) | to build |
 | 10 | FIR windows | judge 2 not ready, round 3 fixes (open items) | to build |
 | 11 | Bilinear transform | judge 1 ready with polish (open items) | to build |

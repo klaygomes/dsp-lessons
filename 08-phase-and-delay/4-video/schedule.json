@@ -1,0 +1,2192 @@
+{
+ "fps": 30,
+ "duration": 155.77,
+ "wpm": 212,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The tink is gone. Then a business customer plugs in a fax machine, and it won't go through. Not once. Its tones run from one thousand to eighteen hundred hertz, and every one gets out loud enough.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 9.93,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "The",
+     "frame": 18
+    },
+    {
+     "word": "tink",
+     "frame": 26
+    },
+    {
+     "word": "is",
+     "frame": 32
+    },
+    {
+     "word": "gone.",
+     "frame": 37
+    },
+    {
+     "word": "Then",
+     "frame": 50
+    },
+    {
+     "word": "a",
+     "frame": 59
+    },
+    {
+     "word": "business",
+     "frame": 62
+    },
+    {
+     "word": "customer",
+     "frame": 70
+    },
+    {
+     "word": "plugs",
+     "frame": 83
+    },
+    {
+     "word": "in",
+     "frame": 94
+    },
+    {
+     "word": "a",
+     "frame": 98
+    },
+    {
+     "word": "fax",
+     "frame": 100
+    },
+    {
+     "word": "machine,",
+     "frame": 108
+    },
+    {
+     "word": "and",
+     "frame": 122
+    },
+    {
+     "word": "it",
+     "frame": 126
+    },
+    {
+     "word": "won't",
+     "frame": 129
+    },
+    {
+     "word": "go",
+     "frame": 134
+    },
+    {
+     "word": "through,",
+     "frame": 138
+    },
+    {
+     "word": "not",
+     "frame": 155
+    },
+    {
+     "word": "once.",
+     "frame": 159
+    },
+    {
+     "word": "Its",
+     "frame": 176
+    },
+    {
+     "word": "tones",
+     "frame": 186
+    },
+    {
+     "word": "run",
+     "frame": 194
+    },
+    {
+     "word": "from",
+     "frame": 201
+    },
+    {
+     "word": "1",
+     "frame": 206
+    },
+    {
+     "word": ",000",
+     "frame": 213
+    },
+    {
+     "word": "to",
+     "frame": 221
+    },
+    {
+     "word": "1",
+     "frame": 225
+    },
+    {
+     "word": ",800",
+     "frame": 231
+    },
+    {
+     "word": "Hz,",
+     "frame": 239
+    },
+    {
+     "word": "and",
+     "frame": 254
+    },
+    {
+     "word": "everyone",
+     "frame": 257
+    },
+    {
+     "word": "gets",
+     "frame": 266
+    },
+    {
+     "word": "out",
+     "frame": 274
+    },
+    {
+     "word": "loud",
+     "frame": 278
+    },
+    {
+     "word": "enough.",
+     "frame": 284
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "The fax sends each page in short tone bursts, and every tone must arrive within one and a half samples of every other. That's its window. At the far end, each burst near eighteen hundred hertz comes three samples late, and slides into the next one. That's the smear.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo-fix3/line01.wav",
+   "at": 10.53,
+   "start": 10.53,
+   "end": 23.26,
+   "start_frame": 316,
+   "words": [
+    {
+     "word": "The",
+     "frame": 316
+    },
+    {
+     "word": "fax",
+     "frame": 324
+    },
+    {
+     "word": "sends",
+     "frame": 333
+    },
+    {
+     "word": "each",
+     "frame": 339
+    },
+    {
+     "word": "page",
+     "frame": 346
+    },
+    {
+     "word": "in",
+     "frame": 356
+    },
+    {
+     "word": "short",
+     "frame": 360
+    },
+    {
+     "word": "-tone",
+     "frame": 368
+    },
+    {
+     "word": "bursts,",
+     "frame": 375
+    },
+    {
+     "word": "and",
+     "frame": 393
+    },
+    {
+     "word": "every",
+     "frame": 400
+    },
+    {
+     "word": "tone",
+     "frame": 406
+    },
+    {
+     "word": "must",
+     "frame": 412
+    },
+    {
+     "word": "arrive",
+     "frame": 420
+    },
+    {
+     "word": "within",
+     "frame": 428
+    },
+    {
+     "word": "one",
+     "frame": 436
+    },
+    {
+     "word": "-and",
+     "frame": 442
+    },
+    {
+     "word": "-a",
+     "frame": 446
+    },
+    {
+     "word": "-half",
+     "frame": 448
+    },
+    {
+     "word": "samples",
+     "frame": 451
+    },
+    {
+     "word": "of",
+     "frame": 463
+    },
+    {
+     "word": "every",
+     "frame": 468
+    },
+    {
+     "word": "other.",
+     "frame": 473
+    },
+    {
+     "word": "That's",
+     "frame": 494
+    },
+    {
+     "word": "its",
+     "frame": 498
+    },
+    {
+     "word": "window.",
+     "frame": 502
+    },
+    {
+     "word": "At",
+     "frame": 524
+    },
+    {
+     "word": "the",
+     "frame": 528
+    },
+    {
+     "word": "far",
+     "frame": 530
+    },
+    {
+     "word": "end",
+     "frame": 537
+    },
+    {
+     "word": "each",
+     "frame": 543
+    },
+    {
+     "word": "burst",
+     "frame": 549
+    },
+    {
+     "word": "near",
+     "frame": 558
+    },
+    {
+     "word": "1800",
+     "frame": 564
+    },
+    {
+     "word": "Hz",
+     "frame": 576
+    },
+    {
+     "word": "comes",
+     "frame": 588
+    },
+    {
+     "word": "three",
+     "frame": 598
+    },
+    {
+     "word": "samples",
+     "frame": 606
+    },
+    {
+     "word": "late",
+     "frame": 618
+    },
+    {
+     "word": "and",
+     "frame": 626
+    },
+    {
+     "word": "slides",
+     "frame": 631
+    },
+    {
+     "word": "into",
+     "frame": 640
+    },
+    {
+     "word": "the",
+     "frame": 646
+    },
+    {
+     "word": "next",
+     "frame": 650
+    },
+    {
+     "word": "one.",
+     "frame": 656
+    },
+    {
+     "word": "That's",
+     "frame": 667
+    },
+    {
+     "word": "the",
+     "frame": 676
+    },
+    {
+     "word": "smear.",
+     "frame": 680
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Lesson three said a line does two things to each tone. It scales it, and it delays it. Nobody checked the delay. On the wheel, the output's dot trails the input's. That's the phase. A steady tone is late by its phase over its turn per sample.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line03.wav",
+   "at": 24.06,
+   "start": 24.06,
+   "end": 35.53,
+   "start_frame": 722,
+   "words": [
+    {
+     "word": "Lesson",
+     "frame": 722
+    },
+    {
+     "word": "3",
+     "frame": 736
+    },
+    {
+     "word": "said",
+     "frame": 742
+    },
+    {
+     "word": "a",
+     "frame": 749
+    },
+    {
+     "word": "line",
+     "frame": 752
+    },
+    {
+     "word": "does",
+     "frame": 757
+    },
+    {
+     "word": "two",
+     "frame": 762
+    },
+    {
+     "word": "things",
+     "frame": 768
+    },
+    {
+     "word": "to",
+     "frame": 775
+    },
+    {
+     "word": "each",
+     "frame": 779
+    },
+    {
+     "word": "tone.",
+     "frame": 785
+    },
+    {
+     "word": "It",
+     "frame": 796
+    },
+    {
+     "word": "scales",
+     "frame": 802
+    },
+    {
+     "word": "it,",
+     "frame": 811
+    },
+    {
+     "word": "and",
+     "frame": 820
+    },
+    {
+     "word": "it",
+     "frame": 823
+    },
+    {
+     "word": "delays",
+     "frame": 826
+    },
+    {
+     "word": "it.",
+     "frame": 833
+    },
+    {
+     "word": "Nobody",
+     "frame": 844
+    },
+    {
+     "word": "checked",
+     "frame": 857
+    },
+    {
+     "word": "the",
+     "frame": 862
+    },
+    {
+     "word": "delay.",
+     "frame": 866
+    },
+    {
+     "word": "On",
+     "frame": 882
+    },
+    {
+     "word": "the",
+     "frame": 890
+    },
+    {
+     "word": "wheel,",
+     "frame": 893
+    },
+    {
+     "word": "the",
+     "frame": 904
+    },
+    {
+     "word": "output's",
+     "frame": 906
+    },
+    {
+     "word": "dot",
+     "frame": 918
+    },
+    {
+     "word": "trails",
+     "frame": 923
+    },
+    {
+     "word": "the",
+     "frame": 932
+    },
+    {
+     "word": "inputs.",
+     "frame": 937
+    },
+    {
+     "word": "That's",
+     "frame": 949
+    },
+    {
+     "word": "the",
+     "frame": 958
+    },
+    {
+     "word": "phase.",
+     "frame": 962
+    },
+    {
+     "word": "A",
+     "frame": 980
+    },
+    {
+     "word": "steady",
+     "frame": 982
+    },
+    {
+     "word": "tone",
+     "frame": 988
+    },
+    {
+     "word": "is",
+     "frame": 996
+    },
+    {
+     "word": "late",
+     "frame": 1000
+    },
+    {
+     "word": "by",
+     "frame": 1006
+    },
+    {
+     "word": "its",
+     "frame": 1010
+    },
+    {
+     "word": "phase",
+     "frame": 1016
+    },
+    {
+     "word": "over",
+     "frame": 1023
+    },
+    {
+     "word": "its",
+     "frame": 1029
+    },
+    {
+     "word": "turn",
+     "frame": 1034
+    },
+    {
+     "word": "per",
+     "frame": 1042
+    },
+    {
+     "word": "sample.",
+     "frame": 1048
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Take a pure delay of three samples. Five hundred hertz trails by sixty-seven and a half degrees, one thousand by one hundred thirty-five, two thousand by two hundred seventy. Double the tone, double the phase. Every tone, three samples late. That's linear phase.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo-fix/line02.wav",
+   "at": 36.13,
+   "start": 36.13,
+   "end": 48.86,
+   "start_frame": 1084,
+   "words": [
+    {
+     "word": "take",
+     "frame": 1084
+    },
+    {
+     "word": "a",
+     "frame": 1094
+    },
+    {
+     "word": "pure",
+     "frame": 1098
+    },
+    {
+     "word": "delay",
+     "frame": 1104
+    },
+    {
+     "word": "of",
+     "frame": 1111
+    },
+    {
+     "word": "three",
+     "frame": 1116
+    },
+    {
+     "word": "samples",
+     "frame": 1120
+    },
+    {
+     "word": "500",
+     "frame": 1134
+    },
+    {
+     "word": "hertz",
+     "frame": 1150
+    },
+    {
+     "word": "trails",
+     "frame": 1161
+    },
+    {
+     "word": "by",
+     "frame": 1174
+    },
+    {
+     "word": "67",
+     "frame": 1180
+    },
+    {
+     "word": "and",
+     "frame": 1194
+    },
+    {
+     "word": "a",
+     "frame": 1201
+    },
+    {
+     "word": "half",
+     "frame": 1204
+    },
+    {
+     "word": "degrees",
+     "frame": 1208
+    },
+    {
+     "word": "1000",
+     "frame": 1220
+    },
+    {
+     "word": "by",
+     "frame": 1238
+    },
+    {
+     "word": "135",
+     "frame": 1246
+    },
+    {
+     "word": "2000",
+     "frame": 1263
+    },
+    {
+     "word": "by",
+     "frame": 1285
+    },
+    {
+     "word": "270",
+     "frame": 1295
+    },
+    {
+     "word": "double",
+     "frame": 1313
+    },
+    {
+     "word": "the",
+     "frame": 1334
+    },
+    {
+     "word": "tone",
+     "frame": 1340
+    },
+    {
+     "word": "double",
+     "frame": 1348
+    },
+    {
+     "word": "the",
+     "frame": 1358
+    },
+    {
+     "word": "phase",
+     "frame": 1361
+    },
+    {
+     "word": "every",
+     "frame": 1372
+    },
+    {
+     "word": "tone",
+     "frame": 1385
+    },
+    {
+     "word": "three",
+     "frame": 1394
+    },
+    {
+     "word": "samples",
+     "frame": 1402
+    },
+    {
+     "word": "late",
+     "frame": 1413
+    },
+    {
+     "word": "that's",
+     "frame": 1422
+    },
+    {
+     "word": "linear",
+     "frame": 1436
+    },
+    {
+     "word": "phase",
+     "frame": 1443
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Your notch's phase creeps along, then bends up near two thousand hertz. One thousand hertz is point two of a sample late. Eighteen hundred is point five six. A third of a sample apart. Could that wreck a fax?",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line05.wav",
+   "at": 49.66,
+   "start": 49.66,
+   "end": 59.59,
+   "start_frame": 1490,
+   "words": [
+    {
+     "word": "your",
+     "frame": 1490
+    },
+    {
+     "word": "notches",
+     "frame": 1498
+    },
+    {
+     "word": "phase",
+     "frame": 1509
+    },
+    {
+     "word": "creeps",
+     "frame": 1516
+    },
+    {
+     "word": "along",
+     "frame": 1527
+    },
+    {
+     "word": "then",
+     "frame": 1535
+    },
+    {
+     "word": "bends",
+     "frame": 1543
+    },
+    {
+     "word": "up",
+     "frame": 1552
+    },
+    {
+     "word": "near",
+     "frame": 1555
+    },
+    {
+     "word": "2000",
+     "frame": 1559
+    },
+    {
+     "word": "hertz",
+     "frame": 1573
+    },
+    {
+     "word": "1000",
+     "frame": 1584
+    },
+    {
+     "word": "hertz",
+     "frame": 1603
+    },
+    {
+     "word": "is",
+     "frame": 1616
+    },
+    {
+     "word": "0",
+     "frame": 1622
+    },
+    {
+     "word": ".2",
+     "frame": 1627
+    },
+    {
+     "word": "of",
+     "frame": 1634
+    },
+    {
+     "word": "a",
+     "frame": 1639
+    },
+    {
+     "word": "sample",
+     "frame": 1641
+    },
+    {
+     "word": "late",
+     "frame": 1650
+    },
+    {
+     "word": "1800",
+     "frame": 1664
+    },
+    {
+     "word": "is",
+     "frame": 1674
+    },
+    {
+     "word": "0",
+     "frame": 1685
+    },
+    {
+     "word": ".56",
+     "frame": 1688
+    },
+    {
+     "word": "a",
+     "frame": 1706
+    },
+    {
+     "word": "third",
+     "frame": 1714
+    },
+    {
+     "word": "of",
+     "frame": 1718
+    },
+    {
+     "word": "a",
+     "frame": 1723
+    },
+    {
+     "word": "sample",
+     "frame": 1726
+    },
+    {
+     "word": "apart",
+     "frame": 1734
+    },
+    {
+     "word": "could",
+     "frame": 1744
+    },
+    {
+     "word": "that",
+     "frame": 1754
+    },
+    {
+     "word": "wreck",
+     "frame": 1759
+    },
+    {
+     "word": "a",
+     "frame": 1765
+    },
+    {
+     "word": "fax",
+     "frame": 1769
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Send one burst at eighteen hundred hertz. It comes out three point two four samples late. More than three. The wiggle inside is only half a sample behind, but the shape of the burst arrives much later. And a burst isn't one tone. It's many neighboring tones.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo-fix/line03.wav",
+   "at": 60.79,
+   "start": 60.79,
+   "end": 73.27,
+   "start_frame": 1824,
+   "words": [
+    {
+     "word": "Send",
+     "frame": 1824
+    },
+    {
+     "word": "one",
+     "frame": 1835
+    },
+    {
+     "word": "burst",
+     "frame": 1840
+    },
+    {
+     "word": "at",
+     "frame": 1849
+    },
+    {
+     "word": "1800",
+     "frame": 1853
+    },
+    {
+     "word": "Hz.",
+     "frame": 1865
+    },
+    {
+     "word": "It",
+     "frame": 1887
+    },
+    {
+     "word": "comes",
+     "frame": 1895
+    },
+    {
+     "word": "out",
+     "frame": 1901
+    },
+    {
+     "word": "3",
+     "frame": 1907
+    },
+    {
+     "word": ".24",
+     "frame": 1913
+    },
+    {
+     "word": "samples",
+     "frame": 1932
+    },
+    {
+     "word": "late,",
+     "frame": 1946
+    },
+    {
+     "word": "more",
+     "frame": 1955
+    },
+    {
+     "word": "than",
+     "frame": 1964
+    },
+    {
+     "word": "three.",
+     "frame": 1968
+    },
+    {
+     "word": "The",
+     "frame": 1985
+    },
+    {
+     "word": "wiggle",
+     "frame": 1988
+    },
+    {
+     "word": "inside",
+     "frame": 1994
+    },
+    {
+     "word": "is",
+     "frame": 2003
+    },
+    {
+     "word": "only",
+     "frame": 2011
+    },
+    {
+     "word": "half",
+     "frame": 2017
+    },
+    {
+     "word": "a",
+     "frame": 2023
+    },
+    {
+     "word": "sample",
+     "frame": 2027
+    },
+    {
+     "word": "behind,",
+     "frame": 2036
+    },
+    {
+     "word": "but",
+     "frame": 2052
+    },
+    {
+     "word": "the",
+     "frame": 2057
+    },
+    {
+     "word": "shape",
+     "frame": 2060
+    },
+    {
+     "word": "of",
+     "frame": 2066
+    },
+    {
+     "word": "the",
+     "frame": 2070
+    },
+    {
+     "word": "burst",
+     "frame": 2073
+    },
+    {
+     "word": "arrives",
+     "frame": 2081
+    },
+    {
+     "word": "much",
+     "frame": 2090
+    },
+    {
+     "word": "later.",
+     "frame": 2098
+    },
+    {
+     "word": "And",
+     "frame": 2116
+    },
+    {
+     "word": "a",
+     "frame": 2119
+    },
+    {
+     "word": "burst",
+     "frame": 2121
+    },
+    {
+     "word": "isn't",
+     "frame": 2128
+    },
+    {
+     "word": "one",
+     "frame": 2136
+    },
+    {
+     "word": "tone,",
+     "frame": 2143
+    },
+    {
+     "word": "it's",
+     "frame": 2156
+    },
+    {
+     "word": "many",
+     "frame": 2160
+    },
+    {
+     "word": "neighboring",
+     "frame": 2165
+    },
+    {
+     "word": "tones.",
+     "frame": 2176
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Take the smallest burst, seventeen hundred and eighteen hundred hertz together. When their dots line up, the sum swells. The faster dot gains four and a half degrees per sample. Through the notch, eighteen hundred is set back eleven point six degrees more, and must catch that up first. [surprise-oh] The swell is two point five eight samples late.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line07.wav",
+   "at": 73.87,
+   "start": 73.87,
+   "end": 90.81,
+   "start_frame": 2216,
+   "words": [
+    {
+     "word": "Take",
+     "frame": 2216
+    },
+    {
+     "word": "the",
+     "frame": 2226
+    },
+    {
+     "word": "smallest",
+     "frame": 2231
+    },
+    {
+     "word": "burst,",
+     "frame": 2240
+    },
+    {
+     "word": "1700",
+     "frame": 2256
+    },
+    {
+     "word": "and",
+     "frame": 2273
+    },
+    {
+     "word": "1800",
+     "frame": 2286
+    },
+    {
+     "word": "Hz",
+     "frame": 2295
+    },
+    {
+     "word": "together.",
+     "frame": 2308
+    },
+    {
+     "word": "When",
+     "frame": 2336
+    },
+    {
+     "word": "their",
+     "frame": 2339
+    },
+    {
+     "word": "dots",
+     "frame": 2343
+    },
+    {
+     "word": "line",
+     "frame": 2349
+    },
+    {
+     "word": "up,",
+     "frame": 2357
+    },
+    {
+     "word": "the",
+     "frame": 2367
+    },
+    {
+     "word": "sum",
+     "frame": 2370
+    },
+    {
+     "word": "swells.",
+     "frame": 2375
+    },
+    {
+     "word": "The",
+     "frame": 2402
+    },
+    {
+     "word": "faster",
+     "frame": 2404
+    },
+    {
+     "word": "dot",
+     "frame": 2414
+    },
+    {
+     "word": "gains",
+     "frame": 2421
+    },
+    {
+     "word": "4",
+     "frame": 2429
+    },
+    {
+     "word": ".5",
+     "frame": 2437
+    },
+    {
+     "word": "degrees",
+     "frame": 2445
+    },
+    {
+     "word": "per",
+     "frame": 2454
+    },
+    {
+     "word": "sample.",
+     "frame": 2461
+    },
+    {
+     "word": "Through",
+     "frame": 2488
+    },
+    {
+     "word": "the",
+     "frame": 2492
+    },
+    {
+     "word": "notch,",
+     "frame": 2496
+    },
+    {
+     "word": "1800",
+     "frame": 2511
+    },
+    {
+     "word": "is",
+     "frame": 2524
+    },
+    {
+     "word": "set",
+     "frame": 2537
+    },
+    {
+     "word": "back",
+     "frame": 2544
+    },
+    {
+     "word": "11",
+     "frame": 2550
+    },
+    {
+     "word": ".6",
+     "frame": 2558
+    },
+    {
+     "word": "degrees",
+     "frame": 2576
+    },
+    {
+     "word": "more,",
+     "frame": 2584
+    },
+    {
+     "word": "and",
+     "frame": 2599
+    },
+    {
+     "word": "must",
+     "frame": 2606
+    },
+    {
+     "word": "catch",
+     "frame": 2612
+    },
+    {
+     "word": "that",
+     "frame": 2619
+    },
+    {
+     "word": "up",
+     "frame": 2625
+    },
+    {
+     "word": "first.",
+     "frame": 2629
+    },
+    {
+     "word": "Oh,",
+     "frame": 2655
+    },
+    {
+     "word": "the",
+     "frame": 2661
+    },
+    {
+     "word": "swell",
+     "frame": 2664
+    },
+    {
+     "word": "is",
+     "frame": 2671
+    },
+    {
+     "word": "2",
+     "frame": 2675
+    },
+    {
+     "word": ".58",
+     "frame": 2681
+    },
+    {
+     "word": "samples",
+     "frame": 2698
+    },
+    {
+     "word": "late.",
+     "frame": 2711
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "That's a difference in phase over a difference in turn. Slide the two tones together, and it becomes how steeply the phase climbs. That's the group delay. Point three one samples near one thousand hertz, three point two four near eighteen hundred. Three apart. The fax allows one and a half.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line08.wav",
+   "at": 91.81,
+   "start": 91.81,
+   "end": 105.81,
+   "start_frame": 2754,
+   "words": [
+    {
+     "word": "that's",
+     "frame": 2754
+    },
+    {
+     "word": "a",
+     "frame": 2765
+    },
+    {
+     "word": "difference",
+     "frame": 2767
+    },
+    {
+     "word": "in",
+     "frame": 2774
+    },
+    {
+     "word": "phase",
+     "frame": 2781
+    },
+    {
+     "word": "over",
+     "frame": 2790
+    },
+    {
+     "word": "a",
+     "frame": 2798
+    },
+    {
+     "word": "difference",
+     "frame": 2802
+    },
+    {
+     "word": "in",
+     "frame": 2810
+    },
+    {
+     "word": "turn",
+     "frame": 2816
+    },
+    {
+     "word": "slide",
+     "frame": 2823
+    },
+    {
+     "word": "the",
+     "frame": 2843
+    },
+    {
+     "word": "two",
+     "frame": 2847
+    },
+    {
+     "word": "tones",
+     "frame": 2852
+    },
+    {
+     "word": "together",
+     "frame": 2859
+    },
+    {
+     "word": "and",
+     "frame": 2868
+    },
+    {
+     "word": "it",
+     "frame": 2876
+    },
+    {
+     "word": "becomes",
+     "frame": 2880
+    },
+    {
+     "word": "how",
+     "frame": 2887
+    },
+    {
+     "word": "steeply",
+     "frame": 2893
+    },
+    {
+     "word": "the",
+     "frame": 2906
+    },
+    {
+     "word": "phase",
+     "frame": 2910
+    },
+    {
+     "word": "climbs",
+     "frame": 2918
+    },
+    {
+     "word": "that's",
+     "frame": 2930
+    },
+    {
+     "word": "the",
+     "frame": 2944
+    },
+    {
+     "word": "group",
+     "frame": 2947
+    },
+    {
+     "word": "delay",
+     "frame": 2952
+    },
+    {
+     "word": "0",
+     "frame": 2962
+    },
+    {
+     "word": ".31",
+     "frame": 2976
+    },
+    {
+     "word": "samples",
+     "frame": 2987
+    },
+    {
+     "word": "near",
+     "frame": 3003
+    },
+    {
+     "word": "1000",
+     "frame": 3010
+    },
+    {
+     "word": "hertz",
+     "frame": 3026
+    },
+    {
+     "word": "3",
+     "frame": 3046
+    },
+    {
+     "word": ".24",
+     "frame": 3050
+    },
+    {
+     "word": "near",
+     "frame": 3068
+    },
+    {
+     "word": "1800",
+     "frame": 3076
+    },
+    {
+     "word": "three",
+     "frame": 3090
+    },
+    {
+     "word": "apart",
+     "frame": 3110
+    },
+    {
+     "word": "the",
+     "frame": 3121
+    },
+    {
+     "word": "fax",
+     "frame": 3131
+    },
+    {
+     "word": "allows",
+     "frame": 3140
+    },
+    {
+     "word": "one",
+     "frame": 3148
+    },
+    {
+     "word": "and",
+     "frame": 3156
+    },
+    {
+     "word": "a",
+     "frame": 3159
+    },
+    {
+     "word": "half",
+     "frame": 3162
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "So add a filter that only delays. A pole inside the circle, radius point six five, at twelve hundred hertz. A zero on the same line, outside, at one over point six five. From any tone, the zero is always one point five four times as far as the pole. That ratio never changes, so compared with zero hertz, every tone passes a hundred percent. That's an all-pass.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo-fix4/line01.wav",
+   "at": 106.61,
+   "start": 106.61,
+   "end": 123.82,
+   "start_frame": 3198,
+   "words": [
+    {
+     "word": "so",
+     "frame": 3198
+    },
+    {
+     "word": "add",
+     "frame": 3207
+    },
+    {
+     "word": "a",
+     "frame": 3213
+    },
+    {
+     "word": "filter",
+     "frame": 3215
+    },
+    {
+     "word": "that",
+     "frame": 3222
+    },
+    {
+     "word": "only",
+     "frame": 3228
+    },
+    {
+     "word": "delays",
+     "frame": 3235
+    },
+    {
+     "word": "a",
+     "frame": 3248
+    },
+    {
+     "word": "pole",
+     "frame": 3258
+    },
+    {
+     "word": "inside",
+     "frame": 3265
+    },
+    {
+     "word": "the",
+     "frame": 3273
+    },
+    {
+     "word": "circle",
+     "frame": 3278
+    },
+    {
+     "word": "radius",
+     "frame": 3287
+    },
+    {
+     "word": "0",
+     "frame": 3298
+    },
+    {
+     "word": ".65",
+     "frame": 3306
+    },
+    {
+     "word": "at",
+     "frame": 3319
+    },
+    {
+     "word": "1200",
+     "frame": 3328
+    },
+    {
+     "word": "hertz",
+     "frame": 3336
+    },
+    {
+     "word": "a",
+     "frame": 3350
+    },
+    {
+     "word": "zero",
+     "frame": 3362
+    },
+    {
+     "word": "on",
+     "frame": 3368
+    },
+    {
+     "word": "the",
+     "frame": 3374
+    },
+    {
+     "word": "same",
+     "frame": 3376
+    },
+    {
+     "word": "line",
+     "frame": 3381
+    },
+    {
+     "word": "outside",
+     "frame": 3390
+    },
+    {
+     "word": "at",
+     "frame": 3402
+    },
+    {
+     "word": "one",
+     "frame": 3413
+    },
+    {
+     "word": "over",
+     "frame": 3418
+    },
+    {
+     "word": "0",
+     "frame": 3423
+    },
+    {
+     "word": ".65",
+     "frame": 3429
+    },
+    {
+     "word": "from",
+     "frame": 3442
+    },
+    {
+     "word": "any",
+     "frame": 3456
+    },
+    {
+     "word": "tone",
+     "frame": 3462
+    },
+    {
+     "word": "the",
+     "frame": 3469
+    },
+    {
+     "word": "zero",
+     "frame": 3474
+    },
+    {
+     "word": "is",
+     "frame": 3480
+    },
+    {
+     "word": "always",
+     "frame": 3484
+    },
+    {
+     "word": "1",
+     "frame": 3490
+    },
+    {
+     "word": ".5",
+     "frame": 3498
+    },
+    {
+     "word": "four",
+     "frame": 3513
+    },
+    {
+     "word": "times",
+     "frame": 3520
+    },
+    {
+     "word": "as",
+     "frame": 3529
+    },
+    {
+     "word": "far",
+     "frame": 3536
+    },
+    {
+     "word": "as",
+     "frame": 3540
+    },
+    {
+     "word": "the",
+     "frame": 3544
+    },
+    {
+     "word": "pole",
+     "frame": 3547
+    },
+    {
+     "word": "that",
+     "frame": 3555
+    },
+    {
+     "word": "ratio",
+     "frame": 3567
+    },
+    {
+     "word": "never",
+     "frame": 3576
+    },
+    {
+     "word": "changes",
+     "frame": 3584
+    },
+    {
+     "word": "so",
+     "frame": 3594
+    },
+    {
+     "word": "compared",
+     "frame": 3603
+    },
+    {
+     "word": "with",
+     "frame": 3613
+    },
+    {
+     "word": "zero",
+     "frame": 3618
+    },
+    {
+     "word": "hertz",
+     "frame": 3626
+    },
+    {
+     "word": "every",
+     "frame": 3635
+    },
+    {
+     "word": "tone",
+     "frame": 3645
+    },
+    {
+     "word": "passes",
+     "frame": 3651
+    },
+    {
+     "word": "a",
+     "frame": 3662
+    },
+    {
+     "word": "hundred",
+     "frame": 3667
+    },
+    {
+     "word": "percent",
+     "frame": 3670
+    },
+    {
+     "word": "that's",
+     "frame": 3688
+    },
+    {
+     "word": "an",
+     "frame": 3694
+    },
+    {
+     "word": "all",
+     "frame": 3696
+    },
+    {
+     "word": "pass",
+     "frame": 3700
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "It holds back the tones near its pole the most. Put that bump low in the band, where the notch was early. Now every tone arrives between four point seven two and five point six seven samples late. Inside the window, and not one gain changed. The price? Everyone waits five samples.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line10.wav",
+   "at": 124.42,
+   "start": 124.42,
+   "end": 137.99,
+   "start_frame": 3733,
+   "words": [
+    {
+     "word": "It",
+     "frame": 3733
+    },
+    {
+     "word": "holds",
+     "frame": 3742
+    },
+    {
+     "word": "back",
+     "frame": 3749
+    },
+    {
+     "word": "the",
+     "frame": 3756
+    },
+    {
+     "word": "tones",
+     "frame": 3761
+    },
+    {
+     "word": "near",
+     "frame": 3770
+    },
+    {
+     "word": "its",
+     "frame": 3777
+    },
+    {
+     "word": "pole",
+     "frame": 3782
+    },
+    {
+     "word": "the",
+     "frame": 3788
+    },
+    {
+     "word": "most.",
+     "frame": 3791
+    },
+    {
+     "word": "Put",
+     "frame": 3807
+    },
+    {
+     "word": "that",
+     "frame": 3809
+    },
+    {
+     "word": "bump",
+     "frame": 3814
+    },
+    {
+     "word": "low",
+     "frame": 3821
+    },
+    {
+     "word": "in",
+     "frame": 3826
+    },
+    {
+     "word": "the",
+     "frame": 3831
+    },
+    {
+     "word": "band",
+     "frame": 3833
+    },
+    {
+     "word": "where",
+     "frame": 3841
+    },
+    {
+     "word": "the",
+     "frame": 3847
+    },
+    {
+     "word": "notch",
+     "frame": 3850
+    },
+    {
+     "word": "was",
+     "frame": 3857
+    },
+    {
+     "word": "early.",
+     "frame": 3862
+    },
+    {
+     "word": "Now",
+     "frame": 3879
+    },
+    {
+     "word": "every",
+     "frame": 3883
+    },
+    {
+     "word": "tone",
+     "frame": 3890
+    },
+    {
+     "word": "arrives",
+     "frame": 3896
+    },
+    {
+     "word": "between",
+     "frame": 3908
+    },
+    {
+     "word": "4",
+     "frame": 3917
+    },
+    {
+     "word": ".72",
+     "frame": 3925
+    },
+    {
+     "word": "and",
+     "frame": 3943
+    },
+    {
+     "word": "5",
+     "frame": 3955
+    },
+    {
+     "word": ".67",
+     "frame": 3962
+    },
+    {
+     "word": "samples",
+     "frame": 3980
+    },
+    {
+     "word": "late.",
+     "frame": 3995
+    },
+    {
+     "word": "Inside",
+     "frame": 4012
+    },
+    {
+     "word": "the",
+     "frame": 4016
+    },
+    {
+     "word": "window",
+     "frame": 4021
+    },
+    {
+     "word": "and",
+     "frame": 4029
+    },
+    {
+     "word": "not",
+     "frame": 4036
+    },
+    {
+     "word": "one",
+     "frame": 4041
+    },
+    {
+     "word": "gain",
+     "frame": 4048
+    },
+    {
+     "word": "changed.",
+     "frame": 4055
+    },
+    {
+     "word": "The",
+     "frame": 4073
+    },
+    {
+     "word": "price?",
+     "frame": 4075
+    },
+    {
+     "word": "Everyone",
+     "frame": 4099
+    },
+    {
+     "word": "waits",
+     "frame": 4109
+    },
+    {
+     "word": "five",
+     "frame": 4117
+    },
+    {
+     "word": "samples.",
+     "frame": 4124
+    }
+   ]
+  },
+  {
+   "line": 11,
+   "text": "Why not speed the late tones up? Running the all-pass backwards puts a pole outside the circle, and every echo grows. You can't play a tone before it arrives. You can only make everyone else wait. [sigh] Next ticket. Three notches, multiplied into one rule. Perfect on the laptop. On a cheap eight-bit chip, it hums, louder and louder.",
+   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/08-phase-and-delay/4-video/vo/line11.wav",
+   "at": 138.99,
+   "start": 138.99,
+   "end": 155.07,
+   "start_frame": 4170,
+   "words": [
+    {
+     "word": "Why",
+     "frame": 4170
+    },
+    {
+     "word": "not",
+     "frame": 4179
+    },
+    {
+     "word": "speed",
+     "frame": 4185
+    },
+    {
+     "word": "the",
+     "frame": 4192
+    },
+    {
+     "word": "late",
+     "frame": 4197
+    },
+    {
+     "word": "tones",
+     "frame": 4202
+    },
+    {
+     "word": "up?",
+     "frame": 4209
+    },
+    {
+     "word": "Running",
+     "frame": 4222
+    },
+    {
+     "word": "the",
+     "frame": 4229
+    },
+    {
+     "word": "all",
+     "frame": 4234
+    },
+    {
+     "word": "-pass",
+     "frame": 4239
+    },
+    {
+     "word": "backwards",
+     "frame": 4245
+    },
+    {
+     "word": "puts",
+     "frame": 4258
+    },
+    {
+     "word": "a",
+     "frame": 4266
+    },
+    {
+     "word": "pole",
+     "frame": 4274
+    },
+    {
+     "word": "outside",
+     "frame": 4275
+    },
+    {
+     "word": "the",
+     "frame": 4283
+    },
+    {
+     "word": "circle",
+     "frame": 4290
+    },
+    {
+     "word": "and",
+     "frame": 4298
+    },
+    {
+     "word": "every",
+     "frame": 4304
+    },
+    {
+     "word": "echo",
+     "frame": 4311
+    },
+    {
+     "word": "grows.",
+     "frame": 4319
+    },
+    {
+     "word": "You",
+     "frame": 4338
+    },
+    {
+     "word": "can't",
+     "frame": 4344
+    },
+    {
+     "word": "play",
+     "frame": 4352
+    },
+    {
+     "word": "a",
+     "frame": 4356
+    },
+    {
+     "word": "tone",
+     "frame": 4360
+    },
+    {
+     "word": "before",
+     "frame": 4365
+    },
+    {
+     "word": "it",
+     "frame": 4372
+    },
+    {
+     "word": "arrives,",
+     "frame": 4379
+    },
+    {
+     "word": "you",
+     "frame": 4393
+    },
+    {
+     "word": "can",
+     "frame": 4394
+    },
+    {
+     "word": "only",
+     "frame": 4398
+    },
+    {
+     "word": "make",
+     "frame": 4403
+    },
+    {
+     "word": "everyone",
+     "frame": 4409
+    },
+    {
+     "word": "else",
+     "frame": 4419
+    },
+    {
+     "word": "wait.",
+     "frame": 4426
+    },
+    {
+     "word": "Next",
+     "frame": 4437
+    },
+    {
+     "word": "ticket.",
+     "frame": 4446
+    },
+    {
+     "word": "Three",
+     "frame": 4466
+    },
+    {
+     "word": "notches,",
+     "frame": 4470
+    },
+    {
+     "word": "multiplied",
+     "frame": 4486
+    },
+    {
+     "word": "into",
+     "frame": 4497
+    },
+    {
+     "word": "one",
+     "frame": 4506
+    },
+    {
+     "word": "rule,",
+     "frame": 4512
+    },
+    {
+     "word": "perfect",
+     "frame": 4526
+    },
+    {
+     "word": "on",
+     "frame": 4535
+    },
+    {
+     "word": "the",
+     "frame": 4541
+    },
+    {
+     "word": "laptop.",
+     "frame": 4544
+    },
+    {
+     "word": "On",
+     "frame": 4572
+    },
+    {
+     "word": "a",
+     "frame": 4576
+    },
+    {
+     "word": "cheap",
+     "frame": 4580
+    },
+    {
+     "word": "8",
+     "frame": 4587
+    },
+    {
+     "word": "-bit",
+     "frame": 4592
+    },
+    {
+     "word": "chip,",
+     "frame": 4597
+    },
+    {
+     "word": "it",
+     "frame": 4608
+    },
+    {
+     "word": "hums,",
+     "frame": 4611
+    },
+    {
+     "word": "louder",
+     "frame": 4624
+    },
+    {
+     "word": "and",
+     "frame": 4634
+    },
+    {
+     "word": "louder.",
+     "frame": 4638
+    }
+   ]
+  }
+ ]
+}
