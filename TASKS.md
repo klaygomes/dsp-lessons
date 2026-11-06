@@ -76,7 +76,7 @@ Rules the builders learned the hard way (they live in the builder brief):
   - the sentence before the first prediction says the products "cancel", which gives the answer away.
 - [x] Lesson 12: builder changed the mirror-arrow wording (two half arrows laid tip to tail land on the sample, not halfway between tips); check lesson 6 and series.md use the same picture (checked 2026-11-05: same picture, wording only). Sheet act 1 predictions changed (half turn, N = 16). Add "presses arrive at different loudness" to the act 2 task.
 - [x] Lesson 13 sheet: goertzel-final value: recomputed as (-129.3, 91.0); 91.8 is the result's length, printed separately; act 1 first prediction moved inline before the odd-walk figure.
-- [ ] Read-aloud long-sentence fixes for lessons 1, 2, 4 and 5 (reports in each `read-aloud-final/report.json`, ignored by git).
+- [x] Read-aloud long-sentence fixes for lessons 1, 2, 4 and 5 (reports in `~/personal/lessons/dsp-oppenheim/<lesson>/read-aloud-final/report.json`): 15 real long sentences split, 11 flags were artefacts of maths, quotes or tables run together, 1 already fixed. No video narration changed. Done 2026-11-06.
 - [ ] Videos for lessons 2 to 16, after lesson 1's video passes so they reuse its fixes.
 - [ ] Cross-lesson verification (`references/verification.md`): one mental model across prose, figures, page and video.
 - [ ] Update `series.md` glossary and status as lessons pass; regenerate `index.html`.
