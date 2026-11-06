@@ -1,0 +1,304 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:03.100
+In the basement sits
+the old analog exchange,
+
+2
+00:00:03.120 --> 00:00:04.620
+and this month it gets switched off.
+
+3
+00:00:04.760 --> 00:00:07.640
+Your boss wants the new digital
+line to sound exactly the same.
+
+4
+00:00:07.780 --> 00:00:09.600
+The manual describes its line filter:
+
+5
+00:00:09.620 --> 00:00:10.803
+a Butterworth low-pass,
+
+6
+00:00:10.823 --> 00:00:12.500
+cutoff thirty-four hundred hertz,
+
+7
+00:00:12.520 --> 00:00:14.020
+where it passes seventy-one percent.
+
+8
+00:00:14.440 --> 00:00:16.680
+A colleague's script turns
+that into a digital filter,
+
+9
+00:00:16.700 --> 00:00:18.040
+the textbook recipe.
+
+10
+00:00:18.460 --> 00:00:21.000
+Next morning,
+a technician plays tones through both.
+
+11
+00:00:21.020 --> 00:00:23.320
+At one thousand hertz the copy is perfect.
+
+12
+00:00:23.380 --> 00:00:25.940
+At thirty-four hundred,
+the exchange passes seventy-one percent,
+
+13
+00:00:25.960 --> 00:00:27.310
+and your copy passes ten.
+
+14
+00:00:27.680 --> 00:00:30.700
+Customers sound dull, as if the top
+of every voice was shaved off.
+
+15
+00:00:30.860 --> 00:00:32.900
+So what does the recipe do to frequencies?
+
+16
+00:00:34.080 --> 00:00:35.940
+The exchange never sampled anything.
+
+17
+00:00:35.960 --> 00:00:38.520
+Its sound is a voltage in a wire,
+changing smoothly,
+
+18
+00:00:38.540 --> 00:00:40.580
+through a circuit of capacitors and coils.
+
+19
+00:00:40.660 --> 00:00:41.740
+That's an analog filter.
+
+20
+00:00:41.760 --> 00:00:44.020
+With no samples,
+there's no wheel and no limit:
+
+21
+00:00:44.060 --> 00:00:45.680
+it has a response at every frequency,
+
+22
+00:00:45.700 --> 00:00:47.480
+up to a million hertz and beyond.
+
+23
+00:00:48.070 --> 00:00:49.370
+So here's the mismatch.
+
+24
+00:00:49.390 --> 00:00:52.150
+Analog frequencies live on
+a ruler that runs on forever.
+
+25
+00:00:52.170 --> 00:00:54.070
+Digital tones live on half a circle,
+
+26
+00:00:54.090 --> 00:00:55.690
+from zero to four thousand hertz.
+
+27
+00:00:55.710 --> 00:00:58.570
+Copying means deciding where
+each mark of the ruler lands.
+
+28
+00:00:58.590 --> 00:01:01.210
+Wrap it round and round,
+and five thousand lands on three thousand.
+
+29
+00:01:01.230 --> 00:01:02.110
+That's aliasing.
+
+30
+00:01:02.130 --> 00:01:03.910
+Or bend it on once, and squeeze.
+
+31
+00:01:04.500 --> 00:01:06.340
+That squeeze is the bilinear transform.
+
+32
+00:01:06.360 --> 00:01:08.860
+Near zero,
+the ruler lands almost one for one:
+
+33
+00:01:08.880 --> 00:01:10.820
+five hundred hertz lands
+on four ninety-four.
+
+34
+00:01:10.840 --> 00:01:12.200
+Further up it squeezes harder,
+
+35
+00:01:12.220 --> 00:01:14.800
+and infinity lands
+exactly on four thousand.
+
+36
+00:01:14.820 --> 00:01:16.300
+That uneven squeeze is warping.
+
+37
+00:01:16.320 --> 00:01:19.140
+And thirty-four hundred lands
+on twenty-three sixty-three.
+
+38
+00:01:19.740 --> 00:01:21.100
+There's your bug, in one row.
+
+39
+00:01:22.070 --> 00:01:23.850
+The squeeze never changes a gain.
+
+40
+00:01:23.870 --> 00:01:25.690
+It only moves gains to new tones.
+
+41
+00:01:25.710 --> 00:01:27.650
+So the copy passes seventy-one percent,
+
+42
+00:01:28.230 --> 00:01:30.370
+exactly, at the tone where
+thirty-four hundred landed.
+
+43
+00:01:30.390 --> 00:01:32.190
+Every gain is right, at the wrong tone.
+
+44
+00:01:32.230 --> 00:01:34.390
+And once you know where each one lands,
+you can aim.
+
+45
+00:01:35.390 --> 00:01:36.450
+Run the squeeze backward.
+
+46
+00:01:36.470 --> 00:01:39.430
+Which analog frequency lands
+on thirty-four hundred?
+
+47
+00:01:39.450 --> 00:01:40.250
+Forty-four hundred?
+
+48
+00:01:40.270 --> 00:01:40.910
+Five thousand?
+
+49
+00:01:40.930 --> 00:01:42.850
+Start at thirty-four hundred on
+
+50
+00:01:42.870 --> 00:01:44.830
+the digital side, go across to the curve,
+
+51
+00:01:44.850 --> 00:01:46.530
+then down to the analog frequency.
+
+52
+00:01:46.550 --> 00:01:48.550
+Oh, ten thousand six hundred seven.
+
+53
+00:01:49.150 --> 00:01:50.630
+More than three times higher,
+
+54
+00:01:50.650 --> 00:01:52.410
+far above anything the line can carry.
+
+55
+00:01:52.430 --> 00:01:53.390
+That's prewarping.
+
+56
+00:01:54.530 --> 00:01:58.910
+Build the analog prototype, the filter you
+copy, with its cutoff there. Then squeeze.
+
+57
+00:01:58.930 --> 00:02:02.070
+Its whole stretch up to the cutoff
+lands below thirty-four hundred,
+
+58
+00:02:02.090 --> 00:02:03.450
+and that stretch is nearly flat.
+
+59
+00:02:03.470 --> 00:02:05.110
+The technician measures again:
+
+60
+00:02:05.130 --> 00:02:07.470
+seventy point seven percent
+at thirty-four hundred hertz.
+
+61
+00:02:07.490 --> 00:02:09.590
+You changed one number.
+
+62
+00:02:09.610 --> 00:02:10.650
+That's the whole fix.
+
+63
+00:02:11.680 --> 00:02:13.140
+Prewarping pins one tone,
+
+64
+00:02:13.160 --> 00:02:15.100
+and every other tone is still squeezed.
+
+65
+00:02:15.600 --> 00:02:17.380
+But the cutoff is the tone worth pinning:
+
+66
+00:02:17.540 --> 00:02:20.580
+below it, the copy never strays
+more than one point six decibels.
+
+67
+00:02:21.610 --> 00:02:23.650
+One more job moves off the exchange.
+
+68
+00:02:23.670 --> 00:02:26.590
+A caller presses a key,
+and the keypad sends two tones at once.
+
+69
+00:02:26.610 --> 00:02:27.950
+You get a few hundred numbers.
+
+70
+00:02:27.970 --> 00:02:28.870
+Which key was it?

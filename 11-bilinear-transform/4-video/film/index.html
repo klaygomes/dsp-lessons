@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Exchange That Moved</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":149.64,"wpm":192,"lines":[{"line":1,"text":"In the basement sits the old analog exchange, and this month it gets switched off. Your boss wants the new digital line to sound exactly the same. The manual describes its line filter: a Butterworth low-pass, cutoff thirty-four hundred hertz, where it passes seventy-one percent. A colleague's script turns that into a digital filter, the textbook recipe.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-fix2/line01.wav","at":0.6,"start":0.6,"end":17.96,"start_frame":18,"words":[{"word":"In","frame":18},{"word":"the","frame":27},{"word":"basement","frame":29},{"word":"sits","frame":39},{"word":"the","frame":48},{"word":"old","frame":53},{"word":"analog","frame":61},{"word":"exchange,","frame":70},{"word":"and","frame":94},{"word":"this","frame":96},{"word":"month","frame":101},{"word":"it","frame":106},{"word":"gets","frame":110},{"word":"switched","frame":115},{"word":"off.","frame":121},{"word":"Your","frame":143},{"word":"boss","frame":146},{"word":"wants","frame":154},{"word":"the","frame":160},{"word":"new","frame":165},{"word":"digital","frame":169},{"word":"line","frame":179},{"word":"to","frame":186},{"word":"sound","frame":190},{"word":"exactly","frame":196},{"word":"the","frame":208},{"word":"same.","frame":213},{"word":"The","frame":233},{"word":"manual","frame":237},{"word":"describes","frame":245},{"word":"its","frame":260},{"word":"line","frame":266},{"word":"filter,","frame":273},{"word":"a","frame":289},{"word":"Butterworth","frame":296},{"word":"low","frame":308},{"word":"pass,","frame":313},{"word":"cut","frame":329},{"word":"off","frame":337},{"word":"3400","frame":341},{"word":"Hz,","frame":364},{"word":"where","frame":376},{"word":"it","frame":382},{"word":"passes","frame":385},{"word":"71%.","frame":392},{"word":"A","frame":433},{"word":"colleague's","frame":436},{"word":"script","frame":450},{"word":"turns","frame":454},{"word":"that","frame":463},{"word":"into","frame":467},{"word":"a","frame":473},{"word":"digital","frame":477},{"word":"filter,","frame":485},{"word":"the","frame":501},{"word":"textbook","frame":505},{"word":"recipe.","frame":515}]},{"line":2,"text":"Next morning, a technician plays tones through both. At one thousand hertz the copy is perfect. At thirty-four hundred, the exchange passes seventy-one percent, and your copy passes ten. Customers sound dull, as if the top of every voice was shaved off. So what does the recipe do to frequencies?","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-fix/line01.wav","at":18.46,"start":18.46,"end":32.88,"start_frame":554,"words":[{"word":"Next","frame":554},{"word":"morning,","frame":567},{"word":"a","frame":578},{"word":"technician","frame":581},{"word":"plays","frame":591},{"word":"tones","frame":602},{"word":"through","frame":611},{"word":"both.","frame":617},{"word":"At","frame":631},{"word":"1","frame":636},{"word":",000","frame":641},{"word":"Hz,","frame":653},{"word":"the","frame":664},{"word":"copy","frame":666},{"word":"is","frame":674},{"word":"perfect.","frame":679},{"word":"At","frame":701},{"word":"3","frame":702},{"word":",400,","frame":709},{"word":"the","frame":727},{"word":"exchange","frame":730},{"word":"passes","frame":740},{"word":"71%,","frame":752},{"word":"and","frame":779},{"word":"your","frame":788},{"word":"copy","frame":792},{"word":"passes","frame":800},{"word":"10%.","frame":809},{"word":"Customers","frame":830},{"word":"sound","frame":839},{"word":"dull,","frame":846},{"word":"as","frame":859},{"word":"if","frame":861},{"word":"the","frame":865},{"word":"top","frame":868},{"word":"of","frame":873},{"word":"every","frame":878},{"word":"voice","frame":884},{"word":"was","frame":892},{"word":"shaved","frame":897},{"word":"off.","frame":905},{"word":"So","frame":926},{"word":"what","frame":929},{"word":"does","frame":934},{"word":"the","frame":937},{"word":"recipe","frame":941},{"word":"do","frame":950},{"word":"to","frame":957},{"word":"frequencies?","frame":962}]},{"line":3,"text":"The exchange never sampled anything. Its sound is a voltage in a wire, changing smoothly, through a circuit of capacitors and coils. That's an analog filter. With no samples, there's no wheel and no limit: it has a response at every frequency, up to a million hertz and beyond.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line03.wav","at":34.08,"start":34.08,"end":47.47,"start_frame":1022,"words":[{"word":"The","frame":1022},{"word":"exchange","frame":1031},{"word":"never","frame":1041},{"word":"sampled","frame":1050},{"word":"anything.","frame":1061},{"word":"Its","frame":1079},{"word":"sound","frame":1085},{"word":"is","frame":1092},{"word":"a","frame":1096},{"word":"voltage","frame":1098},{"word":"in","frame":1108},{"word":"a","frame":1113},{"word":"wire,","frame":1115},{"word":"changing","frame":1135},{"word":"smoothly","frame":1143},{"word":"through","frame":1156},{"word":"a","frame":1167},{"word":"circuit","frame":1171},{"word":"of","frame":1178},{"word":"capacitors","frame":1183},{"word":"and","frame":1198},{"word":"coils.","frame":1202},{"word":"That's","frame":1220},{"word":"an","frame":1225},{"word":"analog","frame":1228},{"word":"filter.","frame":1235},{"word":"With","frame":1253},{"word":"no","frame":1256},{"word":"samples,","frame":1262},{"word":"there's","frame":1274},{"word":"no","frame":1281},{"word":"wheel","frame":1286},{"word":"and","frame":1294},{"word":"no","frame":1301},{"word":"limit.","frame":1306},{"word":"It","frame":1322},{"word":"has","frame":1324},{"word":"a","frame":1328},{"word":"response","frame":1331},{"word":"at","frame":1342},{"word":"every","frame":1347},{"word":"frequency,","frame":1354},{"word":"up","frame":1371},{"word":"to","frame":1378},{"word":"a","frame":1381},{"word":"million","frame":1385},{"word":"hertz","frame":1392},{"word":"and","frame":1399},{"word":"beyond.","frame":1406}]},{"line":4,"text":"So here's the mismatch. Analog frequencies live on a ruler that runs on forever. Digital tones live on half a circle, from zero to four thousand hertz. Copying means deciding where each mark of the ruler lands. Wrap it round and round, and five thousand lands on three thousand. That's aliasing. Or bend it on once, and squeeze.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line04.wav","at":48.07,"start":48.07,"end":63.9,"start_frame":1442,"words":[{"word":"So","frame":1442},{"word":"here's","frame":1451},{"word":"the","frame":1460},{"word":"mismatch.","frame":1462},{"word":"Analog","frame":1482},{"word":"frequencies","frame":1494},{"word":"live","frame":1508},{"word":"on","frame":1515},{"word":"a","frame":1519},{"word":"ruler","frame":1521},{"word":"that","frame":1528},{"word":"runs","frame":1534},{"word":"on","frame":1542},{"word":"forever.","frame":1547},{"word":"Digital","frame":1565},{"word":"tones","frame":1588},{"word":"live","frame":1588},{"word":"on","frame":1595},{"word":"half","frame":1599},{"word":"a","frame":1605},{"word":"circle,","frame":1609},{"word":"from","frame":1623},{"word":"0","frame":1627},{"word":"to","frame":1635},{"word":"4000","frame":1640},{"word":"Hz.","frame":1654},{"word":"Copying","frame":1671},{"word":"means","frame":1684},{"word":"deciding","frame":1692},{"word":"where","frame":1706},{"word":"each","frame":1713},{"word":"mark","frame":1719},{"word":"of","frame":1729},{"word":"the","frame":1731},{"word":"ruler","frame":1733},{"word":"lands.","frame":1740},{"word":"Wrap","frame":1758},{"word":"it","frame":1765},{"word":"round","frame":1768},{"word":"and","frame":1773},{"word":"round","frame":1778},{"word":"and","frame":1784},{"word":"5000","frame":1789},{"word":"lands","frame":1802},{"word":"on","frame":1813},{"word":"3000,","frame":1817},{"word":"that's","frame":1837},{"word":"aliasing.","frame":1844},{"word":"Or","frame":1864},{"word":"bend","frame":1870},{"word":"it","frame":1875},{"word":"on","frame":1879},{"word":"once","frame":1883},{"word":"and","frame":1892},{"word":"squeeze.","frame":1897}]},{"line":5,"text":"That squeeze is the bilinear transform. Near zero, the ruler lands almost one for one: five hundred hertz lands on four ninety-four. Further up it squeezes harder, and infinity lands exactly on four thousand. That uneven squeeze is warping. And thirty-four hundred lands on twenty-three sixty-three. There's your bug, in one row.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line05.wav","at":64.5,"start":64.5,"end":81.27,"start_frame":1935,"words":[{"word":"that","frame":1935},{"word":"squeeze","frame":1945},{"word":"is","frame":1954},{"word":"the","frame":1960},{"word":"bilinear","frame":1963},{"word":"transform","frame":1978},{"word":"near","frame":1991},{"word":"zero","frame":2005},{"word":"the","frame":2013},{"word":"ruler","frame":2017},{"word":"lands","frame":2024},{"word":"almost","frame":2035},{"word":"one","frame":2044},{"word":"for","frame":2051},{"word":"one","frame":2057},{"word":"500","frame":2066},{"word":"hertz","frame":2083},{"word":"lands","frame":2092},{"word":"on","frame":2104},{"word":"494","frame":2105},{"word":"further","frame":2125},{"word":"up","frame":2138},{"word":"it","frame":2143},{"word":"squeezes","frame":2147},{"word":"harder","frame":2158},{"word":"and","frame":2167},{"word":"infinity","frame":2176},{"word":"lands","frame":2187},{"word":"exactly","frame":2198},{"word":"on","frame":2212},{"word":"4","frame":2219},{"word":"000.","frame":2226},{"word":"that","frame":2245},{"word":"uneven","frame":2252},{"word":"squeeze","frame":2259},{"word":"is","frame":2270},{"word":"warping","frame":2279},{"word":"and","frame":2290},{"word":"3400","frame":2300},{"word":"lands","frame":2320},{"word":"on","frame":2329},{"word":"2363.","frame":2334},{"word":"there's","frame":2392},{"word":"your","frame":2401},{"word":"bug","frame":2404},{"word":"in","frame":2410},{"word":"one","frame":2417},{"word":"row","frame":2423}]},{"line":6,"text":"The squeeze never changes a gain. It only moves gains to new tones. So the copy passes seventy-one percent, exactly, at the tone where thirty-four hundred landed. Every gain is right, at the wrong tone. And once you know where each one lands, you can aim.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line06.wav","at":82.07,"start":82.07,"end":94.39,"start_frame":2462,"words":[{"word":"The","frame":2462},{"word":"squeeze","frame":2470},{"word":"never","frame":2479},{"word":"changes","frame":2488},{"word":"a","frame":2499},{"word":"gain,","frame":2505},{"word":"it","frame":2516},{"word":"only","frame":2522},{"word":"moves","frame":2527},{"word":"gains","frame":2536},{"word":"to","frame":2544},{"word":"new","frame":2552},{"word":"tones,","frame":2556},{"word":"so","frame":2571},{"word":"the","frame":2578},{"word":"copy","frame":2582},{"word":"passes","frame":2589},{"word":"71","frame":2598},{"word":"%","frame":2615},{"word":"exactly","frame":2647},{"word":"at","frame":2647},{"word":"the","frame":2658},{"word":"tone","frame":2662},{"word":"where","frame":2668},{"word":"3400","frame":2673},{"word":"landed.","frame":2694},{"word":"Every","frame":2712},{"word":"gain","frame":2719},{"word":"is","frame":2725},{"word":"right","frame":2730},{"word":"at","frame":2736},{"word":"the","frame":2742},{"word":"wrong","frame":2745},{"word":"tone,","frame":2751},{"word":"and","frame":2767},{"word":"once","frame":2770},{"word":"you","frame":2776},{"word":"know","frame":2780},{"word":"where","frame":2784},{"word":"each","frame":2788},{"word":"one","frame":2795},{"word":"lands,","frame":2800},{"word":"you","frame":2814},{"word":"can","frame":2815},{"word":"aim.","frame":2819}]},{"line":7,"text":"Run the squeeze backward. Which analog frequency lands on thirty-four hundred? Forty-four hundred? Five thousand? Start at thirty-four hundred on the digital side, go across to the curve, then down to the analog frequency. Oh, ten thousand six hundred seven. More than three times higher, far above anything the line can carry. That's prewarping.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line07.wav","at":95.39,"start":95.39,"end":113.53,"start_frame":2862,"words":[{"word":"run","frame":2862},{"word":"the","frame":2871},{"word":"squeeze","frame":2875},{"word":"backward","frame":2884},{"word":"which","frame":2894},{"word":"analog","frame":2917},{"word":"frequency","frame":2926},{"word":"lands","frame":2943},{"word":"on","frame":2953},{"word":"3400","frame":2959},{"word":"4400","frame":2983},{"word":"5000","frame":3008},{"word":"start","frame":3028},{"word":"at","frame":3055},{"word":"3400","frame":3059},{"word":"on","frame":3079},{"word":"the","frame":3086},{"word":"digital","frame":3091},{"word":"side","frame":3099},{"word":"go","frame":3109},{"word":"across","frame":3120},{"word":"to","frame":3129},{"word":"the","frame":3134},{"word":"curve","frame":3137},{"word":"then","frame":3146},{"word":"down","frame":3154},{"word":"to","frame":3160},{"word":"the","frame":3165},{"word":"analog","frame":3168},{"word":"frequency","frame":3178},{"word":"oh","frame":3196},{"word":"ten","frame":3214},{"word":"thousand","frame":3220},{"word":"six","frame":3229},{"word":"hundred","frame":3237},{"word":"seven","frame":3250},{"word":"more","frame":3274},{"word":"than","frame":3292},{"word":"three","frame":3296},{"word":"times","frame":3301},{"word":"higher","frame":3310},{"word":"far","frame":3319},{"word":"above","frame":3328},{"word":"anything","frame":3336},{"word":"the","frame":3346},{"word":"line","frame":3352},{"word":"can","frame":3357},{"word":"carry","frame":3363},{"word":"that's","frame":3373},{"word":"pre","frame":3384},{"word":"-warping","frame":3390}]},{"line":8,"text":"Build the analog prototype, the filter you copy, with its cutoff there. Then squeeze. Its whole stretch up to the cutoff lands below thirty-four hundred, and that stretch is nearly flat. The technician measures again: seventy point seven percent at thirty-four hundred hertz. You changed one number. That's the whole fix.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line08.wav","at":114.53,"start":114.53,"end":130.88,"start_frame":3436,"words":[{"word":"build","frame":3436},{"word":"the","frame":3446},{"word":"analog","frame":3451},{"word":"prototype","frame":3460},{"word":"the","frame":3477},{"word":"filter","frame":3484},{"word":"you","frame":3492},{"word":"copy","frame":3497},{"word":"with","frame":3507},{"word":"its","frame":3513},{"word":"cutoff","frame":3517},{"word":"there","frame":3529},{"word":"then","frame":3539},{"word":"squeeze","frame":3556},{"word":"its","frame":3568},{"word":"whole","frame":3591},{"word":"stretch","frame":3597},{"word":"up","frame":3605},{"word":"to","frame":3610},{"word":"the","frame":3614},{"word":"cutoff","frame":3617},{"word":"lands","frame":3626},{"word":"below","frame":3633},{"word":"3400","frame":3642},{"word":"and","frame":3663},{"word":"that","frame":3670},{"word":"stretch","frame":3675},{"word":"is","frame":3682},{"word":"nearly","frame":3688},{"word":"flat","frame":3694},{"word":"the","frame":3704},{"word":"technician","frame":3721},{"word":"measures","frame":3732},{"word":"again","frame":3744},{"word":"70","frame":3754},{"word":".7","frame":3771},{"word":"percent","frame":3783},{"word":"at","frame":3794},{"word":"3400","frame":3800},{"word":"hertz","frame":3819},{"word":"you","frame":3825},{"word":"changed","frame":3864},{"word":"one","frame":3873},{"word":"number","frame":3879},{"word":"that's","frame":3888},{"word":"the","frame":3900},{"word":"whole","frame":3903},{"word":"fix","frame":3908}]},{"line":9,"text":"Prewarping pins one tone, and every other tone is still squeezed. But the cutoff is the tone worth pinning: below it, the copy never strays more than one point six decibels.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line09.wav","at":131.68,"start":131.68,"end":140.61,"start_frame":3950,"words":[{"word":"Pre","frame":3950},{"word":"-warping","frame":3959},{"word":"pins","frame":3970},{"word":"one","frame":3979},{"word":"tone","frame":3985},{"word":"and","frame":3995},{"word":"every","frame":4003},{"word":"other","frame":4010},{"word":"tone","frame":4015},{"word":"is","frame":4022},{"word":"still","frame":4027},{"word":"squeezed,","frame":4032},{"word":"but","frame":4068},{"word":"the","frame":4071},{"word":"cutoff","frame":4074},{"word":"is","frame":4084},{"word":"the","frame":4090},{"word":"tone","frame":4093},{"word":"worth","frame":4099},{"word":"pinning.","frame":4105},{"word":"Below","frame":4126},{"word":"it,","frame":4129},{"word":"the","frame":4137},{"word":"copy","frame":4140},{"word":"never","frame":4147},{"word":"strays","frame":4154},{"word":"more","frame":4165},{"word":"than","frame":4171},{"word":"1","frame":4174},{"word":".6","frame":4181},{"word":"decibels.","frame":4195}]},{"line":10,"text":"One more job moves off the exchange. A caller presses a key, and the keypad sends two tones at once. You get a few hundred numbers. Which key was it?","clip":"/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line10.wav","at":141.61,"start":141.61,"end":148.94,"start_frame":4248,"words":[{"word":"One","frame":4248},{"word":"more","frame":4266},{"word":"job","frame":4270},{"word":"moves","frame":4277},{"word":"off","frame":4284},{"word":"the","frame":4288},{"word":"exchange.","frame":4292},{"word":"A","frame":4310},{"word":"caller","frame":4316},{"word":"presses","frame":4323},{"word":"a","frame":4332},{"word":"key","frame":4337},{"word":"and","frame":4343},{"word":"the","frame":4350},{"word":"keypad","frame":4353},{"word":"sends","frame":4363},{"word":"two","frame":4369},{"word":"tones","frame":4375},{"word":"at","frame":4382},{"word":"once.","frame":4387},{"word":"You","frame":4398},{"word":"get","frame":4404},{"word":"a","frame":4407},{"word":"few","frame":4410},{"word":"hundred","frame":4413},{"word":"numbers.","frame":4420},{"word":"Which","frame":4439},{"word":"key","frame":4446},{"word":"was","frame":4451},{"word":"it?","frame":4458}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.015) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, a, b, lo = 0.75, seed = 0) => { const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'opacity', keys); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 36, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+  if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
+}
+
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+const FS = 8000;
+const T = f => FS / Math.PI * Math.tan(Math.PI * f / FS);
+const A = F => FS / Math.PI * Math.atan(Math.PI * F / FS);
+const G = (F, c) => 1 / Math.sqrt(1 + (F / c) ** 4);
+const PRE = T(3400);
+const exch = f => G(f, 3400), bugCopy = f => G(T(f), 3400), fixCopy = f => G(T(f), PRE);
+const hz = v => Math.round(v).toLocaleString('en-US');
+const pct = v => (100 * v).toFixed(1) + '%';
+const sq = (x, y, s = 13, color = C.accent) => `<rect x="${(x - s).toFixed(1)}" y="${(y - s).toFixed(1)}" width="${2 * s}" height="${2 * s}" fill="${C.paper}" stroke="${color}" stroke-width="5"/>`;
+const box = (x, y, w, h, stroke = C.ink, fill = C.paper, sw = 4) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="8"/>`;
+
+{
+  const c = cam(1);
+  const sw = word(1, 'switched'), sa = word(1, 'same'), ma = word(1, 'manual'), bu = word(1, 'butterworth'), cu = word(1, ['cutoff', 'cut']), sc = word(1, 'script'), di = word(1, 'digital', 1), re = word(1, 'recipe');
+  label(c, 'the old analog exchange', 160, 70, 'lbl s');
+  const racks = [160, 400, 640].map(x => box(x, 150, 200, 560, C.ink, C.paper2) + range(0, 5).map(r => `<circle cx="${x + 50}" cy="${200 + r * 96}" r="16" fill="${C.paper}" stroke="${C.ink}" stroke-width="4"/>` + `<path d="M${x + 95} ${200 + r * 96}${range(0, 5).map(k => `l10 ${k % 2 ? 14 : -14}`).join('')}" fill="none" stroke="${C.soft}" stroke-width="4"/>`).join('')).join('');
+  layer(c, racks);
+  stepped(c, 0, sw, 6, p => [160, 400, 640].map((x, i) => range(0, 5).filter(r => rnd(Math.round(p * 1000) + i * 7 + r * 13) > 0.6).map(r => dotSvg(x + 50, 200 + r * 96, 10, C.accent)).join('')).join(''));
+  M.show(label(c, 'switched off this month', 160, 750, 'lbl acc'), sw);
+  M.show(label(c, 'goal: sound the same', 1000, 70, 'lbl ok'), sa);
+  fadeIn(layer(c, box(1000, 150, 760, 420)), ma - 4, 8);
+  M.show(label(c, 'the manual', 1030, 170, 'lbl s'), ma);
+  M.show(label(c, 'line filter: low-pass', 1030, 260, 'lbl'), ma + 6);
+  M.show(label(c, 'Butterworth', 1030, 340, 'lbl'), bu);
+  M.show(label(c, 'cutoff: 3,400 Hz', 1030, 420, 'lbl'), cu);
+  M.show(label(c, 'where it passes 71%', 1030, 490, 'lbl s'), word(1, 'passes'));
+  M.show(layer(c, arrowSvg(1380, 578, 1380, 640, C.ink, 5)), sc);
+  fadeIn(layer(c, box(1000, 650, 760, 110, C.accent)), sc, 8);
+  M.show(label(c, 'script: textbook recipe', 1030, 674, 'lbl'), sc);
+  M.show(label(c, '→ a digital filter', 1000, 790, 'lbl acc'), Math.min(di, re));
+  drift(1);
+}
+{
+  const c = cam(2);
+  const pl = word(2, 'plays'), th = word(2, ['thousand', '1000', '1,000', '1']), pe = word(2, 'perfect'), se = word(2, ['seventy', '71']), te = word(2, ['ten', '10']), du = word(2, 'dull'), fr = word(2, 'frequencies');
+  const X = f => 300 + f * 0.3, Y = g => 800 - g * 520;
+  axes(c, X, Y, [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']], [[0, '0%'], [0.5, '50%'], [1, '100%']], 0, 4000, 0, 1.08, '');
+  label(c, 'the technician’s tones', 300, 70, 'lbl s');
+  M.show(label(c, 'solid: the exchange   dashed: your copy', 300, 130, 'lbl s'), pl);
+  const ex = layer(c, curve(range(0, 4000, 10).map(f => [X(f), Y(exch(f))]), C.ink, 5), [X(0) - 6, X(4000) + 6]);
+  reveal(ex, pl, pl + 30, 'cruise');
+  const cp = layer(c, curve(range(0, 4000, 10).map(f => [X(f), Y(bugCopy(f))]), C.accent, 5, DASH), [X(0) - 6, X(4000) + 6]);
+  reveal(cp, pl + 20, pl + 50, 'cruise');
+  flicker(cp, pl + 50, sceneEnd(2), 0.75, 5);
+  M.show(layer(c, hline(X(0), X(4000), Y(0.7071), C.soft, 3, '6 10')), se);
+  M.show(label(c, '71%', X(4000) + 24, Y(0.7071) - 29, 'lbl s'), se);
+  M.show(layer(c, sq(X(1000), Y(bugCopy(1000)), 19) + dotSvg(X(1000), Y(exch(1000)), 10)), th);
+  M.show(label(c, '1,000 Hz: 99.6% and 99.5%', 340, 190, 'lbl'), th);
+  M.show(tick(c, 1180, 230), pe);
+  M.show(layer(c, dotSvg(X(3400), Y(exch(3400)), 13)), se);
+  M.show(label(c, pct(exch(3400)), X(3400) + 30, Y(exch(3400)) - 82, 'lbl'), se);
+  M.show(layer(c, sq(X(3400), Y(bugCopy(3400)))), te);
+  M.show(label(c, pct(bugCopy(3400)), X(3400) + 30, Y(bugCopy(3400)) - 82, 'lbl acc'), te);
+  M.show(label(c, 'callers: dull', 1800, 500, 'lbl acc', 'right'), du);
+  M.show(label(c, '?', 1730, 160, 'lbl big acc'), fr);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const vo = word(3, 'voltage'), ca = word(3, 'capacitors'), an = word(3, 'analog'), wh = word(3, 'wheel'), li = word(3, 'limit'), re = word(3, 'response'), mi = word(3, ['million', '1000000', '1,000,000']), be = word(3, 'beyond');
+  const yW = 330;
+  const sig = (t, hi) => 0.55 * Math.sin(t) + 0.3 * Math.sin(2.3 * t + 1) + hi * 0.25 * Math.sin(6.1 * t + 2);
+  const wave = (x0, x1, amp, hi, ph) => curve(range(x0, x1, 4).map(x => [x, yW - amp * sig(x / 40 + ph, hi)]), C.input, 5);
+  layer(c, box(700, 220, 420, 220, C.ink, C.paper2));
+  layer(c, vline(830, 280, 380, C.ink, 7) + vline(860, 280, 380, C.ink, 7) + `<path d="M930 ${yW}${range(0, 7).map(k => `a18 18 0 0 1 ${24} 0`).join('')}" fill="none" stroke="${C.ink}" stroke-width="5"/>`);
+  stepped(c, sceneStart(3), sceneEnd(3), 2, p => wave(160, 660, 90, 1, p * 40) + wave(1160, 1760, 80, 0.2, p * 40 - 1));
+  label(c, 'voltage, every instant', 160, 160, 'lbl s');
+  M.show(label(c, 'capacitors + coils', 910, 460, 'lbl s', 'center'), ca);
+  M.show(label(c, 'analog filter', 910, 60, 'lbl big acc', 'center'), an);
+  const R = F => 160 + Math.log10(F / 10) * 260, yR = 700;
+  const sa3 = word(3, 'samples');
+  const ruler = layer(c, hline(R(10), 1780, yR, C.ink, 4) + arrowSvg(1700, yR, 1800, yR, C.ink, 4) + [10, 100, 1e3, 1e4, 1e5, 1e6].map(F => vline(R(F), yR - 18, yR + 18, C.ink, 4)).join(''), [140, 1820]);
+  reveal(ruler, sa3, sa3 + 16, 'cruise');
+  M.show(label(c, 'response at every frequency, Hz', 160, 560, 'lbl s'), re);
+  M.show(label(c, 'log: each tick ×10', 160, 620, 'lbl s'), sa3);
+  [[10, '10'], [1e3, '1,000'], [1e4, '10,000'], [1e6, '1,000,000']].forEach(([F, t], i) => M.show(label(c, t, R(F), yR + 30, 'lbl s', 'center'), sa3 + 4 * i));
+  M.show(layer(c, vline(R(4000), yR - 90, yR + 20, C.accent, 5, '10 8')), Math.max(wh, sa3 + 18));
+  M.show(label(c, 'samples stop at 4,000', R(4000), 800, 'lbl acc', 'center'), Math.max(wh, sa3 + 18));
+  M.show(label(c, 'no limit', 1800, 580, 'lbl ok', 'right'), Math.max(li, sa3 + 20));
+  M.show(layer(c, dotSvg(R(1e6), yR, 14, C.input)), mi);
+  M.show(label(c, '→ ∞', 1800, 760, 'lbl ok', 'right'), be);
+  drift(3);
+}
+{
+  const c = cam(4);
+  const ru = word(4, 'ruler'), fo = word(4, 'forever'), ha = word(4, 'half'), wr = word(4, 'wrap'), fi = word(4, ['five', '5000', '5,000']), al = word(4, 'aliasing'), be = word(4, 'bend'), sq2 = word(4, 'squeeze');
+  const XR = F => 160 + F * 0.13, yR = 170;
+  const rl = layer(c, hline(XR(0), XR(12000), yR, C.ink, 4) + arrowSvg(XR(12000), yR, 1840, yR, C.ink, 4) + range(0, 12000, 1000).map(F => vline(XR(F), yR - 14, yR + 14, C.ink, 4)).join(''), [140, 1860]);
+  reveal(rl, sceneStart(4), ru + 20, 'cruise');
+  [[0, '0'], [3000, '3,000'], [5000, '5,000'], [10000, '10,000 Hz']].forEach(([F, t]) => M.show(label(c, t, XR(F), yR + 26, 'lbl s', 'center'), ru));
+  label(c, 'analog: a ruler', 160, 70, 'lbl s');
+  M.show(label(c, 'on forever', 1800, 96, 'lbl ok', 'right'), fo);
+  const cy = 760, s1 = sub(c);
+  M.show('#' + s1.id, ha, wr);
+  const halfC = (cx, R0) => `<path d="${arcD(cx, cy, R0, 0, 180)}" fill="none" stroke="${C.ink}" stroke-width="5"/>` + hline(cx - R0 - 50, cx + R0 + 50, cy, C.rule, 3);
+  layer(s1, halfC(960, 260));
+  label(s1, 'digital: half the wheel', 960, 330, 'lbl s', 'center');
+  label(s1, '0 Hz', 960 + 260, cy + 20, 'lbl s', 'center');
+  label(s1, '2,000', 960, cy - 260 - 80, 'lbl s', 'center');
+  label(s1, '4,000 Hz', 960 - 260, cy + 20, 'lbl s', 'center');
+  const s2 = sub(c);
+  M.show('#' + s2.id, wr);
+  const cw = 520, ringR = [200, 235, 270];
+  label(s2, 'wrap', cw, 290, 'lbl', 'center');
+  const ringAng = F => { const k = Math.floor(F / 4000), r = F - 4000 * k; return k % 2 ? 180 - 180 * r / 4000 : 180 * r / 4000; };
+  const ringRad = F => ringR[Math.min(2, Math.floor(F / 4000))];
+  layer(s2, hline(cw - 330, cw + 330, cy, C.rule, 3));
+  stepped(s2, wr, wr + 40, 2, p => {
+    const Fe = 12000 * p; let d = '';
+    [0, 1, 2].forEach(k => { const a = k * 4000, b = Math.min(Fe, a + 4000); if (b > a) d += `<path d="${arcD(cw, cy, ringR[k], ringAng(a + 0.01), ringAng(b - 0.01))}" fill="none" stroke="${C.ink}" stroke-width="4"/>`; });
+    return d;
+  });
+  M.show(layer(s2, [0, 1, 2].map(k => `<path d="${arcD(cw, cy, ringR[k], ringAng(k * 4000 + 0.01), ringAng(k * 4000 + 3999.99))}" fill="none" stroke="${C.ink}" stroke-width="4"/>`).join('')), wr + 40);
+  const tk = (cx, R0, ang, color, len = 22) => { const a = pt(cx, cy, R0 - len, ang), b = pt(cx, cy, R0 + len, ang); return seg(a[0], a[1], b[0], b[1], color, 5); };
+  M.show(layer(s2, tk(cw, ringRad(3000), ringAng(3000), C.accent)), fi - 10);
+  M.show(layer(s2, tk(cw, ringRad(5000), ringAng(5000), C.accent)), fi);
+  M.show(label(s2, '3,000', ...(([x, y]) => [x, y - 29])(pt(cw, cy, 135, ringAng(3000))), 'lbl s', 'center'), fi - 10);
+  M.show(label(s2, '5,000', ...(([x, y]) => [x, y - 29])(pt(cw, cy, 335, ringAng(5000))), 'lbl acc', 'center'), fi);
+  M.show(label(s2, 'aliasing', cw, 790, 'lbl acc', 'center'), al);
+  const s3 = sub(c), cs = 1400, Rs = 260;
+  M.show('#' + s3.id, be);
+  const sqA = F => 180 * A(F) / 4000;
+  const sqArc = layer(s3, `<path d="${arcD(cs, cy, Rs, 0, 180)}" fill="none" stroke="${C.ink}" stroke-width="5"/>` + hline(cs - Rs - 50, cs + Rs + 50, cy, C.rule, 3));
+  fadeIn(sqArc, be, 8);
+  M.show(label(s3, 'squeeze', cs, 290, 'lbl', 'center'), sq2);
+  label(s3, '0 Hz', cs + Rs, cy + 20, 'lbl s', 'center');
+  label(s3, '4,000 Hz', cs - Rs, cy + 20, 'lbl s', 'center');
+  [[1000, '1,000', 70], [2000, '2,000', 60], [3400, '3,400', 100], [10000, '10,000', 100]].forEach(([F, t, off], i) => {
+    const at = be + 8 + i * 6;
+    M.show(layer(s3, tk(cs, Rs, sqA(F), C.ink, 18)), at);
+    const [x, y] = pt(cs, cy, Rs + off, sqA(F));
+    M.show(label(s3, t, x, y - 29, 'lbl s', 'center'), at);
+  });
+  M.show(layer(s3, range(20, 200, 20).map(k => tk(cs, Rs, sqA(k * 1000), C.soft, 10)).join('')), be + 36);
+  drift(4);
+}
+const warpAxes = (c, X, Y, mid = true, onAt = null, ceilAt = null) => {
+  axes(c, X, Y, [[0, '0'], ...(mid ? [[10000, '10,000']] : []), [20000, '20,000 Hz']], [[0, '0'], [4000, '4,000']], 0, 20000, 0, 4300, 'digital f');
+  label(c, 'analog F', X(20000) + 40, Y(0) - 29, 'lbl s');
+  const d = layer(c, seg(X(0), Y(0), X(4000), Y(4000), C.soft, 3, '6 10')), n = label(c, 'no squeeze', X(4000) + 20, Y(4000) - 64, 'lbl s');
+  const h = layer(c, hline(X(0), X(20000), Y(4000), C.soft, 3, '6 10')), e = label(c, 'ceiling', X(20000), Y(4000) - 64, 'lbl s', 'right');
+  if (onAt !== null) { M.show(d, onAt); M.show(n, onAt); }
+  if (ceilAt !== null) { M.show(h, ceilAt); M.show(e, ceilAt); }
+};
+const WX = F => 330 + F * 0.0485, WY = f => 770 - f * 0.118;
+const warpCurve = () => curve(range(0, 20000, 50).map(F => [WX(F), WY(A(F))]), C.ink, 6);
+{
+  const c = cam(5);
+  const bi = word(5, 'bilinear'), al5 = word(5, 'almost'), ex5 = word(5, 'exactly'), ne = word(5, 'near'), fh = word(5, ['five', '500']), ha = word(5, 'harder'), inf = word(5, 'infinity'), wa = word(5, 'warping'), th = word(5, ['thirty', '3400', '3,400']), tw = word(5, ['twenty', '2363', '2,363']), bu = word(5, 'bug');
+  warpAxes(c, WX, WY, true, al5, ex5);
+  const wc = layer(c, warpCurve(), [WX(0) - 6, WX(20000) + 6]);
+  reveal(wc, ne, inf, 'cruise');
+  stepped(c, ne, inf, 2, p => dotSvg(WX(20000 * p * p), WY(A(20000 * p * p)), 11, C.accent));
+  M.show(label(c, 'bilinear transform', 1800, 70, 'lbl acc', 'right'), bi);
+  M.show(label(c, 'analog → digital', 1340, 200, 'lbl s'), fh);
+  const rows = [[500, fh], [1000, ha], [2000, ha + 8], [10000, ha + 16]];
+  rows.forEach(([F, at], i) => M.show(label(c, `${hz(F)} → ${hz(A(F))}`, 1340, 270 + i * 66, 'lbl m'), at));
+  M.show(label(c, '∞ → 4,000', 1340, 270 + 4 * 66, 'lbl m'), inf + 15);
+  M.show(label(c, 'warping', WX(10000), 60, 'lbl big acc', 'center'), wa);
+  const up = layer(c, vline(WX(3400), WY(0), WY(A(3400)), C.accent, 4) + arrowSvg(WX(3400), WY(A(3400)), WX(0) + 4, WY(A(3400)), C.accent, 4));
+  M.show(up, th);
+  M.show(label(c, '3,400', WX(3400) + 10, WY(0) + 36, 'lbl acc', 'center'), th);
+  M.show(label(c, '2,363', WX(0) - 22, WY(A(3400)) - 29, 'lbl acc', 'right'), tw);
+  M.show(label(c, '3,400 →', 1340, 270 + 5 * 66 + 20, 'lbl m acc'), th, tw);
+  M.show(label(c, `3,400 → ${hz(A(3400))}`, 1340, 270 + 5 * 66 + 20, 'lbl m acc'), tw);
+  M.show(layer(c, `<rect x="1324" y="${270 + 5 * 66 + 14}" width="440" height="70" fill="none" stroke="${C.accent}" stroke-width="4" rx="8"/>`), bu);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const ga = word(6, 'gain'), mo = word(6, 'moves'), se = word(6, ['seventy', '71']), wr = word(6, 'wrong'), ai = word(6, 'aim');
+  const XT = F => 300 + F * 0.12, YT = g => 440 - g * 190, XB = f => 300 + f * 0.3, YB = g => 800 - g * 190;
+  layer(c, hline(XT(0), XT(10000) + 20, YT(0), C.ink, 3) + hline(XB(0), XB(4000) + 20, YB(0), C.ink, 3));
+  [[0, '0'], [5000, '5,000'], [10000, '10,000']].forEach(([F, t]) => { layer(c, vline(XT(F), YT(0), YT(0) + 12, C.ink, 3)); label(c, t, XT(F), YT(0) + 30, 'lbl s', 'center'); });
+  [[0, '0'], [2000, '2,000'], [4000, '4,000']].forEach(([f, t]) => { layer(c, vline(XB(f), YB(0), YB(0) + 12, C.ink, 3)); label(c, t, XB(f), YB(0) + 30, 'lbl s', 'center'); });
+  label(c, 'top: the exchange, analog F', 300, 70, 'lbl s');
+  label(c, 'bottom: your copy, digital f', 300, 130, 'lbl s');
+  const et = layer(c, curve(range(0, 10000, 20).map(F => [XT(F), YT(exch(F))]), C.ink, 5));
+  flicker(et, sceneStart(6), sceneEnd(6), 0.75, 11);
+  const cb = layer(c, curve(range(0, 4000, 10).map(f => [XB(f), YB(bugCopy(f))]), C.accent, 5, DASH));
+  flicker(cb, sceneStart(6), sceneEnd(6), 0.75, 12);
+  M.show(label(c, 'gain: never changed', 1800, 70, 'lbl', 'right'), ga);
+  [1000, 2000, 5000, 10000].forEach((F, i) => M.show(layer(c, seg(XT(F), YT(0) + 92, XB(A(F)), YB(1) - 30, C.soft, 3, '6 8')), mo + 4 * i));
+  M.show(layer(c, seg(XT(3400), YT(0) + 92, XB(A(3400)), YB(1) - 30, C.accent, 5) + vline(XT(3400), YT(exch(3400)), YT(0), C.ink, 3, '4 6') + vline(XB(A(3400)), YB(0.7071), YB(0), C.accent, 3, '4 6') + dotSvg(XT(3400), YT(exch(3400)), 12, C.ink) + dotSvg(XB(A(3400)), YB(0.7071), 12, C.accent)), se);
+  M.show(label(c, '71% at 3,400', XT(3400) + 30, YT(0.7071) - 90, 'lbl'), se);
+  M.show(label(c, '71% at 2,363', XB(A(3400)) - 30, YB(0.7071) + 10, 'lbl acc', 'right'), se + 6);
+  M.show(label(c, 'right gain, wrong tone', 1800, 590, 'lbl acc', 'right'), wr);
+  M.show(layer(c, vline(XB(3400), YB(0) + 6, 676, C.input, 4, '10 8')), ai);
+  M.show(label(c, 'target: 3,400', XB(3400) + 20, 690, 'lbl ok'), ai);
+  drift(6);
+}
+{
+  const c = cam(7);
+  const ba = word(7, 'backward'), th = word(7, ['thirty', '3400', '3,400']), fo = word(7, ['forty', '4400', '4,400']), fi = word(7, ['five', '5000', '5,000']), ac = word(7, 'across'), dn = word(7, 'down'), te = word(7, ['ten', '10607', '10,607']), mo = word(7, 'more'), ca = word(7, 'carry'), pr = word(7, ['prewarping', 'pre']);
+  warpAxes(c, WX, WY, false);
+  flicker(layer(c, warpCurve()), sceneStart(7), ac, 0.75, 51);
+  M.show(label(c, 'run it backward', 1800, 70, 'lbl acc', 'right'), ba);
+  M.show(label(c, '3,400', WX(0) - 22, WY(3400) - 29, 'lbl ok', 'right'), th);
+  M.show(label(c, 'want: 3,400 Hz', 1340, 200, 'lbl ok'), th);
+  M.show(label(c, 'guess: 4,400?', 1340, 290, 'lbl s'), fo);
+  M.show(label(c, '5,000?', 1340 + 7 * 28.8, 360, 'lbl s'), fi);
+  M.show(layer(c, seg(1330, 320, 1730, 320, C.accent, 4) + seg(1530, 390, 1730, 390, C.accent, 4)), te);
+  const acr = layer(c, arrowSvg(WX(0), WY(3400), WX(PRE) - 4, WY(3400), C.input, 5), [WX(0) - 6, WX(PRE) + 8]);
+  reveal(acr, ac, ac + 18, 'cruise');
+  const dwn = layer(c, `<g transform="rotate(90 ${WX(PRE)} ${WY(3400)})">${arrowSvg(WX(PRE), WY(3400), WX(PRE) + (WY(0) - WY(3400)) - 4, WY(3400), C.accent, 5)}</g>`);
+  M.show(dwn, dn);
+  M.kf(dwn, 'opacity', [[0, 0], [dn, 0], [dn + 8, 1]]);
+  stepped(c, ac, dn + 18, 2, p => { const x = p < 0.5 ? WX(PRE * p * 2) : WX(PRE), y = p < 0.5 ? WY(3400) : WY(3400) + (WY(0) - WY(3400)) * (p - 0.5) * 2; return dotSvg(x, y, 12, p < 0.5 ? C.input : C.accent); });
+  M.show(layer(c, dotSvg(WX(PRE), WY(0), 13, C.accent)), dn + 18);
+  M.show(label(c, '10,607', WX(PRE), WY(0) + 36, 'lbl acc', 'center'), te);
+  M.show(label(c, '10,607 Hz', 1340, 470, 'lbl big acc'), te);
+  M.show(label(c, '× 3.1', 1340, 566, 'lbl acc'), mo);
+  M.show(layer(c, vline(WX(4000), WY(0), WY(4000) + 20, C.accent, 4, '10 8')), ca);
+  M.show(label(c, 'your line', WX(4000) + 16, 640, 'lbl acc'), ca);
+  M.show(label(c, '4,000', WX(4000), WY(0) + 36, 'lbl acc', 'center'), ca);
+  M.show(label(c, 'prewarping', WX(10000), 60, 'lbl big acc', 'center'), pr);
+  drift(7, 1, 1.02);
+}
+{
+  const c = cam(8);
+  const an = word(8, 'analog'), sq2 = word(8, 'squeeze'), st = word(8, 'stretch'), fl = word(8, 'flat'), me = word(8, 'measures'), se = word(8, ['seventy', '70']), nu = word(8, 'number'), fx = word(8, 'fix');
+  const XT = F => 300 + F * 0.06, YT = g => 400 - g * 210, XB = f => 300 + f * 0.27, YB = g => 800 - g * 210;
+  layer(c, hline(XT(0), XT(20000) + 20, YT(0), C.ink, 3) + hline(XB(0), XB(4000) + 20, YB(0), C.ink, 3));
+  label(c, 'analog prototype, cutoff 10,607', 300, 100, 'lbl s');
+  [[0, '0', 'lbl s'], [10607, '10,607', 'lbl acc'], [20000, '20,000', 'lbl s']].forEach(([F, t, k]) => { layer(c, vline(XT(F), YT(0), YT(0) + 12, C.ink, 3)); label(c, t, XT(F), YT(0) + 30, k, 'center'); });
+  [[0, '0', 'lbl s'], [3400, '3,400', 'lbl ok'], [4000, '', '']].forEach(([f, t, k]) => { layer(c, vline(XB(f), YB(0), YB(0) + 12, C.ink, 3)); if (t) label(c, t, XB(f), YB(0) + 30, k, 'center'); });
+  label(c, '4,000 Hz', XB(4000) + 40, YB(0) - 29, 'lbl s');
+  fadeIn(layer(c, `<rect x="${XT(0)}" y="${YT(1.05)}" width="${XT(PRE) - XT(0)}" height="${YT(0) - YT(1.05)}" fill="${C.accentSoft}" opacity="0.7"/>`), st, 8);
+  fadeIn(layer(c, `<rect x="${XB(0)}" y="${YB(1.05)}" width="${XB(3400) - XB(0)}" height="${YB(0) - YB(1.05)}" fill="${C.accentSoft}" opacity="0.7"/>`), st + 10, 8);
+  const pt8 = layer(c, curve(range(0, 20000, 40).map(F => [XT(F), YT(G(F, PRE))]), C.ink, 5), [XT(0) - 6, XT(20000) + 6]);
+  reveal(pt8, an, an + 30, 'cruise');
+  flicker(pt8, an + 30, sceneEnd(8), 0.75, 31);
+  stepped(c, an + 20, sq2, 2, p => dotSvg(XT(PRE * p), YT(G(PRE * p, PRE)), 12, C.accent));
+  M.show(layer(c, dotSvg(XT(PRE), YT(0.7071), 12, C.accent)), sq2);
+  M.show(layer(c, seg(XT(0), YT(0) + 100, XB(0), YB(1.05) - 14, C.accent, 4) + seg(XT(PRE), YT(0) + 100, XB(3400), YB(1.05) - 14, C.accent, 4)), sq2);
+  const fc = layer(c, curve(range(0, 3990, 10).map(f => [XB(f), YB(fixCopy(f))]).concat([[XB(4000), YB(0)]]), C.input, 6, DASH), [XB(0) - 6, XB(4000) + 6]);
+  reveal(fc, sq2, sq2 + 30, 'cruise');
+  M.show(label(c, 'flat, then 71% at 3,400', XB(100), YB(1) + 50, 'lbl s'), fl);
+  M.show(label(c, 'solid: exchange  dashed: copy', XB(100), YB(1) + 120, 'lbl s'), me);
+  const ec = layer(c, curve(range(0, 4000, 10).map(f => [XB(f), YB(exch(f))]), C.ink, 4), [XB(0) - 6, XB(4000) + 6]);
+  reveal(ec, me, me + 24, 'cruise');
+  M.show(layer(c, dotSvg(XB(3400), YB(0.7071), 14, C.input)), se);
+  M.show(label(c, '3,400 Hz: 70.7%', 1800, 560, 'lbl ok', 'right'), se);
+  M.show(tick(c, 1440, 690), se + 8);
+  M.show(label(c, '3,400 → 10,607', 1800, 100, 'lbl acc', 'right'), nu);
+  drift(8);
+}
+{
+  const c = cam(9);
+  const pi = word(9, 'pins'), sq2 = word(9, 'squeezed'), wo = word(9, 'worth'), st = word(9, 'strays'), de = word(9, 'decibels');
+  const X = f => 300 + f * 0.3, Y = g => 800 - g * 520;
+  axes(c, X, Y, [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']], [[0, '0%'], [0.5, '50%'], [1, '100%']], 0, 4000, 0, 1.08, '');
+  label(c, 'solid: the exchange   dashed: prewarped copy', 300, 70, 'lbl s');
+  const ex = layer(c, curve(range(0, 4000, 10).map(f => [X(f), Y(exch(f))]), C.ink, 5));
+  const fc = layer(c, curve(range(0, 3990, 10).map(f => [X(f), Y(fixCopy(f))]).concat([[X(4000), Y(0)]]), C.input, 6, DASH));
+  flicker(fc, sceneStart(9), sceneEnd(9), 0.75, 41);
+  flicker(ex, sceneStart(9), sceneEnd(9), 0.75, 42);
+  M.show(layer(c, vline(X(3400), Y(0), Y(0.7071) - 60, C.input, 4) + dotSvg(X(3400), Y(0.7071), 15, C.input)), pi);
+  M.show(label(c, 'pinned: 3,400 Hz', X(3400) - 30, Y(0.7071) + 40, 'lbl ok', 'right'), pi);
+  let gf = 1, gm = 0;
+  range(10, 3400, 2).forEach(f => { const d = Math.abs(20 * Math.log10(fixCopy(f) / exch(f))); if (d > gm) { gm = d; gf = f; } });
+  M.show(layer(c, `<path d="M${X(gf) - 10} ${Y(fixCopy(gf))}H${X(gf) + 10}M${X(gf)} ${Y(fixCopy(gf))}V${Y(exch(gf))}M${X(gf) - 10} ${Y(exch(gf))}H${X(gf) + 10}" fill="none" stroke="${C.accent}" stroke-width="5"/>`), st);
+  M.show(label(c, `largest gap: ${gm.toFixed(1)} dB`, 1800, 130, 'lbl acc', 'right'), st);
+  M.show(label(c, `near ${hz(Math.round(gf / 10) * 10)} Hz`, 1800, 200, 'lbl s', 'right'), st + 6);
+  M.show(label(c, 'other tones: still moved', 300, 130, 'lbl s'), sq2);
+  M.show(label(c, 'the cutoff', X(3400) - 20, Y(0) - 90, 'lbl ok', 'right'), wo);
+  drift(9);
+}
+{
+  const c = cam(10);
+  const pr = word(10, 'presses'), tw = word(10, ['two', '2']), nu = word(10, 'numbers'), wh = word(10, 'which');
+  const kx = 480, ky = 470, keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+  M.show(label(c, 'next ticket', 160, 70, 'lbl s'), sceneStart(10));
+  const kp = layer(c, keys.map((k, i) => `<circle cx="${kx + (i % 3 - 1) * 140}" cy="${ky + (Math.floor(i / 3) - 1.5) * 140}" r="52" fill="${C.paper2}" stroke="${C.ink}" stroke-width="4"/>`).join(''));
+  fadeIn(kp, sceneStart(10), 10);
+  keys.forEach((k, i) => label(c, k, kx + (i % 3 - 1) * 140, ky + (Math.floor(i / 3) - 1.5) * 140 - 31, 'lbl', 'center'));
+  M.show(label(c, 'a key: ?', kx, ky + 320, 'lbl acc', 'center'), pr);
+  const X0 = 900, X1 = 1760;
+  const waveRow = (y, f, ph) => curve(range(X0, X1, 3).map(x => [x, y - 50 * Math.sin(2 * Math.PI * f * (x - X0) / 120000 + ph)]), C.ink, 4);
+  stepped(c, tw, END - 36, 2, p => waveRow(230, 770, p * 60) + waveRow(420, 1336, p * 60));
+  M.show(layer(c, waveRow(230, 770, 60) + waveRow(420, 1336, 60)), END - 36);
+  M.show(label(c, 'low tone: its row', X0, 120, 'lbl s'), tw);
+  M.show(label(c, 'high tone: its column', X0, 310, 'lbl s'), tw + 6);
+  M.show(layer(c, hline(X0, X1, 680, C.rule, 2)), nu);
+  const samp = range(0, 40).map(n => Math.sin(2 * Math.PI * 770 * n / 8000) + Math.sin(2 * Math.PI * 1336 * n / 8000));
+  const st = layer(c, samp.map((v, n) => stemSvg(X0 + n * 21.5, 680, 680 - 36 * v, C.ink, 4, 6)).join(''));
+  grow(st, (X0 + X1) / 2, 680, nu, 10);
+  M.show(label(c, 'samples', X0, 530, 'lbl s'), nu);
+  M.show(label(c, 'which key?', 1330, 790, 'lbl big acc', 'center'), wh);
+  M.drift('#s10cam', { prop: 'scale', from: 1, to: 1.015, start: sceneStart(10), end: END - 36 });
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

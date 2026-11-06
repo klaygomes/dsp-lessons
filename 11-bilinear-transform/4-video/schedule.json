@@ -1,0 +1,1969 @@
+{
+ "fps": 30,
+ "duration": 149.64,
+ "wpm": 192,
+ "lines": [
+  {
+   "line": 1,
+   "text": "In the basement sits the old analog exchange, and this month it gets switched off. Your boss wants the new digital line to sound exactly the same. The manual describes its line filter: a Butterworth low-pass, cutoff thirty-four hundred hertz, where it passes seventy-one percent. A colleague's script turns that into a digital filter, the textbook recipe.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-fix2/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 17.96,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "In",
+     "frame": 18
+    },
+    {
+     "word": "the",
+     "frame": 27
+    },
+    {
+     "word": "basement",
+     "frame": 29
+    },
+    {
+     "word": "sits",
+     "frame": 39
+    },
+    {
+     "word": "the",
+     "frame": 48
+    },
+    {
+     "word": "old",
+     "frame": 53
+    },
+    {
+     "word": "analog",
+     "frame": 61
+    },
+    {
+     "word": "exchange,",
+     "frame": 70
+    },
+    {
+     "word": "and",
+     "frame": 94
+    },
+    {
+     "word": "this",
+     "frame": 96
+    },
+    {
+     "word": "month",
+     "frame": 101
+    },
+    {
+     "word": "it",
+     "frame": 106
+    },
+    {
+     "word": "gets",
+     "frame": 110
+    },
+    {
+     "word": "switched",
+     "frame": 115
+    },
+    {
+     "word": "off.",
+     "frame": 121
+    },
+    {
+     "word": "Your",
+     "frame": 143
+    },
+    {
+     "word": "boss",
+     "frame": 146
+    },
+    {
+     "word": "wants",
+     "frame": 154
+    },
+    {
+     "word": "the",
+     "frame": 160
+    },
+    {
+     "word": "new",
+     "frame": 165
+    },
+    {
+     "word": "digital",
+     "frame": 169
+    },
+    {
+     "word": "line",
+     "frame": 179
+    },
+    {
+     "word": "to",
+     "frame": 186
+    },
+    {
+     "word": "sound",
+     "frame": 190
+    },
+    {
+     "word": "exactly",
+     "frame": 196
+    },
+    {
+     "word": "the",
+     "frame": 208
+    },
+    {
+     "word": "same.",
+     "frame": 213
+    },
+    {
+     "word": "The",
+     "frame": 233
+    },
+    {
+     "word": "manual",
+     "frame": 237
+    },
+    {
+     "word": "describes",
+     "frame": 245
+    },
+    {
+     "word": "its",
+     "frame": 260
+    },
+    {
+     "word": "line",
+     "frame": 266
+    },
+    {
+     "word": "filter,",
+     "frame": 273
+    },
+    {
+     "word": "a",
+     "frame": 289
+    },
+    {
+     "word": "Butterworth",
+     "frame": 296
+    },
+    {
+     "word": "low",
+     "frame": 308
+    },
+    {
+     "word": "pass,",
+     "frame": 313
+    },
+    {
+     "word": "cut",
+     "frame": 329
+    },
+    {
+     "word": "off",
+     "frame": 337
+    },
+    {
+     "word": "3400",
+     "frame": 341
+    },
+    {
+     "word": "Hz,",
+     "frame": 364
+    },
+    {
+     "word": "where",
+     "frame": 376
+    },
+    {
+     "word": "it",
+     "frame": 382
+    },
+    {
+     "word": "passes",
+     "frame": 385
+    },
+    {
+     "word": "71%.",
+     "frame": 392
+    },
+    {
+     "word": "A",
+     "frame": 433
+    },
+    {
+     "word": "colleague's",
+     "frame": 436
+    },
+    {
+     "word": "script",
+     "frame": 450
+    },
+    {
+     "word": "turns",
+     "frame": 454
+    },
+    {
+     "word": "that",
+     "frame": 463
+    },
+    {
+     "word": "into",
+     "frame": 467
+    },
+    {
+     "word": "a",
+     "frame": 473
+    },
+    {
+     "word": "digital",
+     "frame": 477
+    },
+    {
+     "word": "filter,",
+     "frame": 485
+    },
+    {
+     "word": "the",
+     "frame": 501
+    },
+    {
+     "word": "textbook",
+     "frame": 505
+    },
+    {
+     "word": "recipe.",
+     "frame": 515
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Next morning, a technician plays tones through both. At one thousand hertz the copy is perfect. At thirty-four hundred, the exchange passes seventy-one percent, and your copy passes ten. Customers sound dull, as if the top of every voice was shaved off. So what does the recipe do to frequencies?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-fix/line01.wav",
+   "at": 18.46,
+   "start": 18.46,
+   "end": 32.88,
+   "start_frame": 554,
+   "words": [
+    {
+     "word": "Next",
+     "frame": 554
+    },
+    {
+     "word": "morning,",
+     "frame": 567
+    },
+    {
+     "word": "a",
+     "frame": 578
+    },
+    {
+     "word": "technician",
+     "frame": 581
+    },
+    {
+     "word": "plays",
+     "frame": 591
+    },
+    {
+     "word": "tones",
+     "frame": 602
+    },
+    {
+     "word": "through",
+     "frame": 611
+    },
+    {
+     "word": "both.",
+     "frame": 617
+    },
+    {
+     "word": "At",
+     "frame": 631
+    },
+    {
+     "word": "1",
+     "frame": 636
+    },
+    {
+     "word": ",000",
+     "frame": 641
+    },
+    {
+     "word": "Hz,",
+     "frame": 653
+    },
+    {
+     "word": "the",
+     "frame": 664
+    },
+    {
+     "word": "copy",
+     "frame": 666
+    },
+    {
+     "word": "is",
+     "frame": 674
+    },
+    {
+     "word": "perfect.",
+     "frame": 679
+    },
+    {
+     "word": "At",
+     "frame": 701
+    },
+    {
+     "word": "3",
+     "frame": 702
+    },
+    {
+     "word": ",400,",
+     "frame": 709
+    },
+    {
+     "word": "the",
+     "frame": 727
+    },
+    {
+     "word": "exchange",
+     "frame": 730
+    },
+    {
+     "word": "passes",
+     "frame": 740
+    },
+    {
+     "word": "71%,",
+     "frame": 752
+    },
+    {
+     "word": "and",
+     "frame": 779
+    },
+    {
+     "word": "your",
+     "frame": 788
+    },
+    {
+     "word": "copy",
+     "frame": 792
+    },
+    {
+     "word": "passes",
+     "frame": 800
+    },
+    {
+     "word": "10%.",
+     "frame": 809
+    },
+    {
+     "word": "Customers",
+     "frame": 830
+    },
+    {
+     "word": "sound",
+     "frame": 839
+    },
+    {
+     "word": "dull,",
+     "frame": 846
+    },
+    {
+     "word": "as",
+     "frame": 859
+    },
+    {
+     "word": "if",
+     "frame": 861
+    },
+    {
+     "word": "the",
+     "frame": 865
+    },
+    {
+     "word": "top",
+     "frame": 868
+    },
+    {
+     "word": "of",
+     "frame": 873
+    },
+    {
+     "word": "every",
+     "frame": 878
+    },
+    {
+     "word": "voice",
+     "frame": 884
+    },
+    {
+     "word": "was",
+     "frame": 892
+    },
+    {
+     "word": "shaved",
+     "frame": 897
+    },
+    {
+     "word": "off.",
+     "frame": 905
+    },
+    {
+     "word": "So",
+     "frame": 926
+    },
+    {
+     "word": "what",
+     "frame": 929
+    },
+    {
+     "word": "does",
+     "frame": 934
+    },
+    {
+     "word": "the",
+     "frame": 937
+    },
+    {
+     "word": "recipe",
+     "frame": 941
+    },
+    {
+     "word": "do",
+     "frame": 950
+    },
+    {
+     "word": "to",
+     "frame": 957
+    },
+    {
+     "word": "frequencies?",
+     "frame": 962
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "The exchange never sampled anything. Its sound is a voltage in a wire, changing smoothly, through a circuit of capacitors and coils. That's an analog filter. With no samples, there's no wheel and no limit: it has a response at every frequency, up to a million hertz and beyond.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line03.wav",
+   "at": 34.08,
+   "start": 34.08,
+   "end": 47.47,
+   "start_frame": 1022,
+   "words": [
+    {
+     "word": "The",
+     "frame": 1022
+    },
+    {
+     "word": "exchange",
+     "frame": 1031
+    },
+    {
+     "word": "never",
+     "frame": 1041
+    },
+    {
+     "word": "sampled",
+     "frame": 1050
+    },
+    {
+     "word": "anything.",
+     "frame": 1061
+    },
+    {
+     "word": "Its",
+     "frame": 1079
+    },
+    {
+     "word": "sound",
+     "frame": 1085
+    },
+    {
+     "word": "is",
+     "frame": 1092
+    },
+    {
+     "word": "a",
+     "frame": 1096
+    },
+    {
+     "word": "voltage",
+     "frame": 1098
+    },
+    {
+     "word": "in",
+     "frame": 1108
+    },
+    {
+     "word": "a",
+     "frame": 1113
+    },
+    {
+     "word": "wire,",
+     "frame": 1115
+    },
+    {
+     "word": "changing",
+     "frame": 1135
+    },
+    {
+     "word": "smoothly",
+     "frame": 1143
+    },
+    {
+     "word": "through",
+     "frame": 1156
+    },
+    {
+     "word": "a",
+     "frame": 1167
+    },
+    {
+     "word": "circuit",
+     "frame": 1171
+    },
+    {
+     "word": "of",
+     "frame": 1178
+    },
+    {
+     "word": "capacitors",
+     "frame": 1183
+    },
+    {
+     "word": "and",
+     "frame": 1198
+    },
+    {
+     "word": "coils.",
+     "frame": 1202
+    },
+    {
+     "word": "That's",
+     "frame": 1220
+    },
+    {
+     "word": "an",
+     "frame": 1225
+    },
+    {
+     "word": "analog",
+     "frame": 1228
+    },
+    {
+     "word": "filter.",
+     "frame": 1235
+    },
+    {
+     "word": "With",
+     "frame": 1253
+    },
+    {
+     "word": "no",
+     "frame": 1256
+    },
+    {
+     "word": "samples,",
+     "frame": 1262
+    },
+    {
+     "word": "there's",
+     "frame": 1274
+    },
+    {
+     "word": "no",
+     "frame": 1281
+    },
+    {
+     "word": "wheel",
+     "frame": 1286
+    },
+    {
+     "word": "and",
+     "frame": 1294
+    },
+    {
+     "word": "no",
+     "frame": 1301
+    },
+    {
+     "word": "limit.",
+     "frame": 1306
+    },
+    {
+     "word": "It",
+     "frame": 1322
+    },
+    {
+     "word": "has",
+     "frame": 1324
+    },
+    {
+     "word": "a",
+     "frame": 1328
+    },
+    {
+     "word": "response",
+     "frame": 1331
+    },
+    {
+     "word": "at",
+     "frame": 1342
+    },
+    {
+     "word": "every",
+     "frame": 1347
+    },
+    {
+     "word": "frequency,",
+     "frame": 1354
+    },
+    {
+     "word": "up",
+     "frame": 1371
+    },
+    {
+     "word": "to",
+     "frame": 1378
+    },
+    {
+     "word": "a",
+     "frame": 1381
+    },
+    {
+     "word": "million",
+     "frame": 1385
+    },
+    {
+     "word": "hertz",
+     "frame": 1392
+    },
+    {
+     "word": "and",
+     "frame": 1399
+    },
+    {
+     "word": "beyond.",
+     "frame": 1406
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "So here's the mismatch. Analog frequencies live on a ruler that runs on forever. Digital tones live on half a circle, from zero to four thousand hertz. Copying means deciding where each mark of the ruler lands. Wrap it round and round, and five thousand lands on three thousand. That's aliasing. Or bend it on once, and squeeze.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line04.wav",
+   "at": 48.07,
+   "start": 48.07,
+   "end": 63.9,
+   "start_frame": 1442,
+   "words": [
+    {
+     "word": "So",
+     "frame": 1442
+    },
+    {
+     "word": "here's",
+     "frame": 1451
+    },
+    {
+     "word": "the",
+     "frame": 1460
+    },
+    {
+     "word": "mismatch.",
+     "frame": 1462
+    },
+    {
+     "word": "Analog",
+     "frame": 1482
+    },
+    {
+     "word": "frequencies",
+     "frame": 1494
+    },
+    {
+     "word": "live",
+     "frame": 1508
+    },
+    {
+     "word": "on",
+     "frame": 1515
+    },
+    {
+     "word": "a",
+     "frame": 1519
+    },
+    {
+     "word": "ruler",
+     "frame": 1521
+    },
+    {
+     "word": "that",
+     "frame": 1528
+    },
+    {
+     "word": "runs",
+     "frame": 1534
+    },
+    {
+     "word": "on",
+     "frame": 1542
+    },
+    {
+     "word": "forever.",
+     "frame": 1547
+    },
+    {
+     "word": "Digital",
+     "frame": 1565
+    },
+    {
+     "word": "tones",
+     "frame": 1588
+    },
+    {
+     "word": "live",
+     "frame": 1588
+    },
+    {
+     "word": "on",
+     "frame": 1595
+    },
+    {
+     "word": "half",
+     "frame": 1599
+    },
+    {
+     "word": "a",
+     "frame": 1605
+    },
+    {
+     "word": "circle,",
+     "frame": 1609
+    },
+    {
+     "word": "from",
+     "frame": 1623
+    },
+    {
+     "word": "0",
+     "frame": 1627
+    },
+    {
+     "word": "to",
+     "frame": 1635
+    },
+    {
+     "word": "4000",
+     "frame": 1640
+    },
+    {
+     "word": "Hz.",
+     "frame": 1654
+    },
+    {
+     "word": "Copying",
+     "frame": 1671
+    },
+    {
+     "word": "means",
+     "frame": 1684
+    },
+    {
+     "word": "deciding",
+     "frame": 1692
+    },
+    {
+     "word": "where",
+     "frame": 1706
+    },
+    {
+     "word": "each",
+     "frame": 1713
+    },
+    {
+     "word": "mark",
+     "frame": 1719
+    },
+    {
+     "word": "of",
+     "frame": 1729
+    },
+    {
+     "word": "the",
+     "frame": 1731
+    },
+    {
+     "word": "ruler",
+     "frame": 1733
+    },
+    {
+     "word": "lands.",
+     "frame": 1740
+    },
+    {
+     "word": "Wrap",
+     "frame": 1758
+    },
+    {
+     "word": "it",
+     "frame": 1765
+    },
+    {
+     "word": "round",
+     "frame": 1768
+    },
+    {
+     "word": "and",
+     "frame": 1773
+    },
+    {
+     "word": "round",
+     "frame": 1778
+    },
+    {
+     "word": "and",
+     "frame": 1784
+    },
+    {
+     "word": "5000",
+     "frame": 1789
+    },
+    {
+     "word": "lands",
+     "frame": 1802
+    },
+    {
+     "word": "on",
+     "frame": 1813
+    },
+    {
+     "word": "3000,",
+     "frame": 1817
+    },
+    {
+     "word": "that's",
+     "frame": 1837
+    },
+    {
+     "word": "aliasing.",
+     "frame": 1844
+    },
+    {
+     "word": "Or",
+     "frame": 1864
+    },
+    {
+     "word": "bend",
+     "frame": 1870
+    },
+    {
+     "word": "it",
+     "frame": 1875
+    },
+    {
+     "word": "on",
+     "frame": 1879
+    },
+    {
+     "word": "once",
+     "frame": 1883
+    },
+    {
+     "word": "and",
+     "frame": 1892
+    },
+    {
+     "word": "squeeze.",
+     "frame": 1897
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "That squeeze is the bilinear transform. Near zero, the ruler lands almost one for one: five hundred hertz lands on four ninety-four. Further up it squeezes harder, and infinity lands exactly on four thousand. That uneven squeeze is warping. And thirty-four hundred lands on twenty-three sixty-three. There's your bug, in one row.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line05.wav",
+   "at": 64.5,
+   "start": 64.5,
+   "end": 81.27,
+   "start_frame": 1935,
+   "words": [
+    {
+     "word": "that",
+     "frame": 1935
+    },
+    {
+     "word": "squeeze",
+     "frame": 1945
+    },
+    {
+     "word": "is",
+     "frame": 1954
+    },
+    {
+     "word": "the",
+     "frame": 1960
+    },
+    {
+     "word": "bilinear",
+     "frame": 1963
+    },
+    {
+     "word": "transform",
+     "frame": 1978
+    },
+    {
+     "word": "near",
+     "frame": 1991
+    },
+    {
+     "word": "zero",
+     "frame": 2005
+    },
+    {
+     "word": "the",
+     "frame": 2013
+    },
+    {
+     "word": "ruler",
+     "frame": 2017
+    },
+    {
+     "word": "lands",
+     "frame": 2024
+    },
+    {
+     "word": "almost",
+     "frame": 2035
+    },
+    {
+     "word": "one",
+     "frame": 2044
+    },
+    {
+     "word": "for",
+     "frame": 2051
+    },
+    {
+     "word": "one",
+     "frame": 2057
+    },
+    {
+     "word": "500",
+     "frame": 2066
+    },
+    {
+     "word": "hertz",
+     "frame": 2083
+    },
+    {
+     "word": "lands",
+     "frame": 2092
+    },
+    {
+     "word": "on",
+     "frame": 2104
+    },
+    {
+     "word": "494",
+     "frame": 2105
+    },
+    {
+     "word": "further",
+     "frame": 2125
+    },
+    {
+     "word": "up",
+     "frame": 2138
+    },
+    {
+     "word": "it",
+     "frame": 2143
+    },
+    {
+     "word": "squeezes",
+     "frame": 2147
+    },
+    {
+     "word": "harder",
+     "frame": 2158
+    },
+    {
+     "word": "and",
+     "frame": 2167
+    },
+    {
+     "word": "infinity",
+     "frame": 2176
+    },
+    {
+     "word": "lands",
+     "frame": 2187
+    },
+    {
+     "word": "exactly",
+     "frame": 2198
+    },
+    {
+     "word": "on",
+     "frame": 2212
+    },
+    {
+     "word": "4",
+     "frame": 2219
+    },
+    {
+     "word": "000.",
+     "frame": 2226
+    },
+    {
+     "word": "that",
+     "frame": 2245
+    },
+    {
+     "word": "uneven",
+     "frame": 2252
+    },
+    {
+     "word": "squeeze",
+     "frame": 2259
+    },
+    {
+     "word": "is",
+     "frame": 2270
+    },
+    {
+     "word": "warping",
+     "frame": 2279
+    },
+    {
+     "word": "and",
+     "frame": 2290
+    },
+    {
+     "word": "3400",
+     "frame": 2300
+    },
+    {
+     "word": "lands",
+     "frame": 2320
+    },
+    {
+     "word": "on",
+     "frame": 2329
+    },
+    {
+     "word": "2363.",
+     "frame": 2334
+    },
+    {
+     "word": "there's",
+     "frame": 2392
+    },
+    {
+     "word": "your",
+     "frame": 2401
+    },
+    {
+     "word": "bug",
+     "frame": 2404
+    },
+    {
+     "word": "in",
+     "frame": 2410
+    },
+    {
+     "word": "one",
+     "frame": 2417
+    },
+    {
+     "word": "row",
+     "frame": 2423
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "The squeeze never changes a gain. It only moves gains to new tones. So the copy passes seventy-one percent, exactly, at the tone where thirty-four hundred landed. Every gain is right, at the wrong tone. And once you know where each one lands, you can aim.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line06.wav",
+   "at": 82.07,
+   "start": 82.07,
+   "end": 94.39,
+   "start_frame": 2462,
+   "words": [
+    {
+     "word": "The",
+     "frame": 2462
+    },
+    {
+     "word": "squeeze",
+     "frame": 2470
+    },
+    {
+     "word": "never",
+     "frame": 2479
+    },
+    {
+     "word": "changes",
+     "frame": 2488
+    },
+    {
+     "word": "a",
+     "frame": 2499
+    },
+    {
+     "word": "gain,",
+     "frame": 2505
+    },
+    {
+     "word": "it",
+     "frame": 2516
+    },
+    {
+     "word": "only",
+     "frame": 2522
+    },
+    {
+     "word": "moves",
+     "frame": 2527
+    },
+    {
+     "word": "gains",
+     "frame": 2536
+    },
+    {
+     "word": "to",
+     "frame": 2544
+    },
+    {
+     "word": "new",
+     "frame": 2552
+    },
+    {
+     "word": "tones,",
+     "frame": 2556
+    },
+    {
+     "word": "so",
+     "frame": 2571
+    },
+    {
+     "word": "the",
+     "frame": 2578
+    },
+    {
+     "word": "copy",
+     "frame": 2582
+    },
+    {
+     "word": "passes",
+     "frame": 2589
+    },
+    {
+     "word": "71",
+     "frame": 2598
+    },
+    {
+     "word": "%",
+     "frame": 2615
+    },
+    {
+     "word": "exactly",
+     "frame": 2647
+    },
+    {
+     "word": "at",
+     "frame": 2647
+    },
+    {
+     "word": "the",
+     "frame": 2658
+    },
+    {
+     "word": "tone",
+     "frame": 2662
+    },
+    {
+     "word": "where",
+     "frame": 2668
+    },
+    {
+     "word": "3400",
+     "frame": 2673
+    },
+    {
+     "word": "landed.",
+     "frame": 2694
+    },
+    {
+     "word": "Every",
+     "frame": 2712
+    },
+    {
+     "word": "gain",
+     "frame": 2719
+    },
+    {
+     "word": "is",
+     "frame": 2725
+    },
+    {
+     "word": "right",
+     "frame": 2730
+    },
+    {
+     "word": "at",
+     "frame": 2736
+    },
+    {
+     "word": "the",
+     "frame": 2742
+    },
+    {
+     "word": "wrong",
+     "frame": 2745
+    },
+    {
+     "word": "tone,",
+     "frame": 2751
+    },
+    {
+     "word": "and",
+     "frame": 2767
+    },
+    {
+     "word": "once",
+     "frame": 2770
+    },
+    {
+     "word": "you",
+     "frame": 2776
+    },
+    {
+     "word": "know",
+     "frame": 2780
+    },
+    {
+     "word": "where",
+     "frame": 2784
+    },
+    {
+     "word": "each",
+     "frame": 2788
+    },
+    {
+     "word": "one",
+     "frame": 2795
+    },
+    {
+     "word": "lands,",
+     "frame": 2800
+    },
+    {
+     "word": "you",
+     "frame": 2814
+    },
+    {
+     "word": "can",
+     "frame": 2815
+    },
+    {
+     "word": "aim.",
+     "frame": 2819
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Run the squeeze backward. Which analog frequency lands on thirty-four hundred? Forty-four hundred? Five thousand? Start at thirty-four hundred on the digital side, go across to the curve, then down to the analog frequency. Oh, ten thousand six hundred seven. More than three times higher, far above anything the line can carry. That's prewarping.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line07.wav",
+   "at": 95.39,
+   "start": 95.39,
+   "end": 113.53,
+   "start_frame": 2862,
+   "words": [
+    {
+     "word": "run",
+     "frame": 2862
+    },
+    {
+     "word": "the",
+     "frame": 2871
+    },
+    {
+     "word": "squeeze",
+     "frame": 2875
+    },
+    {
+     "word": "backward",
+     "frame": 2884
+    },
+    {
+     "word": "which",
+     "frame": 2894
+    },
+    {
+     "word": "analog",
+     "frame": 2917
+    },
+    {
+     "word": "frequency",
+     "frame": 2926
+    },
+    {
+     "word": "lands",
+     "frame": 2943
+    },
+    {
+     "word": "on",
+     "frame": 2953
+    },
+    {
+     "word": "3400",
+     "frame": 2959
+    },
+    {
+     "word": "4400",
+     "frame": 2983
+    },
+    {
+     "word": "5000",
+     "frame": 3008
+    },
+    {
+     "word": "start",
+     "frame": 3028
+    },
+    {
+     "word": "at",
+     "frame": 3055
+    },
+    {
+     "word": "3400",
+     "frame": 3059
+    },
+    {
+     "word": "on",
+     "frame": 3079
+    },
+    {
+     "word": "the",
+     "frame": 3086
+    },
+    {
+     "word": "digital",
+     "frame": 3091
+    },
+    {
+     "word": "side",
+     "frame": 3099
+    },
+    {
+     "word": "go",
+     "frame": 3109
+    },
+    {
+     "word": "across",
+     "frame": 3120
+    },
+    {
+     "word": "to",
+     "frame": 3129
+    },
+    {
+     "word": "the",
+     "frame": 3134
+    },
+    {
+     "word": "curve",
+     "frame": 3137
+    },
+    {
+     "word": "then",
+     "frame": 3146
+    },
+    {
+     "word": "down",
+     "frame": 3154
+    },
+    {
+     "word": "to",
+     "frame": 3160
+    },
+    {
+     "word": "the",
+     "frame": 3165
+    },
+    {
+     "word": "analog",
+     "frame": 3168
+    },
+    {
+     "word": "frequency",
+     "frame": 3178
+    },
+    {
+     "word": "oh",
+     "frame": 3196
+    },
+    {
+     "word": "ten",
+     "frame": 3214
+    },
+    {
+     "word": "thousand",
+     "frame": 3220
+    },
+    {
+     "word": "six",
+     "frame": 3229
+    },
+    {
+     "word": "hundred",
+     "frame": 3237
+    },
+    {
+     "word": "seven",
+     "frame": 3250
+    },
+    {
+     "word": "more",
+     "frame": 3274
+    },
+    {
+     "word": "than",
+     "frame": 3292
+    },
+    {
+     "word": "three",
+     "frame": 3296
+    },
+    {
+     "word": "times",
+     "frame": 3301
+    },
+    {
+     "word": "higher",
+     "frame": 3310
+    },
+    {
+     "word": "far",
+     "frame": 3319
+    },
+    {
+     "word": "above",
+     "frame": 3328
+    },
+    {
+     "word": "anything",
+     "frame": 3336
+    },
+    {
+     "word": "the",
+     "frame": 3346
+    },
+    {
+     "word": "line",
+     "frame": 3352
+    },
+    {
+     "word": "can",
+     "frame": 3357
+    },
+    {
+     "word": "carry",
+     "frame": 3363
+    },
+    {
+     "word": "that's",
+     "frame": 3373
+    },
+    {
+     "word": "pre",
+     "frame": 3384
+    },
+    {
+     "word": "-warping",
+     "frame": 3390
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "Build the analog prototype, the filter you copy, with its cutoff there. Then squeeze. Its whole stretch up to the cutoff lands below thirty-four hundred, and that stretch is nearly flat. The technician measures again: seventy point seven percent at thirty-four hundred hertz. You changed one number. That's the whole fix.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line08.wav",
+   "at": 114.53,
+   "start": 114.53,
+   "end": 130.88,
+   "start_frame": 3436,
+   "words": [
+    {
+     "word": "build",
+     "frame": 3436
+    },
+    {
+     "word": "the",
+     "frame": 3446
+    },
+    {
+     "word": "analog",
+     "frame": 3451
+    },
+    {
+     "word": "prototype",
+     "frame": 3460
+    },
+    {
+     "word": "the",
+     "frame": 3477
+    },
+    {
+     "word": "filter",
+     "frame": 3484
+    },
+    {
+     "word": "you",
+     "frame": 3492
+    },
+    {
+     "word": "copy",
+     "frame": 3497
+    },
+    {
+     "word": "with",
+     "frame": 3507
+    },
+    {
+     "word": "its",
+     "frame": 3513
+    },
+    {
+     "word": "cutoff",
+     "frame": 3517
+    },
+    {
+     "word": "there",
+     "frame": 3529
+    },
+    {
+     "word": "then",
+     "frame": 3539
+    },
+    {
+     "word": "squeeze",
+     "frame": 3556
+    },
+    {
+     "word": "its",
+     "frame": 3568
+    },
+    {
+     "word": "whole",
+     "frame": 3591
+    },
+    {
+     "word": "stretch",
+     "frame": 3597
+    },
+    {
+     "word": "up",
+     "frame": 3605
+    },
+    {
+     "word": "to",
+     "frame": 3610
+    },
+    {
+     "word": "the",
+     "frame": 3614
+    },
+    {
+     "word": "cutoff",
+     "frame": 3617
+    },
+    {
+     "word": "lands",
+     "frame": 3626
+    },
+    {
+     "word": "below",
+     "frame": 3633
+    },
+    {
+     "word": "3400",
+     "frame": 3642
+    },
+    {
+     "word": "and",
+     "frame": 3663
+    },
+    {
+     "word": "that",
+     "frame": 3670
+    },
+    {
+     "word": "stretch",
+     "frame": 3675
+    },
+    {
+     "word": "is",
+     "frame": 3682
+    },
+    {
+     "word": "nearly",
+     "frame": 3688
+    },
+    {
+     "word": "flat",
+     "frame": 3694
+    },
+    {
+     "word": "the",
+     "frame": 3704
+    },
+    {
+     "word": "technician",
+     "frame": 3721
+    },
+    {
+     "word": "measures",
+     "frame": 3732
+    },
+    {
+     "word": "again",
+     "frame": 3744
+    },
+    {
+     "word": "70",
+     "frame": 3754
+    },
+    {
+     "word": ".7",
+     "frame": 3771
+    },
+    {
+     "word": "percent",
+     "frame": 3783
+    },
+    {
+     "word": "at",
+     "frame": 3794
+    },
+    {
+     "word": "3400",
+     "frame": 3800
+    },
+    {
+     "word": "hertz",
+     "frame": 3819
+    },
+    {
+     "word": "you",
+     "frame": 3825
+    },
+    {
+     "word": "changed",
+     "frame": 3864
+    },
+    {
+     "word": "one",
+     "frame": 3873
+    },
+    {
+     "word": "number",
+     "frame": 3879
+    },
+    {
+     "word": "that's",
+     "frame": 3888
+    },
+    {
+     "word": "the",
+     "frame": 3900
+    },
+    {
+     "word": "whole",
+     "frame": 3903
+    },
+    {
+     "word": "fix",
+     "frame": 3908
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Prewarping pins one tone, and every other tone is still squeezed. But the cutoff is the tone worth pinning: below it, the copy never strays more than one point six decibels.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo-breath/line09.wav",
+   "at": 131.68,
+   "start": 131.68,
+   "end": 140.61,
+   "start_frame": 3950,
+   "words": [
+    {
+     "word": "Pre",
+     "frame": 3950
+    },
+    {
+     "word": "-warping",
+     "frame": 3959
+    },
+    {
+     "word": "pins",
+     "frame": 3970
+    },
+    {
+     "word": "one",
+     "frame": 3979
+    },
+    {
+     "word": "tone",
+     "frame": 3985
+    },
+    {
+     "word": "and",
+     "frame": 3995
+    },
+    {
+     "word": "every",
+     "frame": 4003
+    },
+    {
+     "word": "other",
+     "frame": 4010
+    },
+    {
+     "word": "tone",
+     "frame": 4015
+    },
+    {
+     "word": "is",
+     "frame": 4022
+    },
+    {
+     "word": "still",
+     "frame": 4027
+    },
+    {
+     "word": "squeezed,",
+     "frame": 4032
+    },
+    {
+     "word": "but",
+     "frame": 4068
+    },
+    {
+     "word": "the",
+     "frame": 4071
+    },
+    {
+     "word": "cutoff",
+     "frame": 4074
+    },
+    {
+     "word": "is",
+     "frame": 4084
+    },
+    {
+     "word": "the",
+     "frame": 4090
+    },
+    {
+     "word": "tone",
+     "frame": 4093
+    },
+    {
+     "word": "worth",
+     "frame": 4099
+    },
+    {
+     "word": "pinning.",
+     "frame": 4105
+    },
+    {
+     "word": "Below",
+     "frame": 4126
+    },
+    {
+     "word": "it,",
+     "frame": 4129
+    },
+    {
+     "word": "the",
+     "frame": 4137
+    },
+    {
+     "word": "copy",
+     "frame": 4140
+    },
+    {
+     "word": "never",
+     "frame": 4147
+    },
+    {
+     "word": "strays",
+     "frame": 4154
+    },
+    {
+     "word": "more",
+     "frame": 4165
+    },
+    {
+     "word": "than",
+     "frame": 4171
+    },
+    {
+     "word": "1",
+     "frame": 4174
+    },
+    {
+     "word": ".6",
+     "frame": 4181
+    },
+    {
+     "word": "decibels.",
+     "frame": 4195
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "One more job moves off the exchange. A caller presses a key, and the keypad sends two tones at once. You get a few hundred numbers. Which key was it?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/11-bilinear-transform/4-video/vo/line10.wav",
+   "at": 141.61,
+   "start": 141.61,
+   "end": 148.94,
+   "start_frame": 4248,
+   "words": [
+    {
+     "word": "One",
+     "frame": 4248
+    },
+    {
+     "word": "more",
+     "frame": 4266
+    },
+    {
+     "word": "job",
+     "frame": 4270
+    },
+    {
+     "word": "moves",
+     "frame": 4277
+    },
+    {
+     "word": "off",
+     "frame": 4284
+    },
+    {
+     "word": "the",
+     "frame": 4288
+    },
+    {
+     "word": "exchange.",
+     "frame": 4292
+    },
+    {
+     "word": "A",
+     "frame": 4310
+    },
+    {
+     "word": "caller",
+     "frame": 4316
+    },
+    {
+     "word": "presses",
+     "frame": 4323
+    },
+    {
+     "word": "a",
+     "frame": 4332
+    },
+    {
+     "word": "key",
+     "frame": 4337
+    },
+    {
+     "word": "and",
+     "frame": 4343
+    },
+    {
+     "word": "the",
+     "frame": 4350
+    },
+    {
+     "word": "keypad",
+     "frame": 4353
+    },
+    {
+     "word": "sends",
+     "frame": 4363
+    },
+    {
+     "word": "two",
+     "frame": 4369
+    },
+    {
+     "word": "tones",
+     "frame": 4375
+    },
+    {
+     "word": "at",
+     "frame": 4382
+    },
+    {
+     "word": "once.",
+     "frame": 4387
+    },
+    {
+     "word": "You",
+     "frame": 4398
+    },
+    {
+     "word": "get",
+     "frame": 4404
+    },
+    {
+     "word": "a",
+     "frame": 4407
+    },
+    {
+     "word": "few",
+     "frame": 4410
+    },
+    {
+     "word": "hundred",
+     "frame": 4413
+    },
+    {
+     "word": "numbers.",
+     "frame": 4420
+    },
+    {
+     "word": "Which",
+     "frame": 4439
+    },
+    {
+     "word": "key",
+     "frame": 4446
+    },
+    {
+     "word": "was",
+     "frame": 4451
+    },
+    {
+     "word": "it?",
+     "frame": 4458
+    }
+   ]
+  }
+ ]
+}
