@@ -1,15 +1,15 @@
 {
  "fps": 30,
- "duration": 168.12,
- "wpm": 214,
+ "duration": 138.76,
+ "wpm": 201,
  "lines": [
   {
    "line": 1,
-   "text": "The line went live last week, and the support tickets split into two neat piles. Quiet callers are fine. Loud callers hear a harsh, raspy buzz on top of their voice. One says his boss sounds like he's yelling through a kazoo. [laughter]",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line01.wav",
+   "text": "The line went live last week. Quiet callers are fine. Loud callers hear a harsh, raspy buzz. One says his boss sounds like he's yelling through a kazoo. [laughter]",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line01.wav",
    "at": 0.6,
    "start": 0.6,
-   "end": 11.97,
+   "end": 8.51,
    "start_frame": 18,
    "words": [
     {
@@ -26,2468 +26,1916 @@
     },
     {
      "word": "live",
-     "frame": 37
+     "frame": 38
     },
     {
      "word": "last",
-     "frame": 44
+     "frame": 45
     },
     {
-     "word": "week,",
-     "frame": 53
-    },
-    {
-     "word": "and",
-     "frame": 62
-    },
-    {
-     "word": "the",
-     "frame": 67
-    },
-    {
-     "word": "support",
-     "frame": 70
-    },
-    {
-     "word": "tickets",
-     "frame": 79
-    },
-    {
-     "word": "split",
-     "frame": 89
-    },
-    {
-     "word": "into",
-     "frame": 97
-    },
-    {
-     "word": "two",
-     "frame": 103
-    },
-    {
-     "word": "neat",
-     "frame": 110
-    },
-    {
-     "word": "piles.",
-     "frame": 116
+     "word": "week.",
+     "frame": 52
     },
     {
      "word": "Quiet",
-     "frame": 137
+     "frame": 61
     },
     {
      "word": "callers",
-     "frame": 142
+     "frame": 68
     },
     {
      "word": "are",
-     "frame": 152
+     "frame": 79
     },
     {
      "word": "fine.",
-     "frame": 156
+     "frame": 83
     },
     {
      "word": "Loud",
-     "frame": 176
+     "frame": 99
     },
     {
      "word": "callers",
-     "frame": 180
+     "frame": 106
     },
     {
      "word": "hear",
-     "frame": 193
+     "frame": 119
     },
     {
      "word": "a",
-     "frame": 197
+     "frame": 124
     },
     {
      "word": "harsh,",
-     "frame": 200
+     "frame": 127
     },
     {
      "word": "raspy",
-     "frame": 212
+     "frame": 142
     },
     {
-     "word": "buzz",
-     "frame": 221
-    },
-    {
-     "word": "on",
-     "frame": 230
-    },
-    {
-     "word": "top",
-     "frame": 236
-    },
-    {
-     "word": "of",
-     "frame": 242
-    },
-    {
-     "word": "their",
-     "frame": 247
-    },
-    {
-     "word": "voice.",
-     "frame": 252
+     "word": "buzz.",
+     "frame": 152
     },
     {
      "word": "One",
-     "frame": 270
+     "frame": 172
     },
     {
      "word": "says",
-     "frame": 275
+     "frame": 176
     },
     {
      "word": "his",
-     "frame": 281
+     "frame": 181
     },
     {
      "word": "boss",
-     "frame": 287
+     "frame": 187
     },
     {
      "word": "sounds",
-     "frame": 295
+     "frame": 194
     },
     {
      "word": "like",
-     "frame": 303
+     "frame": 200
     },
     {
      "word": "he's",
-     "frame": 308
+     "frame": 205
     },
     {
      "word": "yelling",
-     "frame": 314
+     "frame": 211
     },
     {
      "word": "through",
-     "frame": 320
+     "frame": 217
     },
     {
      "word": "a",
-     "frame": 327
+     "frame": 224
     },
     {
      "word": "kazoo.",
-     "frame": 330
+     "frame": 227
     }
    ]
   },
   {
    "line": 2,
-   "text": "Strange, isn't it? The line runs the same code for everybody, and louder should just be louder. So look at what it carries: the microphone's voltage, measured eight thousand times a second. Each measurement is a sample, and a call is a list of numbers.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line02.wav",
-   "at": 12.77,
-   "start": 12.77,
-   "end": 24.93,
-   "start_frame": 383,
+   "text": "Strange, isn't it? Same code for everybody, and louder should just be louder. The line carries the microphone's voltage, measured eight thousand times a second. Each is a sample; the list is a signal.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line01.wav",
+   "at": 9.31,
+   "start": 9.31,
+   "end": 19.07,
+   "start_frame": 279,
    "words": [
     {
      "word": "Strange,",
-     "frame": 383
+     "frame": 279
     },
     {
      "word": "isn't",
-     "frame": 404
+     "frame": 300
     },
     {
      "word": "it?",
-     "frame": 409
+     "frame": 303
     },
     {
-     "word": "The",
-     "frame": 416
-    },
-    {
-     "word": "line",
-     "frame": 424
-    },
-    {
-     "word": "runs",
-     "frame": 430
-    },
-    {
-     "word": "the",
-     "frame": 437
-    },
-    {
-     "word": "same",
-     "frame": 441
+     "word": "Same",
+     "frame": 314
     },
     {
      "word": "code",
-     "frame": 447
+     "frame": 319
     },
     {
      "word": "for",
-     "frame": 454
+     "frame": 326
     },
     {
-     "word": "everybody",
-     "frame": 459
+     "word": "everybody,",
+     "frame": 330
     },
     {
      "word": "and",
-     "frame": 469
+     "frame": 348
     },
     {
      "word": "louder",
-     "frame": 477
+     "frame": 354
     },
     {
      "word": "should",
-     "frame": 485
+     "frame": 361
     },
     {
      "word": "just",
-     "frame": 492
+     "frame": 366
     },
     {
      "word": "be",
-     "frame": 498
+     "frame": 372
     },
     {
      "word": "louder.",
-     "frame": 503
-    },
-    {
-     "word": "So",
-     "frame": 523
-    },
-    {
-     "word": "look",
-     "frame": 526
-    },
-    {
-     "word": "at",
-     "frame": 531
-    },
-    {
-     "word": "what",
-     "frame": 534
-    },
-    {
-     "word": "it",
-     "frame": 537
-    },
-    {
-     "word": "carries.",
-     "frame": 540
+     "frame": 376
     },
     {
      "word": "The",
-     "frame": 558
+     "frame": 395
+    },
+    {
+     "word": "line",
+     "frame": 398
+    },
+    {
+     "word": "carries",
+     "frame": 405
+    },
+    {
+     "word": "the",
+     "frame": 414
     },
     {
      "word": "microphone's",
-     "frame": 566
+     "frame": 418
     },
     {
      "word": "voltage,",
-     "frame": 582
+     "frame": 434
     },
     {
      "word": "measured",
-     "frame": 598
+     "frame": 451
     },
     {
      "word": "8",
-     "frame": 608
+     "frame": 462
     },
     {
      "word": ",000",
-     "frame": 614
+     "frame": 468
     },
     {
      "word": "times",
-     "frame": 624
+     "frame": 478
     },
     {
      "word": "a",
-     "frame": 631
+     "frame": 484
     },
     {
      "word": "second.",
-     "frame": 635
+     "frame": 489
     },
     {
      "word": "Each",
-     "frame": 659
-    },
-    {
-     "word": "measurement",
-     "frame": 663
+     "frame": 506
     },
     {
      "word": "is",
-     "frame": 673
+     "frame": 510
     },
     {
      "word": "a",
-     "frame": 680
+     "frame": 513
     },
     {
-     "word": "sample,",
-     "frame": 684
+     "word": "sample.",
+     "frame": 517
     },
     {
-     "word": "and",
-     "frame": 698
-    },
-    {
-     "word": "a",
-     "frame": 702
-    },
-    {
-     "word": "call",
-     "frame": 705
-    },
-    {
-     "word": "is",
-     "frame": 712
-    },
-    {
-     "word": "a",
-     "frame": 717
+     "word": "The",
+     "frame": 536
     },
     {
      "word": "list",
-     "frame": 719
+     "frame": 539
     },
     {
-     "word": "of",
-     "frame": 724
+     "word": "is",
+     "frame": 545
     },
     {
-     "word": "numbers.",
-     "frame": 728
+     "word": "a",
+     "frame": 550
+    },
+    {
+     "word": "signal.",
+     "frame": 554
     }
    ]
   },
   {
    "line": 3,
-   "text": "The simplest sound is a tone, like a tuning fork: a steady wave, and how many times a second it repeats, in hertz, is the pitch you hear. Its samples come from the cosine. For one thousand hertz, the angle steps three hundred sixty times one thousand over eight thousand. That's forty-five degrees each sample, so after eight samples the pattern starts over.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line03.wav",
-   "at": 25.43,
-   "start": 25.43,
-   "end": 42.74,
-   "start_frame": 763,
+   "text": "The simplest sound is a tone. How often it repeats, in hertz, is its pitch. Its samples are the cosine of an angle that turns a fixed step: at one thousand hertz, forty-five degrees. Eight samples make a full turn.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line03.wav",
+   "at": 19.57,
+   "start": 19.57,
+   "end": 29.84,
+   "start_frame": 587,
    "words": [
     {
      "word": "The",
-     "frame": 763
+     "frame": 587
     },
     {
      "word": "simplest",
-     "frame": 771
+     "frame": 595
     },
     {
      "word": "sound",
-     "frame": 780
+     "frame": 603
     },
     {
      "word": "is",
-     "frame": 789
+     "frame": 612
     },
     {
      "word": "a",
-     "frame": 794
+     "frame": 616
     },
     {
-     "word": "tone,",
-     "frame": 796
+     "word": "tone.",
+     "frame": 620
     },
     {
-     "word": "like",
-     "frame": 812
+     "word": "How",
+     "frame": 633
     },
     {
-     "word": "a",
-     "frame": 819
-    },
-    {
-     "word": "tuning",
-     "frame": 822
-    },
-    {
-     "word": "fork,",
-     "frame": 828
-    },
-    {
-     "word": "a",
-     "frame": 842
-    },
-    {
-     "word": "steady",
-     "frame": 844
-    },
-    {
-     "word": "wave,",
-     "frame": 852
-    },
-    {
-     "word": "and",
-     "frame": 864
-    },
-    {
-     "word": "how",
-     "frame": 870
-    },
-    {
-     "word": "many",
-     "frame": 873
-    },
-    {
-     "word": "times",
-     "frame": 879
-    },
-    {
-     "word": "a",
-     "frame": 885
-    },
-    {
-     "word": "second",
-     "frame": 890
+     "word": "often",
+     "frame": 642
     },
     {
      "word": "it",
-     "frame": 896
+     "frame": 650
     },
     {
      "word": "repeats",
-     "frame": 901
+     "frame": 653
     },
     {
      "word": "in",
-     "frame": 910
+     "frame": 663
     },
     {
      "word": "hertz",
-     "frame": 915
+     "frame": 669
     },
     {
      "word": "is",
-     "frame": 922
+     "frame": 676
     },
     {
-     "word": "the",
-     "frame": 934
+     "word": "its",
+     "frame": 682
     },
     {
-     "word": "pitch",
-     "frame": 938
-    },
-    {
-     "word": "you",
-     "frame": 944
-    },
-    {
-     "word": "hear.",
-     "frame": 948
+     "word": "pitch.",
+     "frame": 686
     },
     {
      "word": "Its",
-     "frame": 961
+     "frame": 708
     },
     {
      "word": "samples",
-     "frame": 971
+     "frame": 711
     },
     {
-     "word": "come",
-     "frame": 980
-    },
-    {
-     "word": "from",
-     "frame": 986
+     "word": "are",
+     "frame": 720
     },
     {
      "word": "the",
-     "frame": 991
+     "frame": 725
     },
     {
-     "word": "cosine.",
-     "frame": 995
+     "word": "cosine",
+     "frame": 728
     },
     {
-     "word": "For",
-     "frame": 1014
+     "word": "of",
+     "frame": 738
     },
     {
-     "word": "1",
-     "frame": 1024
-    },
-    {
-     "word": ",000",
-     "frame": 1032
-    },
-    {
-     "word": "hertz,",
-     "frame": 1040
-    },
-    {
-     "word": "the",
-     "frame": 1052
+     "word": "an",
+     "frame": 745
     },
     {
      "word": "angle",
-     "frame": 1054
+     "frame": 748
     },
     {
-     "word": "steps",
-     "frame": 1061
+     "word": "that",
+     "frame": 755
     },
     {
-     "word": "360",
-     "frame": 1070
+     "word": "turns",
+     "frame": 760
     },
     {
-     "word": "times",
-     "frame": 1096
+     "word": "a",
+     "frame": 766
     },
     {
-     "word": "1",
-     "frame": 1107
+     "word": "fixed",
+     "frame": 770
     },
     {
-     "word": ",000",
-     "frame": 1115
+     "word": "step",
+     "frame": 777
     },
     {
-     "word": "over",
-     "frame": 1124
+     "word": "at",
+     "frame": 794
     },
     {
-     "word": "8",
-     "frame": 1131
+     "word": "1000",
+     "frame": 799
     },
     {
-     "word": ",000.",
-     "frame": 1137
-    },
-    {
-     "word": "That's",
-     "frame": 1154
+     "word": "hertz",
+     "frame": 810
     },
     {
      "word": "45",
-     "frame": 1168
+     "frame": 818
     },
     {
-     "word": "degrees",
-     "frame": 1181
+     "word": "degrees.",
+     "frame": 828
     },
     {
-     "word": "each",
-     "frame": 1193
-    },
-    {
-     "word": "sample,",
-     "frame": 1200
-    },
-    {
-     "word": "so",
-     "frame": 1216
-    },
-    {
-     "word": "after",
-     "frame": 1220
-    },
-    {
-     "word": "8",
-     "frame": 1226
+     "word": "Eight",
+     "frame": 849
     },
     {
      "word": "samples",
-     "frame": 1232
+     "frame": 854
     },
     {
-     "word": "the",
-     "frame": 1244
+     "word": "make",
+     "frame": 865
     },
     {
-     "word": "pattern",
-     "frame": 1248
+     "word": "a",
+     "frame": 872
     },
     {
-     "word": "starts",
-     "frame": 1257
+     "word": "full",
+     "frame": 874
     },
     {
-     "word": "over.",
-     "frame": 1266
+     "word": "turn.",
+     "frame": 880
     }
    ]
   },
   {
    "line": 4,
-   "text": "Early in the chain sits the booster. It's a system: a rule that takes in one signal, one list of numbers, and gives back another. Its rule is one line of code: multiply every sample by four. But the chip after it can only store values from minus one to plus one. Hand it two, and it writes down one. That flattening is called clipping.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line04.wav",
-   "at": 43.34,
-   "start": 43.34,
-   "end": 59.24,
-   "start_frame": 1300,
+   "text": "The booster is a system: one signal in, another out. Its rule: multiply every sample by four. But the chip after it only stores the range, minus one to plus one. Hand it two, past the edge, and it writes one. That's clipping.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line02.wav",
+   "at": 30.44,
+   "start": 30.44,
+   "end": 41.12,
+   "start_frame": 913,
    "words": [
     {
-     "word": "Early",
-     "frame": 1300
-    },
-    {
-     "word": "in",
-     "frame": 1312
-    },
-    {
      "word": "the",
-     "frame": 1316
+     "frame": 913
     },
     {
-     "word": "chain",
-     "frame": 1319
-    },
-    {
-     "word": "sits",
-     "frame": 1326
-    },
-    {
-     "word": "the",
-     "frame": 1334
-    },
-    {
-     "word": "booster.",
-     "frame": 1339
-    },
-    {
-     "word": "It's",
-     "frame": 1354
-    },
-    {
-     "word": "a",
-     "frame": 1363
-    },
-    {
-     "word": "system,",
-     "frame": 1366
-    },
-    {
-     "word": "a",
-     "frame": 1379
-    },
-    {
-     "word": "rule",
-     "frame": 1382
-    },
-    {
-     "word": "that",
-     "frame": 1388
-    },
-    {
-     "word": "takes",
-     "frame": 1392
-    },
-    {
-     "word": "in",
-     "frame": 1399
-    },
-    {
-     "word": "one",
-     "frame": 1403
-    },
-    {
-     "word": "signal,",
-     "frame": 1408
-    },
-    {
-     "word": "one",
-     "frame": 1424
-    },
-    {
-     "word": "list",
-     "frame": 1426
-    },
-    {
-     "word": "of",
-     "frame": 1433
-    },
-    {
-     "word": "numbers,",
-     "frame": 1436
-    },
-    {
-     "word": "and",
-     "frame": 1447
-    },
-    {
-     "word": "gives",
-     "frame": 1451
-    },
-    {
-     "word": "back",
-     "frame": 1457
-    },
-    {
-     "word": "another.",
-     "frame": 1463
-    },
-    {
-     "word": "Its",
-     "frame": 1479
-    },
-    {
-     "word": "rule",
-     "frame": 1489
+     "word": "booster",
+     "frame": 922
     },
     {
      "word": "is",
-     "frame": 1495
+     "frame": 929
+    },
+    {
+     "word": "a",
+     "frame": 935
+    },
+    {
+     "word": "system",
+     "frame": 939
     },
     {
      "word": "one",
-     "frame": 1501
+     "frame": 947
     },
     {
-     "word": "line",
-     "frame": 1507
+     "word": "signal",
+     "frame": 959
     },
     {
-     "word": "of",
-     "frame": 1513
+     "word": "in",
+     "frame": 968
     },
     {
-     "word": "code.",
-     "frame": 1516
+     "word": "another",
+     "frame": 973
     },
     {
-     "word": "Multiply",
-     "frame": 1532
+     "word": "out",
+     "frame": 980
+    },
+    {
+     "word": "its",
+     "frame": 989
+    },
+    {
+     "word": "rule",
+     "frame": 997
+    },
+    {
+     "word": "multiply",
+     "frame": 1004
     },
     {
      "word": "every",
-     "frame": 1549
+     "frame": 1019
     },
     {
      "word": "sample",
-     "frame": 1559
+     "frame": 1029
     },
     {
      "word": "by",
-     "frame": 1564
+     "frame": 1037
     },
     {
-     "word": "four,",
-     "frame": 1570
+     "word": "four",
+     "frame": 1043
     },
     {
      "word": "but",
-     "frame": 1583
+     "frame": 1053
     },
     {
      "word": "the",
-     "frame": 1590
+     "frame": 1064
     },
     {
      "word": "chip",
-     "frame": 1593
+     "frame": 1066
     },
     {
      "word": "after",
-     "frame": 1599
+     "frame": 1072
     },
     {
      "word": "it",
-     "frame": 1607
-    },
-    {
-     "word": "can",
-     "frame": 1611
+     "frame": 1080
     },
     {
      "word": "only",
-     "frame": 1614
+     "frame": 1084
     },
     {
-     "word": "store",
-     "frame": 1620
+     "word": "stores",
+     "frame": 1088
     },
     {
-     "word": "values",
-     "frame": 1627
+     "word": "the",
+     "frame": 1096
     },
     {
-     "word": "from",
-     "frame": 1637
+     "word": "range",
+     "frame": 1101
     },
     {
      "word": "minus",
-     "frame": 1643
+     "frame": 1110
     },
     {
      "word": "one",
-     "frame": 1651
+     "frame": 1120
     },
     {
      "word": "to",
-     "frame": 1657
+     "frame": 1126
     },
     {
      "word": "plus",
-     "frame": 1661
+     "frame": 1129
     },
     {
-     "word": "one.",
-     "frame": 1668
+     "word": "one",
+     "frame": 1136
     },
     {
-     "word": "Hand",
-     "frame": 1681
+     "word": "hand",
+     "frame": 1143
     },
     {
      "word": "it",
-     "frame": 1690
+     "frame": 1153
     },
     {
-     "word": "two,",
-     "frame": 1691
+     "word": "two",
+     "frame": 1157
+    },
+    {
+     "word": "past",
+     "frame": 1163
+    },
+    {
+     "word": "the",
+     "frame": 1172
+    },
+    {
+     "word": "edge",
+     "frame": 1177
     },
     {
      "word": "and",
-     "frame": 1701
+     "frame": 1183
     },
     {
      "word": "it",
-     "frame": 1704
+     "frame": 1190
     },
     {
      "word": "writes",
-     "frame": 1707
+     "frame": 1191
     },
     {
-     "word": "down",
-     "frame": 1714
+     "word": "one",
+     "frame": 1198
     },
     {
-     "word": "one.",
-     "frame": 1720
+     "word": "that's",
+     "frame": 1205
     },
     {
-     "word": "That",
-     "frame": 1732
-    },
-    {
-     "word": "flattening",
-     "frame": 1738
-    },
-    {
-     "word": "is",
-     "frame": 1750
-    },
-    {
-     "word": "called",
-     "frame": 1753
-    },
-    {
-     "word": "clipping.",
-     "frame": 1759
+     "word": "clipping",
+     "frame": 1217
     }
    ]
   },
   {
    "line": 5,
-   "text": "Take a quiet caller at size point two, so their biggest sample is point two, and a loud one at point five. Which comes out clean? The quiet one grows to point eight and stays inside the range. The loud one would reach two, so its tops are sliced off flat.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line05.wav",
-   "at": 60.04,
-   "start": 60.04,
-   "end": 72.17,
-   "start_frame": 1801,
+   "text": "A quiet caller is size point two, their biggest sample; a loud one, point five. Which comes out clean? The quiet one grows to point eight. The loud one would reach two: its tops get sliced flat.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line03.wav",
+   "at": 42.92,
+   "start": 42.92,
+   "end": 51.99,
+   "start_frame": 1288,
    "words": [
     {
-     "word": "Take",
-     "frame": 1801
-    },
-    {
-     "word": "a",
-     "frame": 1811
+     "word": "A",
+     "frame": 1288
     },
     {
      "word": "quiet",
-     "frame": 1815
+     "frame": 1296
     },
     {
      "word": "collar",
-     "frame": 1823
-    },
-    {
-     "word": "at",
-     "frame": 1832
-    },
-    {
-     "word": "size",
-     "frame": 1838
-    },
-    {
-     "word": "0",
-     "frame": 1846
-    },
-    {
-     "word": ".2",
-     "frame": 1852
-    },
-    {
-     "word": "so",
-     "frame": 1861
-    },
-    {
-     "word": "their",
-     "frame": 1867
-    },
-    {
-     "word": "biggest",
-     "frame": 1871
-    },
-    {
-     "word": "sample",
-     "frame": 1877
+     "frame": 1304
     },
     {
      "word": "is",
-     "frame": 1888
+     "frame": 1313
     },
     {
-     "word": "0",
-     "frame": 1893
+     "word": "size",
+     "frame": 1319
     },
     {
-     "word": ".2",
-     "frame": 1898
+     "word": ".2,",
+     "frame": 1327
     },
     {
-     "word": "and",
-     "frame": 1909
+     "word": "their",
+     "frame": 1344
+    },
+    {
+     "word": "biggest",
+     "frame": 1347
+    },
+    {
+     "word": "sample,",
+     "frame": 1354
     },
     {
      "word": "a",
-     "frame": 1918
+     "frame": 1368
     },
     {
      "word": "loud",
-     "frame": 1924
+     "frame": 1372
     },
     {
      "word": "one",
-     "frame": 1928
-    },
-    {
-     "word": "at",
-     "frame": 1934
-    },
-    {
-     "word": "0",
-     "frame": 1938
+     "frame": 1376
     },
     {
      "word": ".5,",
-     "frame": 1942
+     "frame": 1382
     },
     {
      "word": "which",
-     "frame": 1961
+     "frame": 1402
     },
     {
      "word": "comes",
-     "frame": 1966
+     "frame": 1409
     },
     {
      "word": "out",
-     "frame": 1973
+     "frame": 1416
     },
     {
      "word": "clean.",
-     "frame": 1978
+     "frame": 1421
     },
     {
      "word": "The",
-     "frame": 1993
+     "frame": 1436
     },
     {
      "word": "quiet",
-     "frame": 1999
+     "frame": 1438
     },
     {
      "word": "one",
-     "frame": 2008
+     "frame": 1446
     },
     {
      "word": "grows",
-     "frame": 2012
+     "frame": 1451
     },
     {
      "word": "to",
-     "frame": 2020
+     "frame": 1460
     },
     {
-     "word": "0",
-     "frame": 2024
-    },
-    {
-     "word": ".8",
-     "frame": 2029
-    },
-    {
-     "word": "and",
-     "frame": 2036
-    },
-    {
-     "word": "stays",
-     "frame": 2039
-    },
-    {
-     "word": "inside",
-     "frame": 2047
+     "word": ".8,",
+     "frame": 1466
     },
     {
      "word": "the",
-     "frame": 2056
-    },
-    {
-     "word": "range.",
-     "frame": 2060
-    },
-    {
-     "word": "The",
-     "frame": 2081
+     "frame": 1484
     },
     {
      "word": "loud",
-     "frame": 2084
+     "frame": 1489
     },
     {
      "word": "one",
-     "frame": 2089
+     "frame": 1494
     },
     {
      "word": "would",
-     "frame": 2095
+     "frame": 1499
     },
     {
      "word": "reach",
-     "frame": 2098
+     "frame": 1503
     },
     {
-     "word": "2",
-     "frame": 2106
-    },
-    {
-     "word": "so",
-     "frame": 2113
+     "word": "2,",
+     "frame": 1510
     },
     {
      "word": "its",
-     "frame": 2119
+     "frame": 1519
     },
     {
      "word": "tops",
-     "frame": 2125
+     "frame": 1523
     },
     {
-     "word": "are",
-     "frame": 2132
+     "word": "get",
+     "frame": 1531
     },
     {
      "word": "sliced",
-     "frame": 2137
-    },
-    {
-     "word": "off",
-     "frame": 2144
+     "frame": 1536
     },
     {
      "word": "flat.",
-     "frame": 2150
+     "frame": 1544
     }
    ]
   },
   {
    "line": 6,
-   "text": "Is that just an uglier tone? Try a pencil test. In any tone, a sample's two neighbors add up to the middle sample times a fixed number, here one point four one four. The clean tone passes. The clipped one fails.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line06.wav",
-   "at": 73.17,
-   "start": 73.17,
-   "end": 83.24,
-   "start_frame": 2195,
+   "text": "Is that just an uglier tone? Try the neighbor rule: in this tone, any two neighbors add up to one point four one four times the sample between them. The clean tone passes. The clipped one fails.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line04.wav",
+   "at": 52.99,
+   "start": 52.99,
+   "end": 62.31,
+   "start_frame": 1590,
    "words": [
     {
      "word": "Is",
-     "frame": 2195
+     "frame": 1590
     },
     {
      "word": "that",
-     "frame": 2204
+     "frame": 1599
     },
     {
      "word": "just",
-     "frame": 2207
+     "frame": 1602
     },
     {
      "word": "an",
-     "frame": 2212
+     "frame": 1606
     },
     {
      "word": "uglier",
-     "frame": 2217
+     "frame": 1611
     },
     {
      "word": "tone?",
-     "frame": 2228
+     "frame": 1622
     },
     {
      "word": "Try",
-     "frame": 2240
+     "frame": 1636
     },
     {
-     "word": "a",
-     "frame": 2245
+     "word": "the",
+     "frame": 1641
     },
     {
-     "word": "pencil",
-     "frame": 2248
+     "word": "neighbor",
+     "frame": 1644
     },
     {
-     "word": "test.",
-     "frame": 2254
+     "word": "rule.",
+     "frame": 1651
     },
     {
      "word": "In",
-     "frame": 2270
+     "frame": 1664
     },
     {
-     "word": "any",
-     "frame": 2275
+     "word": "this",
+     "frame": 1670
     },
     {
      "word": "tone,",
-     "frame": 2280
+     "frame": 1674
     },
     {
-     "word": "a",
-     "frame": 2289
-    },
-    {
-     "word": "sample's",
-     "frame": 2292
+     "word": "any",
+     "frame": 1688
     },
     {
      "word": "two",
-     "frame": 2301
+     "frame": 1690
     },
     {
      "word": "neighbors",
-     "frame": 2306
+     "frame": 1695
     },
     {
      "word": "add",
-     "frame": 2314
+     "frame": 1704
     },
     {
      "word": "up",
-     "frame": 2323
+     "frame": 1712
     },
     {
      "word": "to",
-     "frame": 2326
+     "frame": 1715
     },
     {
-     "word": "the",
-     "frame": 2332
+     "word": "1",
+     "frame": 1719
     },
     {
-     "word": "middle",
-     "frame": 2333
-    },
-    {
-     "word": "sample",
-     "frame": 2338
+     "word": ".414",
+     "frame": 1725
     },
     {
      "word": "times",
-     "frame": 2348
-    },
-    {
-     "word": "a",
-     "frame": 2355
-    },
-    {
-     "word": "fixed",
-     "frame": 2360
-    },
-    {
-     "word": "number.",
-     "frame": 2367
-    },
-    {
-     "word": "Here",
-     "frame": 2381
-    },
-    {
-     "word": "1",
-     "frame": 2392
-    },
-    {
-     "word": ".414.",
-     "frame": 2398
-    },
-    {
-     "word": "The",
-     "frame": 2436
-    },
-    {
-     "word": "clean",
-     "frame": 2440
-    },
-    {
-     "word": "tone",
-     "frame": 2446
-    },
-    {
-     "word": "passes",
-     "frame": 2452
+     "frame": 1747
     },
     {
      "word": "the",
-     "frame": 2461
+     "frame": 1758
     },
     {
-     "word": "clip",
-     "frame": 2465
+     "word": "sample",
+     "frame": 1761
     },
     {
-     "word": "1",
-     "frame": 2470
+     "word": "between",
+     "frame": 1769
+    },
+    {
+     "word": "them.",
+     "frame": 1779
+    },
+    {
+     "word": "The",
+     "frame": 1799
+    },
+    {
+     "word": "clean",
+     "frame": 1802
+    },
+    {
+     "word": "tone",
+     "frame": 1808
+    },
+    {
+     "word": "passes.",
+     "frame": 1814
+    },
+    {
+     "word": "The",
+     "frame": 1833
+    },
+    {
+     "word": "clipped",
+     "frame": 1836
+    },
+    {
+     "word": "one",
+     "frame": 1843
     },
     {
      "word": "fails.",
-     "frame": 2475
+     "frame": 1848
     }
    ]
   },
   {
    "line": 7,
-   "text": "So what is it? [surprise-oh] It's two tones. A one thousand hertz tone, minus a three thousand hertz tone a sixth its size, lands exactly on every clipped sample. That second tone is the buzz. Nobody said it. The booster made it, out of nothing.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line07.wav",
-   "at": 84.44,
-   "start": 84.44,
-   "end": 96.16,
-   "start_frame": 2533,
+   "text": "So what is it? [surprise-oh] It's two tones: a one thousand hertz tone, minus a three thousand hertz tone about a sixth its size. That second tone is the buzz. The booster made it, out of nothing.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line07.wav",
+   "at": 64.31,
+   "start": 64.31,
+   "end": 73.67,
+   "start_frame": 1929,
    "words": [
     {
-     "word": "so",
-     "frame": 2533
+     "word": "So",
+     "frame": 1929
     },
     {
      "word": "what",
-     "frame": 2541
+     "frame": 1937
     },
     {
      "word": "is",
-     "frame": 2545
+     "frame": 1941
     },
     {
-     "word": "it",
-     "frame": 2549
+     "word": "it?",
+     "frame": 1945
     },
     {
-     "word": "oh",
-     "frame": 2554
+     "word": "Oh,",
+     "frame": 1948
     },
     {
-     "word": "a",
-     "frame": 2584
+     "word": "it's",
+     "frame": 1954
+    },
+    {
+     "word": "two",
+     "frame": 1957
+    },
+    {
+     "word": "tones.",
+     "frame": 1962
+    },
+    {
+     "word": "A",
+     "frame": 1978
     },
     {
      "word": "1000",
-     "frame": 2594
+     "frame": 1984
     },
     {
-     "word": "hertz",
-     "frame": 2608
+     "word": "Hz",
+     "frame": 2000
     },
     {
      "word": "tone",
-     "frame": 2615
+     "frame": 2009
     },
     {
      "word": "minus",
-     "frame": 2623
+     "frame": 2020
     },
     {
      "word": "a",
-     "frame": 2631
+     "frame": 2030
     },
     {
      "word": "3000",
-     "frame": 2636
+     "frame": 2036
     },
     {
-     "word": "hertz",
-     "frame": 2646
+     "word": "Hz",
+     "frame": 2046
     },
     {
-     "word": "tone",
-     "frame": 2658
+     "word": "tone,",
+     "frame": 2060
+    },
+    {
+     "word": "about",
+     "frame": 2069
     },
     {
      "word": "a",
-     "frame": 2665
+     "frame": 2076
     },
     {
      "word": "sixth",
-     "frame": 2669
+     "frame": 2079
     },
     {
      "word": "its",
-     "frame": 2675
+     "frame": 2088
     },
     {
-     "word": "size",
-     "frame": 2682
+     "word": "size.",
+     "frame": 2094
     },
     {
-     "word": "lands",
-     "frame": 2690
-    },
-    {
-     "word": "exactly",
-     "frame": 2705
-    },
-    {
-     "word": "on",
-     "frame": 2717
-    },
-    {
-     "word": "every",
-     "frame": 2725
-    },
-    {
-     "word": "clipped",
-     "frame": 2731
-    },
-    {
-     "word": "sample",
-     "frame": 2739
-    },
-    {
-     "word": "that",
-     "frame": 2750
+     "word": "That",
+     "frame": 2112
     },
     {
      "word": "second",
-     "frame": 2769
+     "frame": 2116
     },
     {
      "word": "tone",
-     "frame": 2778
+     "frame": 2124
     },
     {
      "word": "is",
-     "frame": 2784
+     "frame": 2133
     },
     {
      "word": "the",
-     "frame": 2788
+     "frame": 2140
     },
     {
-     "word": "buzz",
-     "frame": 2791
+     "word": "buzz.",
+     "frame": 2144
     },
     {
-     "word": "nobody",
-     "frame": 2800
-    },
-    {
-     "word": "said",
-     "frame": 2816
-    },
-    {
-     "word": "it",
-     "frame": 2823
-    },
-    {
-     "word": "the",
-     "frame": 2828
+     "word": "The",
+     "frame": 2157
     },
     {
      "word": "booster",
-     "frame": 2841
+     "frame": 2160
     },
     {
      "word": "made",
-     "frame": 2849
+     "frame": 2169
     },
     {
      "word": "it",
-     "frame": 2857
+     "frame": 2178
     },
     {
      "word": "out",
-     "frame": 2861
+     "frame": 2182
     },
     {
      "word": "of",
-     "frame": 2866
+     "frame": 2190
     },
     {
-     "word": "nothing",
-     "frame": 2869
+     "word": "nothing.",
+     "frame": 2193
     }
    ]
   },
   {
    "line": 8,
-   "text": "What did the booster break? A system is linear when doubling the input doubles the output, and two inputs added give their outputs added. The real booster is not linear. It only behaves like the linear times four while its inputs stay inside the range.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line08.wav",
-   "at": 97.16,
-   "start": 97.16,
-   "end": 109.46,
-   "start_frame": 2915,
+   "text": "What did the booster break? A system is linear when doubling the input doubles the output, and inputs added give outputs added. The real booster is not linear. It only behaves like the linear times four while its outputs stay inside the range.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line05.wav",
+   "at": 74.67,
+   "start": 74.67,
+   "end": 86.58,
+   "start_frame": 2240,
    "words": [
     {
      "word": "What",
-     "frame": 2915
+     "frame": 2240
     },
     {
      "word": "did",
-     "frame": 2925
+     "frame": 2249
     },
     {
      "word": "the",
-     "frame": 2930
+     "frame": 2253
     },
     {
      "word": "booster",
-     "frame": 2933
+     "frame": 2255
     },
     {
      "word": "break?",
-     "frame": 2941
+     "frame": 2264
     },
     {
      "word": "A",
-     "frame": 2962
+     "frame": 2283
     },
     {
      "word": "system",
-     "frame": 2966
+     "frame": 2286
     },
     {
      "word": "is",
-     "frame": 2974
+     "frame": 2295
     },
     {
      "word": "linear",
-     "frame": 2980
+     "frame": 2300
     },
     {
      "word": "when",
-     "frame": 2988
+     "frame": 2309
     },
     {
      "word": "doubling",
-     "frame": 2995
+     "frame": 2316
     },
     {
      "word": "the",
-     "frame": 3004
+     "frame": 2325
     },
     {
      "word": "input",
-     "frame": 3009
+     "frame": 2331
     },
     {
      "word": "doubles",
-     "frame": 3018
+     "frame": 2340
     },
     {
      "word": "the",
-     "frame": 3026
+     "frame": 2350
     },
     {
      "word": "output,",
-     "frame": 3031
+     "frame": 2355
     },
     {
      "word": "and",
-     "frame": 3048
-    },
-    {
-     "word": "two",
-     "frame": 3051
+     "frame": 2372
     },
     {
      "word": "inputs",
-     "frame": 3056
+     "frame": 2374
     },
     {
      "word": "added",
-     "frame": 3067
+     "frame": 2385
     },
     {
      "word": "give",
-     "frame": 3075
-    },
-    {
-     "word": "their",
-     "frame": 3084
+     "frame": 2393
     },
     {
      "word": "outputs",
-     "frame": 3086
+     "frame": 2400
     },
     {
      "word": "added.",
-     "frame": 3097
+     "frame": 2412
     },
     {
      "word": "The",
-     "frame": 3116
+     "frame": 2432
     },
     {
      "word": "real",
-     "frame": 3120
+     "frame": 2436
     },
     {
      "word": "booster",
-     "frame": 3126
+     "frame": 2442
     },
     {
      "word": "is",
-     "frame": 3136
+     "frame": 2452
     },
     {
      "word": "not",
-     "frame": 3142
+     "frame": 2458
     },
     {
      "word": "linear,",
-     "frame": 3147
+     "frame": 2463
     },
     {
      "word": "it",
-     "frame": 3164
+     "frame": 2478
     },
     {
      "word": "only",
-     "frame": 3171
+     "frame": 2482
     },
     {
      "word": "behaves",
-     "frame": 3176
+     "frame": 2487
     },
     {
      "word": "like",
-     "frame": 3187
+     "frame": 2499
     },
     {
      "word": "the",
-     "frame": 3193
+     "frame": 2504
     },
     {
      "word": "linear",
-     "frame": 3196
+     "frame": 2508
     },
     {
      "word": "times",
-     "frame": 3204
+     "frame": 2517
     },
     {
      "word": "4",
-     "frame": 3212
+     "frame": 2525
     },
     {
      "word": "while",
-     "frame": 3223
+     "frame": 2535
     },
     {
      "word": "its",
-     "frame": 3229
+     "frame": 2542
     },
     {
-     "word": "inputs",
-     "frame": 3234
+     "word": "outputs",
+     "frame": 2547
     },
     {
      "word": "stay",
-     "frame": 3243
+     "frame": 2557
     },
     {
      "word": "inside",
-     "frame": 3254
+     "frame": 2565
     },
     {
      "word": "the",
-     "frame": 3259
+     "frame": 2573
     },
     {
      "word": "range.",
-     "frame": 3265
+     "frame": 2578
     }
    ]
   },
   {
    "line": 9,
-   "text": "And here's the trap. Two quiet voices share a speakerphone. Each alone comes out at point eight, fine. Linearity says together they should give one point six. The chip writes one. Each passed alone, and together they buzz. Linearity is a promise about sums.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line09.wav",
-   "at": 110.06,
-   "start": 110.06,
-   "end": 122.56,
-   "start_frame": 3302,
+   "text": "Here's the trap. Two quiet voices share a speakerphone. Each alone peaks at point eight. Together, linearity says one point six; the chip writes one, and the pair buzzes. Linearity is a promise about sums.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line06.wav",
+   "at": 87.18,
+   "start": 87.18,
+   "end": 97.16,
+   "start_frame": 2615,
    "words": [
     {
-     "word": "and",
-     "frame": 3302
-    },
-    {
      "word": "here's",
-     "frame": 3310
+     "frame": 2615
     },
     {
      "word": "the",
-     "frame": 3317
+     "frame": 2626
     },
     {
      "word": "trap",
-     "frame": 3320
+     "frame": 2629
     },
     {
      "word": "two",
-     "frame": 3329
+     "frame": 2636
     },
     {
      "word": "quiet",
-     "frame": 3338
+     "frame": 2645
     },
     {
      "word": "voices",
-     "frame": 3347
+     "frame": 2654
     },
     {
      "word": "share",
-     "frame": 3356
+     "frame": 2663
     },
     {
      "word": "a",
-     "frame": 3366
+     "frame": 2672
     },
     {
      "word": "speakerphone",
-     "frame": 3370
+     "frame": 2675
     },
     {
      "word": "each",
-     "frame": 3387
+     "frame": 2691
     },
     {
      "word": "alone",
-     "frame": 3398
+     "frame": 2701
     },
     {
-     "word": "comes",
-     "frame": 3403
-    },
-    {
-     "word": "out",
-     "frame": 3412
+     "word": "peaks",
+     "frame": 2708
     },
     {
      "word": "at",
-     "frame": 3416
+     "frame": 2717
     },
     {
      "word": "0",
-     "frame": 3420
+     "frame": 2723
     },
     {
      "word": ".8",
-     "frame": 3425
+     "frame": 2728
     },
     {
-     "word": "fine",
-     "frame": 3434
+     "word": "together",
+     "frame": 2749
     },
     {
      "word": "linearity",
-     "frame": 3454
+     "frame": 2758
     },
     {
      "word": "says",
-     "frame": 3466
-    },
-    {
-     "word": "together",
-     "frame": 3475
-    },
-    {
-     "word": "they",
-     "frame": 3487
-    },
-    {
-     "word": "should",
-     "frame": 3494
-    },
-    {
-     "word": "give",
-     "frame": 3499
+     "frame": 2776
     },
     {
      "word": "1",
-     "frame": 3503
+     "frame": 2783
     },
     {
      "word": ".6",
-     "frame": 3510
+     "frame": 2789
     },
     {
      "word": "the",
-     "frame": 3526
+     "frame": 2804
     },
     {
      "word": "chip",
-     "frame": 3534
+     "frame": 2812
     },
     {
      "word": "writes",
-     "frame": 3539
+     "frame": 2818
     },
     {
      "word": "one",
-     "frame": 3547
-    },
-    {
-     "word": "each",
-     "frame": 3554
-    },
-    {
-     "word": "passed",
-     "frame": 3565
-    },
-    {
-     "word": "alone",
-     "frame": 3575
+     "frame": 2826
     },
     {
      "word": "and",
-     "frame": 3589
+     "frame": 2833
     },
     {
-     "word": "together",
-     "frame": 3590
+     "word": "the",
+     "frame": 2837
     },
     {
-     "word": "they",
-     "frame": 3597
+     "word": "pair",
+     "frame": 2840
     },
     {
-     "word": "buzz",
-     "frame": 3603
+     "word": "buzzes",
+     "frame": 2845
     },
     {
      "word": "linearity",
-     "frame": 3613
+     "frame": 2858
     },
     {
      "word": "is",
-     "frame": 3632
+     "frame": 2875
     },
     {
      "word": "a",
-     "frame": 3636
+     "frame": 2879
     },
     {
      "word": "promise",
-     "frame": 3638
+     "frame": 2881
     },
     {
      "word": "about",
-     "frame": 3647
+     "frame": 2890
     },
     {
      "word": "sums",
-     "frame": 3654
+     "frame": 2897
     }
    ]
   },
   {
    "line": 10,
-   "text": "Now add one more property. A system is time-invariant when delaying the input only delays the output. Together they make a law: a tone that goes into a linear, time-invariant system comes out at the same pitch, only bigger or smaller, and shifted. No new tones, ever.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line10.wav",
-   "at": 123.36,
-   "start": 123.36,
-   "end": 136.22,
-   "start_frame": 3701,
+   "text": "Time-invariant means delaying the input only delays the output. The smoother, averaging each sample with the one before, has both. Any system with both properties keeps a tone's pitch: it can only resize and shift it. No new tones, ever.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line07.wav",
+   "at": 97.96,
+   "start": 97.96,
+   "end": 109.5,
+   "start_frame": 2939,
    "words": [
     {
-     "word": "Now",
-     "frame": 3701
-    },
-    {
-     "word": "add",
-     "frame": 3710
-    },
-    {
-     "word": "one",
-     "frame": 3716
-    },
-    {
-     "word": "more",
-     "frame": 3721
-    },
-    {
-     "word": "property.",
-     "frame": 3725
-    },
-    {
-     "word": "A",
-     "frame": 3742
-    },
-    {
-     "word": "system",
-     "frame": 3748
-    },
-    {
-     "word": "is",
-     "frame": 3755
-    },
-    {
      "word": "time",
-     "frame": 3760
+     "frame": 2939
     },
     {
      "word": "invariant",
-     "frame": 3766
+     "frame": 2950
     },
     {
-     "word": "when",
-     "frame": 3781
+     "word": "means",
+     "frame": 2963
     },
     {
      "word": "delaying",
-     "frame": 3785
+     "frame": 2969
     },
     {
      "word": "the",
-     "frame": 3796
+     "frame": 2980
     },
     {
      "word": "input",
-     "frame": 3800
+     "frame": 2983
     },
     {
      "word": "only",
-     "frame": 3808
+     "frame": 2990
     },
     {
      "word": "delays",
-     "frame": 3817
+     "frame": 2998
     },
     {
      "word": "the",
-     "frame": 3832
+     "frame": 3008
     },
     {
-     "word": "output.",
-     "frame": 3833
+     "word": "output",
+     "frame": 3013
     },
     {
-     "word": "Together",
-     "frame": 3851
+     "word": "the",
+     "frame": 3023
     },
     {
-     "word": "they",
-     "frame": 3863
+     "word": "smoother",
+     "frame": 3037
     },
     {
-     "word": "make",
-     "frame": 3869
+     "word": "averaging",
+     "frame": 3046
     },
     {
-     "word": "a",
-     "frame": 3874
+     "word": "each",
+     "frame": 3059
     },
     {
-     "word": "law.",
-     "frame": 3878
+     "word": "sample",
+     "frame": 3069
     },
     {
-     "word": "A",
-     "frame": 3889
+     "word": "with",
+     "frame": 3076
     },
     {
-     "word": "tone",
-     "frame": 3893
+     "word": "the",
+     "frame": 3080
     },
     {
-     "word": "that",
-     "frame": 3898
+     "word": "one",
+     "frame": 3083
     },
     {
-     "word": "goes",
-     "frame": 3902
+     "word": "before",
+     "frame": 3087
     },
     {
-     "word": "into",
-     "frame": 3908
+     "word": "has",
+     "frame": 3094
     },
     {
-     "word": "a",
-     "frame": 3913
+     "word": "both",
+     "frame": 3103
     },
     {
-     "word": "linear,",
-     "frame": 3918
-    },
-    {
-     "word": "time",
-     "frame": 3929
-    },
-    {
-     "word": "invariant",
-     "frame": 3938
+     "word": "any",
+     "frame": 3112
     },
     {
      "word": "system",
-     "frame": 3950
+     "frame": 3128
     },
     {
-     "word": "comes",
-     "frame": 3964
+     "word": "with",
+     "frame": 3137
     },
     {
-     "word": "out",
-     "frame": 3967
+     "word": "both",
+     "frame": 3143
     },
     {
-     "word": "at",
-     "frame": 3971
+     "word": "properties",
+     "frame": 3148
     },
     {
-     "word": "the",
-     "frame": 3975
+     "word": "keeps",
+     "frame": 3161
     },
     {
-     "word": "same",
-     "frame": 3977
+     "word": "a",
+     "frame": 3169
     },
     {
-     "word": "pitch,",
-     "frame": 3983
+     "word": "tone's",
+     "frame": 3173
+    },
+    {
+     "word": "pitch",
+     "frame": 3181
+    },
+    {
+     "word": "it",
+     "frame": 3197
+    },
+    {
+     "word": "can",
+     "frame": 3199
     },
     {
      "word": "only",
-     "frame": 3994
+     "frame": 3202
     },
     {
-     "word": "bigger",
-     "frame": 4002
-    },
-    {
-     "word": "or",
-     "frame": 4009
-    },
-    {
-     "word": "smaller",
-     "frame": 4015
+     "word": "resize",
+     "frame": 3208
     },
     {
      "word": "and",
-     "frame": 4024
+     "frame": 3220
     },
     {
-     "word": "shifted.",
-     "frame": 4030
+     "word": "shift",
+     "frame": 3228
     },
     {
-     "word": "No",
-     "frame": 4046
+     "word": "it",
+     "frame": 3235
+    },
+    {
+     "word": "no",
+     "frame": 3241
     },
     {
      "word": "new",
-     "frame": 4055
+     "frame": 3253
     },
     {
      "word": "tones",
-     "frame": 4061
+     "frame": 3258
     },
     {
-     "word": "ever.",
-     "frame": 4070
+     "word": "ever",
+     "frame": 3267
     }
    ]
   },
   {
    "line": 11,
-   "text": "So the fix is to keep every input inside the range. The loudest input the booster ever sees, speakerphones included, is point five. Times two lands right on the edge, with no margin. Instead, keep the loudest peak at point eight, a fifth below the edge. That gap is the headroom. Point eight divided by point five is one point six. Now the buzz meter, which measures the tones that weren't in the input, reads zero percent on every caller.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line11.wav",
-   "at": 137.22,
-   "start": 137.22,
-   "end": 158.34,
-   "start_frame": 4117,
+   "text": "The fix: keep every output inside the range. The loudest input, speakerphones included, is point five. Times two lands right on the edge. Instead, keep the loudest peak at point eight, a fifth below the edge: that's headroom. So: times one point six. The buzz meter, counting new tones, reads zero.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line11-joined.wav",
+   "at": 111.5,
+   "start": 111.5,
+   "end": 126.94,
+   "start_frame": 3345,
    "words": [
     {
-     "word": "So",
-     "frame": 4117
+     "word": "The",
+     "frame": 3345
     },
     {
-     "word": "the",
-     "frame": 4124
+     "word": "fix?",
+     "frame": 3353
     },
     {
-     "word": "fix",
-     "frame": 4128
-    },
-    {
-     "word": "is",
-     "frame": 4136
-    },
-    {
-     "word": "to",
-     "frame": 4140
-    },
-    {
-     "word": "keep",
-     "frame": 4143
+     "word": "Keep",
+     "frame": 3367
     },
     {
      "word": "every",
-     "frame": 4148
+     "frame": 3374
     },
     {
-     "word": "input",
-     "frame": 4156
+     "word": "output",
+     "frame": 3382
     },
     {
      "word": "inside",
-     "frame": 4165
+     "frame": 3392
     },
     {
      "word": "the",
-     "frame": 4174
+     "frame": 3400
     },
     {
      "word": "range.",
-     "frame": 4180
+     "frame": 3406
     },
     {
      "word": "The",
-     "frame": 4201
+     "frame": 3421
     },
     {
      "word": "loudest",
-     "frame": 4204
+     "frame": 3423
     },
     {
      "word": "input",
-     "frame": 4214
+     "frame": 3434
     },
     {
-     "word": "the",
-     "frame": 4220
+     "word": "speakerphone's",
+     "frame": 3443
     },
     {
-     "word": "booster",
-     "frame": 4225
-    },
-    {
-     "word": "ever",
-     "frame": 4232
-    },
-    {
-     "word": "sees,",
-     "frame": 4239
-    },
-    {
-     "word": "speakerphones",
-     "frame": 4253
-    },
-    {
-     "word": "included,",
-     "frame": 4273
+     "word": "included",
+     "frame": 3464
     },
     {
      "word": "is",
-     "frame": 4289
+     "frame": 3475
     },
     {
      "word": "0",
-     "frame": 4291
-    },
-    {
-     "word": ".5,",
-     "frame": 4295
-    },
-    {
-     "word": "times",
-     "frame": 4312
-    },
-    {
-     "word": "2",
-     "frame": 4319
-    },
-    {
-     "word": "lands",
-     "frame": 4325
-    },
-    {
-     "word": "right",
-     "frame": 4333
-    },
-    {
-     "word": "on",
-     "frame": 4340
-    },
-    {
-     "word": "the",
-     "frame": 4344
-    },
-    {
-     "word": "edge,",
-     "frame": 4347
-    },
-    {
-     "word": "with",
-     "frame": 4358
-    },
-    {
-     "word": "no",
-     "frame": 4362
-    },
-    {
-     "word": "margin.",
-     "frame": 4367
-    },
-    {
-     "word": "Instead,",
-     "frame": 4395
-    },
-    {
-     "word": "keep",
-     "frame": 4406
-    },
-    {
-     "word": "the",
-     "frame": 4411
-    },
-    {
-     "word": "loudest",
-     "frame": 4414
-    },
-    {
-     "word": "peak",
-     "frame": 4424
-    },
-    {
-     "word": "at",
-     "frame": 4430
-    },
-    {
-     "word": "0",
-     "frame": 4435
-    },
-    {
-     "word": ".8,",
-     "frame": 4439
-    },
-    {
-     "word": "a",
-     "frame": 4451
-    },
-    {
-     "word": "fifth",
-     "frame": 4455
-    },
-    {
-     "word": "below",
-     "frame": 4459
-    },
-    {
-     "word": "the",
-     "frame": 4467
-    },
-    {
-     "word": "edge.",
-     "frame": 4472
-    },
-    {
-     "word": "That",
-     "frame": 4489
-    },
-    {
-     "word": "gap",
-     "frame": 4492
-    },
-    {
-     "word": "is",
-     "frame": 4498
-    },
-    {
-     "word": "the",
-     "frame": 4503
-    },
-    {
-     "word": "headroom.",
-     "frame": 4506
-    },
-    {
-     "word": "0",
-     "frame": 4528
-    },
-    {
-     "word": ".8",
-     "frame": 4532
-    },
-    {
-     "word": "divided",
-     "frame": 4540
-    },
-    {
-     "word": "by",
-     "frame": 4548
-    },
-    {
-     "word": "0",
-     "frame": 4556
+     "frame": 3482
     },
     {
      "word": ".5",
-     "frame": 4561
+     "frame": 3487
     },
     {
-     "word": "is",
-     "frame": 4571
+     "word": "times",
+     "frame": 3497
     },
     {
-     "word": "1",
-     "frame": 4576
+     "word": "2",
+     "frame": 3504
     },
     {
-     "word": ".6.",
-     "frame": 4582
+     "word": "LANs",
+     "frame": 3511
     },
     {
-     "word": "Now",
-     "frame": 4618
-    },
-    {
-     "word": "the",
-     "frame": 4621
-    },
-    {
-     "word": "buzz",
-     "frame": 4625
-    },
-    {
-     "word": "meter,",
-     "frame": 4633
-    },
-    {
-     "word": "which",
-     "frame": 4641
-    },
-    {
-     "word": "measures",
-     "frame": 4646
-    },
-    {
-     "word": "the",
-     "frame": 4655
-    },
-    {
-     "word": "tones",
-     "frame": 4660
-    },
-    {
-     "word": "that",
-     "frame": 4667
-    },
-    {
-     "word": "weren't",
-     "frame": 4672
-    },
-    {
-     "word": "in",
-     "frame": 4678
-    },
-    {
-     "word": "the",
-     "frame": 4682
-    },
-    {
-     "word": "input,",
-     "frame": 4684
-    },
-    {
-     "word": "reads",
-     "frame": 4698
-    },
-    {
-     "word": "0",
-     "frame": 4703
-    },
-    {
-     "word": "%",
-     "frame": 4711
+     "word": "right",
+     "frame": 3519
     },
     {
      "word": "on",
-     "frame": 4720
+     "frame": 3524
     },
     {
-     "word": "every",
-     "frame": 4728
+     "word": "the",
+     "frame": 3528
     },
     {
-     "word": "caller.",
-     "frame": 4735
+     "word": "edge.",
+     "frame": 3531
+    },
+    {
+     "word": "Instead,",
+     "frame": 3547
+    },
+    {
+     "word": "keep",
+     "frame": 3556
+    },
+    {
+     "word": "the",
+     "frame": 3560
+    },
+    {
+     "word": "loudest",
+     "frame": 3564
+    },
+    {
+     "word": "peak",
+     "frame": 3575
+    },
+    {
+     "word": "at",
+     "frame": 3580
+    },
+    {
+     "word": "0",
+     "frame": 3586
+    },
+    {
+     "word": ".8,",
+     "frame": 3590
+    },
+    {
+     "word": "a",
+     "frame": 3603
+    },
+    {
+     "word": "fifth",
+     "frame": 3610
+    },
+    {
+     "word": "below",
+     "frame": 3614
+    },
+    {
+     "word": "the",
+     "frame": 3622
+    },
+    {
+     "word": "edge.",
+     "frame": 3627
+    },
+    {
+     "word": "That's",
+     "frame": 3640
+    },
+    {
+     "word": "headroom,",
+     "frame": 3647
+    },
+    {
+     "word": "so",
+     "frame": 3663
+    },
+    {
+     "word": "times",
+     "frame": 3670
+    },
+    {
+     "word": "1",
+     "frame": 3677
+    },
+    {
+     "word": ".6.",
+     "frame": 3684
+    },
+    {
+     "word": "The",
+     "frame": 3736
+    },
+    {
+     "word": "buzz",
+     "frame": 3744
+    },
+    {
+     "word": "meter",
+     "frame": 3751
+    },
+    {
+     "word": "counting",
+     "frame": 3758
+    },
+    {
+     "word": "new",
+     "frame": 3768
+    },
+    {
+     "word": "tones",
+     "frame": 3774
+    },
+    {
+     "word": "reads",
+     "frame": 3782
+    },
+    {
+     "word": "zero.",
+     "frame": 3790
     }
    ]
   },
   {
    "line": 12,
-   "text": "Loud callers sound like loud people again. Then a new ticket arrives: I can hear myself. Every word comes back, faint, a quarter of a second later. That's the next bug.",
-   "clip": "/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line12.wav",
-   "at": 159.54,
-   "start": 159.54,
-   "end": 167.62,
-   "start_frame": 4786,
+   "text": "Loud callers sound like loud people again; quiet ones peak at point three two, quieter but clean. Then a new ticket: I can hear myself. Every word comes back, faint, a quarter second later. That's the next bug.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line12.wav",
+   "at": 128.14,
+   "start": 128.14,
+   "end": 138.26,
+   "start_frame": 3844,
    "words": [
     {
      "word": "Loud",
-     "frame": 4786
+     "frame": 3844
     },
     {
      "word": "callers",
-     "frame": 4798
+     "frame": 3856
     },
     {
      "word": "sound",
-     "frame": 4811
+     "frame": 3868
     },
     {
      "word": "like",
-     "frame": 4817
+     "frame": 3873
     },
     {
      "word": "loud",
-     "frame": 4822
+     "frame": 3878
     },
     {
      "word": "people",
-     "frame": 4828
+     "frame": 3884
     },
     {
      "word": "again.",
-     "frame": 4837
+     "frame": 3893
+    },
+    {
+     "word": "Quiet",
+     "frame": 3912
+    },
+    {
+     "word": "ones",
+     "frame": 3916
+    },
+    {
+     "word": "peak",
+     "frame": 3923
+    },
+    {
+     "word": "at",
+     "frame": 3931
+    },
+    {
+     "word": ".32,",
+     "frame": 3936
+    },
+    {
+     "word": "quieter",
+     "frame": 3962
+    },
+    {
+     "word": "but",
+     "frame": 3971
+    },
+    {
+     "word": "clean.",
+     "frame": 3976
     },
     {
      "word": "Then",
-     "frame": 4853
+     "frame": 3994
     },
     {
      "word": "a",
-     "frame": 4856
+     "frame": 3997
     },
     {
      "word": "new",
-     "frame": 4859
+     "frame": 4000
     },
     {
-     "word": "ticket",
-     "frame": 4863
-    },
-    {
-     "word": "arrives.",
-     "frame": 4870
+     "word": "ticket.",
+     "frame": 4004
     },
     {
      "word": "I",
-     "frame": 4890
+     "frame": 4013
     },
     {
      "word": "can",
-     "frame": 4893
+     "frame": 4019
     },
     {
      "word": "hear",
-     "frame": 4896
+     "frame": 4023
     },
     {
      "word": "myself.",
-     "frame": 4900
+     "frame": 4027
     },
     {
      "word": "Every",
-     "frame": 4921
+     "frame": 4046
     },
     {
      "word": "word",
-     "frame": 4924
+     "frame": 4051
     },
     {
      "word": "comes",
-     "frame": 4931
+     "frame": 4057
     },
     {
-     "word": "back.",
-     "frame": 4938
+     "word": "back,",
+     "frame": 4064
     },
     {
-     "word": "Faint",
-     "frame": 4955
+     "word": "faint,",
+     "frame": 4076
     },
     {
      "word": "a",
-     "frame": 4961
+     "frame": 4089
     },
     {
      "word": "quarter",
-     "frame": 4966
-    },
-    {
-     "word": "of",
-     "frame": 4971
-    },
-    {
-     "word": "a",
-     "frame": 4975
+     "frame": 4092
     },
     {
      "word": "second",
-     "frame": 4978
+     "frame": 4098
     },
     {
      "word": "later.",
-     "frame": 4984
+     "frame": 4106
     },
     {
      "word": "That's",
-     "frame": 4999
+     "frame": 4121
     },
     {
      "word": "the",
-     "frame": 5005
+     "frame": 4125
     },
     {
      "word": "next",
-     "frame": 5007
+     "frame": 4128
     },
     {
      "word": "bug.",
-     "frame": 5012
+     "frame": 4133
     }
    ]
   }

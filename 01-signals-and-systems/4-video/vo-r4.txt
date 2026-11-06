@@ -1,0 +1,9 @@
+Strange, isn't it? Same code for everybody, and louder should just be louder. The line carries the microphone's voltage, measured eight thousand times a second. Each is a sample; the list is a signal.
+The booster is a system: one signal in, another out. Its rule: multiply every sample by four. But the chip after it only stores the range, minus one to plus one. Hand it two, past the edge, and it writes one. That's clipping.
+A quiet caller is size point two, their biggest sample; a loud one, point five. Which comes out clean? The quiet one grows to point eight. The loud one would reach two: its tops get sliced flat.
+Is that just an uglier tone? Try the neighbor rule: in this tone, any two neighbors add up to one point four one four times the sample between them. The clean tone passes. The clipped one fails.
+What did the booster break? A system is linear when doubling the input doubles the output, and inputs added give outputs added. The real booster is not linear. It only behaves like the linear times four while its outputs stay inside the range.
+Here's the trap. Two quiet voices share a speakerphone. Each alone peaks at point eight. Together, linearity says one point six; the chip writes one, and the pair buzzes. Linearity is a promise about sums.
+Time-invariant means delaying the input only delays the output. The smoother, averaging each sample with the one before, has both. Any system with both properties keeps a tone's pitch: it can only resize and shift it. No new tones, ever.
+The fix: keep every output inside the range. The loudest input, speakerphones included, is point five. Times two lands right on the edge. Instead, keep the loudest peak at point eight, a fifth below the edge: that's headroom. So: times one point six.
+The buzz meter, counting new tones, reads zero.

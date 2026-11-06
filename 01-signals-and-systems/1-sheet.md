@@ -7,7 +7,7 @@ Fix: act 2 of the lab: turn the booster down so the loudest input it ever sees (
 
 Key words: signal (not "waveform", "stream"), system (not "filter", "block", "processor"; "filter" waits for lesson 6), sample, tone (not "frequency component", "note", "harmonic"), pitch, size (of a tone; not "amplitude", "gain"), the booster (not "gain stage", "amplifier"; "gain" is lesson 3's term), clipping / clip (not "saturation"), the range (−1 to +1), the edge, headroom, the buzz, linear, time-invariant, LTI, neighbor rule, speakerphone.
 
-Fixed wording, used in every place it comes up: "The real booster is not linear. It only behaves like the linear ×4 while its inputs stay inside the range."
+Fixed wording, used in every place it comes up: "The real booster is not linear. It only behaves like the linear ×4 while its outputs stay inside the range."
 
 Terms:
 - sample: one measurement of the sound at one moment (glossary wording from lesson 4, introduced only as far as "a call is a list of numbers").
@@ -85,7 +85,7 @@ Lab:
 
   Before playing, the learner predicts at which caller size the buzz starts (above 0.25, where 4 × size passes 1). A second panel runs the smoother, the fader and the add-0.1 system on the same tone. For each, the learner predicts whether the buzz meter moves (smoother no; fader yes; add 0.1 yes, as a 0 Hz tone).
 - [[lab-act2]] act 2, fix: the loud caller (0.5), the quiet caller (0.2) and the speakerphone pair (two 0.2 voices, peak 0.4), with a booster knob from ×1 to ×4. A marker on the plot shows 0.8.
-  - The learner first predicts the setting that lands exactly on the edge (×2), then the setting that leaves a fifth of the range free (×1.6).
+  - The learner first predicts the setting that lands exactly on the edge (×2), then the setting that keeps the loudest peak at 0.8, a fifth below the edge (×1.6).
   - They set it and check that the buzz meter reads 0% for all three.
   - Done when the loudest input peaks at 0.8 or less, every buzz reading is 0%, and the quiet caller peaks at 0.32.
 
@@ -119,4 +119,4 @@ Assumptions:
 - "A voice is a sum of tones" and "two knobs can hit any two starting numbers" are taken on trust and credited to lesson 3.
 - The table says "a linear system never adds new tones". Strictly it needs linear and time-invariant (the fader is a linear counterexample), so the lesson teaches the LTI version.
 - The table's "gain stage" is called "the booster", because "gain" is a new term of lesson 3.
-- The fix is ×1.6, not ×2: a fifth of the range is left free as headroom. Lesson 2's opening was updated to say ×1.6.
+- The fix is ×1.6, not ×2: the loudest peak sits at 0.8, a fifth below the edge, as headroom. Lesson 2's opening was updated to say ×1.6.

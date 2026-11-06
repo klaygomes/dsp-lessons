@@ -138,7 +138,9 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   const strip = el('div', { id: 's1strip', class: 'layer' }, c);
   const quiet = callWave(strip, 600, 0.2, 4, false), loud = callWave(strip, 1680, 0.5, 4, true);
   [quiet, loud].forEach(w => M.kf(w, 'x', [[n, 0], [e, -700]]));
-  const lineY = y => layer(strip, `<line x1="0" y1="${y - 230}" x2="1920" y2="${y - 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="${y + 230}" x2="1920" y2="${y + 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>`);
+  const lineY = y => layer(strip, `<line x1="0" y1="${y - 230}" x2="1920" y2="${y - 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="${y + 230}" x2="1920" y2="${y + 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>` +
+    `<text x="1890" y="${y - 246}" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.input}" opacity="0.55">+1</text>` +
+    `<text x="1890" y="${y + 278}" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.input}" opacity="0.55">−1</text>`);
   lineY(600); lineY(1680);
   label(strip, 'quiet caller', 960, 110, 'lbl', 'center');
   M.show(label(strip, '“Clear as a bell.”', 960, 190, 'note', 'center'), word(1, 'quiet'));
@@ -148,7 +150,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.camera('#s1strip', [[0, { y: 0 }], [L, { y: 0 }], [L + 14, { y: -1080 }, 'whip']]);
 }
 {
-  const c = cam(2), n = sceneStart(2), P = plot({ x0: 260, dx: 200, base: 520, A: 280 });
+  const c = cam(2), n = sceneStart(2), P = plot({ x0: 260, dx: 200, base: 490, A: 280 });
   const v = t => 0.55 * Math.sin(2 * Math.PI * t / 7.5 + 0.6) + 0.32 * Math.sin(2 * Math.PI * t / 3.1 + 2);
   const smooth = layer(c, `<path d="${curve(v, -1.3, 8.3, P)}" fill="none" stroke="${C.ink}" stroke-width="6"/>`);
   axis(c, P, 120, 1800);
@@ -158,7 +160,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   for (let k = 0; k < 8; k++) {
     const at = m + k * 4, x = P.X(k), y = P.Y(v(k));
     M.show(layer(c, `<line x1="${x}" y1="${P.base}" x2="${x}" y2="${y}" stroke="${C.soft}" stroke-width="4"/><circle cx="${x}" cy="${y}" r="16" fill="${C.ink}"/>`), at);
-    M.show(label(c, fmt(v(k)) + (k < 7 ? ',' : ''), x, 880, 'lbl', 'center'), list + k * 3);
+    M.show(label(c, fmt(v(k)), x, 810, 'lbl', 'center'), list + k * 3);
   }
   M.show(label(c, '8,000 per second', 960, 90, 'lbl', 'center'), word(2, 'eight'));
   M.show(layer(c, `<circle cx="${P.X(3)}" cy="${P.Y(v(3))}" r="34" fill="none" stroke="${C.ink}" stroke-width="5"/>`), word(2, 'sample'));
@@ -166,7 +168,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drift(2);
 }
 {
-  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 450, A: 220 });
+  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 400, A: 200 });
   const ns = [0, 1, 2, 3, 4, 5, 6, 7, 8], vals = ns.map(k => cosd(45 * k));
   axis(c, P, 180, 1740);
   const s = word(3, 'step');
@@ -184,20 +186,21 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drive(S, P, [[0, vals]]);
   ns.forEach((k, i) => {
     const at = s + i * 6, val = vals[i];
-    M.show(label(c, fmt(val), P.X(k), 700, 'lbl s', 'center'), at);
-    M.show(label(c, (45 * k) + '°', P.X(k), 770, 'lbl s', 'center'), at);
+    M.show(label(c, fmt(val), P.X(k), 640, 'lbl s', 'center'), at);
+    M.show(label(c, (45 * k) + '°', P.X(k), 698, 'lbl s', 'center'), at);
   });
   M.show(label(c, 'pitch: 1,000 Hz, repeats per second', 960, 40, 'lbl', 'center'), word(3, 'hertz'));
   M.show(label(c, '360° × 1,000 ÷ 8,000 = 45° per sample', 960, 110, 'lbl ok', 'center'), word(3, 'degrees'));
   const rep = word(3, 'eight');
-  M.show(layer(c, `<path d="M ${P.X(0)} 835 L ${P.X(0)} 855 L ${P.X(8)} 855 L ${P.X(8)} 835" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
-  M.show(label(c, '8 samples: one full turn', P.X(4), 862, 'lbl', 'center'), rep, sceneEnd(3));
+  M.show(layer(c, `<path d="M ${P.X(0)} 760 L ${P.X(0)} 776 L ${P.X(8)} 776 L ${P.X(8)} 760" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
+  M.show(label(c, '8 samples: one full turn', P.X(4), 780, 'lbl', 'center'), rep, sceneEnd(3));
   drift(3);
 }
 {
-  const c = cam(4), n = sceneStart(4), P = plot({ x0: 960, dx: 0, base: 640, A: 200 });
+  const c = cam(4), n = sceneStart(4), P = plot({ x0: 960, dx: 0, base: 600, A: 180 });
   const chip = word(4, 'chip'), sys = word(4, 'system'), rule = word(4, 'rule');
   M.show(label(c, 'output[n] = 4 * input[n]', 960, 100, 'lbl big', 'center'), rule);
+  M.show(label(c, 'n: the sample number', 960, 192, 'lbl s', 'center'), rule, word(4, 'hand'));
   const row = el('div', { id: 's4row', class: 'layer' }, c);
   M.show('#s4row', n, chip);
   const Pi = plot({ x0: 180, dx: 60, base: 560, A: 160 }), Po = plot({ x0: 1300, dx: 60, base: 560, A: 160 }), k8 = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -208,11 +211,12 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   el('div', { id: 's4box', class: 'box' }, row, 'the booster');
   Object.assign(document.getElementById('s4box').style, { left: '760px', top: '480px', width: '400px', height: '160px' });
   layer(row, `<path d="M 650 560 L 735 560 M 719 544 L 737 560 L 719 576" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1180 560 L 1250 560 M 1234 544 L 1252 560 L 1234 576" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
-  label(row, 'signal in', 390, 800, 'lbl ok', 'center');
-  label(row, 'signal out', 1510, 800, 'lbl', 'center');
-  M.show(label(row, 'a system: one signal in, another out', 960, 920, 'lbl s', 'center'), sys);
+  label(row, 'signal in', 390, 740, 'lbl ok', 'center');
+  label(row, 'signal out', 1510, 740, 'lbl', 'center');
+  M.show(label(row, 'a system: one signal in, another out', 960, 810, 'lbl s', 'center'), sys);
   M.show(band(c, P, 360, 1560), chip);
-  M.show(label(c, 'what the chip can store', 960, P.Y(-1) + 40, 'lbl ok', 'center'), chip + 6);
+  M.show(label(c, 'the range: what the chip can store', 960, P.Y(-1) + 20, 'lbl ok', 'center'), word(4, 'range'));
+  M.show(label(c, 'the edge', 1580, P.Y(1) - 31, 'lbl s ok'), word(4, 'edge'));
   const hand = word(4, 'hand'), writes = word(4, 'writes');
   const S = stems(c, P, [0], C.ink, { w: 14, r: 20 });
   showAll(S, hand);
@@ -225,55 +229,54 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drift(4);
 }
 {
-  const c = cam(5), n = sceneStart(5);
-  const strip = el('div', { id: 's5strip', class: 'layer' }, c);
-  const ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 330, dx: 190, base: 560, A: 180 }), Q = plot({ x0: 1920 + 330, dx: 190, base: 560, A: 180 });
-  band(strip, P, 270, 1720); band(strip, Q, 1920 + 270, 1920 + 1720);
-  label(strip, 'quiet caller: 0.2 × 4', 270, 80, 'lbl');
-  label(strip, 'loud caller: 0.5 × 4', 1920 + 270, 80, 'lbl');
-  const q = stems(strip, P, ns, C.ink), l = stems(strip, Q, ns, C.ink);
-  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced'), pan = word(5, 'loud', 1), pan0 = word(5, 'loud'), back = word(5, 'quiet', 1);
+  const c = cam(5), n = sceneStart(5), ns = [0, 1, 2, 3, 4, 5, 6, 7];
+  const P = plot({ x0: 190, dx: 95, base: 540, A: 150 }), Q = plot({ x0: 1100, dx: 95, base: 540, A: 150 });
+  band(c, P, 140, 895); band(c, Q, 1050, 1805);
+  label(c, 'quiet caller: 0.2 × 4', 140, 70, 'lbl');
+  label(c, 'loud caller: 0.5 × 4', 1050, 70, 'lbl');
+  const q = stems(c, P, ns, C.ink, { w: 8, r: 12 }), l = stems(c, Q, ns, C.ink, { w: 8, r: 12 });
+  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced');
   drive(q, P, [[0, ns.map(k => 0.2 * cosd(45 * k))], [grow, ns.map(k => 0.2 * cosd(45 * k))], [grow + 16, ns.map(k => 0.8 * cosd(45 * k)), 'softLand']]);
-  M.show(label(strip, 'peak 0.80', 1720 - 280, 180, 'lbl ok'), grow + 16);
-  M.show(tick(strip, 1720 - 350, 205), grow + 16);
+  M.show(label(c, 'peak 0.80', 210, 150, 'lbl ok'), grow + 16);
+  M.show(tick(c, 140, 175), grow + 16);
   const big = ns.map(k => 2 * cosd(45 * k)), cut = big.map(clip1);
   drive(l, Q, [[0, ns.map(k => 0.5 * cosd(45 * k))], [reach, ns.map(k => 0.5 * cosd(45 * k))], [reach + 16, big, 'softLand'], [sliced, big], [sliced + 5, cut, 'crashIn']]);
   const clipped = ns.filter(k => Math.abs(big[k]) > 1.001);
   tint(l, clipped, sliced, C.ink, C.accent);
-  M.show(ghosts(strip, Q, clipped.map(k => [Q.X(k), big[k]])), sliced);
-  M.show(label(strip, '1, 1, 0, −1, −1, −1, 0, 1', 1920 + 1720, 80, 'lbl acc', 'right'), word(5, 'flat'));
-  M.camera('#s5strip', [[0, { x: 0 }], [pan0, { x: 0 }], [pan0 + 14, { x: -1920 }, 'whip'], [back, { x: -1920 }], [back + 14, { x: 0 }, 'whip'], [pan, { x: 0 }], [pan + 14, { x: -1920 }, 'whip']]);
+  M.show(ghosts(c, Q, clipped.map(k => [Q.X(k), big[k]])), sliced);
+  M.show(label(c, '1, 1, 0, −1, −1, −1, 0, 1', 1805, 150, 'lbl acc', 'right'), word(5, 'flat'));
+  drift(5);
 }
 {
-  const c = cam(6), n = sceneStart(6), P = plot({ x0: 300, dx: 190, base: 680, A: 300 });
+  const c = cam(6), n = sceneStart(6), P = plot({ x0: 300, dx: 190, base: 620, A: 280 });
   axis(c, P, 220, 760);
   const clean = [1, cosd(45), 0], clip = [1, 1, 0];
   const S = stems(c, P, [0, 1, 2], C.ink, { w: 14, r: 20 });
   const fail = word(6, 'clipped');
   drive(S, P, [[0, clean], [fail, clean], [fail + 8, clip, 'softLand']]);
   tint(S, [0, 1], fail, C.ink, C.accent);
-  [0, 1, 2].forEach(k => label(c, 'n = ' + k, P.X(k), 720, 'lbl s', 'center'));
+  [0, 1, 2].forEach(k => label(c, 'n = ' + k, P.X(k), 650, 'lbl s', 'center'));
   const nb = word(6, 'neighbors');
   M.show(layer(c, `<line x1="900" y1="${P.base}" x2="1760" y2="${P.base}" stroke="${C.soft}" stroke-width="3"/>`), nb);
   const lower = el('div', { id: 'B' + (++uid), class: 'bar' }, c), scaled = el('div', { id: 'B' + (++uid), class: 'bar' }, c);
   Object.assign(lower.style, { left: '1020px', top: (P.base - P.A) + 'px', width: '120px', height: P.A + 'px', background: C.ink, borderRadius: '0' });
   Object.assign(scaled.style, { left: '1500px', top: (P.base - P.A) + 'px', width: '120px', height: P.A + 'px', background: C.ink, borderRadius: '0' });
-  M.show('#' + lower.id, nb); M.show('#' + scaled.id, word(6, 'middle'));
+  M.show('#' + lower.id, nb); M.show('#' + scaled.id, word(6, 'between'));
   M.kf('#' + lower.id, 'scaleY', [[0, 1]]);
   M.kf('#' + scaled.id, 'scaleY', [[0, 1.414 * cosd(45)], [fail, 1.414 * cosd(45)], [fail + 8, 1.414, 'softLand']]);
-  M.show(label(c, 'left + right', 1080, 720, 'lbl s', 'center'), nb);
-  M.show(label(c, '1.414 × middle', 1560, 720, 'lbl s', 'center'), word(6, 'middle'));
-  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 780, 'lbl', 'center'), nb, fail);
-  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 850, 'lbl', 'center'), word(6, 'fixed'), fail);
-  M.show(tick(c, 1270, 885), word(6, 'clean'), fail);
-  M.show(label(c, '1 + 0 = 1', 960, 780, 'lbl', 'center'), fail);
-  M.show(label(c, '1.414 × 1 = 1.414', 960, 850, 'lbl acc', 'center'), fail);
-  M.show(cross(c, 1250, 881), fail + 8);
+  M.show(label(c, 'left + right', 1080, 650, 'lbl s', 'center'), nb);
+  M.show(label(c, '1.414 × middle', 1560, 650, 'lbl s', 'center'), word(6, 'between'));
+  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 730, 'lbl', 'center'), nb, fail);
+  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 800, 'lbl', 'center'), word(6, 'between'), fail);
+  M.show(tick(c, 1270, 835), word(6, 'clean'), fail);
+  M.show(label(c, '1 + 0 = 1', 960, 730, 'lbl', 'center'), fail);
+  M.show(label(c, '1.414 × 1 = 1.414', 960, 800, 'lbl acc', 'center'), fail);
+  M.show(cross(c, 1250, 831), fail + 8);
   M.show(label(c, 'the neighbor rule', 960, 70, 'lbl s', 'center'), word(6, 'neighbor'));
   drift(6);
 }
 {
-  const c = cam(7), n = sceneStart(7), P = plot({ x0: 300, dx: 190, base: 560, A: 260 });
+  const c = cam(7), n = sceneStart(7), P = plot({ x0: 300, dx: 190, base: 520, A: 240 });
   const ns = [0, 1, 2, 3, 4, 5, 6, 7], cut = ns.map(k => clip1(2 * cosd(45 * k)));
   axis(c, P, 220, 1720);
   const S = stems(c, P, ns, C.ink);
@@ -292,14 +295,14 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
     const k = j / K, f = x => big(x) - k * buzz(x);
     M.show(layer(c, `<path d="${curve(f, a, b, P)}" fill="none" stroke="${C.ink}" stroke-width="7"/>`), morph + j * 2, j < K ? morph + (j + 1) * 2 : undefined);
   }
-  M.show(label(c, 'the first minus the second', 1720, 960, 'lbl', 'right'), land);
+  M.show(label(c, 'the first minus the second', 1720, 60, 'lbl', 'right'), land);
   drift(7, 1, 1.04);
 }
 {
   const c = cam(8), n = sceneStart(8), P = plot({ x0: 0, dx: 1, base: 600, A: 200 });
   M.show(band(c, P, 300, 1620), n);
   const A1 = stem(c, 620, P, C.ink, 14, 20), A2 = stem(c, 1300, P, C.ink, 14, 20);
-  const dbl = word(8, 'doubling'), real = word(8, 'acts'), inside = word(8, 'inside');
+  const dbl = word(8, 'doubling'), real = word(8, 'real'), inside = word(8, 'outputs');
   drive([A1], P, [[0, [0.2]], [n + 10, [0.2]], [n + 26, [0.8], 'softLand']]);
   drive([A2], P, [[0, [0.4]], [real - 30, [0.4]], [real - 14, [1.6], 'softLand'], [real, [1.6]], [real + 5, [1], 'crashIn']]);
   showAll([A1], n); showAll([A2], dbl);
@@ -311,8 +314,8 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(c, '0.4 → 1.6 asked', 1300, P.Y(1.6) - 110, 'lbl', 'center'), real - 14);
   M.show(label(c, 'written: 1.0', 1340, P.Y(1.2) - 31, 'lbl acc'), real);
   M.show(cross(c, 1750, P.Y(1.2)), real + 5);
-  M.show(label(c, 'linear', 960, 40, 'lbl', 'center'), word(8, 'linear'));
-  M.show(label(c, 'plain × 4 while 4 × input is inside', 960, P.Y(-1) + 30, 'lbl ok', 'center'), inside);
+  M.show(label(c, 'linear?', 960, 40, 'lbl', 'center'), word(8, 'linear'));
+  M.show(label(c, 'like × 4 only while outputs stay inside', 960, P.Y(-1) + 10, 'lbl ok', 'center'), inside);
   drift(8);
 }
 {
@@ -330,11 +333,11 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(ghosts(c, P, hot.map(k => [P.X(k), sum[k]])), writes);
   M.show(label(c, '1,000 Hz voice', 230, 60, 'lbl'), n, tog + 18);
   M.show(label(c, '500 Hz voice', 760, 60, 'lbl ok'), n, tog + 18);
-  M.show(label(c, 'each alone: peak 0.80', 230, 830, 'lbl'), word(9, 'alone'), tog + 18);
-  M.show(tick(c, 950, 860), word(9, 'alone'), tog + 18);
+  M.show(label(c, 'each alone: peak 0.80', 230, 810, 'lbl'), word(9, 'alone'), tog + 18);
+  M.show(tick(c, 950, 840), word(9, 'alone'), tog + 18);
   M.show(label(c, 'added: 1.60 asked', 230, 60, 'lbl'), tog + 18);
-  M.show(label(c, '1.00 written', 230, 830, 'lbl acc'), writes);
-  M.show(cross(c, 640, 861), writes + 5);
+  M.show(label(c, '1.00 written', 230, 810, 'lbl acc'), writes);
+  M.show(cross(c, 640, 841), writes + 5);
   M.show(label(c, 'linear?', 1690, 60, 'lbl', 'right'), n);
   drift(9);
 }
@@ -342,70 +345,78 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   const c = cam(10), n = sceneStart(10), tg = word(10, 'smoother'), ns = Array.from({ length: 12 }, (_, k) => k);
   const partA = el('div', { id: 's10a', class: 'layer' }, c), partB = el('div', { id: 's10b', class: 'layer' }, c);
   M.show('#s10a', n, tg); M.show('#s10b', tg);
-  const Pin = plot({ x0: 420, dx: 110, base: 380, A: 360 }), Pout = plot({ x0: 420, dx: 110, base: 860, A: 180 });
+  const Pin = plot({ x0: 420, dx: 110, base: 380, A: 200 }), Pout = plot({ x0: 420, dx: 110, base: 800, A: 200 });
   axis(partA, Pin, 360, 1700); axis(partA, Pout, 360, 1700);
   label(partA, 'in', 120, Pin.base - 60, 'lbl ok'); label(partA, 'out', 120, Pout.base - 60, 'lbl');
+  label(partA, 'the smoother: (this + previous) ÷ 2', 960, 560, 'lbl', 'center');
   const delay = word(10, 'delaying'), shift = 3 * 110;
-  const bi = stem(partA, Pin.X(2), Pin, C.input, 14, 20), bo = stem(partA, Pout.X(2), Pout, C.ink, 14, 20);
-  drive([bi], Pin, [[0, [0.25]]]); drive([bo], Pout, [[0, [1]]]);
-  [bi.bar, bi.dot, bo.bar, bo.dot].forEach(sel => M.kf(sel, 'x', [[0, 0], [delay, 0], [delay + 16, shift, 'softLand']]));
-  M.show(ghosts(partA, Pin, [[Pin.X(2), 0.25]]), delay);
-  M.show(ghosts(partA, Pout, [[Pout.X(2), 1]]), delay);
-  M.show(label(partA, '3 samples later', Pin.X(3.5), Pin.base + 30, 'lbl s', 'center'), delay + 16);
-  M.show(label(partA, '3 samples later', Pout.X(3.5), Pout.base + 30, 'lbl s', 'center'), delay + 16);
+  const bi = stem(partA, Pin.X(2), Pin, C.input, 14, 20), bo = [stem(partA, Pout.X(2), Pout, C.ink, 14, 20), stem(partA, Pout.X(3), Pout, C.ink, 14, 20)];
+  drive([bi], Pin, [[0, [1]]]); drive(bo, Pout, [[0, [0.5, 0.5]]]);
+  [bi, ...bo].forEach(st => [st.bar, st.dot].forEach(sel => M.kf(sel, 'x', [[0, 0], [delay, 0], [delay + 16, shift, 'softLand']])));
+  M.show(ghosts(partA, Pin, [[Pin.X(2), 1]]), delay);
+  M.show(ghosts(partA, Pout, [[Pout.X(2), 0.5], [Pout.X(3), 0.5]]), delay);
+  M.show(label(partA, '3 samples later', Pin.X(4), Pin.base + 30, 'lbl s', 'center'), delay + 16);
+  M.show(label(partA, '3 samples later', Pout.X(4), Pout.base + 20, 'lbl s', 'center'), delay + 16);
   M.show(label(partA, 'time-invariant', 960, 70, 'lbl', 'center'), word(10, 'time'));
-  const I = plot({ x0: 140, dx: 58, base: 540, A: 170 }), O = plot({ x0: 1260, dx: 58, base: 540, A: 170 });
+  const I = plot({ x0: 140, dx: 58, base: 500, A: 170 }), O = plot({ x0: 1260, dx: 58, base: 500, A: 170 });
   const k8 = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   axis(partB, I, 110, 640); axis(partB, O, 1230, 1760);
   const si = stems(partB, I, k8, C.input, { w: 8, r: 12 }); drive(si, I, [[0, k8.map(k => cosd(45 * k))]]);
   el('div', { id: 's10box', class: 'box' }, partB, 'the smoother\nlinear,\ntime-invariant');
-  Object.assign(document.getElementById('s10box').style, { left: '720px', top: '420px', width: '440px', height: '240px' });
-  layer(partB, `<path d="M 650 540 L 700 540 M 684 524 L 702 540 L 684 556" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1175 540 L 1215 540 M 1199 524 L 1217 540 L 1199 556" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
+  Object.assign(document.getElementById('s10box').style, { left: '720px', top: '380px', width: '440px', height: '240px' });
+  layer(partB, `<path d="M 650 500 L 700 500 M 684 484 L 702 500 L 684 516" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1175 500 L 1215 500 M 1199 484 L 1217 500 L 1199 516" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
   const out = k => 0.924 * cosd(45 * k - 22.5);
   const so = stems(partB, O, k8, C.ink, { w: 8, r: 12 });
   drive(so, O, [[0, k8.map(() => 0)], [tg + 12, k8.map(() => 0)], [tg + 30, k8.map(out), 'softLand']]);
   const ow = layer(partB, `<path d="${curve(out, -0.2, 8.2, O)}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="12 10"/>`, [O.X(-0.2), O.X(8.2)]);
   reveal(ow, tg + 30, tg + 56);
-  label(partB, '1,000 Hz in', 372, 790, 'lbl ok', 'center');
-  M.show(label(partB, '1,000 Hz out', 1492, 790, 'lbl', 'center'), word(10, 'same'));
-  M.show(label(partB, 'resized and shifted', 1492, 860, 'lbl s', 'center'), word(10, 'resized'));
-  M.show(label(partB, 'same pitch, no new tones', 960, 150, 'lbl acc', 'center'), word(10, 'same'));
+  label(partB, '1,000 Hz in', 372, 750, 'lbl ok', 'center');
+  M.show(label(partB, '1,000 Hz out', 1492, 750, 'lbl', 'center'), word(10, 'keeps'));
+  M.show(label(partB, 'resized and shifted', 1492, 812, 'lbl s', 'center'), word(10, 'resize'));
+  M.show(label(partB, 'both properties: same pitch, no new tones', 960, 150, 'lbl ok', 'center'), word(10, 'keeps'));
   drift(10);
 }
 {
-  const c = cam(11), n = sceneStart(11), ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 520, dx: 160, base: 560, A: 210 });
+  const c = cam(11), n = sceneStart(11), ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 520, dx: 160, base: 530, A: 160 });
   M.show(band(c, P, 460, 1700), n);
-  const fifth = word(11, 'fifth');
-  M.show(layer(c, `<rect x="460" y="${P.Y(1)}" width="1240" height="${P.Y(0.8) - P.Y(1)}" fill="#F6D9CF"/>`), fifth);
   const S = stems(c, P, ns, C.ink);
   const big = ns.map(k => 2 * cosd(45 * k)), x4 = big.map(clip1), x2 = ns.map(k => cosd(45 * k)), x16 = ns.map(k => 0.8 * cosd(45 * k));
-  const two = word(11, 'times'), six = word(11, 'one'), meter = word(11, 'reads');
-  drive(S, P, [[0, x4], [two, x4], [two + 14, x2, 'softLand'], [six, x2], [six + 14, x16, 'softLand']]);
+  const two = word(11, 'times'), down = word(11, 'loudest', 1), room = word(11, 'headroom'), six = word(11, 'one'), meter = word(11, 'buzz');
+  M.show(layer(c, `<rect x="460" y="${P.Y(1)}" width="1240" height="${P.Y(0.8) - P.Y(1)}" fill="#A9D2CC"/>`), room);
+  drive(S, P, [[0, x4], [two, x4], [two + 14, x2, 'softLand'], [down, x2], [down + 14, x16, 'softLand']]);
   const hot = ns.filter(k => Math.abs(big[k]) > 1.001);
   hot.forEach(i => [S[i].bar, S[i].dot].forEach(sel => M.kf(sel, 'backgroundColor', [[0, C.accent], [two, C.accent], [two, C.ink]])));
   M.show(ghosts(c, P, hot.map(k => [P.X(k), big[k]])), n, two);
   M.show(label(c, '× 4', 160, 500, 'lbl'), n, two);
-  M.show(label(c, '× 2', 160, 500, 'lbl'), two, six);
-  M.show(label(c, '× 1.6', 160, 500, 'lbl ok'), six);
+  M.show(label(c, '× 2', 160, 500, 'lbl'), two, down);
+  M.show(label(c, '× 1.6', 160, 500, 'lbl ok'), down);
   M.show(label(c, 'loudest input 0.5', 460, 60, 'lbl'), word(11, 'loudest'));
   M.show(label(c, 'peak 2.00, clipped', 1700, 60, 'lbl acc', 'right'), n, two);
-  M.show(label(c, 'peak 1.00, no margin', 1700, 60, 'lbl acc', 'right'), two + 14, six);
-  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 1080, 800, 'lbl ok', 'center'), word(11, 'over'), meter);
-  M.show(label(c, 'headroom: 0.8 to 1', 1700, P.Y(1) - 76, 'lbl acc', 'right'), word(11, 'headroom'));
+  M.show(label(c, 'peak 1.00, no margin', 1700, 60, 'lbl acc', 'right'), two + 14, down);
+  M.show(label(c, 'peak 0.80', 1700, 60, 'lbl ok', 'right'), down + 14);
+  M.show(label(c, 'headroom: 0.8 to 1', 1700, P.Y(1) - 76, 'lbl ok', 'right'), room);
+  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 1080, 800, 'lbl ok', 'center'), six, meter);
   M.show(label(c, 'peaks: loud 0.80 · quiet 0.32 · pair 0.64', 1080, 800, 'lbl', 'center'), meter);
-  M.show(label(c, 'buzz meter', 90, 640, 'lbl s'), meter);
-  M.show(layer(c, `<rect x="90" y="712" width="300" height="34" fill="${C.paper}" stroke="${C.ink}" stroke-width="3" rx="4"/><text x="90" y="800" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">0%</text><text x="390" y="800" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">40%</text>`), meter);
-  M.show(label(c, 'reads 0%', 90, 830, 'lbl ok'), meter);
+  M.show(label(c, 'buzz meter', 90, 600, 'lbl s'), meter);
+  M.show(layer(c, `<rect x="90" y="672" width="250" height="34" fill="${C.paper}" stroke="${C.ink}" stroke-width="3" rx="4"/><text x="90" y="760" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">0%</text><text x="340" y="760" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">40%</text>`), meter);
+  M.show(label(c, 'reads 0%', 90, 790, 'lbl ok'), word(11, 'reads'));
   drift(11);
 }
 {
   const c = cam(12), n = sceneStart(12), tk = word(12, 'ticket'), back = word(12, 'comes');
   const clean = el('div', { id: 's12a', class: 'layer' }, c), echo = el('div', { id: 's12b', class: 'layer' }, c);
   M.show('#s12a', n, tk); M.show('#s12b', tk);
-  const cw = callWave(clean, 540, 0.5, 1.6, false);
-  M.kf(cw, 'x', [[n, 0], [tk, -300]]);
-  layer(clean, `<line x1="0" y1="240" x2="1920" y2="240" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="840" x2="1920" y2="840" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>`);
-  label(clean, 'loud caller, × 1.6', 160, 120, 'lbl');
+  const P = plot({ x0: 0, dx: 1, base: 500, A: 250 });
+  band(clean, P, 140, 1780);
+  const k8 = [0, 1, 2, 3, 4, 5, 6, 7];
+  const groups = [['loud 0.80', 230, k8.map(k => 0.8 * cosd(45 * k))], ['quiet 0.32', 790, k8.map(k => 0.32 * cosd(45 * k))], ['pair 0.64', 1350, k8.map(k => 0.32 * cosd(45 * k) + 0.32 * cosd(22.5 * k))]];
+  groups.forEach(([name, x0, vals]) => {
+    const G = plot({ x0, dx: 52, base: 500, A: 250 });
+    drive(stems(clean, G, k8, C.ink, { w: 8, r: 12 }), G, [[0, vals]]);
+    label(clean, name, x0 + 182, 790, 'lbl', 'center');
+  });
+  label(clean, 'every caller at × 1.6', 140, 90, 'lbl');
+  label(clean, 'buzz meter 0%', 1780, 90, 'lbl ok', 'right');
   const hello = (x0, w, amp, color, sw) => { const pts = []; for (let i = 0; i <= 600; i++) { const u = i / 600, env = Math.sin(Math.PI * u) ** 1.5 * (0.7 + 0.3 * Math.sin(9 * u)); pts.push([x0 + u * w, 540 - amp * env * Math.sin(2 * Math.PI * 26 * u + 3 * Math.sin(5 * u))]); } return `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${sw}"/>`; };
   layer(echo, `<line x1="120" y1="540" x2="1800" y2="540" stroke="${C.rule}" stroke-width="3"/>` + hello(200, 560, 250, C.ink, 5));
   label(echo, 'hello', 480, 200, 'note', 'center');

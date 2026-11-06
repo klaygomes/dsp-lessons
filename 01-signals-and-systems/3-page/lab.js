@@ -153,9 +153,9 @@
         const sumNote = clipped.length === 1 && clipped[0] === 2 ? ' The loud caller alone fits; it is the sum that clips. Size for the loudest input, sums included.' : '';
         return `At ×${g.toFixed(1)}, ${names}, past the edge. Buzz ${joinList(clipped.map(i => pctText(cols[i].buzz)))}. Turn the booster down.${sumNote}`;
       }
-      if (near(loudest, 1)) return 'Exactly on the edge: buzz 0%, but no margin at all. The first caller a hair louder clips again. Leave a fifth of the range free.';
+      if (near(loudest, 1)) return 'Exactly on the edge: buzz 0%, but no margin at all. The first caller a hair louder clips again. Keep the loudest peak at 0.8, a fifth below the edge.';
       const shownPeak = Math.round(loudest * 100) / 100;
-      if (loudest > 0.8 + 1e-9) return `No buzz, but the loudest input peaks at ${fmt(shownPeak)}: only ${fmt(1 - shownPeak)} is left before the edge. Leave a fifth of the range free: land it at 0.8.`;
+      if (loudest > 0.8 + 1e-9) return `No buzz, but the loudest input peaks at ${fmt(shownPeak)}: only ${fmt(1 - shownPeak)} is left before the edge. Keep the loudest peak at 0.8, a fifth below the edge.`;
       if (!near(g, target) && loudest >= 0.7) return `Clean, but a little more headroom than the rule asks: the loudest input is at ${f2(loudest)}, short of 0.8, and the quiet caller is down at ${f2(cols[1].peak)}. Turn the booster up a little.`;
       if (!near(g, target)) return `Clean, with lots of headroom, but quieter than it needs to be: the quiet caller is down at ${f2(cols[1].peak)}. Turn the booster up until the loudest input lands at 0.8.`;
       state.solved = true;

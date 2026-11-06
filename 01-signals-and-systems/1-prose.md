@@ -123,7 +123,7 @@ The figure runs both sides of this equation as two paths: scale and add first, t
 
 [[diagram:superposition]]
 
-So is the booster linear? No. Linearity has to hold for every input, and the booster breaks it as soon as an input crosses the edge. A sample of 0.2 becomes 0.8. Double it to 0.4 and linearity says it should become 1.6, but the chip writes 1.0. The real booster is not linear. It only behaves like the linear ×4 while its inputs stay inside the range.
+So is the booster linear? No. Linearity has to hold for every input, and the booster breaks it as soon as an output would cross the edge. A sample of 0.2 becomes 0.8. Double it to 0.4 and linearity says it should become 1.6, but the chip writes 1.0. The real booster is not linear. It only behaves like the linear ×4 while its outputs stay inside the range.
 
 The second: a system is **time-invariant** when delaying the input only delays the output: the rule works the same at every moment. If x[n] gives y[n], then x shifted by \(n_0\) samples gives y shifted by \(n_0\) samples:
 
@@ -237,7 +237,7 @@ The proof needs both properties, and each experiment showed one failing. The boo
 
 ## Where the buzz lives
 
-Now you can see the bug for what it is. The real booster is not linear. While its inputs stay inside the range it behaves like the linear ×4, and that can't invent tones. The moment an input crosses the edge, it stops behaving that way, and new tones get in.
+Now you can see the bug for what it is. The real booster is not linear. While its outputs stay inside the range it behaves like the linear ×4, and that can't invent tones. The moment an output would cross the edge, it stops behaving that way, and new tones get in.
 
 For a single tone, they land in a tidy place. A clipped 1,000 Hz tone still repeats exactly every 8 samples, just like the original. A tone can only fit a pattern that repeats every 8 samples if it makes a whole number of turns in those 8 samples, so the new tones sit at whole multiples of the pitch: three times, five times, and so on. (That every repeating list is built from such tones, take on trust for now; lesson 12 shows it.) (The even multiples come out at exactly zero. That's because the clipped wave's bottom half is an upside-down copy of its top half.) But the line can't store anything above 4,000 Hz. Multiples beyond that fold back below it, which is lesson 4's story. That's why the clipped 1,000 Hz tone showed only one new tone, at 3,000 Hz. A 500 Hz vowel at size 0.5, boosted by 4 and clipped, has room for more:
 
@@ -267,9 +267,9 @@ And once the buzz is in the samples, it's tangled in among the voice's own tones
 
 ## Your turn
 
-The fix follows from everything above: keep every input inside the range, so the booster always behaves like the linear ×4. The speakerphone told you what to measure: not the loudest single voice, but the loudest input the booster ever sees, sums included. On your line that's the 0.5 your test calls recorded.
+The fix follows from everything above: keep every output inside the range, so the booster always behaves like the linear ×4. The speakerphone told you what to measure: not the loudest single voice, but the loudest input the booster ever sees, sums included. On your line that's the 0.5 your test calls recorded.
 
-Multiply 0.5 by 4 and you're at 2.0, past the edge. Multiply by 2 and you land exactly on 1.0. That's the very edge, with no margin at all: the first caller at 0.51 would clip again. Real lines leave headroom, room for someone louder than anyone you've measured. Leave a fifth of the range free, so the loudest recorded input lands at 0.8: the booster multiplies by 0.8 ÷ 0.5 = 1.6. A caller can then reach 0.625 before anything clips, a quarter louder than the loudest you've seen.
+Multiply 0.5 by 4 and you're at 2.0, past the edge. Multiply by 2 and you land exactly on 1.0. That's the very edge, with no margin at all: the first caller at 0.51 would clip again. Real lines leave headroom, room for someone louder than anyone you've measured. Keep the loudest peak at 0.8, a fifth below the edge: the booster multiplies by 0.8 ÷ 0.5 = 1.6. A caller can then reach 0.625 before anything clips, a quarter louder than the loudest you've seen.
 
 [[diagram:fix]]
 

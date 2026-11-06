@@ -44,7 +44,7 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
 <script src="./runtime/vendor/gsap.min.js"></script>
 <script src="./runtime/motion.js"></script>
 <script>
-const SCHEDULE = {"fps":30,"duration":168.12,"wpm":214,"lines":[{"line":1,"text":"The line went live last week, and the support tickets split into two neat piles. Quiet callers are fine. Loud callers hear a harsh, raspy buzz on top of their voice. One says his boss sounds like he's yelling through a kazoo. [laughter]","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line01.wav","at":0.6,"start":0.6,"end":11.97,"start_frame":18,"words":[{"word":"The","frame":18},{"word":"line","frame":26},{"word":"went","frame":32},{"word":"live","frame":37},{"word":"last","frame":44},{"word":"week,","frame":53},{"word":"and","frame":62},{"word":"the","frame":67},{"word":"support","frame":70},{"word":"tickets","frame":79},{"word":"split","frame":89},{"word":"into","frame":97},{"word":"two","frame":103},{"word":"neat","frame":110},{"word":"piles.","frame":116},{"word":"Quiet","frame":137},{"word":"callers","frame":142},{"word":"are","frame":152},{"word":"fine.","frame":156},{"word":"Loud","frame":176},{"word":"callers","frame":180},{"word":"hear","frame":193},{"word":"a","frame":197},{"word":"harsh,","frame":200},{"word":"raspy","frame":212},{"word":"buzz","frame":221},{"word":"on","frame":230},{"word":"top","frame":236},{"word":"of","frame":242},{"word":"their","frame":247},{"word":"voice.","frame":252},{"word":"One","frame":270},{"word":"says","frame":275},{"word":"his","frame":281},{"word":"boss","frame":287},{"word":"sounds","frame":295},{"word":"like","frame":303},{"word":"he's","frame":308},{"word":"yelling","frame":314},{"word":"through","frame":320},{"word":"a","frame":327},{"word":"kazoo.","frame":330}]},{"line":2,"text":"Strange, isn't it? The line runs the same code for everybody, and louder should just be louder. So look at what it carries: the microphone's voltage, measured eight thousand times a second. Each measurement is a sample, and a call is a list of numbers.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line02.wav","at":12.77,"start":12.77,"end":24.93,"start_frame":383,"words":[{"word":"Strange,","frame":383},{"word":"isn't","frame":404},{"word":"it?","frame":409},{"word":"The","frame":416},{"word":"line","frame":424},{"word":"runs","frame":430},{"word":"the","frame":437},{"word":"same","frame":441},{"word":"code","frame":447},{"word":"for","frame":454},{"word":"everybody","frame":459},{"word":"and","frame":469},{"word":"louder","frame":477},{"word":"should","frame":485},{"word":"just","frame":492},{"word":"be","frame":498},{"word":"louder.","frame":503},{"word":"So","frame":523},{"word":"look","frame":526},{"word":"at","frame":531},{"word":"what","frame":534},{"word":"it","frame":537},{"word":"carries.","frame":540},{"word":"The","frame":558},{"word":"microphone's","frame":566},{"word":"voltage,","frame":582},{"word":"measured","frame":598},{"word":"8","frame":608},{"word":",000","frame":614},{"word":"times","frame":624},{"word":"a","frame":631},{"word":"second.","frame":635},{"word":"Each","frame":659},{"word":"measurement","frame":663},{"word":"is","frame":673},{"word":"a","frame":680},{"word":"sample,","frame":684},{"word":"and","frame":698},{"word":"a","frame":702},{"word":"call","frame":705},{"word":"is","frame":712},{"word":"a","frame":717},{"word":"list","frame":719},{"word":"of","frame":724},{"word":"numbers.","frame":728}]},{"line":3,"text":"The simplest sound is a tone, like a tuning fork: a steady wave, and how many times a second it repeats, in hertz, is the pitch you hear. Its samples come from the cosine. For one thousand hertz, the angle steps three hundred sixty times one thousand over eight thousand. That's forty-five degrees each sample, so after eight samples the pattern starts over.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line03.wav","at":25.43,"start":25.43,"end":42.74,"start_frame":763,"words":[{"word":"The","frame":763},{"word":"simplest","frame":771},{"word":"sound","frame":780},{"word":"is","frame":789},{"word":"a","frame":794},{"word":"tone,","frame":796},{"word":"like","frame":812},{"word":"a","frame":819},{"word":"tuning","frame":822},{"word":"fork,","frame":828},{"word":"a","frame":842},{"word":"steady","frame":844},{"word":"wave,","frame":852},{"word":"and","frame":864},{"word":"how","frame":870},{"word":"many","frame":873},{"word":"times","frame":879},{"word":"a","frame":885},{"word":"second","frame":890},{"word":"it","frame":896},{"word":"repeats","frame":901},{"word":"in","frame":910},{"word":"hertz","frame":915},{"word":"is","frame":922},{"word":"the","frame":934},{"word":"pitch","frame":938},{"word":"you","frame":944},{"word":"hear.","frame":948},{"word":"Its","frame":961},{"word":"samples","frame":971},{"word":"come","frame":980},{"word":"from","frame":986},{"word":"the","frame":991},{"word":"cosine.","frame":995},{"word":"For","frame":1014},{"word":"1","frame":1024},{"word":",000","frame":1032},{"word":"hertz,","frame":1040},{"word":"the","frame":1052},{"word":"angle","frame":1054},{"word":"steps","frame":1061},{"word":"360","frame":1070},{"word":"times","frame":1096},{"word":"1","frame":1107},{"word":",000","frame":1115},{"word":"over","frame":1124},{"word":"8","frame":1131},{"word":",000.","frame":1137},{"word":"That's","frame":1154},{"word":"45","frame":1168},{"word":"degrees","frame":1181},{"word":"each","frame":1193},{"word":"sample,","frame":1200},{"word":"so","frame":1216},{"word":"after","frame":1220},{"word":"8","frame":1226},{"word":"samples","frame":1232},{"word":"the","frame":1244},{"word":"pattern","frame":1248},{"word":"starts","frame":1257},{"word":"over.","frame":1266}]},{"line":4,"text":"Early in the chain sits the booster. It's a system: a rule that takes in one signal, one list of numbers, and gives back another. Its rule is one line of code: multiply every sample by four. But the chip after it can only store values from minus one to plus one. Hand it two, and it writes down one. That flattening is called clipping.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line04.wav","at":43.34,"start":43.34,"end":59.24,"start_frame":1300,"words":[{"word":"Early","frame":1300},{"word":"in","frame":1312},{"word":"the","frame":1316},{"word":"chain","frame":1319},{"word":"sits","frame":1326},{"word":"the","frame":1334},{"word":"booster.","frame":1339},{"word":"It's","frame":1354},{"word":"a","frame":1363},{"word":"system,","frame":1366},{"word":"a","frame":1379},{"word":"rule","frame":1382},{"word":"that","frame":1388},{"word":"takes","frame":1392},{"word":"in","frame":1399},{"word":"one","frame":1403},{"word":"signal,","frame":1408},{"word":"one","frame":1424},{"word":"list","frame":1426},{"word":"of","frame":1433},{"word":"numbers,","frame":1436},{"word":"and","frame":1447},{"word":"gives","frame":1451},{"word":"back","frame":1457},{"word":"another.","frame":1463},{"word":"Its","frame":1479},{"word":"rule","frame":1489},{"word":"is","frame":1495},{"word":"one","frame":1501},{"word":"line","frame":1507},{"word":"of","frame":1513},{"word":"code.","frame":1516},{"word":"Multiply","frame":1532},{"word":"every","frame":1549},{"word":"sample","frame":1559},{"word":"by","frame":1564},{"word":"four,","frame":1570},{"word":"but","frame":1583},{"word":"the","frame":1590},{"word":"chip","frame":1593},{"word":"after","frame":1599},{"word":"it","frame":1607},{"word":"can","frame":1611},{"word":"only","frame":1614},{"word":"store","frame":1620},{"word":"values","frame":1627},{"word":"from","frame":1637},{"word":"minus","frame":1643},{"word":"one","frame":1651},{"word":"to","frame":1657},{"word":"plus","frame":1661},{"word":"one.","frame":1668},{"word":"Hand","frame":1681},{"word":"it","frame":1690},{"word":"two,","frame":1691},{"word":"and","frame":1701},{"word":"it","frame":1704},{"word":"writes","frame":1707},{"word":"down","frame":1714},{"word":"one.","frame":1720},{"word":"That","frame":1732},{"word":"flattening","frame":1738},{"word":"is","frame":1750},{"word":"called","frame":1753},{"word":"clipping.","frame":1759}]},{"line":5,"text":"Take a quiet caller at size point two, so their biggest sample is point two, and a loud one at point five. Which comes out clean? The quiet one grows to point eight and stays inside the range. The loud one would reach two, so its tops are sliced off flat.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line05.wav","at":60.04,"start":60.04,"end":72.17,"start_frame":1801,"words":[{"word":"Take","frame":1801},{"word":"a","frame":1811},{"word":"quiet","frame":1815},{"word":"collar","frame":1823},{"word":"at","frame":1832},{"word":"size","frame":1838},{"word":"0","frame":1846},{"word":".2","frame":1852},{"word":"so","frame":1861},{"word":"their","frame":1867},{"word":"biggest","frame":1871},{"word":"sample","frame":1877},{"word":"is","frame":1888},{"word":"0","frame":1893},{"word":".2","frame":1898},{"word":"and","frame":1909},{"word":"a","frame":1918},{"word":"loud","frame":1924},{"word":"one","frame":1928},{"word":"at","frame":1934},{"word":"0","frame":1938},{"word":".5,","frame":1942},{"word":"which","frame":1961},{"word":"comes","frame":1966},{"word":"out","frame":1973},{"word":"clean.","frame":1978},{"word":"The","frame":1993},{"word":"quiet","frame":1999},{"word":"one","frame":2008},{"word":"grows","frame":2012},{"word":"to","frame":2020},{"word":"0","frame":2024},{"word":".8","frame":2029},{"word":"and","frame":2036},{"word":"stays","frame":2039},{"word":"inside","frame":2047},{"word":"the","frame":2056},{"word":"range.","frame":2060},{"word":"The","frame":2081},{"word":"loud","frame":2084},{"word":"one","frame":2089},{"word":"would","frame":2095},{"word":"reach","frame":2098},{"word":"2","frame":2106},{"word":"so","frame":2113},{"word":"its","frame":2119},{"word":"tops","frame":2125},{"word":"are","frame":2132},{"word":"sliced","frame":2137},{"word":"off","frame":2144},{"word":"flat.","frame":2150}]},{"line":6,"text":"Is that just an uglier tone? Try a pencil test. In any tone, a sample's two neighbors add up to the middle sample times a fixed number, here one point four one four. The clean tone passes. The clipped one fails.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line06.wav","at":73.17,"start":73.17,"end":83.24,"start_frame":2195,"words":[{"word":"Is","frame":2195},{"word":"that","frame":2204},{"word":"just","frame":2207},{"word":"an","frame":2212},{"word":"uglier","frame":2217},{"word":"tone?","frame":2228},{"word":"Try","frame":2240},{"word":"a","frame":2245},{"word":"pencil","frame":2248},{"word":"test.","frame":2254},{"word":"In","frame":2270},{"word":"any","frame":2275},{"word":"tone,","frame":2280},{"word":"a","frame":2289},{"word":"sample's","frame":2292},{"word":"two","frame":2301},{"word":"neighbors","frame":2306},{"word":"add","frame":2314},{"word":"up","frame":2323},{"word":"to","frame":2326},{"word":"the","frame":2332},{"word":"middle","frame":2333},{"word":"sample","frame":2338},{"word":"times","frame":2348},{"word":"a","frame":2355},{"word":"fixed","frame":2360},{"word":"number.","frame":2367},{"word":"Here","frame":2381},{"word":"1","frame":2392},{"word":".414.","frame":2398},{"word":"The","frame":2436},{"word":"clean","frame":2440},{"word":"tone","frame":2446},{"word":"passes","frame":2452},{"word":"the","frame":2461},{"word":"clip","frame":2465},{"word":"1","frame":2470},{"word":"fails.","frame":2475}]},{"line":7,"text":"So what is it? [surprise-oh] It's two tones. A one thousand hertz tone, minus a three thousand hertz tone a sixth its size, lands exactly on every clipped sample. That second tone is the buzz. Nobody said it. The booster made it, out of nothing.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line07.wav","at":84.44,"start":84.44,"end":96.16,"start_frame":2533,"words":[{"word":"so","frame":2533},{"word":"what","frame":2541},{"word":"is","frame":2545},{"word":"it","frame":2549},{"word":"oh","frame":2554},{"word":"a","frame":2584},{"word":"1000","frame":2594},{"word":"hertz","frame":2608},{"word":"tone","frame":2615},{"word":"minus","frame":2623},{"word":"a","frame":2631},{"word":"3000","frame":2636},{"word":"hertz","frame":2646},{"word":"tone","frame":2658},{"word":"a","frame":2665},{"word":"sixth","frame":2669},{"word":"its","frame":2675},{"word":"size","frame":2682},{"word":"lands","frame":2690},{"word":"exactly","frame":2705},{"word":"on","frame":2717},{"word":"every","frame":2725},{"word":"clipped","frame":2731},{"word":"sample","frame":2739},{"word":"that","frame":2750},{"word":"second","frame":2769},{"word":"tone","frame":2778},{"word":"is","frame":2784},{"word":"the","frame":2788},{"word":"buzz","frame":2791},{"word":"nobody","frame":2800},{"word":"said","frame":2816},{"word":"it","frame":2823},{"word":"the","frame":2828},{"word":"booster","frame":2841},{"word":"made","frame":2849},{"word":"it","frame":2857},{"word":"out","frame":2861},{"word":"of","frame":2866},{"word":"nothing","frame":2869}]},{"line":8,"text":"What did the booster break? A system is linear when doubling the input doubles the output, and two inputs added give their outputs added. The real booster is not linear. It only behaves like the linear times four while its inputs stay inside the range.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line08.wav","at":97.16,"start":97.16,"end":109.46,"start_frame":2915,"words":[{"word":"What","frame":2915},{"word":"did","frame":2925},{"word":"the","frame":2930},{"word":"booster","frame":2933},{"word":"break?","frame":2941},{"word":"A","frame":2962},{"word":"system","frame":2966},{"word":"is","frame":2974},{"word":"linear","frame":2980},{"word":"when","frame":2988},{"word":"doubling","frame":2995},{"word":"the","frame":3004},{"word":"input","frame":3009},{"word":"doubles","frame":3018},{"word":"the","frame":3026},{"word":"output,","frame":3031},{"word":"and","frame":3048},{"word":"two","frame":3051},{"word":"inputs","frame":3056},{"word":"added","frame":3067},{"word":"give","frame":3075},{"word":"their","frame":3084},{"word":"outputs","frame":3086},{"word":"added.","frame":3097},{"word":"The","frame":3116},{"word":"real","frame":3120},{"word":"booster","frame":3126},{"word":"is","frame":3136},{"word":"not","frame":3142},{"word":"linear,","frame":3147},{"word":"it","frame":3164},{"word":"only","frame":3171},{"word":"behaves","frame":3176},{"word":"like","frame":3187},{"word":"the","frame":3193},{"word":"linear","frame":3196},{"word":"times","frame":3204},{"word":"4","frame":3212},{"word":"while","frame":3223},{"word":"its","frame":3229},{"word":"inputs","frame":3234},{"word":"stay","frame":3243},{"word":"inside","frame":3254},{"word":"the","frame":3259},{"word":"range.","frame":3265}]},{"line":9,"text":"And here's the trap. Two quiet voices share a speakerphone. Each alone comes out at point eight, fine. Linearity says together they should give one point six. The chip writes one. Each passed alone, and together they buzz. Linearity is a promise about sums.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line09.wav","at":110.06,"start":110.06,"end":122.56,"start_frame":3302,"words":[{"word":"and","frame":3302},{"word":"here's","frame":3310},{"word":"the","frame":3317},{"word":"trap","frame":3320},{"word":"two","frame":3329},{"word":"quiet","frame":3338},{"word":"voices","frame":3347},{"word":"share","frame":3356},{"word":"a","frame":3366},{"word":"speakerphone","frame":3370},{"word":"each","frame":3387},{"word":"alone","frame":3398},{"word":"comes","frame":3403},{"word":"out","frame":3412},{"word":"at","frame":3416},{"word":"0","frame":3420},{"word":".8","frame":3425},{"word":"fine","frame":3434},{"word":"linearity","frame":3454},{"word":"says","frame":3466},{"word":"together","frame":3475},{"word":"they","frame":3487},{"word":"should","frame":3494},{"word":"give","frame":3499},{"word":"1","frame":3503},{"word":".6","frame":3510},{"word":"the","frame":3526},{"word":"chip","frame":3534},{"word":"writes","frame":3539},{"word":"one","frame":3547},{"word":"each","frame":3554},{"word":"passed","frame":3565},{"word":"alone","frame":3575},{"word":"and","frame":3589},{"word":"together","frame":3590},{"word":"they","frame":3597},{"word":"buzz","frame":3603},{"word":"linearity","frame":3613},{"word":"is","frame":3632},{"word":"a","frame":3636},{"word":"promise","frame":3638},{"word":"about","frame":3647},{"word":"sums","frame":3654}]},{"line":10,"text":"Now add one more property. A system is time-invariant when delaying the input only delays the output. Together they make a law: a tone that goes into a linear, time-invariant system comes out at the same pitch, only bigger or smaller, and shifted. No new tones, ever.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line10.wav","at":123.36,"start":123.36,"end":136.22,"start_frame":3701,"words":[{"word":"Now","frame":3701},{"word":"add","frame":3710},{"word":"one","frame":3716},{"word":"more","frame":3721},{"word":"property.","frame":3725},{"word":"A","frame":3742},{"word":"system","frame":3748},{"word":"is","frame":3755},{"word":"time","frame":3760},{"word":"invariant","frame":3766},{"word":"when","frame":3781},{"word":"delaying","frame":3785},{"word":"the","frame":3796},{"word":"input","frame":3800},{"word":"only","frame":3808},{"word":"delays","frame":3817},{"word":"the","frame":3832},{"word":"output.","frame":3833},{"word":"Together","frame":3851},{"word":"they","frame":3863},{"word":"make","frame":3869},{"word":"a","frame":3874},{"word":"law.","frame":3878},{"word":"A","frame":3889},{"word":"tone","frame":3893},{"word":"that","frame":3898},{"word":"goes","frame":3902},{"word":"into","frame":3908},{"word":"a","frame":3913},{"word":"linear,","frame":3918},{"word":"time","frame":3929},{"word":"invariant","frame":3938},{"word":"system","frame":3950},{"word":"comes","frame":3964},{"word":"out","frame":3967},{"word":"at","frame":3971},{"word":"the","frame":3975},{"word":"same","frame":3977},{"word":"pitch,","frame":3983},{"word":"only","frame":3994},{"word":"bigger","frame":4002},{"word":"or","frame":4009},{"word":"smaller","frame":4015},{"word":"and","frame":4024},{"word":"shifted.","frame":4030},{"word":"No","frame":4046},{"word":"new","frame":4055},{"word":"tones","frame":4061},{"word":"ever.","frame":4070}]},{"line":11,"text":"So the fix is to keep every input inside the range. The loudest input the booster ever sees, speakerphones included, is point five. Times two lands right on the edge, with no margin. Instead, keep the loudest peak at point eight, a fifth below the edge. That gap is the headroom. Point eight divided by point five is one point six. Now the buzz meter, which measures the tones that weren't in the input, reads zero percent on every caller.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line11.wav","at":137.22,"start":137.22,"end":158.34,"start_frame":4117,"words":[{"word":"So","frame":4117},{"word":"the","frame":4124},{"word":"fix","frame":4128},{"word":"is","frame":4136},{"word":"to","frame":4140},{"word":"keep","frame":4143},{"word":"every","frame":4148},{"word":"input","frame":4156},{"word":"inside","frame":4165},{"word":"the","frame":4174},{"word":"range.","frame":4180},{"word":"The","frame":4201},{"word":"loudest","frame":4204},{"word":"input","frame":4214},{"word":"the","frame":4220},{"word":"booster","frame":4225},{"word":"ever","frame":4232},{"word":"sees,","frame":4239},{"word":"speakerphones","frame":4253},{"word":"included,","frame":4273},{"word":"is","frame":4289},{"word":"0","frame":4291},{"word":".5,","frame":4295},{"word":"times","frame":4312},{"word":"2","frame":4319},{"word":"lands","frame":4325},{"word":"right","frame":4333},{"word":"on","frame":4340},{"word":"the","frame":4344},{"word":"edge,","frame":4347},{"word":"with","frame":4358},{"word":"no","frame":4362},{"word":"margin.","frame":4367},{"word":"Instead,","frame":4395},{"word":"keep","frame":4406},{"word":"the","frame":4411},{"word":"loudest","frame":4414},{"word":"peak","frame":4424},{"word":"at","frame":4430},{"word":"0","frame":4435},{"word":".8,","frame":4439},{"word":"a","frame":4451},{"word":"fifth","frame":4455},{"word":"below","frame":4459},{"word":"the","frame":4467},{"word":"edge.","frame":4472},{"word":"That","frame":4489},{"word":"gap","frame":4492},{"word":"is","frame":4498},{"word":"the","frame":4503},{"word":"headroom.","frame":4506},{"word":"0","frame":4528},{"word":".8","frame":4532},{"word":"divided","frame":4540},{"word":"by","frame":4548},{"word":"0","frame":4556},{"word":".5","frame":4561},{"word":"is","frame":4571},{"word":"1","frame":4576},{"word":".6.","frame":4582},{"word":"Now","frame":4618},{"word":"the","frame":4621},{"word":"buzz","frame":4625},{"word":"meter,","frame":4633},{"word":"which","frame":4641},{"word":"measures","frame":4646},{"word":"the","frame":4655},{"word":"tones","frame":4660},{"word":"that","frame":4667},{"word":"weren't","frame":4672},{"word":"in","frame":4678},{"word":"the","frame":4682},{"word":"input,","frame":4684},{"word":"reads","frame":4698},{"word":"0","frame":4703},{"word":"%","frame":4711},{"word":"on","frame":4720},{"word":"every","frame":4728},{"word":"caller.","frame":4735}]},{"line":12,"text":"Loud callers sound like loud people again. Then a new ticket arrives: I can hear myself. Every word comes back, faint, a quarter of a second later. That's the next bug.","clip":"/Users/cleiton.loiola/personal/lessons/dsp-oppenheim/01-signals-and-systems/4-video/vo-s110/line12.wav","at":159.54,"start":159.54,"end":167.62,"start_frame":4786,"words":[{"word":"Loud","frame":4786},{"word":"callers","frame":4798},{"word":"sound","frame":4811},{"word":"like","frame":4817},{"word":"loud","frame":4822},{"word":"people","frame":4828},{"word":"again.","frame":4837},{"word":"Then","frame":4853},{"word":"a","frame":4856},{"word":"new","frame":4859},{"word":"ticket","frame":4863},{"word":"arrives.","frame":4870},{"word":"I","frame":4890},{"word":"can","frame":4893},{"word":"hear","frame":4896},{"word":"myself.","frame":4900},{"word":"Every","frame":4921},{"word":"word","frame":4924},{"word":"comes","frame":4931},{"word":"back.","frame":4938},{"word":"Faint","frame":4955},{"word":"a","frame":4961},{"word":"quarter","frame":4966},{"word":"of","frame":4971},{"word":"a","frame":4975},{"word":"second","frame":4978},{"word":"later.","frame":4984},{"word":"That's","frame":4999},{"word":"the","frame":5005},{"word":"next","frame":5007},{"word":"bug.","frame":5012}]}]};
+const SCHEDULE = {"fps":30,"duration":138.76,"wpm":201,"lines":[{"line":1,"text":"The line went live last week. Quiet callers are fine. Loud callers hear a harsh, raspy buzz. One says his boss sounds like he's yelling through a kazoo. [laughter]","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line01.wav","at":0.6,"start":0.6,"end":8.51,"start_frame":18,"words":[{"word":"The","frame":18},{"word":"line","frame":26},{"word":"went","frame":32},{"word":"live","frame":38},{"word":"last","frame":45},{"word":"week.","frame":52},{"word":"Quiet","frame":61},{"word":"callers","frame":68},{"word":"are","frame":79},{"word":"fine.","frame":83},{"word":"Loud","frame":99},{"word":"callers","frame":106},{"word":"hear","frame":119},{"word":"a","frame":124},{"word":"harsh,","frame":127},{"word":"raspy","frame":142},{"word":"buzz.","frame":152},{"word":"One","frame":172},{"word":"says","frame":176},{"word":"his","frame":181},{"word":"boss","frame":187},{"word":"sounds","frame":194},{"word":"like","frame":200},{"word":"he's","frame":205},{"word":"yelling","frame":211},{"word":"through","frame":217},{"word":"a","frame":224},{"word":"kazoo.","frame":227}]},{"line":2,"text":"Strange, isn't it? Same code for everybody, and louder should just be louder. The line carries the microphone's voltage, measured eight thousand times a second. Each is a sample; the list is a signal.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line01.wav","at":9.31,"start":9.31,"end":19.07,"start_frame":279,"words":[{"word":"Strange,","frame":279},{"word":"isn't","frame":300},{"word":"it?","frame":303},{"word":"Same","frame":314},{"word":"code","frame":319},{"word":"for","frame":326},{"word":"everybody,","frame":330},{"word":"and","frame":348},{"word":"louder","frame":354},{"word":"should","frame":361},{"word":"just","frame":366},{"word":"be","frame":372},{"word":"louder.","frame":376},{"word":"The","frame":395},{"word":"line","frame":398},{"word":"carries","frame":405},{"word":"the","frame":414},{"word":"microphone's","frame":418},{"word":"voltage,","frame":434},{"word":"measured","frame":451},{"word":"8","frame":462},{"word":",000","frame":468},{"word":"times","frame":478},{"word":"a","frame":484},{"word":"second.","frame":489},{"word":"Each","frame":506},{"word":"is","frame":510},{"word":"a","frame":513},{"word":"sample.","frame":517},{"word":"The","frame":536},{"word":"list","frame":539},{"word":"is","frame":545},{"word":"a","frame":550},{"word":"signal.","frame":554}]},{"line":3,"text":"The simplest sound is a tone. How often it repeats, in hertz, is its pitch. Its samples are the cosine of an angle that turns a fixed step: at one thousand hertz, forty-five degrees. Eight samples make a full turn.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line03.wav","at":19.57,"start":19.57,"end":29.84,"start_frame":587,"words":[{"word":"The","frame":587},{"word":"simplest","frame":595},{"word":"sound","frame":603},{"word":"is","frame":612},{"word":"a","frame":616},{"word":"tone.","frame":620},{"word":"How","frame":633},{"word":"often","frame":642},{"word":"it","frame":650},{"word":"repeats","frame":653},{"word":"in","frame":663},{"word":"hertz","frame":669},{"word":"is","frame":676},{"word":"its","frame":682},{"word":"pitch.","frame":686},{"word":"Its","frame":708},{"word":"samples","frame":711},{"word":"are","frame":720},{"word":"the","frame":725},{"word":"cosine","frame":728},{"word":"of","frame":738},{"word":"an","frame":745},{"word":"angle","frame":748},{"word":"that","frame":755},{"word":"turns","frame":760},{"word":"a","frame":766},{"word":"fixed","frame":770},{"word":"step","frame":777},{"word":"at","frame":794},{"word":"1000","frame":799},{"word":"hertz","frame":810},{"word":"45","frame":818},{"word":"degrees.","frame":828},{"word":"Eight","frame":849},{"word":"samples","frame":854},{"word":"make","frame":865},{"word":"a","frame":872},{"word":"full","frame":874},{"word":"turn.","frame":880}]},{"line":4,"text":"The booster is a system: one signal in, another out. Its rule: multiply every sample by four. But the chip after it only stores the range, minus one to plus one. Hand it two, past the edge, and it writes one. That's clipping.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line02.wav","at":30.44,"start":30.44,"end":41.12,"start_frame":913,"words":[{"word":"the","frame":913},{"word":"booster","frame":922},{"word":"is","frame":929},{"word":"a","frame":935},{"word":"system","frame":939},{"word":"one","frame":947},{"word":"signal","frame":959},{"word":"in","frame":968},{"word":"another","frame":973},{"word":"out","frame":980},{"word":"its","frame":989},{"word":"rule","frame":997},{"word":"multiply","frame":1004},{"word":"every","frame":1019},{"word":"sample","frame":1029},{"word":"by","frame":1037},{"word":"four","frame":1043},{"word":"but","frame":1053},{"word":"the","frame":1064},{"word":"chip","frame":1066},{"word":"after","frame":1072},{"word":"it","frame":1080},{"word":"only","frame":1084},{"word":"stores","frame":1088},{"word":"the","frame":1096},{"word":"range","frame":1101},{"word":"minus","frame":1110},{"word":"one","frame":1120},{"word":"to","frame":1126},{"word":"plus","frame":1129},{"word":"one","frame":1136},{"word":"hand","frame":1143},{"word":"it","frame":1153},{"word":"two","frame":1157},{"word":"past","frame":1163},{"word":"the","frame":1172},{"word":"edge","frame":1177},{"word":"and","frame":1183},{"word":"it","frame":1190},{"word":"writes","frame":1191},{"word":"one","frame":1198},{"word":"that's","frame":1205},{"word":"clipping","frame":1217}]},{"line":5,"text":"A quiet caller is size point two, their biggest sample; a loud one, point five. Which comes out clean? The quiet one grows to point eight. The loud one would reach two: its tops get sliced flat.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line03.wav","at":42.92,"start":42.92,"end":51.99,"start_frame":1288,"words":[{"word":"A","frame":1288},{"word":"quiet","frame":1296},{"word":"collar","frame":1304},{"word":"is","frame":1313},{"word":"size","frame":1319},{"word":".2,","frame":1327},{"word":"their","frame":1344},{"word":"biggest","frame":1347},{"word":"sample,","frame":1354},{"word":"a","frame":1368},{"word":"loud","frame":1372},{"word":"one","frame":1376},{"word":".5,","frame":1382},{"word":"which","frame":1402},{"word":"comes","frame":1409},{"word":"out","frame":1416},{"word":"clean.","frame":1421},{"word":"The","frame":1436},{"word":"quiet","frame":1438},{"word":"one","frame":1446},{"word":"grows","frame":1451},{"word":"to","frame":1460},{"word":".8,","frame":1466},{"word":"the","frame":1484},{"word":"loud","frame":1489},{"word":"one","frame":1494},{"word":"would","frame":1499},{"word":"reach","frame":1503},{"word":"2,","frame":1510},{"word":"its","frame":1519},{"word":"tops","frame":1523},{"word":"get","frame":1531},{"word":"sliced","frame":1536},{"word":"flat.","frame":1544}]},{"line":6,"text":"Is that just an uglier tone? Try the neighbor rule: in this tone, any two neighbors add up to one point four one four times the sample between them. The clean tone passes. The clipped one fails.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line04.wav","at":52.99,"start":52.99,"end":62.31,"start_frame":1590,"words":[{"word":"Is","frame":1590},{"word":"that","frame":1599},{"word":"just","frame":1602},{"word":"an","frame":1606},{"word":"uglier","frame":1611},{"word":"tone?","frame":1622},{"word":"Try","frame":1636},{"word":"the","frame":1641},{"word":"neighbor","frame":1644},{"word":"rule.","frame":1651},{"word":"In","frame":1664},{"word":"this","frame":1670},{"word":"tone,","frame":1674},{"word":"any","frame":1688},{"word":"two","frame":1690},{"word":"neighbors","frame":1695},{"word":"add","frame":1704},{"word":"up","frame":1712},{"word":"to","frame":1715},{"word":"1","frame":1719},{"word":".414","frame":1725},{"word":"times","frame":1747},{"word":"the","frame":1758},{"word":"sample","frame":1761},{"word":"between","frame":1769},{"word":"them.","frame":1779},{"word":"The","frame":1799},{"word":"clean","frame":1802},{"word":"tone","frame":1808},{"word":"passes.","frame":1814},{"word":"The","frame":1833},{"word":"clipped","frame":1836},{"word":"one","frame":1843},{"word":"fails.","frame":1848}]},{"line":7,"text":"So what is it? [surprise-oh] It's two tones: a one thousand hertz tone, minus a three thousand hertz tone about a sixth its size. That second tone is the buzz. The booster made it, out of nothing.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line07.wav","at":64.31,"start":64.31,"end":73.67,"start_frame":1929,"words":[{"word":"So","frame":1929},{"word":"what","frame":1937},{"word":"is","frame":1941},{"word":"it?","frame":1945},{"word":"Oh,","frame":1948},{"word":"it's","frame":1954},{"word":"two","frame":1957},{"word":"tones.","frame":1962},{"word":"A","frame":1978},{"word":"1000","frame":1984},{"word":"Hz","frame":2000},{"word":"tone","frame":2009},{"word":"minus","frame":2020},{"word":"a","frame":2030},{"word":"3000","frame":2036},{"word":"Hz","frame":2046},{"word":"tone,","frame":2060},{"word":"about","frame":2069},{"word":"a","frame":2076},{"word":"sixth","frame":2079},{"word":"its","frame":2088},{"word":"size.","frame":2094},{"word":"That","frame":2112},{"word":"second","frame":2116},{"word":"tone","frame":2124},{"word":"is","frame":2133},{"word":"the","frame":2140},{"word":"buzz.","frame":2144},{"word":"The","frame":2157},{"word":"booster","frame":2160},{"word":"made","frame":2169},{"word":"it","frame":2178},{"word":"out","frame":2182},{"word":"of","frame":2190},{"word":"nothing.","frame":2193}]},{"line":8,"text":"What did the booster break? A system is linear when doubling the input doubles the output, and inputs added give outputs added. The real booster is not linear. It only behaves like the linear times four while its outputs stay inside the range.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line05.wav","at":74.67,"start":74.67,"end":86.58,"start_frame":2240,"words":[{"word":"What","frame":2240},{"word":"did","frame":2249},{"word":"the","frame":2253},{"word":"booster","frame":2255},{"word":"break?","frame":2264},{"word":"A","frame":2283},{"word":"system","frame":2286},{"word":"is","frame":2295},{"word":"linear","frame":2300},{"word":"when","frame":2309},{"word":"doubling","frame":2316},{"word":"the","frame":2325},{"word":"input","frame":2331},{"word":"doubles","frame":2340},{"word":"the","frame":2350},{"word":"output,","frame":2355},{"word":"and","frame":2372},{"word":"inputs","frame":2374},{"word":"added","frame":2385},{"word":"give","frame":2393},{"word":"outputs","frame":2400},{"word":"added.","frame":2412},{"word":"The","frame":2432},{"word":"real","frame":2436},{"word":"booster","frame":2442},{"word":"is","frame":2452},{"word":"not","frame":2458},{"word":"linear,","frame":2463},{"word":"it","frame":2478},{"word":"only","frame":2482},{"word":"behaves","frame":2487},{"word":"like","frame":2499},{"word":"the","frame":2504},{"word":"linear","frame":2508},{"word":"times","frame":2517},{"word":"4","frame":2525},{"word":"while","frame":2535},{"word":"its","frame":2542},{"word":"outputs","frame":2547},{"word":"stay","frame":2557},{"word":"inside","frame":2565},{"word":"the","frame":2573},{"word":"range.","frame":2578}]},{"line":9,"text":"Here's the trap. Two quiet voices share a speakerphone. Each alone peaks at point eight. Together, linearity says one point six; the chip writes one, and the pair buzzes. Linearity is a promise about sums.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line06.wav","at":87.18,"start":87.18,"end":97.16,"start_frame":2615,"words":[{"word":"here's","frame":2615},{"word":"the","frame":2626},{"word":"trap","frame":2629},{"word":"two","frame":2636},{"word":"quiet","frame":2645},{"word":"voices","frame":2654},{"word":"share","frame":2663},{"word":"a","frame":2672},{"word":"speakerphone","frame":2675},{"word":"each","frame":2691},{"word":"alone","frame":2701},{"word":"peaks","frame":2708},{"word":"at","frame":2717},{"word":"0","frame":2723},{"word":".8","frame":2728},{"word":"together","frame":2749},{"word":"linearity","frame":2758},{"word":"says","frame":2776},{"word":"1","frame":2783},{"word":".6","frame":2789},{"word":"the","frame":2804},{"word":"chip","frame":2812},{"word":"writes","frame":2818},{"word":"one","frame":2826},{"word":"and","frame":2833},{"word":"the","frame":2837},{"word":"pair","frame":2840},{"word":"buzzes","frame":2845},{"word":"linearity","frame":2858},{"word":"is","frame":2875},{"word":"a","frame":2879},{"word":"promise","frame":2881},{"word":"about","frame":2890},{"word":"sums","frame":2897}]},{"line":10,"text":"Time-invariant means delaying the input only delays the output. The smoother, averaging each sample with the one before, has both. Any system with both properties keeps a tone's pitch: it can only resize and shift it. No new tones, ever.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line07.wav","at":97.96,"start":97.96,"end":109.5,"start_frame":2939,"words":[{"word":"time","frame":2939},{"word":"invariant","frame":2950},{"word":"means","frame":2963},{"word":"delaying","frame":2969},{"word":"the","frame":2980},{"word":"input","frame":2983},{"word":"only","frame":2990},{"word":"delays","frame":2998},{"word":"the","frame":3008},{"word":"output","frame":3013},{"word":"the","frame":3023},{"word":"smoother","frame":3037},{"word":"averaging","frame":3046},{"word":"each","frame":3059},{"word":"sample","frame":3069},{"word":"with","frame":3076},{"word":"the","frame":3080},{"word":"one","frame":3083},{"word":"before","frame":3087},{"word":"has","frame":3094},{"word":"both","frame":3103},{"word":"any","frame":3112},{"word":"system","frame":3128},{"word":"with","frame":3137},{"word":"both","frame":3143},{"word":"properties","frame":3148},{"word":"keeps","frame":3161},{"word":"a","frame":3169},{"word":"tone's","frame":3173},{"word":"pitch","frame":3181},{"word":"it","frame":3197},{"word":"can","frame":3199},{"word":"only","frame":3202},{"word":"resize","frame":3208},{"word":"and","frame":3220},{"word":"shift","frame":3228},{"word":"it","frame":3235},{"word":"no","frame":3241},{"word":"new","frame":3253},{"word":"tones","frame":3258},{"word":"ever","frame":3267}]},{"line":11,"text":"The fix: keep every output inside the range. The loudest input, speakerphones included, is point five. Times two lands right on the edge. Instead, keep the loudest peak at point eight, a fifth below the edge: that's headroom. So: times one point six. The buzz meter, counting new tones, reads zero.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r4/line11-joined.wav","at":111.5,"start":111.5,"end":126.94,"start_frame":3345,"words":[{"word":"The","frame":3345},{"word":"fix?","frame":3353},{"word":"Keep","frame":3367},{"word":"every","frame":3374},{"word":"output","frame":3382},{"word":"inside","frame":3392},{"word":"the","frame":3400},{"word":"range.","frame":3406},{"word":"The","frame":3421},{"word":"loudest","frame":3423},{"word":"input","frame":3434},{"word":"speakerphone's","frame":3443},{"word":"included","frame":3464},{"word":"is","frame":3475},{"word":"0","frame":3482},{"word":".5","frame":3487},{"word":"times","frame":3497},{"word":"2","frame":3504},{"word":"LANs","frame":3511},{"word":"right","frame":3519},{"word":"on","frame":3524},{"word":"the","frame":3528},{"word":"edge.","frame":3531},{"word":"Instead,","frame":3547},{"word":"keep","frame":3556},{"word":"the","frame":3560},{"word":"loudest","frame":3564},{"word":"peak","frame":3575},{"word":"at","frame":3580},{"word":"0","frame":3586},{"word":".8,","frame":3590},{"word":"a","frame":3603},{"word":"fifth","frame":3610},{"word":"below","frame":3614},{"word":"the","frame":3622},{"word":"edge.","frame":3627},{"word":"That's","frame":3640},{"word":"headroom,","frame":3647},{"word":"so","frame":3663},{"word":"times","frame":3670},{"word":"1","frame":3677},{"word":".6.","frame":3684},{"word":"The","frame":3736},{"word":"buzz","frame":3744},{"word":"meter","frame":3751},{"word":"counting","frame":3758},{"word":"new","frame":3768},{"word":"tones","frame":3774},{"word":"reads","frame":3782},{"word":"zero.","frame":3790}]},{"line":12,"text":"Loud callers sound like loud people again; quiet ones peak at point three two, quieter but clean. Then a new ticket: I can hear myself. Every word comes back, faint, a quarter second later. That's the next bug.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/01-signals-and-systems/4-video/vo-r3/line12.wav","at":128.14,"start":128.14,"end":138.26,"start_frame":3844,"words":[{"word":"Loud","frame":3844},{"word":"callers","frame":3856},{"word":"sound","frame":3868},{"word":"like","frame":3873},{"word":"loud","frame":3878},{"word":"people","frame":3884},{"word":"again.","frame":3893},{"word":"Quiet","frame":3912},{"word":"ones","frame":3916},{"word":"peak","frame":3923},{"word":"at","frame":3931},{"word":".32,","frame":3936},{"word":"quieter","frame":3962},{"word":"but","frame":3971},{"word":"clean.","frame":3976},{"word":"Then","frame":3994},{"word":"a","frame":3997},{"word":"new","frame":4000},{"word":"ticket.","frame":4004},{"word":"I","frame":4013},{"word":"can","frame":4019},{"word":"hear","frame":4023},{"word":"myself.","frame":4027},{"word":"Every","frame":4046},{"word":"word","frame":4051},{"word":"comes","frame":4057},{"word":"back,","frame":4064},{"word":"faint,","frame":4076},{"word":"a","frame":4089},{"word":"quarter","frame":4092},{"word":"second","frame":4098},{"word":"later.","frame":4106},{"word":"That's","frame":4121},{"word":"the","frame":4125},{"word":"next","frame":4128},{"word":"bug.","frame":4133}]}]};
 const FPS = 30;
 const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
 const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
@@ -138,7 +138,9 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   const strip = el('div', { id: 's1strip', class: 'layer' }, c);
   const quiet = callWave(strip, 600, 0.2, 4, false), loud = callWave(strip, 1680, 0.5, 4, true);
   [quiet, loud].forEach(w => M.kf(w, 'x', [[n, 0], [e, -700]]));
-  const lineY = y => layer(strip, `<line x1="0" y1="${y - 230}" x2="1920" y2="${y - 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="${y + 230}" x2="1920" y2="${y + 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>`);
+  const lineY = y => layer(strip, `<line x1="0" y1="${y - 230}" x2="1920" y2="${y - 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="${y + 230}" x2="1920" y2="${y + 230}" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>` +
+    `<text x="1890" y="${y - 246}" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.input}" opacity="0.55">+1</text>` +
+    `<text x="1890" y="${y + 278}" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.input}" opacity="0.55">−1</text>`);
   lineY(600); lineY(1680);
   label(strip, 'quiet caller', 960, 110, 'lbl', 'center');
   M.show(label(strip, '“Clear as a bell.”', 960, 190, 'note', 'center'), word(1, 'quiet'));
@@ -148,7 +150,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.camera('#s1strip', [[0, { y: 0 }], [L, { y: 0 }], [L + 14, { y: -1080 }, 'whip']]);
 }
 {
-  const c = cam(2), n = sceneStart(2), P = plot({ x0: 260, dx: 200, base: 520, A: 280 });
+  const c = cam(2), n = sceneStart(2), P = plot({ x0: 260, dx: 200, base: 490, A: 280 });
   const v = t => 0.55 * Math.sin(2 * Math.PI * t / 7.5 + 0.6) + 0.32 * Math.sin(2 * Math.PI * t / 3.1 + 2);
   const smooth = layer(c, `<path d="${curve(v, -1.3, 8.3, P)}" fill="none" stroke="${C.ink}" stroke-width="6"/>`);
   axis(c, P, 120, 1800);
@@ -158,7 +160,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   for (let k = 0; k < 8; k++) {
     const at = m + k * 4, x = P.X(k), y = P.Y(v(k));
     M.show(layer(c, `<line x1="${x}" y1="${P.base}" x2="${x}" y2="${y}" stroke="${C.soft}" stroke-width="4"/><circle cx="${x}" cy="${y}" r="16" fill="${C.ink}"/>`), at);
-    M.show(label(c, fmt(v(k)) + (k < 7 ? ',' : ''), x, 880, 'lbl', 'center'), list + k * 3);
+    M.show(label(c, fmt(v(k)), x, 810, 'lbl', 'center'), list + k * 3);
   }
   M.show(label(c, '8,000 per second', 960, 90, 'lbl', 'center'), word(2, 'eight'));
   M.show(layer(c, `<circle cx="${P.X(3)}" cy="${P.Y(v(3))}" r="34" fill="none" stroke="${C.ink}" stroke-width="5"/>`), word(2, 'sample'));
@@ -166,32 +168,39 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drift(2);
 }
 {
-  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 520, A: 260 });
+  const c = cam(3), n = sceneStart(3), P = plot({ x0: 260, dx: 175, base: 400, A: 200 });
   const ns = [0, 1, 2, 3, 4, 5, 6, 7, 8], vals = ns.map(k => cosd(45 * k));
   axis(c, P, 180, 1740);
-  const s = word(3, 'steps');
+  const s = word(3, 'step');
   const faint = layer(c, `<path d="${curve(k => cosd(45 * k), -0.2, 8.2, P)}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="14 12"/>`, [P.X(-0.2), P.X(8.2)]);
   M.kf(faint, '--p', [[0, 1]]);
   M.show(label(c, 'a tone', P.X(4), P.base + 40, 'lbl s', 'center'), n, s);
+  const run = el('div', { id: 's3run', class: 'dot' }, c);
+  Object.assign(run.style, { left: '-16px', top: '-16px', width: '32px', height: '32px', background: C.input });
+  const runKeys = []; for (let f = n, i = 0; f <= s; f += 2, i++) { const u = -0.2 + ((i * 0.12) % 8.4); runKeys.push([f, u]); }
+  M.kf('#s3run', 'x', runKeys.map(([f, u]) => [f, P.X(u)]));
+  M.kf('#s3run', 'y', runKeys.map(([f, u]) => [f, P.Y(cosd(45 * u))]));
+  M.show('#s3run', n, s);
   const S = ns.map(k => stem(c, P.X(k), P, k === 8 ? C.soft : C.ink));
   S.forEach((st, i) => { const at = s + i * 6; [st.bar, st.dot].forEach(sel => M.show(sel, at)); });
   drive(S, P, [[0, vals]]);
   ns.forEach((k, i) => {
     const at = s + i * 6, val = vals[i];
-    M.show(label(c, fmt(val), P.X(k), 820, 'lbl s', 'center'), at);
-    M.show(label(c, (45 * k) + '°', P.X(k), 900, 'lbl s', 'center'), at);
+    M.show(label(c, fmt(val), P.X(k), 640, 'lbl s', 'center'), at);
+    M.show(label(c, (45 * k) + '°', P.X(k), 698, 'lbl s', 'center'), at);
   });
   M.show(label(c, 'pitch: 1,000 Hz, repeats per second', 960, 40, 'lbl', 'center'), word(3, 'hertz'));
-  M.show(label(c, '360° × 1,000 ÷ 8,000 = 45° per sample', 960, 110, 'lbl ok', 'center'), word(3, 'angle'));
-  const rep = word(3, 'after');
-  M.show(layer(c, `<path d="M ${P.X(0)} 960 L ${P.X(0)} 980 L ${P.X(8)} 980 L ${P.X(8)} 960" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
-  M.show(label(c, '8 samples, then it starts over', P.X(4), 995, 'lbl', 'center'), rep, sceneEnd(3));
+  M.show(label(c, '360° × 1,000 ÷ 8,000 = 45° per sample', 960, 110, 'lbl ok', 'center'), word(3, 'degrees'));
+  const rep = word(3, 'eight');
+  M.show(layer(c, `<path d="M ${P.X(0)} 760 L ${P.X(0)} 776 L ${P.X(8)} 776 L ${P.X(8)} 760" fill="none" stroke="${C.ink}" stroke-width="4"/>`), rep);
+  M.show(label(c, '8 samples: one full turn', P.X(4), 780, 'lbl', 'center'), rep, sceneEnd(3));
   drift(3);
 }
 {
-  const c = cam(4), n = sceneStart(4), P = plot({ x0: 960, dx: 0, base: 640, A: 200 });
-  const chip = word(4, 'chip'), sys = word(4, 'system'), rule = word(4, 'rule', 1);
+  const c = cam(4), n = sceneStart(4), P = plot({ x0: 960, dx: 0, base: 600, A: 180 });
+  const chip = word(4, 'chip'), sys = word(4, 'system'), rule = word(4, 'rule');
   M.show(label(c, 'output[n] = 4 * input[n]', 960, 100, 'lbl big', 'center'), rule);
+  M.show(label(c, 'n: the sample number', 960, 192, 'lbl s', 'center'), rule, word(4, 'hand'));
   const row = el('div', { id: 's4row', class: 'layer' }, c);
   M.show('#s4row', n, chip);
   const Pi = plot({ x0: 180, dx: 60, base: 560, A: 160 }), Po = plot({ x0: 1300, dx: 60, base: 560, A: 160 }), k8 = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -202,11 +211,12 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   el('div', { id: 's4box', class: 'box' }, row, 'the booster');
   Object.assign(document.getElementById('s4box').style, { left: '760px', top: '480px', width: '400px', height: '160px' });
   layer(row, `<path d="M 650 560 L 735 560 M 719 544 L 737 560 L 719 576" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1180 560 L 1250 560 M 1234 544 L 1252 560 L 1234 576" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
-  label(row, 'signal in', 390, 800, 'lbl ok', 'center');
-  label(row, 'signal out', 1510, 800, 'lbl', 'center');
-  M.show(label(row, 'a system: one signal in, another out', 960, 920, 'lbl s', 'center'), sys);
+  label(row, 'signal in', 390, 740, 'lbl ok', 'center');
+  label(row, 'signal out', 1510, 740, 'lbl', 'center');
+  M.show(label(row, 'a system: one signal in, another out', 960, 810, 'lbl s', 'center'), sys);
   M.show(band(c, P, 360, 1560), chip);
-  M.show(label(c, 'what the chip can store', 960, P.Y(-1) + 40, 'lbl ok', 'center'), chip + 6);
+  M.show(label(c, 'the range: what the chip can store', 960, P.Y(-1) + 20, 'lbl ok', 'center'), word(4, 'range'));
+  M.show(label(c, 'the edge', 1580, P.Y(1) - 31, 'lbl s ok'), word(4, 'edge'));
   const hand = word(4, 'hand'), writes = word(4, 'writes');
   const S = stems(c, P, [0], C.ink, { w: 14, r: 20 });
   showAll(S, hand);
@@ -219,62 +229,61 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   drift(4);
 }
 {
-  const c = cam(5), n = sceneStart(5);
-  const strip = el('div', { id: 's5strip', class: 'layer' }, c);
-  const ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 330, dx: 190, base: 560, A: 180 }), Q = plot({ x0: 1920 + 330, dx: 190, base: 560, A: 180 });
-  band(strip, P, 270, 1720); band(strip, Q, 1920 + 270, 1920 + 1720);
-  label(strip, 'quiet caller: 0.2 × 4', 270, 80, 'lbl');
-  label(strip, 'loud caller: 0.5 × 4', 1920 + 270, 80, 'lbl');
-  const q = stems(strip, P, ns, C.ink), l = stems(strip, Q, ns, C.ink);
-  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced'), pan = word(5, 'loud', 1);
+  const c = cam(5), n = sceneStart(5), ns = [0, 1, 2, 3, 4, 5, 6, 7];
+  const P = plot({ x0: 190, dx: 95, base: 540, A: 150 }), Q = plot({ x0: 1100, dx: 95, base: 540, A: 150 });
+  band(c, P, 140, 895); band(c, Q, 1050, 1805);
+  label(c, 'quiet caller: 0.2 × 4', 140, 70, 'lbl');
+  label(c, 'loud caller: 0.5 × 4', 1050, 70, 'lbl');
+  const q = stems(c, P, ns, C.ink, { w: 8, r: 12 }), l = stems(c, Q, ns, C.ink, { w: 8, r: 12 });
+  const grow = word(5, 'grows'), reach = word(5, 'reach'), sliced = word(5, 'sliced');
   drive(q, P, [[0, ns.map(k => 0.2 * cosd(45 * k))], [grow, ns.map(k => 0.2 * cosd(45 * k))], [grow + 16, ns.map(k => 0.8 * cosd(45 * k)), 'softLand']]);
-  M.show(label(strip, 'peak 0.80', 1720 - 280, 180, 'lbl ok'), grow + 16);
-  M.show(tick(strip, 1720 - 350, 205), grow + 16);
+  M.show(label(c, 'peak 0.80', 210, 150, 'lbl ok'), grow + 16);
+  M.show(tick(c, 140, 175), grow + 16);
   const big = ns.map(k => 2 * cosd(45 * k)), cut = big.map(clip1);
   drive(l, Q, [[0, ns.map(k => 0.5 * cosd(45 * k))], [reach, ns.map(k => 0.5 * cosd(45 * k))], [reach + 16, big, 'softLand'], [sliced, big], [sliced + 5, cut, 'crashIn']]);
   const clipped = ns.filter(k => Math.abs(big[k]) > 1.001);
   tint(l, clipped, sliced, C.ink, C.accent);
-  M.show(ghosts(strip, Q, clipped.map(k => [Q.X(k), big[k]])), sliced);
-  M.show(label(strip, '1, 1, 0, −1, −1, −1, 0, 1', 1920 + 995, 985, 'lbl acc', 'center'), word(5, 'flat'));
-  M.camera('#s5strip', [[0, { x: 0 }], [pan, { x: 0 }], [pan + 14, { x: -1920 }, 'whip']]);
+  M.show(ghosts(c, Q, clipped.map(k => [Q.X(k), big[k]])), sliced);
+  M.show(label(c, '1, 1, 0, −1, −1, −1, 0, 1', 1805, 150, 'lbl acc', 'right'), word(5, 'flat'));
+  drift(5);
 }
 {
-  const c = cam(6), n = sceneStart(6), P = plot({ x0: 300, dx: 190, base: 680, A: 300 });
+  const c = cam(6), n = sceneStart(6), P = plot({ x0: 300, dx: 190, base: 620, A: 280 });
   axis(c, P, 220, 760);
   const clean = [1, cosd(45), 0], clip = [1, 1, 0];
   const S = stems(c, P, [0, 1, 2], C.ink, { w: 14, r: 20 });
-  const fail = word(6, 'clip');
+  const fail = word(6, 'clipped');
   drive(S, P, [[0, clean], [fail, clean], [fail + 8, clip, 'softLand']]);
   tint(S, [0, 1], fail, C.ink, C.accent);
-  [0, 1, 2].forEach(k => label(c, 'n = ' + k, P.X(k), 720, 'lbl s', 'center'));
+  [0, 1, 2].forEach(k => label(c, 'n = ' + k, P.X(k), 650, 'lbl s', 'center'));
   const nb = word(6, 'neighbors');
   M.show(layer(c, `<line x1="900" y1="${P.base}" x2="1760" y2="${P.base}" stroke="${C.soft}" stroke-width="3"/>`), nb);
   const lower = el('div', { id: 'B' + (++uid), class: 'bar' }, c), scaled = el('div', { id: 'B' + (++uid), class: 'bar' }, c);
   Object.assign(lower.style, { left: '1020px', top: (P.base - P.A) + 'px', width: '120px', height: P.A + 'px', background: C.ink, borderRadius: '0' });
   Object.assign(scaled.style, { left: '1500px', top: (P.base - P.A) + 'px', width: '120px', height: P.A + 'px', background: C.ink, borderRadius: '0' });
-  M.show('#' + lower.id, nb); M.show('#' + scaled.id, word(6, 'middle'));
+  M.show('#' + lower.id, nb); M.show('#' + scaled.id, word(6, 'between'));
   M.kf('#' + lower.id, 'scaleY', [[0, 1]]);
   M.kf('#' + scaled.id, 'scaleY', [[0, 1.414 * cosd(45)], [fail, 1.414 * cosd(45)], [fail + 8, 1.414, 'softLand']]);
-  M.show(label(c, 'left + right', 1080, 720, 'lbl s', 'center'), nb);
-  M.show(label(c, '1.414 × middle', 1560, 720, 'lbl s', 'center'), word(6, 'middle'));
-  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 830, 'lbl', 'center'), nb, fail);
-  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 900, 'lbl', 'center'), word(6, 'fixed'), fail);
-  M.show(tick(c, 1330, 1000), word(6, 'clean'), fail);
-  M.show(label(c, '1 + 0 = 1', 960, 830, 'lbl', 'center'), fail);
-  M.show(label(c, '1.414 × 1 = 1.414', 960, 900, 'lbl acc', 'center'), fail);
-  M.show(cross(c, 1330, 1000), fail + 8);
-  M.show(label(c, 'the neighbor rule', 960, 70, 'lbl s', 'center'), word(6, 'pencil'));
+  M.show(label(c, 'left + right', 1080, 650, 'lbl s', 'center'), nb);
+  M.show(label(c, '1.414 × middle', 1560, 650, 'lbl s', 'center'), word(6, 'between'));
+  M.show(label(c, '1.00 + 0.00 = 1.00', 960, 730, 'lbl', 'center'), nb, fail);
+  M.show(label(c, '1.414 × 0.71 = 1.00', 960, 800, 'lbl', 'center'), word(6, 'between'), fail);
+  M.show(tick(c, 1270, 835), word(6, 'clean'), fail);
+  M.show(label(c, '1 + 0 = 1', 960, 730, 'lbl', 'center'), fail);
+  M.show(label(c, '1.414 × 1 = 1.414', 960, 800, 'lbl acc', 'center'), fail);
+  M.show(cross(c, 1250, 831), fail + 8);
+  M.show(label(c, 'the neighbor rule', 960, 70, 'lbl s', 'center'), word(6, 'neighbor'));
   drift(6);
 }
 {
-  const c = cam(7), n = sceneStart(7), P = plot({ x0: 300, dx: 190, base: 560, A: 260 });
+  const c = cam(7), n = sceneStart(7), P = plot({ x0: 300, dx: 190, base: 520, A: 240 });
   const ns = [0, 1, 2, 3, 4, 5, 6, 7], cut = ns.map(k => clip1(2 * cosd(45 * k)));
   axis(c, P, 220, 1720);
   const S = stems(c, P, ns, C.ink);
   drive(S, P, [[0, cut]]);
   const big = k => 1.207 * cosd(45 * k), buzz = k => 0.207 * cosd(135 * k);
   const a = -0.35, b = 7.35, span = [P.X(a) - 10, P.X(b) + 10];
-  const t1 = word(7, 'one'), t3 = word(7, 'three'), land = word(7, 'lands');
+  const t1 = word(7, 'one'), t3 = word(7, 'three'), land = word(7, 'second');
   const w1 = layer(c, `<path d="${curve(big, a, b, P)}" fill="none" stroke="${C.soft}" stroke-width="5" stroke-dasharray="18 12"/>`, span);
   reveal(w1, t1, t1 + 26);
   const w3 = layer(c, `<path d="${curve(buzz, a, b, P)}" fill="none" stroke="${C.accent}" stroke-width="6" stroke-dasharray="3 12" stroke-linecap="round"/>`, span);
@@ -286,14 +295,14 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
     const k = j / K, f = x => big(x) - k * buzz(x);
     M.show(layer(c, `<path d="${curve(f, a, b, P)}" fill="none" stroke="${C.ink}" stroke-width="7"/>`), morph + j * 2, j < K ? morph + (j + 1) * 2 : undefined);
   }
-  M.show(label(c, 'the first minus the second', 1720, 960, 'lbl', 'right'), land);
+  M.show(label(c, 'the first minus the second', 1720, 60, 'lbl', 'right'), land);
   drift(7, 1, 1.04);
 }
 {
   const c = cam(8), n = sceneStart(8), P = plot({ x0: 0, dx: 1, base: 600, A: 200 });
   M.show(band(c, P, 300, 1620), n);
   const A1 = stem(c, 620, P, C.ink, 14, 20), A2 = stem(c, 1300, P, C.ink, 14, 20);
-  const dbl = word(8, 'doubling'), real = word(8, 'real'), inside = word(8, 'inside');
+  const dbl = word(8, 'doubling'), real = word(8, 'real'), inside = word(8, 'outputs');
   drive([A1], P, [[0, [0.2]], [n + 10, [0.2]], [n + 26, [0.8], 'softLand']]);
   drive([A2], P, [[0, [0.4]], [real - 30, [0.4]], [real - 14, [1.6], 'softLand'], [real, [1.6]], [real + 5, [1], 'crashIn']]);
   showAll([A1], n); showAll([A2], dbl);
@@ -305,8 +314,8 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(c, '0.4 → 1.6 asked', 1300, P.Y(1.6) - 110, 'lbl', 'center'), real - 14);
   M.show(label(c, 'written: 1.0', 1340, P.Y(1.2) - 31, 'lbl acc'), real);
   M.show(cross(c, 1750, P.Y(1.2)), real + 5);
-  M.show(label(c, 'linear', 960, 40, 'lbl', 'center'), word(8, 'linear'));
-  M.show(label(c, 'inside the range: × 4 holds', 960, P.Y(-1) + 50, 'lbl ok', 'center'), inside);
+  M.show(label(c, 'linear?', 960, 40, 'lbl', 'center'), word(8, 'linear'));
+  M.show(label(c, 'like × 4 only while outputs stay inside', 960, P.Y(-1) + 10, 'lbl ok', 'center'), inside);
   drift(8);
 }
 {
@@ -324,79 +333,90 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(ghosts(c, P, hot.map(k => [P.X(k), sum[k]])), writes);
   M.show(label(c, '1,000 Hz voice', 230, 60, 'lbl'), n, tog + 18);
   M.show(label(c, '500 Hz voice', 760, 60, 'lbl ok'), n, tog + 18);
-  M.show(label(c, 'each alone: peak 0.80', 230, 950, 'lbl'), word(9, 'alone'), tog + 18);
-  M.show(tick(c, 950, 980), word(9, 'alone'), tog + 18);
+  M.show(label(c, 'each alone: peak 0.80', 230, 810, 'lbl'), word(9, 'alone'), tog + 18);
+  M.show(tick(c, 950, 840), word(9, 'alone'), tog + 18);
   M.show(label(c, 'added: 1.60 asked', 230, 60, 'lbl'), tog + 18);
-  M.show(label(c, '1.00 written', 230, 950, 'lbl acc'), writes);
-  M.show(cross(c, 640, 980), writes + 5);
+  M.show(label(c, '1.00 written', 230, 810, 'lbl acc'), writes);
+  M.show(cross(c, 640, 841), writes + 5);
   M.show(label(c, 'linear?', 1690, 60, 'lbl', 'right'), n);
   drift(9);
 }
 {
-  const c = cam(10), n = sceneStart(10), tg = word(10, 'together'), ns = Array.from({ length: 12 }, (_, k) => k);
+  const c = cam(10), n = sceneStart(10), tg = word(10, 'smoother'), ns = Array.from({ length: 12 }, (_, k) => k);
   const partA = el('div', { id: 's10a', class: 'layer' }, c), partB = el('div', { id: 's10b', class: 'layer' }, c);
   M.show('#s10a', n, tg); M.show('#s10b', tg);
-  const Pin = plot({ x0: 420, dx: 110, base: 380, A: 360 }), Pout = plot({ x0: 420, dx: 110, base: 860, A: 180 });
+  const Pin = plot({ x0: 420, dx: 110, base: 380, A: 200 }), Pout = plot({ x0: 420, dx: 110, base: 800, A: 200 });
   axis(partA, Pin, 360, 1700); axis(partA, Pout, 360, 1700);
   label(partA, 'in', 120, Pin.base - 60, 'lbl ok'); label(partA, 'out', 120, Pout.base - 60, 'lbl');
+  label(partA, 'the smoother: (this + previous) ÷ 2', 960, 560, 'lbl', 'center');
   const delay = word(10, 'delaying'), shift = 3 * 110;
-  const bi = stem(partA, Pin.X(2), Pin, C.input, 14, 20), bo = stem(partA, Pout.X(2), Pout, C.ink, 14, 20);
-  drive([bi], Pin, [[0, [0.25]]]); drive([bo], Pout, [[0, [1]]]);
-  [bi.bar, bi.dot, bo.bar, bo.dot].forEach(sel => M.kf(sel, 'x', [[0, 0], [delay, 0], [delay + 16, shift, 'softLand']]));
-  M.show(ghosts(partA, Pin, [[Pin.X(2), 0.25]]), delay);
-  M.show(ghosts(partA, Pout, [[Pout.X(2), 1]]), delay);
-  M.show(label(partA, '3 samples later', Pin.X(3.5), Pin.base + 30, 'lbl s', 'center'), delay + 16);
-  M.show(label(partA, '3 samples later', Pout.X(3.5), Pout.base + 30, 'lbl s', 'center'), delay + 16);
+  const bi = stem(partA, Pin.X(2), Pin, C.input, 14, 20), bo = [stem(partA, Pout.X(2), Pout, C.ink, 14, 20), stem(partA, Pout.X(3), Pout, C.ink, 14, 20)];
+  drive([bi], Pin, [[0, [1]]]); drive(bo, Pout, [[0, [0.5, 0.5]]]);
+  [bi, ...bo].forEach(st => [st.bar, st.dot].forEach(sel => M.kf(sel, 'x', [[0, 0], [delay, 0], [delay + 16, shift, 'softLand']])));
+  M.show(ghosts(partA, Pin, [[Pin.X(2), 1]]), delay);
+  M.show(ghosts(partA, Pout, [[Pout.X(2), 0.5], [Pout.X(3), 0.5]]), delay);
+  M.show(label(partA, '3 samples later', Pin.X(4), Pin.base + 30, 'lbl s', 'center'), delay + 16);
+  M.show(label(partA, '3 samples later', Pout.X(4), Pout.base + 20, 'lbl s', 'center'), delay + 16);
   M.show(label(partA, 'time-invariant', 960, 70, 'lbl', 'center'), word(10, 'time'));
-  const I = plot({ x0: 140, dx: 58, base: 540, A: 170 }), O = plot({ x0: 1260, dx: 58, base: 540, A: 170 });
+  const I = plot({ x0: 140, dx: 58, base: 500, A: 170 }), O = plot({ x0: 1260, dx: 58, base: 500, A: 170 });
   const k8 = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   axis(partB, I, 110, 640); axis(partB, O, 1230, 1760);
   const si = stems(partB, I, k8, C.input, { w: 8, r: 12 }); drive(si, I, [[0, k8.map(k => cosd(45 * k))]]);
   el('div', { id: 's10box', class: 'box' }, partB, 'the smoother\nlinear,\ntime-invariant');
-  Object.assign(document.getElementById('s10box').style, { left: '720px', top: '420px', width: '440px', height: '240px' });
-  layer(partB, `<path d="M 650 540 L 700 540 M 684 524 L 702 540 L 684 556" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1175 540 L 1215 540 M 1199 524 L 1217 540 L 1199 556" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
+  Object.assign(document.getElementById('s10box').style, { left: '720px', top: '380px', width: '440px', height: '240px' });
+  layer(partB, `<path d="M 650 500 L 700 500 M 684 484 L 702 500 L 684 516" fill="none" stroke="${C.soft}" stroke-width="5"/><path d="M 1175 500 L 1215 500 M 1199 484 L 1217 500 L 1199 516" fill="none" stroke="${C.soft}" stroke-width="5"/>`);
   const out = k => 0.924 * cosd(45 * k - 22.5);
   const so = stems(partB, O, k8, C.ink, { w: 8, r: 12 });
   drive(so, O, [[0, k8.map(() => 0)], [tg + 12, k8.map(() => 0)], [tg + 30, k8.map(out), 'softLand']]);
   const ow = layer(partB, `<path d="${curve(out, -0.2, 8.2, O)}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="12 10"/>`, [O.X(-0.2), O.X(8.2)]);
   reveal(ow, tg + 30, tg + 56);
-  label(partB, '1,000 Hz in', 372, 790, 'lbl ok', 'center');
-  M.show(label(partB, '1,000 Hz out', 1492, 790, 'lbl', 'center'), word(10, 'same'));
-  M.show(label(partB, 'smaller, half a sample later', 1720, 880, 'lbl s', 'right'), word(10, 'bigger'));
-  M.show(label(partB, 'same pitch, no new tones', 960, 150, 'lbl acc', 'center'), word(10, 'same'));
+  label(partB, '1,000 Hz in', 372, 750, 'lbl ok', 'center');
+  M.show(label(partB, '1,000 Hz out', 1492, 750, 'lbl', 'center'), word(10, 'keeps'));
+  M.show(label(partB, 'resized and shifted', 1492, 812, 'lbl s', 'center'), word(10, 'resize'));
+  M.show(label(partB, 'both properties: same pitch, no new tones', 960, 150, 'lbl ok', 'center'), word(10, 'keeps'));
   drift(10);
 }
 {
-  const c = cam(11), n = sceneStart(11), ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 520, dx: 160, base: 560, A: 210 });
+  const c = cam(11), n = sceneStart(11), ns = [0, 1, 2, 3, 4, 5, 6, 7], P = plot({ x0: 520, dx: 160, base: 530, A: 160 });
   M.show(band(c, P, 460, 1700), n);
-  const fifth = word(11, 'fifth');
-  M.show(layer(c, `<rect x="460" y="${P.Y(1)}" width="1240" height="${P.Y(0.8) - P.Y(1)}" fill="#F6D9CF"/>`), fifth);
   const S = stems(c, P, ns, C.ink);
   const big = ns.map(k => 2 * cosd(45 * k)), x4 = big.map(clip1), x2 = ns.map(k => cosd(45 * k)), x16 = ns.map(k => 0.8 * cosd(45 * k));
-  const two = word(11, 'times'), six = word(11, 'one'), meter = word(11, 'reads');
-  drive(S, P, [[0, x4], [two, x4], [two + 14, x2, 'softLand'], [six, x2], [six + 14, x16, 'softLand']]);
+  const two = word(11, 'times'), down = word(11, 'loudest', 1), room = word(11, 'headroom'), six = word(11, 'one'), meter = word(11, 'buzz');
+  M.show(layer(c, `<rect x="460" y="${P.Y(1)}" width="1240" height="${P.Y(0.8) - P.Y(1)}" fill="#A9D2CC"/>`), room);
+  drive(S, P, [[0, x4], [two, x4], [two + 14, x2, 'softLand'], [down, x2], [down + 14, x16, 'softLand']]);
   const hot = ns.filter(k => Math.abs(big[k]) > 1.001);
   hot.forEach(i => [S[i].bar, S[i].dot].forEach(sel => M.kf(sel, 'backgroundColor', [[0, C.accent], [two, C.accent], [two, C.ink]])));
   M.show(ghosts(c, P, hot.map(k => [P.X(k), big[k]])), n, two);
   M.show(label(c, '× 4', 160, 500, 'lbl'), n, two);
-  M.show(label(c, '× 2', 160, 500, 'lbl'), two, six);
-  M.show(label(c, '× 1.6', 160, 500, 'lbl ok'), six);
+  M.show(label(c, '× 2', 160, 500, 'lbl'), two, down);
+  M.show(label(c, '× 1.6', 160, 500, 'lbl ok'), down);
   M.show(label(c, 'loudest input 0.5', 460, 60, 'lbl'), word(11, 'loudest'));
   M.show(label(c, 'peak 2.00, clipped', 1700, 60, 'lbl acc', 'right'), n, two);
-  M.show(label(c, 'peak 1.00, no margin', 1700, 60, 'lbl acc', 'right'), two + 14, six);
-  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 960, 960, 'lbl ok', 'center'), word(11, 'divided'), word(11, 'meter'));
-  M.show(label(c, 'headroom: 0.8 to 1', 1700, P.Y(1) - 76, 'lbl acc', 'right'), word(11, 'headroom'));
-  M.show(label(c, 'buzz meter 0%: loud 0.80 · quiet 0.32 · pair 0.64', 960, 960, 'lbl', 'center'), meter);
+  M.show(label(c, 'peak 1.00, no margin', 1700, 60, 'lbl acc', 'right'), two + 14, down);
+  M.show(label(c, 'peak 0.80', 1700, 60, 'lbl ok', 'right'), down + 14);
+  M.show(label(c, 'headroom: 0.8 to 1', 1700, P.Y(1) - 76, 'lbl ok', 'right'), room);
+  M.show(label(c, '0.8 ÷ 0.5 = 1.6', 1080, 800, 'lbl ok', 'center'), six, meter);
+  M.show(label(c, 'peaks: loud 0.80 · quiet 0.32 · pair 0.64', 1080, 800, 'lbl', 'center'), meter);
+  M.show(label(c, 'buzz meter', 90, 600, 'lbl s'), meter);
+  M.show(layer(c, `<rect x="90" y="672" width="250" height="34" fill="${C.paper}" stroke="${C.ink}" stroke-width="3" rx="4"/><text x="90" y="760" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">0%</text><text x="340" y="760" text-anchor="end" font-family="Geist Mono, monospace" font-size="48" fill="${C.soft}">40%</text>`), meter);
+  M.show(label(c, 'reads 0%', 90, 790, 'lbl ok'), word(11, 'reads'));
   drift(11);
 }
 {
   const c = cam(12), n = sceneStart(12), tk = word(12, 'ticket'), back = word(12, 'comes');
   const clean = el('div', { id: 's12a', class: 'layer' }, c), echo = el('div', { id: 's12b', class: 'layer' }, c);
   M.show('#s12a', n, tk); M.show('#s12b', tk);
-  const cw = callWave(clean, 540, 0.5, 1.6, false);
-  M.kf(cw, 'x', [[n, 0], [tk, -300]]);
-  layer(clean, `<line x1="0" y1="240" x2="1920" y2="240" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/><line x1="0" y1="840" x2="1920" y2="840" stroke="${C.input}" stroke-width="4" stroke-dasharray="20 12"/>`);
-  label(clean, 'loud caller, × 1.6', 160, 120, 'lbl');
+  const P = plot({ x0: 0, dx: 1, base: 500, A: 250 });
+  band(clean, P, 140, 1780);
+  const k8 = [0, 1, 2, 3, 4, 5, 6, 7];
+  const groups = [['loud 0.80', 230, k8.map(k => 0.8 * cosd(45 * k))], ['quiet 0.32', 790, k8.map(k => 0.32 * cosd(45 * k))], ['pair 0.64', 1350, k8.map(k => 0.32 * cosd(45 * k) + 0.32 * cosd(22.5 * k))]];
+  groups.forEach(([name, x0, vals]) => {
+    const G = plot({ x0, dx: 52, base: 500, A: 250 });
+    drive(stems(clean, G, k8, C.ink, { w: 8, r: 12 }), G, [[0, vals]]);
+    label(clean, name, x0 + 182, 790, 'lbl', 'center');
+  });
+  label(clean, 'every caller at × 1.6', 140, 90, 'lbl');
+  label(clean, 'buzz meter 0%', 1780, 90, 'lbl ok', 'right');
   const hello = (x0, w, amp, color, sw) => { const pts = []; for (let i = 0; i <= 600; i++) { const u = i / 600, env = Math.sin(Math.PI * u) ** 1.5 * (0.7 + 0.3 * Math.sin(9 * u)); pts.push([x0 + u * w, 540 - amp * env * Math.sin(2 * Math.PI * 26 * u + 3 * Math.sin(5 * u))]); } return `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${sw}"/>`; };
   layer(echo, `<line x1="120" y1="540" x2="1800" y2="540" stroke="${C.rule}" stroke-width="3"/>` + hello(200, 560, 250, C.ink, 5));
   label(echo, 'hello', 480, 200, 'note', 'center');
@@ -406,7 +426,7 @@ function callWave(c, yc, size, boost, accentFlats, color = C.ink) {
   M.show(label(echo, '...hello', 1320, 340, 'note', 'center'), back + 24);
   M.show(layer(echo, `<path d="M 200 760 L 200 790 L 1040 790 L 1040 760" fill="none" stroke="${C.ink}" stroke-width="4"/>`), word(12, 'quarter'));
   M.show(label(echo, '0.25 s later', 620, 810, 'lbl', 'center'), word(12, 'quarter'));
-  M.show(label(echo, 'next: the echo', 960, 940, 'lbl acc', 'center'), word(12, 'next'));
+  M.show(label(echo, 'next: the echo', 960, 80, 'lbl acc', 'center'), word(12, 'next'));
   M.drift('#s12cam', { prop: 'scale', from: 1.03, to: 1, start: tk, end: END });
 }
 SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
