@@ -28,13 +28,13 @@ Rules the builders learned the hard way (they live in the builder brief):
 | 6 | Zeros and poles | ready | ready |
 | 7 | Ringing | ready | ready |
 | 8 | Phase and delay | ready | ready |
-| 9 | Finite precision | ready (judge 3 ready with polish, polish applied 2026-11-05) | to build |
-| 10 | FIR windows | ready (judge 5: one answer leak, fixed and checked in a browser 2026-11-05) | to build |
-| 11 | Bilinear transform | ready (judge 2 ready with polish, polish applied 2026-11-05) | to build |
-| 12 | DFT | ready (judge 2 ready with polish, polish applied 2026-11-05) | to build |
-| 13 | FFT | ready (judge 2 ready with polish, polish applied 2026-11-05) | to build |
-| 14 | Spectrum windows | ready (judge 2 ready with polish, polish applied 2026-11-05) | to build |
-| 15 | Hilbert | ready (judge 2 ready with polish, polish applied 2026-11-05) | to build |
+| 9 | Finite precision | ready (judge 3 ready with polish, polish applied 2026-11-05) | ready (viewer judges 2, polish applied 2026-11-06) |
+| 10 | FIR windows | ready (judge 5: one answer leak, fixed and checked in a browser 2026-11-05) | ready (viewer judge 1 polish and title-safe pass 2026-11-06) |
+| 11 | Bilinear transform | ready (judge 2 ready with polish, polish applied 2026-11-05) | ready (viewer judges 2, fixes applied 2026-11-06) |
+| 12 | DFT | ready (judge 2 ready with polish, polish applied 2026-11-05) | ready (viewer judges 3, polish applied 2026-11-06) |
+| 13 | FFT | ready (judge 2 ready with polish, polish applied 2026-11-05) | ready (viewer judges 2, polish applied 2026-11-06) |
+| 14 | Spectrum windows | ready (judge 2 ready with polish, polish applied 2026-11-05) | ready (viewer judge 1, polish applied 2026-11-06) |
+| 15 | Hilbert | ready (judge 2 ready with polish, polish applied 2026-11-05) | ready (viewer judge 1, polish applied 2026-11-06) |
 | 16 | Cepstrum | ready | ready (viewer judge ready with polish, polish applied 2026-11-05) |
 
 ## Open items
@@ -77,7 +77,7 @@ Rules the builders learned the hard way (they live in the builder brief):
 - [x] Lesson 12: builder changed the mirror-arrow wording (two half arrows laid tip to tail land on the sample, not halfway between tips); check lesson 6 and series.md use the same picture (checked 2026-11-05: same picture, wording only). Sheet act 1 predictions changed (half turn, N = 16). Add "presses arrive at different loudness" to the act 2 task.
 - [x] Lesson 13 sheet: goertzel-final value: recomputed as (-129.3, 91.0); 91.8 is the result's length, printed separately; act 1 first prediction moved inline before the odd-walk figure.
 - [x] Read-aloud long-sentence fixes for lessons 1, 2, 4 and 5 (reports in `~/personal/lessons/dsp-oppenheim/<lesson>/read-aloud-final/report.json`): 15 real long sentences split, 11 flags were artefacts of maths, quotes or tables run together, 1 already fixed. No video narration changed. Done 2026-11-06.
-- [ ] Videos for lessons 2 to 16, after lesson 1's video passes so they reuse its fixes.
+- [x] Videos for lessons 2 to 16. Done 2026-11-06; 9 to 15 learned four rules the builders now apply: whole-word cue anchors, opacity-only flicker, text inside 54 px top / 96 px sides and above y = 840, no stale readouts.
 - [ ] Cross-lesson verification (`references/verification.md`): one mental model across prose, figures, page and video.
 - [ ] Update `series.md` glossary and status as lessons pass; regenerate `index.html`.
 - [x] Push: `main` matches `origin/main` (checked 2026-11-05).
