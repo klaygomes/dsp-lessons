@@ -1,0 +1,1949 @@
+{
+ "fps": 30,
+ "duration": 137.25,
+ "wpm": 211,
+ "lines": [
+  {
+   "line": 1,
+   "text": "Your keypad detector runs live: every block of two hundred fifty-six samples, it matches eight test wheels, its bins, one per keypad tone, against a twelve percent bar. Then two complaints arrive. Loud presses of four get thrown out, since the seven's row clears the bar too. And faint rural keys are never heard.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 15.8,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "Your",
+     "frame": 18
+    },
+    {
+     "word": "keypad",
+     "frame": 27
+    },
+    {
+     "word": "detector",
+     "frame": 38
+    },
+    {
+     "word": "runs",
+     "frame": 49
+    },
+    {
+     "word": "live.",
+     "frame": 58
+    },
+    {
+     "word": "Every",
+     "frame": 72
+    },
+    {
+     "word": "block",
+     "frame": 81
+    },
+    {
+     "word": "of",
+     "frame": 89
+    },
+    {
+     "word": "256",
+     "frame": 92
+    },
+    {
+     "word": "samples,",
+     "frame": 109
+    },
+    {
+     "word": "it",
+     "frame": 130
+    },
+    {
+     "word": "matches",
+     "frame": 137
+    },
+    {
+     "word": "eight",
+     "frame": 144
+    },
+    {
+     "word": "test",
+     "frame": 151
+    },
+    {
+     "word": "wheels,",
+     "frame": 158
+    },
+    {
+     "word": "its",
+     "frame": 172
+    },
+    {
+     "word": "bins,",
+     "frame": 173
+    },
+    {
+     "word": "one",
+     "frame": 188
+    },
+    {
+     "word": "per",
+     "frame": 194
+    },
+    {
+     "word": "keypad",
+     "frame": 199
+    },
+    {
+     "word": "tone,",
+     "frame": 211
+    },
+    {
+     "word": "against",
+     "frame": 226
+    },
+    {
+     "word": "a",
+     "frame": 234
+    },
+    {
+     "word": "12",
+     "frame": 239
+    },
+    {
+     "word": "%",
+     "frame": 245
+    },
+    {
+     "word": "bar.",
+     "frame": 253
+    },
+    {
+     "word": "Then",
+     "frame": 268
+    },
+    {
+     "word": "two",
+     "frame": 277
+    },
+    {
+     "word": "complaints",
+     "frame": 281
+    },
+    {
+     "word": "arrive,",
+     "frame": 293
+    },
+    {
+     "word": "loud",
+     "frame": 313
+    },
+    {
+     "word": "presses",
+     "frame": 315
+    },
+    {
+     "word": "of",
+     "frame": 325
+    },
+    {
+     "word": "four",
+     "frame": 331
+    },
+    {
+     "word": "get",
+     "frame": 336
+    },
+    {
+     "word": "thrown",
+     "frame": 341
+    },
+    {
+     "word": "out",
+     "frame": 348
+    },
+    {
+     "word": "since",
+     "frame": 356
+    },
+    {
+     "word": "the",
+     "frame": 362
+    },
+    {
+     "word": "seven's",
+     "frame": 368
+    },
+    {
+     "word": "row",
+     "frame": 379
+    },
+    {
+     "word": "clears",
+     "frame": 383
+    },
+    {
+     "word": "the",
+     "frame": 392
+    },
+    {
+     "word": "bar",
+     "frame": 397
+    },
+    {
+     "word": "too,",
+     "frame": 403
+    },
+    {
+     "word": "and",
+     "frame": 421
+    },
+    {
+     "word": "faint",
+     "frame": 424
+    },
+    {
+     "word": "rural",
+     "frame": 431
+    },
+    {
+     "word": "keys",
+     "frame": 438
+    },
+    {
+     "word": "are",
+     "frame": 446
+    },
+    {
+     "word": "never",
+     "frame": 452
+    },
+    {
+     "word": "heard.",
+     "frame": 458
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Lower the bar to six percent? The rural keys come through, and loud keys are thrown out instead. Why does a loud four light up seven's bin?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line02.wav",
+   "at": 16.4,
+   "start": 16.4,
+   "end": 23.11,
+   "start_frame": 492,
+   "words": [
+    {
+     "word": "Lower",
+     "frame": 492
+    },
+    {
+     "word": "the",
+     "frame": 502
+    },
+    {
+     "word": "bar",
+     "frame": 506
+    },
+    {
+     "word": "to",
+     "frame": 512
+    },
+    {
+     "word": "6%,",
+     "frame": 516
+    },
+    {
+     "word": "the",
+     "frame": 532
+    },
+    {
+     "word": "rural",
+     "frame": 544
+    },
+    {
+     "word": "keys",
+     "frame": 551
+    },
+    {
+     "word": "come",
+     "frame": 559
+    },
+    {
+     "word": "through,",
+     "frame": 566
+    },
+    {
+     "word": "and",
+     "frame": 583
+    },
+    {
+     "word": "loud",
+     "frame": 584
+    },
+    {
+     "word": "keys",
+     "frame": 591
+    },
+    {
+     "word": "are",
+     "frame": 600
+    },
+    {
+     "word": "thrown",
+     "frame": 605
+    },
+    {
+     "word": "out",
+     "frame": 611
+    },
+    {
+     "word": "instead.",
+     "frame": 616
+    },
+    {
+     "word": "Why",
+     "frame": 635
+    },
+    {
+     "word": "does",
+     "frame": 637
+    },
+    {
+     "word": "a",
+     "frame": 641
+    },
+    {
+     "word": "loud",
+     "frame": 646
+    },
+    {
+     "word": "four",
+     "frame": 650
+    },
+    {
+     "word": "light",
+     "frame": 657
+    },
+    {
+     "word": "up",
+     "frame": 663
+    },
+    {
+     "word": "sevens",
+     "frame": 668
+    },
+    {
+     "word": "bin?",
+     "frame": 682
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Shrink it to a napkin: eight samples, bins a thousand hertz apart. A thousand hertz tone sits on its bin: one hundred percent, and zero everywhere else. Move it halfway, to fifteen hundred: sixty and seventy in the nearest bins, and every bin catches something. That's leakage.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line03.wav",
+   "at": 24.31,
+   "start": 24.31,
+   "end": 37.75,
+   "start_frame": 729,
+   "words": [
+    {
+     "word": "Shrink",
+     "frame": 729
+    },
+    {
+     "word": "it",
+     "frame": 743
+    },
+    {
+     "word": "to",
+     "frame": 745
+    },
+    {
+     "word": "a",
+     "frame": 749
+    },
+    {
+     "word": "napkin.",
+     "frame": 752
+    },
+    {
+     "word": "8",
+     "frame": 771
+    },
+    {
+     "word": "samples,",
+     "frame": 776
+    },
+    {
+     "word": "bins",
+     "frame": 795
+    },
+    {
+     "word": "1000",
+     "frame": 801
+    },
+    {
+     "word": "Hz",
+     "frame": 811
+    },
+    {
+     "word": "apart.",
+     "frame": 819
+    },
+    {
+     "word": "1000",
+     "frame": 838
+    },
+    {
+     "word": "Hz",
+     "frame": 846
+    },
+    {
+     "word": "tone",
+     "frame": 857
+    },
+    {
+     "word": "sits",
+     "frame": 866
+    },
+    {
+     "word": "on",
+     "frame": 873
+    },
+    {
+     "word": "its",
+     "frame": 878
+    },
+    {
+     "word": "bin,",
+     "frame": 882
+    },
+    {
+     "word": "100",
+     "frame": 895
+    },
+    {
+     "word": "%",
+     "frame": 906
+    },
+    {
+     "word": "and",
+     "frame": 916
+    },
+    {
+     "word": "0",
+     "frame": 924
+    },
+    {
+     "word": "everywhere",
+     "frame": 931
+    },
+    {
+     "word": "else.",
+     "frame": 942
+    },
+    {
+     "word": "Move",
+     "frame": 965
+    },
+    {
+     "word": "it",
+     "frame": 970
+    },
+    {
+     "word": "halfway",
+     "frame": 973
+    },
+    {
+     "word": "to",
+     "frame": 983
+    },
+    {
+     "word": "1500,",
+     "frame": 991
+    },
+    {
+     "word": "60,",
+     "frame": 1015
+    },
+    {
+     "word": "and",
+     "frame": 1024
+    },
+    {
+     "word": "70",
+     "frame": 1028
+    },
+    {
+     "word": "in",
+     "frame": 1036
+    },
+    {
+     "word": "the",
+     "frame": 1040
+    },
+    {
+     "word": "nearest",
+     "frame": 1042
+    },
+    {
+     "word": "bins",
+     "frame": 1049
+    },
+    {
+     "word": "and",
+     "frame": 1059
+    },
+    {
+     "word": "every",
+     "frame": 1066
+    },
+    {
+     "word": "bin",
+     "frame": 1072
+    },
+    {
+     "word": "catches",
+     "frame": 1078
+    },
+    {
+     "word": "something.",
+     "frame": 1087
+    },
+    {
+     "word": "That's",
+     "frame": 1107
+    },
+    {
+     "word": "leakage.",
+     "frame": 1112
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "A thousand hertz makes exactly one turn in the block. Fifteen hundred stops halfway round: the block ends partway through a turn.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line04.wav",
+   "at": 38.35,
+   "start": 38.35,
+   "end": 44.78,
+   "start_frame": 1150,
+   "words": [
+    {
+     "word": "A",
+     "frame": 1150
+    },
+    {
+     "word": "thousand",
+     "frame": 1159
+    },
+    {
+     "word": "hertz",
+     "frame": 1167
+    },
+    {
+     "word": "makes",
+     "frame": 1173
+    },
+    {
+     "word": "exactly",
+     "frame": 1183
+    },
+    {
+     "word": "one",
+     "frame": 1194
+    },
+    {
+     "word": "turn",
+     "frame": 1201
+    },
+    {
+     "word": "in",
+     "frame": 1207
+    },
+    {
+     "word": "the",
+     "frame": 1211
+    },
+    {
+     "word": "block.",
+     "frame": 1213
+    },
+    {
+     "word": "Fifteen",
+     "frame": 1239
+    },
+    {
+     "word": "hundred",
+     "frame": 1245
+    },
+    {
+     "word": "stops",
+     "frame": 1251
+    },
+    {
+     "word": "halfway",
+     "frame": 1263
+    },
+    {
+     "word": "round,",
+     "frame": 1273
+    },
+    {
+     "word": "the",
+     "frame": 1287
+    },
+    {
+     "word": "block",
+     "frame": 1290
+    },
+    {
+     "word": "ends",
+     "frame": 1297
+    },
+    {
+     "word": "partway",
+     "frame": 1303
+    },
+    {
+     "word": "through",
+     "frame": 1315
+    },
+    {
+     "word": "a",
+     "frame": 1322
+    },
+    {
+     "word": "turn.",
+     "frame": 1326
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "The test wheel turns each arrow back and lays them tip to tail. On the bin, they freeze and pile up straight. Off it, the leftover arrow keeps turning, half a turn over the block, so the chain fans out: sixty-four percent. The mirror's short chain nudges it to sixty. Only whole turns close a chain.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line05.wav",
+   "at": 45.28,
+   "start": 45.28,
+   "end": 59.6,
+   "start_frame": 1358,
+   "words": [
+    {
+     "word": "the",
+     "frame": 1358
+    },
+    {
+     "word": "test",
+     "frame": 1367
+    },
+    {
+     "word": "wheel",
+     "frame": 1373
+    },
+    {
+     "word": "turns",
+     "frame": 1380
+    },
+    {
+     "word": "each",
+     "frame": 1388
+    },
+    {
+     "word": "arrow",
+     "frame": 1395
+    },
+    {
+     "word": "back",
+     "frame": 1401
+    },
+    {
+     "word": "and",
+     "frame": 1409
+    },
+    {
+     "word": "lays",
+     "frame": 1415
+    },
+    {
+     "word": "them",
+     "frame": 1421
+    },
+    {
+     "word": "tip",
+     "frame": 1426
+    },
+    {
+     "word": "to",
+     "frame": 1432
+    },
+    {
+     "word": "tail",
+     "frame": 1437
+    },
+    {
+     "word": "on",
+     "frame": 1445
+    },
+    {
+     "word": "the",
+     "frame": 1457
+    },
+    {
+     "word": "bin",
+     "frame": 1460
+    },
+    {
+     "word": "they",
+     "frame": 1466
+    },
+    {
+     "word": "freeze",
+     "frame": 1472
+    },
+    {
+     "word": "and",
+     "frame": 1480
+    },
+    {
+     "word": "pile",
+     "frame": 1486
+    },
+    {
+     "word": "up",
+     "frame": 1495
+    },
+    {
+     "word": "straight",
+     "frame": 1498
+    },
+    {
+     "word": "off",
+     "frame": 1505
+    },
+    {
+     "word": "it",
+     "frame": 1523
+    },
+    {
+     "word": "the",
+     "frame": 1528
+    },
+    {
+     "word": "leftover",
+     "frame": 1532
+    },
+    {
+     "word": "arrow",
+     "frame": 1541
+    },
+    {
+     "word": "keeps",
+     "frame": 1550
+    },
+    {
+     "word": "turning",
+     "frame": 1558
+    },
+    {
+     "word": "half",
+     "frame": 1568
+    },
+    {
+     "word": "a",
+     "frame": 1580
+    },
+    {
+     "word": "turn",
+     "frame": 1584
+    },
+    {
+     "word": "over",
+     "frame": 1588
+    },
+    {
+     "word": "the",
+     "frame": 1593
+    },
+    {
+     "word": "block",
+     "frame": 1597
+    },
+    {
+     "word": "so",
+     "frame": 1604
+    },
+    {
+     "word": "the",
+     "frame": 1610
+    },
+    {
+     "word": "chain",
+     "frame": 1617
+    },
+    {
+     "word": "fans",
+     "frame": 1619
+    },
+    {
+     "word": "out",
+     "frame": 1629
+    },
+    {
+     "word": "64",
+     "frame": 1636
+    },
+    {
+     "word": "the",
+     "frame": 1655
+    },
+    {
+     "word": "mirror's",
+     "frame": 1681
+    },
+    {
+     "word": "short",
+     "frame": 1692
+    },
+    {
+     "word": "chain",
+     "frame": 1698
+    },
+    {
+     "word": "nudges",
+     "frame": 1706
+    },
+    {
+     "word": "it",
+     "frame": 1716
+    },
+    {
+     "word": "to",
+     "frame": 1720
+    },
+    {
+     "word": "60",
+     "frame": 1723
+    },
+    {
+     "word": "only",
+     "frame": 1733
+    },
+    {
+     "word": "hole",
+     "frame": 1748
+    },
+    {
+     "word": "turns",
+     "frame": 1755
+    },
+    {
+     "word": "close",
+     "frame": 1764
+    },
+    {
+     "word": "a",
+     "frame": 1771
+    },
+    {
+     "word": "chain",
+     "frame": 1775
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Slide the tone: the matches trace one curve: lesson ten's tall hump, the main lobe, one bin each side. Then side lobes: the first reaches twenty-two percent, and the rest shrink slowly.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line06.wav",
+   "at": 60.2,
+   "start": 60.2,
+   "end": 69.11,
+   "start_frame": 1806,
+   "words": [
+    {
+     "word": "Slide",
+     "frame": 1806
+    },
+    {
+     "word": "the",
+     "frame": 1818
+    },
+    {
+     "word": "tone,",
+     "frame": 1822
+    },
+    {
+     "word": "the",
+     "frame": 1834
+    },
+    {
+     "word": "matches",
+     "frame": 1839
+    },
+    {
+     "word": "trace",
+     "frame": 1847
+    },
+    {
+     "word": "one",
+     "frame": 1855
+    },
+    {
+     "word": "curve,",
+     "frame": 1862
+    },
+    {
+     "word": "lessen",
+     "frame": 1878
+    },
+    {
+     "word": "10's",
+     "frame": 1888
+    },
+    {
+     "word": "tall",
+     "frame": 1897
+    },
+    {
+     "word": "hump,",
+     "frame": 1903
+    },
+    {
+     "word": "the",
+     "frame": 1914
+    },
+    {
+     "word": "main",
+     "frame": 1916
+    },
+    {
+     "word": "lobe,",
+     "frame": 1922
+    },
+    {
+     "word": "one",
+     "frame": 1934
+    },
+    {
+     "word": "bin",
+     "frame": 1940
+    },
+    {
+     "word": "each",
+     "frame": 1944
+    },
+    {
+     "word": "side,",
+     "frame": 1950
+    },
+    {
+     "word": "then",
+     "frame": 1963
+    },
+    {
+     "word": "side",
+     "frame": 1969
+    },
+    {
+     "word": "lobes,",
+     "frame": 1977
+    },
+    {
+     "word": "the",
+     "frame": 1989
+    },
+    {
+     "word": "first",
+     "frame": 1993
+    },
+    {
+     "word": "reaches",
+     "frame": 1999
+    },
+    {
+     "word": "22",
+     "frame": 2008
+    },
+    {
+     "word": "%",
+     "frame": 2020
+    },
+    {
+     "word": "and",
+     "frame": 2029
+    },
+    {
+     "word": "the",
+     "frame": 2037
+    },
+    {
+     "word": "rest",
+     "frame": 2040
+    },
+    {
+     "word": "shrinks",
+     "frame": 2045
+    },
+    {
+     "word": "slowly.",
+     "frame": 2054
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "On the keypad, the seven's bin sits on a side lobe of seven seventy. With the starts, a loud four leaks about nine to fifteen percent there, and a faint key can score under eight. A faint key's real tone is weaker than a loud key's leak. No bar fits.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line07.wav",
+   "at": 69.61,
+   "start": 69.61,
+   "end": 81.44,
+   "start_frame": 2088,
+   "words": [
+    {
+     "word": "On",
+     "frame": 2088
+    },
+    {
+     "word": "the",
+     "frame": 2097
+    },
+    {
+     "word": "keypad,",
+     "frame": 2100
+    },
+    {
+     "word": "the",
+     "frame": 2115
+    },
+    {
+     "word": "7's",
+     "frame": 2116
+    },
+    {
+     "word": "bin",
+     "frame": 2126
+    },
+    {
+     "word": "sits",
+     "frame": 2132
+    },
+    {
+     "word": "on",
+     "frame": 2139
+    },
+    {
+     "word": "a",
+     "frame": 2143
+    },
+    {
+     "word": "side",
+     "frame": 2148
+    },
+    {
+     "word": "lobe",
+     "frame": 2154
+    },
+    {
+     "word": "of",
+     "frame": 2162
+    },
+    {
+     "word": "770.",
+     "frame": 2166
+    },
+    {
+     "word": "With",
+     "frame": 2197
+    },
+    {
+     "word": "the",
+     "frame": 2199
+    },
+    {
+     "word": "starts,",
+     "frame": 2202
+    },
+    {
+     "word": "a",
+     "frame": 2215
+    },
+    {
+     "word": "loud",
+     "frame": 2216
+    },
+    {
+     "word": "4",
+     "frame": 2220
+    },
+    {
+     "word": "leaks",
+     "frame": 2226
+    },
+    {
+     "word": "about",
+     "frame": 2235
+    },
+    {
+     "word": "9",
+     "frame": 2241
+    },
+    {
+     "word": "to",
+     "frame": 2248
+    },
+    {
+     "word": "15",
+     "frame": 2252
+    },
+    {
+     "word": "%",
+     "frame": 2261
+    },
+    {
+     "word": "there,",
+     "frame": 2270
+    },
+    {
+     "word": "and",
+     "frame": 2283
+    },
+    {
+     "word": "a",
+     "frame": 2286
+    },
+    {
+     "word": "faint",
+     "frame": 2289
+    },
+    {
+     "word": "key",
+     "frame": 2294
+    },
+    {
+     "word": "can",
+     "frame": 2300
+    },
+    {
+     "word": "score",
+     "frame": 2304
+    },
+    {
+     "word": "under",
+     "frame": 2312
+    },
+    {
+     "word": "8.",
+     "frame": 2318
+    },
+    {
+     "word": "A",
+     "frame": 2332
+    },
+    {
+     "word": "faint",
+     "frame": 2334
+    },
+    {
+     "word": "key's",
+     "frame": 2340
+    },
+    {
+     "word": "real",
+     "frame": 2349
+    },
+    {
+     "word": "tone",
+     "frame": 2354
+    },
+    {
+     "word": "is",
+     "frame": 2361
+    },
+    {
+     "word": "weaker",
+     "frame": 2366
+    },
+    {
+     "word": "than",
+     "frame": 2374
+    },
+    {
+     "word": "a",
+     "frame": 2379
+    },
+    {
+     "word": "loud",
+     "frame": 2383
+    },
+    {
+     "word": "key's",
+     "frame": 2388
+    },
+    {
+     "word": "leak.",
+     "frame": 2397
+    },
+    {
+     "word": "No",
+     "frame": 2416
+    },
+    {
+     "word": "bar",
+     "frame": 2419
+    },
+    {
+     "word": "fits.",
+     "frame": 2426
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "The trouble is the edges: the block cuts a turn short, and the end arrows count in full. Lesson ten cured a sharp cut with a taper. Multiply the block by the [HH AA1 N] window, Hamming's cousin, fading to zero at both ends. The end arrows shrink, and the side lobe falls from twenty-two percent to two point seven. [surprise-oh] Now the faintest key scores nine point two, and a bar at five percent decodes every press.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-fix4/line01.wav",
+   "at": 82.64,
+   "start": 82.64,
+   "end": 102.71,
+   "start_frame": 2479,
+   "words": [
+    {
+     "word": "the",
+     "frame": 2479
+    },
+    {
+     "word": "trouble",
+     "frame": 2488
+    },
+    {
+     "word": "is",
+     "frame": 2494
+    },
+    {
+     "word": "the",
+     "frame": 2499
+    },
+    {
+     "word": "edges",
+     "frame": 2503
+    },
+    {
+     "word": "the",
+     "frame": 2510
+    },
+    {
+     "word": "block",
+     "frame": 2528
+    },
+    {
+     "word": "cuts",
+     "frame": 2535
+    },
+    {
+     "word": "a",
+     "frame": 2542
+    },
+    {
+     "word": "turn",
+     "frame": 2546
+    },
+    {
+     "word": "short",
+     "frame": 2551
+    },
+    {
+     "word": "and",
+     "frame": 2560
+    },
+    {
+     "word": "the",
+     "frame": 2567
+    },
+    {
+     "word": "end",
+     "frame": 2570
+    },
+    {
+     "word": "arrows",
+     "frame": 2575
+    },
+    {
+     "word": "count",
+     "frame": 2584
+    },
+    {
+     "word": "in",
+     "frame": 2591
+    },
+    {
+     "word": "full",
+     "frame": 2596
+    },
+    {
+     "word": "lesson",
+     "frame": 2602
+    },
+    {
+     "word": "10",
+     "frame": 2618
+    },
+    {
+     "word": "cured",
+     "frame": 2632
+    },
+    {
+     "word": "a",
+     "frame": 2638
+    },
+    {
+     "word": "sharp",
+     "frame": 2641
+    },
+    {
+     "word": "cut",
+     "frame": 2648
+    },
+    {
+     "word": "with",
+     "frame": 2654
+    },
+    {
+     "word": "a",
+     "frame": 2659
+    },
+    {
+     "word": "taper",
+     "frame": 2662
+    },
+    {
+     "word": "multiply",
+     "frame": 2671
+    },
+    {
+     "word": "the",
+     "frame": 2697
+    },
+    {
+     "word": "block",
+     "frame": 2702
+    },
+    {
+     "word": "by",
+     "frame": 2710
+    },
+    {
+     "word": "the",
+     "frame": 2714
+    },
+    {
+     "word": "hon",
+     "frame": 2718
+    },
+    {
+     "word": "window",
+     "frame": 2725
+    },
+    {
+     "word": "hamming's",
+     "frame": 2735
+    },
+    {
+     "word": "cousin",
+     "frame": 2750
+    },
+    {
+     "word": "fading",
+     "frame": 2758
+    },
+    {
+     "word": "to",
+     "frame": 2768
+    },
+    {
+     "word": "zero",
+     "frame": 2774
+    },
+    {
+     "word": "at",
+     "frame": 2784
+    },
+    {
+     "word": "both",
+     "frame": 2788
+    },
+    {
+     "word": "ends",
+     "frame": 2794
+    },
+    {
+     "word": "the",
+     "frame": 2804
+    },
+    {
+     "word": "end",
+     "frame": 2816
+    },
+    {
+     "word": "arrows",
+     "frame": 2822
+    },
+    {
+     "word": "shrink",
+     "frame": 2829
+    },
+    {
+     "word": "and",
+     "frame": 2839
+    },
+    {
+     "word": "the",
+     "frame": 2845
+    },
+    {
+     "word": "side",
+     "frame": 2849
+    },
+    {
+     "word": "lobe",
+     "frame": 2855
+    },
+    {
+     "word": "falls",
+     "frame": 2861
+    },
+    {
+     "word": "from",
+     "frame": 2869
+    },
+    {
+     "word": "22",
+     "frame": 2875
+    },
+    {
+     "word": "to",
+     "frame": 2885
+    },
+    {
+     "word": "2",
+     "frame": 2900
+    },
+    {
+     "word": ".7",
+     "frame": 2908
+    },
+    {
+     "word": "oh",
+     "frame": 2922
+    },
+    {
+     "word": "now",
+     "frame": 2947
+    },
+    {
+     "word": "the",
+     "frame": 2954
+    },
+    {
+     "word": "faintest",
+     "frame": 2959
+    },
+    {
+     "word": "key",
+     "frame": 2969
+    },
+    {
+     "word": "score",
+     "frame": 2974
+    },
+    {
+     "word": "is",
+     "frame": 2984
+    },
+    {
+     "word": "9",
+     "frame": 2987
+    },
+    {
+     "word": ".2",
+     "frame": 2994
+    },
+    {
+     "word": "and",
+     "frame": 3009
+    },
+    {
+     "word": "a",
+     "frame": 3016
+    },
+    {
+     "word": "bar",
+     "frame": 3020
+    },
+    {
+     "word": "at",
+     "frame": 3025
+    },
+    {
+     "word": "5",
+     "frame": 3029
+    },
+    {
+     "word": "decodes",
+     "frame": 3036
+    },
+    {
+     "word": "every",
+     "frame": 3056
+    },
+    {
+     "word": "press",
+     "frame": 3064
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Why not a shorter block? At one twenty-eight, a loud one leaks sixty-one percent into the four's bin: the taper bought low side lobes with a main lobe twice as wide. Longer isn't the rule either: two twenty-four fails, two oh eight works. What counts is where the bins land. With loud keys ten times the faint, every neighbouring tone needs about one point seven five bins of room. Two fifty-six gives two point two six.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line09.wav",
+   "at": 103.91,
+   "start": 103.91,
+   "end": 124.04,
+   "start_frame": 3117,
+   "words": [
+    {
+     "word": "Why",
+     "frame": 3117
+    },
+    {
+     "word": "not",
+     "frame": 3127
+    },
+    {
+     "word": "a",
+     "frame": 3132
+    },
+    {
+     "word": "shorter",
+     "frame": 3135
+    },
+    {
+     "word": "block?",
+     "frame": 3142
+    },
+    {
+     "word": "At",
+     "frame": 3164
+    },
+    {
+     "word": "128",
+     "frame": 3166
+    },
+    {
+     "word": "a",
+     "frame": 3178
+    },
+    {
+     "word": "loud",
+     "frame": 3192
+    },
+    {
+     "word": "one",
+     "frame": 3197
+    },
+    {
+     "word": "leaks",
+     "frame": 3202
+    },
+    {
+     "word": "61",
+     "frame": 3210
+    },
+    {
+     "word": "%",
+     "frame": 3224
+    },
+    {
+     "word": "into",
+     "frame": 3233
+    },
+    {
+     "word": "the",
+     "frame": 3242
+    },
+    {
+     "word": "4's",
+     "frame": 3246
+    },
+    {
+     "word": "bin.",
+     "frame": 3255
+    },
+    {
+     "word": "The",
+     "frame": 3268
+    },
+    {
+     "word": "taper",
+     "frame": 3271
+    },
+    {
+     "word": "bought",
+     "frame": 3278
+    },
+    {
+     "word": "low",
+     "frame": 3286
+    },
+    {
+     "word": "side",
+     "frame": 3292
+    },
+    {
+     "word": "lobes",
+     "frame": 3299
+    },
+    {
+     "word": "with",
+     "frame": 3309
+    },
+    {
+     "word": "a",
+     "frame": 3313
+    },
+    {
+     "word": "main",
+     "frame": 3315
+    },
+    {
+     "word": "lobe",
+     "frame": 3321
+    },
+    {
+     "word": "twice",
+     "frame": 3328
+    },
+    {
+     "word": "as",
+     "frame": 3335
+    },
+    {
+     "word": "wide.",
+     "frame": 3342
+    },
+    {
+     "word": "Longer",
+     "frame": 3357
+    },
+    {
+     "word": "isn't",
+     "frame": 3366
+    },
+    {
+     "word": "the",
+     "frame": 3372
+    },
+    {
+     "word": "rule",
+     "frame": 3375
+    },
+    {
+     "word": "either.",
+     "frame": 3381
+    },
+    {
+     "word": "224",
+     "frame": 3400
+    },
+    {
+     "word": "fails,",
+     "frame": 3417
+    },
+    {
+     "word": "208",
+     "frame": 3432
+    },
+    {
+     "word": "works.",
+     "frame": 3443
+    },
+    {
+     "word": "What",
+     "frame": 3460
+    },
+    {
+     "word": "counts",
+     "frame": 3465
+    },
+    {
+     "word": "is",
+     "frame": 3474
+    },
+    {
+     "word": "where",
+     "frame": 3477
+    },
+    {
+     "word": "the",
+     "frame": 3481
+    },
+    {
+     "word": "bins",
+     "frame": 3484
+    },
+    {
+     "word": "land.",
+     "frame": 3490
+    },
+    {
+     "word": "With",
+     "frame": 3508
+    },
+    {
+     "word": "loud",
+     "frame": 3513
+    },
+    {
+     "word": "keys",
+     "frame": 3518
+    },
+    {
+     "word": "10",
+     "frame": 3526
+    },
+    {
+     "word": "times",
+     "frame": 3533
+    },
+    {
+     "word": "the",
+     "frame": 3541
+    },
+    {
+     "word": "faint,",
+     "frame": 3546
+    },
+    {
+     "word": "every",
+     "frame": 3557
+    },
+    {
+     "word": "neighboring",
+     "frame": 3565
+    },
+    {
+     "word": "tone",
+     "frame": 3574
+    },
+    {
+     "word": "needs",
+     "frame": 3583
+    },
+    {
+     "word": "about",
+     "frame": 3591
+    },
+    {
+     "word": "1",
+     "frame": 3597
+    },
+    {
+     "word": ".75",
+     "frame": 3604
+    },
+    {
+     "word": "bins",
+     "frame": 3624
+    },
+    {
+     "word": "of",
+     "frame": 3635
+    },
+    {
+     "word": "room.",
+     "frame": 3640
+    },
+    {
+     "word": "256",
+     "frame": 3669
+    },
+    {
+     "word": "gives",
+     "frame": 3669
+    },
+    {
+     "word": "2",
+     "frame": 3684
+    },
+    {
+     "word": ".26.",
+     "frame": 3691
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "Your turn, in the lab: a call centre joins, twice as loud. Choose window, length and bar until all thirty-two presses decode. [sigh] Next ticket: a tip line shifts every call up three hundred hertz, and a second voice mumbles underneath.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line10.wav",
+   "at": 125.04,
+   "start": 125.04,
+   "end": 136.45,
+   "start_frame": 3751,
+   "words": [
+    {
+     "word": "your",
+     "frame": 3751
+    },
+    {
+     "word": "turn",
+     "frame": 3762
+    },
+    {
+     "word": "in",
+     "frame": 3771
+    },
+    {
+     "word": "the",
+     "frame": 3776
+    },
+    {
+     "word": "lab",
+     "frame": 3778
+    },
+    {
+     "word": "a",
+     "frame": 3788
+    },
+    {
+     "word": "call",
+     "frame": 3802
+    },
+    {
+     "word": "center",
+     "frame": 3808
+    },
+    {
+     "word": "joins",
+     "frame": 3815
+    },
+    {
+     "word": "twice",
+     "frame": 3825
+    },
+    {
+     "word": "as",
+     "frame": 3835
+    },
+    {
+     "word": "loud",
+     "frame": 3840
+    },
+    {
+     "word": "choose",
+     "frame": 3848
+    },
+    {
+     "word": "window",
+     "frame": 3865
+    },
+    {
+     "word": "length",
+     "frame": 3875
+    },
+    {
+     "word": "and",
+     "frame": 3883
+    },
+    {
+     "word": "bar",
+     "frame": 3889
+    },
+    {
+     "word": "until",
+     "frame": 3895
+    },
+    {
+     "word": "all",
+     "frame": 3901
+    },
+    {
+     "word": "32",
+     "frame": 3907
+    },
+    {
+     "word": "presses",
+     "frame": 3928
+    },
+    {
+     "word": "decode",
+     "frame": 3929
+    },
+    {
+     "word": "next",
+     "frame": 3943
+    },
+    {
+     "word": "ticket",
+     "frame": 3959
+    },
+    {
+     "word": "a",
+     "frame": 3970
+    },
+    {
+     "word": "tip",
+     "frame": 3982
+    },
+    {
+     "word": "line",
+     "frame": 3988
+    },
+    {
+     "word": "shifts",
+     "frame": 3994
+    },
+    {
+     "word": "every",
+     "frame": 4003
+    },
+    {
+     "word": "call",
+     "frame": 4010
+    },
+    {
+     "word": "up",
+     "frame": 4016
+    },
+    {
+     "word": "300",
+     "frame": 4021
+    },
+    {
+     "word": "hertz",
+     "frame": 4030
+    },
+    {
+     "word": "and",
+     "frame": 4042
+    },
+    {
+     "word": "a",
+     "frame": 4047
+    },
+    {
+     "word": "second",
+     "frame": 4049
+    },
+    {
+     "word": "voice",
+     "frame": 4056
+    },
+    {
+     "word": "mumbles",
+     "frame": 4064
+    },
+    {
+     "word": "underneath",
+     "frame": 4078
+    }
+   ]
+  }
+ ]
+}

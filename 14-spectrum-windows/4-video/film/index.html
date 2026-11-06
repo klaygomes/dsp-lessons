@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Keys That Blur</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":141.22,"wpm":209,"lines":[{"line":1,"text":"Your keypad detector runs live: every block of two hundred fifty-six samples, it matches eight test wheels, its bins, one per keypad tone, against a twelve percent bar. Then two complaints arrive. Loud presses of four get thrown out, since the seven's row clears the bar too. And faint rural keys are never heard.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line01.wav","at":0.6,"start":0.6,"end":15.8,"start_frame":18,"words":[{"word":"Your","frame":18},{"word":"keypad","frame":27},{"word":"detector","frame":38},{"word":"runs","frame":49},{"word":"live.","frame":58},{"word":"Every","frame":72},{"word":"block","frame":81},{"word":"of","frame":89},{"word":"256","frame":92},{"word":"samples,","frame":109},{"word":"it","frame":130},{"word":"matches","frame":137},{"word":"eight","frame":144},{"word":"test","frame":151},{"word":"wheels,","frame":158},{"word":"its","frame":172},{"word":"bins,","frame":173},{"word":"one","frame":188},{"word":"per","frame":194},{"word":"keypad","frame":199},{"word":"tone,","frame":211},{"word":"against","frame":226},{"word":"a","frame":234},{"word":"12","frame":239},{"word":"%","frame":245},{"word":"bar.","frame":253},{"word":"Then","frame":268},{"word":"two","frame":277},{"word":"complaints","frame":281},{"word":"arrive,","frame":293},{"word":"loud","frame":313},{"word":"presses","frame":315},{"word":"of","frame":325},{"word":"four","frame":331},{"word":"get","frame":336},{"word":"thrown","frame":341},{"word":"out","frame":348},{"word":"since","frame":356},{"word":"the","frame":362},{"word":"seven's","frame":368},{"word":"row","frame":379},{"word":"clears","frame":383},{"word":"the","frame":392},{"word":"bar","frame":397},{"word":"too,","frame":403},{"word":"and","frame":421},{"word":"faint","frame":424},{"word":"rural","frame":431},{"word":"keys","frame":438},{"word":"are","frame":446},{"word":"never","frame":452},{"word":"heard.","frame":458}]},{"line":2,"text":"Lower the bar to six percent? The rural keys come through, and loud keys are thrown out instead. Why does a loud four light up seven's bin?","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line02.wav","at":16.4,"start":16.4,"end":23.11,"start_frame":492,"words":[{"word":"Lower","frame":492},{"word":"the","frame":502},{"word":"bar","frame":506},{"word":"to","frame":512},{"word":"6%,","frame":516},{"word":"the","frame":532},{"word":"rural","frame":544},{"word":"keys","frame":551},{"word":"come","frame":559},{"word":"through,","frame":566},{"word":"and","frame":583},{"word":"loud","frame":584},{"word":"keys","frame":591},{"word":"are","frame":600},{"word":"thrown","frame":605},{"word":"out","frame":611},{"word":"instead.","frame":616},{"word":"Why","frame":635},{"word":"does","frame":637},{"word":"a","frame":641},{"word":"loud","frame":646},{"word":"four","frame":650},{"word":"light","frame":657},{"word":"up","frame":663},{"word":"sevens","frame":668},{"word":"bin?","frame":682}]},{"line":3,"text":"Shrink it to a napkin: eight samples, bins a thousand hertz apart. A thousand hertz tone sits on its bin: one hundred percent, and zero everywhere else. Move it halfway, to fifteen hundred: sixty and seventy in the nearest bins, and every bin catches something. That's leakage.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line03.wav","at":24.31,"start":24.31,"end":37.75,"start_frame":729,"words":[{"word":"Shrink","frame":729},{"word":"it","frame":743},{"word":"to","frame":745},{"word":"a","frame":749},{"word":"napkin.","frame":752},{"word":"8","frame":771},{"word":"samples,","frame":776},{"word":"bins","frame":795},{"word":"1000","frame":801},{"word":"Hz","frame":811},{"word":"apart.","frame":819},{"word":"1000","frame":838},{"word":"Hz","frame":846},{"word":"tone","frame":857},{"word":"sits","frame":866},{"word":"on","frame":873},{"word":"its","frame":878},{"word":"bin,","frame":882},{"word":"100","frame":895},{"word":"%","frame":906},{"word":"and","frame":916},{"word":"0","frame":924},{"word":"everywhere","frame":931},{"word":"else.","frame":942},{"word":"Move","frame":965},{"word":"it","frame":970},{"word":"halfway","frame":973},{"word":"to","frame":983},{"word":"1500,","frame":991},{"word":"60,","frame":1015},{"word":"and","frame":1024},{"word":"70","frame":1028},{"word":"in","frame":1036},{"word":"the","frame":1040},{"word":"nearest","frame":1042},{"word":"bins","frame":1049},{"word":"and","frame":1059},{"word":"every","frame":1066},{"word":"bin","frame":1072},{"word":"catches","frame":1078},{"word":"something.","frame":1087},{"word":"That's","frame":1107},{"word":"leakage.","frame":1112}]},{"line":4,"text":"A thousand hertz makes exactly one turn in the block. Fifteen hundred stops halfway round: the block ends partway through a turn.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line04.wav","at":38.35,"start":38.35,"end":44.78,"start_frame":1150,"words":[{"word":"A","frame":1150},{"word":"thousand","frame":1159},{"word":"hertz","frame":1167},{"word":"makes","frame":1173},{"word":"exactly","frame":1183},{"word":"one","frame":1194},{"word":"turn","frame":1201},{"word":"in","frame":1207},{"word":"the","frame":1211},{"word":"block.","frame":1213},{"word":"Fifteen","frame":1239},{"word":"hundred","frame":1245},{"word":"stops","frame":1251},{"word":"halfway","frame":1263},{"word":"round,","frame":1273},{"word":"the","frame":1287},{"word":"block","frame":1290},{"word":"ends","frame":1297},{"word":"partway","frame":1303},{"word":"through","frame":1315},{"word":"a","frame":1322},{"word":"turn.","frame":1326}]},{"line":5,"text":"The test wheel turns each arrow back and lays them tip to tail. On the bin, they freeze and pile up straight. Off it, the leftover arrow keeps turning, half a turn over the block, so the chain fans out: sixty-four percent. The mirror's short chain nudges it to sixty. Only whole turns close a chain.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-breath/line05.wav","at":45.28,"start":45.28,"end":60.1,"start_frame":1358,"words":[{"word":"the","frame":1358},{"word":"test","frame":1367},{"word":"wheel","frame":1373},{"word":"turns","frame":1380},{"word":"each","frame":1388},{"word":"arrow","frame":1395},{"word":"back","frame":1401},{"word":"and","frame":1409},{"word":"lays","frame":1415},{"word":"them","frame":1421},{"word":"tip","frame":1426},{"word":"to","frame":1432},{"word":"tail","frame":1437},{"word":"on","frame":1445},{"word":"the","frame":1457},{"word":"bin","frame":1460},{"word":"they","frame":1466},{"word":"freeze","frame":1472},{"word":"and","frame":1480},{"word":"pile","frame":1486},{"word":"up","frame":1495},{"word":"straight","frame":1498},{"word":"off","frame":1505},{"word":"it","frame":1523},{"word":"the","frame":1528},{"word":"leftover","frame":1532},{"word":"arrow","frame":1541},{"word":"keeps","frame":1550},{"word":"turning","frame":1558},{"word":"half","frame":1568},{"word":"a","frame":1580},{"word":"turn","frame":1584},{"word":"over","frame":1588},{"word":"the","frame":1593},{"word":"block","frame":1597},{"word":"so","frame":1604},{"word":"the","frame":1610},{"word":"chain","frame":1617},{"word":"fans","frame":1619},{"word":"out","frame":1629},{"word":"64","frame":1636},{"word":"the","frame":1655},{"word":"mirror's","frame":1696},{"word":"short","frame":1707},{"word":"chain","frame":1713},{"word":"nudges","frame":1721},{"word":"it","frame":1731},{"word":"to","frame":1735},{"word":"60","frame":1738},{"word":"only","frame":1748},{"word":"hole","frame":1763},{"word":"turns","frame":1770},{"word":"close","frame":1779},{"word":"a","frame":1786},{"word":"chain","frame":1790}]},{"line":6,"text":"Slide the tone: the matches trace one curve: lesson ten's tall hump, the main lobe, one bin each side. Then side lobes: the first reaches twenty-two percent, and the rest shrink slowly.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line06.wav","at":60.7,"start":60.7,"end":69.61,"start_frame":1821,"words":[{"word":"Slide","frame":1821},{"word":"the","frame":1833},{"word":"tone,","frame":1837},{"word":"the","frame":1849},{"word":"matches","frame":1854},{"word":"trace","frame":1862},{"word":"one","frame":1870},{"word":"curve,","frame":1877},{"word":"lessen","frame":1893},{"word":"10's","frame":1903},{"word":"tall","frame":1912},{"word":"hump,","frame":1918},{"word":"the","frame":1929},{"word":"main","frame":1931},{"word":"lobe,","frame":1937},{"word":"one","frame":1949},{"word":"bin","frame":1955},{"word":"each","frame":1959},{"word":"side,","frame":1965},{"word":"then","frame":1978},{"word":"side","frame":1984},{"word":"lobes,","frame":1992},{"word":"the","frame":2004},{"word":"first","frame":2008},{"word":"reaches","frame":2014},{"word":"22","frame":2023},{"word":"%","frame":2035},{"word":"and","frame":2044},{"word":"the","frame":2052},{"word":"rest","frame":2055},{"word":"shrinks","frame":2060},{"word":"slowly.","frame":2069}]},{"line":7,"text":"On the keypad, the seven's bin sits on a side lobe of seven seventy. Depending on where each tone starts in the block, a loud four leaks about nine to fifteen percent there, and a faint key can score under eight. A faint key's real tone is weaker than a loud key's leak. No bar fits.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-fix5/line01.wav","at":70.11,"start":70.11,"end":83.5,"start_frame":2103,"words":[{"word":"On","frame":2103},{"word":"the","frame":2112},{"word":"keypad,","frame":2115},{"word":"the","frame":2129},{"word":"7's","frame":2132},{"word":"bin","frame":2142},{"word":"sits","frame":2147},{"word":"on","frame":2155},{"word":"a","frame":2159},{"word":"side","frame":2163},{"word":"lobe","frame":2169},{"word":"of","frame":2177},{"word":"770,","frame":2180},{"word":"depending","frame":2206},{"word":"on","frame":2216},{"word":"where","frame":2222},{"word":"each","frame":2227},{"word":"tone","frame":2235},{"word":"starts","frame":2241},{"word":"in","frame":2252},{"word":"the","frame":2256},{"word":"block,","frame":2258},{"word":"a","frame":2271},{"word":"loud","frame":2274},{"word":"4","frame":2276},{"word":"leaks","frame":2283},{"word":"about","frame":2290},{"word":"9","frame":2297},{"word":"to","frame":2304},{"word":"15","frame":2308},{"word":"%","frame":2318},{"word":"there,","frame":2327},{"word":"and","frame":2340},{"word":"a","frame":2344},{"word":"faint","frame":2348},{"word":"key","frame":2353},{"word":"can","frame":2358},{"word":"score","frame":2364},{"word":"under","frame":2372},{"word":"8.","frame":2378},{"word":"A","frame":2392},{"word":"faint","frame":2394},{"word":"key's","frame":2400},{"word":"real","frame":2409},{"word":"tone","frame":2415},{"word":"is","frame":2422},{"word":"weaker","frame":2426},{"word":"than","frame":2433},{"word":"a","frame":2439},{"word":"loud","frame":2443},{"word":"key's","frame":2448},{"word":"leak.","frame":2458},{"word":"No","frame":2470},{"word":"bar","frame":2478},{"word":"fits.","frame":2484}]},{"line":8,"text":"The trouble is the edges: the block cuts a turn short, and the end arrows count in full. Lesson ten cured a sharp cut with a taper. Multiply the block by the Hann window, Hamming's cousin, fading to zero at both ends. The end arrows shrink, and the side lobe falls from twenty-two percent to two point seven. [surprise-oh] Now the faintest key scores nine point two, and a bar at five percent decodes every press.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-breath/line08.wav","at":85.2,"start":85.2,"end":105.77,"start_frame":2556,"words":[{"word":"the","frame":2556},{"word":"trouble","frame":2564},{"word":"is","frame":2570},{"word":"the","frame":2576},{"word":"edges","frame":2579},{"word":"the","frame":2587},{"word":"block","frame":2605},{"word":"cuts","frame":2612},{"word":"a","frame":2619},{"word":"turn","frame":2623},{"word":"short","frame":2627},{"word":"and","frame":2637},{"word":"the","frame":2644},{"word":"end","frame":2647},{"word":"arrows","frame":2652},{"word":"count","frame":2660},{"word":"in","frame":2668},{"word":"full","frame":2672},{"word":"lesson","frame":2679},{"word":"10","frame":2695},{"word":"cured","frame":2709},{"word":"a","frame":2714},{"word":"sharp","frame":2718},{"word":"cut","frame":2725},{"word":"with","frame":2731},{"word":"a","frame":2736},{"word":"taper","frame":2739},{"word":"multiply","frame":2748},{"word":"the","frame":2774},{"word":"block","frame":2779},{"word":"by","frame":2786},{"word":"the","frame":2791},{"word":"hon","frame":2795},{"word":"window","frame":2801},{"word":"hamming's","frame":2812},{"word":"cousin","frame":2827},{"word":"fading","frame":2834},{"word":"to","frame":2845},{"word":"zero","frame":2851},{"word":"at","frame":2861},{"word":"both","frame":2864},{"word":"ends","frame":2871},{"word":"the","frame":2881},{"word":"end","frame":2893},{"word":"arrows","frame":2899},{"word":"shrink","frame":2906},{"word":"and","frame":2915},{"word":"the","frame":2922},{"word":"side","frame":2926},{"word":"lobe","frame":2932},{"word":"falls","frame":2938},{"word":"from","frame":2946},{"word":"22","frame":2951},{"word":"to","frame":2962},{"word":"2","frame":2977},{"word":".7","frame":2984},{"word":"oh","frame":2999},{"word":"now","frame":3039},{"word":"the","frame":3046},{"word":"faintest","frame":3050},{"word":"key","frame":3061},{"word":"score","frame":3066},{"word":"is","frame":3076},{"word":"9","frame":3079},{"word":".2","frame":3086},{"word":"and","frame":3101},{"word":"a","frame":3108},{"word":"bar","frame":3112},{"word":"at","frame":3116},{"word":"5","frame":3121},{"word":"decodes","frame":3128},{"word":"every","frame":3148},{"word":"press","frame":3156}]},{"line":9,"text":"Why not a shorter block? At one twenty-eight, a loud one leaks sixty-one percent into the four's bin: the taper bought low side lobes with a main lobe twice as wide. Longer isn't the rule: two twenty-four fails, two oh eight works. What counts is where the bins land. With loud keys ten times the faint, every neighbouring tone must land at least about one point seven five bins from the bin you read. Two fifty-six gives two point two six.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-fix5/line02.wav","at":106.97,"start":106.97,"end":128.01,"start_frame":3209,"words":[{"word":"Why","frame":3209},{"word":"not","frame":3219},{"word":"a","frame":3224},{"word":"shorter","frame":3227},{"word":"block?","frame":3234},{"word":"At","frame":3249},{"word":"128,","frame":3255},{"word":"a","frame":3277},{"word":"loud","frame":3281},{"word":"one","frame":3285},{"word":"leaks","frame":3290},{"word":"61","frame":3297},{"word":"%","frame":3309},{"word":"into","frame":3317},{"word":"the","frame":3324},{"word":"four's","frame":3328},{"word":"bin.","frame":3337},{"word":"The","frame":3348},{"word":"taper","frame":3352},{"word":"bought","frame":3358},{"word":"low","frame":3366},{"word":"side","frame":3373},{"word":"lobes","frame":3381},{"word":"with","frame":3392},{"word":"a","frame":3396},{"word":"main","frame":3400},{"word":"lobe","frame":3406},{"word":"twice","frame":3414},{"word":"as","frame":3423},{"word":"wide.","frame":3429},{"word":"Longer","frame":3442},{"word":"isn't","frame":3452},{"word":"the","frame":3459},{"word":"rule,","frame":3463},{"word":"224","frame":3476},{"word":"fails,","frame":3494},{"word":"208","frame":3508},{"word":"works.","frame":3519},{"word":"What","frame":3535},{"word":"counts","frame":3543},{"word":"is","frame":3552},{"word":"where","frame":3556},{"word":"the","frame":3561},{"word":"bins","frame":3565},{"word":"land.","frame":3572},{"word":"With","frame":3588},{"word":"loud","frame":3598},{"word":"keys","frame":3605},{"word":"10","frame":3615},{"word":"times","frame":3622},{"word":"the","frame":3630},{"word":"faint","frame":3634},{"word":"every","frame":3640},{"word":"neighboring","frame":3649},{"word":"tone","frame":3658},{"word":"must","frame":3666},{"word":"land","frame":3672},{"word":"at","frame":3680},{"word":"least","frame":3684},{"word":"about","frame":3690},{"word":"1","frame":3697},{"word":".75","frame":3705},{"word":"bins","frame":3726},{"word":"from","frame":3739},{"word":"the","frame":3746},{"word":"bin","frame":3749},{"word":"you","frame":3754},{"word":"read.","frame":3757},{"word":"256","frame":3777},{"word":"gives","frame":3786},{"word":"2","frame":3806},{"word":".26.","frame":3812}]},{"line":10,"text":"Your turn, in the lab: a call centre joins, twice as loud. Choose window, length and bar until all thirty-two presses decode. [sigh] Next ticket: a tip line shifts every call up three hundred hertz, and a second voice mumbles underneath.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line10.wav","at":129.01,"start":129.01,"end":140.42,"start_frame":3870,"words":[{"word":"your","frame":3870},{"word":"turn","frame":3881},{"word":"in","frame":3890},{"word":"the","frame":3895},{"word":"lab","frame":3897},{"word":"a","frame":3907},{"word":"call","frame":3921},{"word":"center","frame":3927},{"word":"joins","frame":3934},{"word":"twice","frame":3944},{"word":"as","frame":3954},{"word":"loud","frame":3959},{"word":"choose","frame":3967},{"word":"window","frame":3984},{"word":"length","frame":3994},{"word":"and","frame":4002},{"word":"bar","frame":4008},{"word":"until","frame":4014},{"word":"all","frame":4020},{"word":"32","frame":4026},{"word":"presses","frame":4047},{"word":"decode","frame":4048},{"word":"next","frame":4062},{"word":"ticket","frame":4078},{"word":"a","frame":4089},{"word":"tip","frame":4101},{"word":"line","frame":4107},{"word":"shifts","frame":4113},{"word":"every","frame":4122},{"word":"call","frame":4129},{"word":"up","frame":4136},{"word":"300","frame":4140},{"word":"hertz","frame":4149},{"word":"and","frame":4161},{"word":"a","frame":4166},{"word":"second","frame":4168},{"word":"voice","frame":4175},{"word":"mumbles","frame":4184},{"word":"underneath","frame":4197}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const ANCHORS = [];
+const normWord = s => s.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z0-9.,%'−-]/g, '').replace(/[.,'-]+$/, '').replace(/^[.,'-]+/, '');
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => fs.includes(normWord(w.word)));
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  const hit = hits[nth] || hits[hits.length - 1] || { frame: lineStart(i), word: '?' };
+  ANCHORS.push(`${i}:${fs[0]}:${nth} -> ${hit.word} @${hit.frame}`);
+  return hit.frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DOTS = '2 12';
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0) => { if (b - a < 8) return; const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'opacity', keys); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 22, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+}
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false, h = 26, s = 13) => {
+  const a = Math.atan2(y2 - y1, x2 - x1);
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+const anim = (c, a, b, draw, stepF = 2) => stepped(c, a, b, stepF, p => draw(a + p * (b - a)));
+const pct1 = v => (Math.round(v * 1000) / 10).toFixed(1) + '%';
+const pct = v => Math.round(v * 100) + '%';
+
+const FS = 8000, TAU = 2 * Math.PI;
+const ROWS = [697, 770, 852, 941], COLS = [1209, 1336, 1477, 1633], TONES = [...ROWS, ...COLS];
+const hannW = (n, N) => 0.5 - 0.5 * Math.cos(TAU * n / N);
+const binMatch = (tones, N, k, win) => {
+  let re = 0, im = 0, ws = 0;
+  for (let n = 0; n < N; n++) {
+    const w = win ? hannW(n, N) : 1, x = tones.reduce((s, [f, a, p]) => s + a * Math.cos(TAU * f * n / FS + p), 0);
+    re += w * x * Math.cos(TAU * k * n / N); im -= w * x * Math.sin(TAU * k * n / N); ws += w;
+  }
+  return Math.hypot(re, im) / (ws / 2);
+};
+const KEYBINS = TONES.map(f => Math.round(f * 256 / FS));
+const binsOf = (tones, win) => KEYBINS.map(k => binMatch(tones, 256, k, win));
+let worst = [0, 0];
+range(0, 15).forEach(i => range(0, 15).forEach(j => { const v = binMatch([[770, 1, TAU * i / 16], [1209, 1, TAU * j / 16]], 256, KEYBINS[2], false); if (v > binMatch([[770, 1, TAU * worst[0] / 16], [1209, 1, TAU * worst[1] / 16]], 256, KEYBINS[2], false)) worst = [i, j]; }));
+const LOUD4 = [[770, 1, TAU * worst[0] / 16], [1209, 1, TAU * worst[1] / 16]];
+const FAINT5 = [[770, 0.1, 0], [1336, 0.1, 0]];
+const loud4 = binsOf(LOUD4, false), faint5 = binsOf(FAINT5, false);
+const sinc = x => Math.abs(x) < 1e-9 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x);
+const plainAt = d => Math.abs(sinc(d));
+const hannAt = d => Math.abs(sinc(d) + 0.5 * sinc(d - 1) + 0.5 * sinc(d + 1));
+const toneCurve = (f0, N, f, win) => { let re = 0, im = 0, ws = 0; for (let n = 0; n < N; n++) { const w = win ? hannW(n, N) : 1; re += w * Math.cos(TAU * f0 * n / FS) * Math.cos(TAU * f * n / FS); im -= w * Math.cos(TAU * f0 * n / FS) * Math.sin(TAU * f * n / FS); ws += w; } return Math.hypot(re, im) / (ws / 2); };
+
+const KX = i => 330 + i * 175 + (i > 3 ? 70 : 0), KBASE = 700, KH = 480;
+function keyChart(c, vals, at, opts = {}) {
+  const sels = [];
+  if (opts.axis !== false) {
+    layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE, C.ink, 3));
+    KEYBINS.forEach((k, i) => label(c, String(k), KX(i), KBASE + 14, 'lbl s', 'center'));
+    TONES.forEach((f, i) => label(c, f.toLocaleString('en-US'), KX(i), KBASE + 74, 'lbl s', 'center'));
+    label(c, 'bin', KX(0) - 110, KBASE + 14, 'lbl s', 'right');
+    label(c, 'Hz', KX(0) - 110, KBASE + 74, 'lbl s', 'right');
+  }
+  vals.forEach((v, i) => {
+    const h = Math.max(3, v * KH), hot = opts.hot && opts.hot(i, v);
+    const sel = layer(c, `<rect x="${KX(i) - 30}" y="${KBASE - h}" width="60" height="${h}" fill="${hot ? C.accent : C.ink}"/>`);
+    grow(sel, KX(i), KBASE, at + 2 * i, 8);
+    if (opts.end !== undefined) M.hide(sel, opts.end);
+    if (opts.live) flicker(sel, 0, 0, at + 2 * i + 10, opts.live, 0.5, 13 * i + at);
+    sels.push(sel);
+  });
+  return sels;
+}
+const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE - v * KH, color, 5, DASH));
+
+{
+  const c = cam(1), a = sub(c), b = sub(c);
+  const bl = word(1, 'block'), ma = word(1, 'matches'), tw = word(1, ['twelve', '12', '12%']), lo = word(1, 'loud'), se = word(1, ["seven's", "7's", 'seven', '7']), th = word(1, 'thrown'), fa = word(1, 'faint'), ne = word(1, 'never');
+  M.show('#' + a.id, 0, fa); M.show('#' + b.id, fa);
+  label(c, 'block: N = 256 samples', 1790, 80, 'lbl s', 'right');
+  const SX = n => 330 + n * 5.2;
+  const strip = layer(c, hline(SX(0), SX(255), 200, C.rule, 2) + curve(range(0, 255).map(n => [SX(n), 200 - 26 * LOUD4.reduce((s, [f, a2, p]) => s + a2 * Math.cos(TAU * f * n / FS + p), 0)]), C.ink, 3), [SX(0) - 6, SX(255) + 6]);
+  reveal(strip, Math.max(0, bl - 14), bl + 10, 'cruise');
+  flicker(strip, 960, 200, bl + 10, sceneEnd(1), 0.5, 11);
+  layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE, C.ink, 3));
+  KEYBINS.forEach((k, i) => M.show(label(c, String(k), KX(i), KBASE + 14, 'lbl s', 'center'), ma));
+  TONES.forEach((f, i) => M.show(label(c, f.toLocaleString('en-US'), KX(i), KBASE + 74, 'lbl s', 'center'), ma));
+  M.show(label(c, 'bin', KX(0) - 110, KBASE + 14, 'lbl s', 'right'), ma);
+  M.show(label(c, 'Hz', KX(0) - 110, KBASE + 74, 'lbl s', 'right'), ma);
+  const bar = barLine(c, 0.12); M.show(bar, tw);
+  M.show(label(c, 'bar: 12%', KX(7) + 80, KBASE - 0.12 * KH - 70, 'lbl acc', 'right'), tw);
+  M.show(label(a, 'loud 4', 130, 280, 'lbl'), ma);
+  keyChart(a, loud4, ma, { axis: false, hot: i => i === 2, live: fa });
+  M.show(label(a, pct1(loud4[2]), KX(2), KBASE - loud4[2] * KH - 64, 'lbl acc', 'center'), se);
+  M.show(label(a, '4 and 7 at once?', KX(4) + 70, 270, 'lbl acc'), se);
+  M.show(label(a, 'thrown out', KX(4) + 70, 330, 'lbl big acc'), th);
+  M.show(label(b, 'faint 5, rural line', 130, 280, 'lbl'), fa);
+  keyChart(b, faint5, fa, { axis: false, live: sceneEnd(1) });
+  [1, 5].forEach(i => M.show(label(b, pct1(faint5[i]), KX(i), KBASE - 0.12 * KH - 130, 'lbl', 'center'), fa + 10));
+  M.show(label(b, 'never heard', 1790, 300, 'lbl big acc', 'right'), ne);
+  drift(1);
+}
+{
+  const c = cam(2), a = sub(c), b = sub(c);
+  const si = word(2, ['six', '6', '6%']), ru = word(2, 'rural'), lo = word(2, 'loud'), wh = word(2, 'why');
+  M.show('#' + a.id, 0, lo); M.show('#' + b.id, lo);
+  layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE, C.ink, 3));
+  KEYBINS.forEach((k, i) => label(c, String(k), KX(i), KBASE + 14, 'lbl s', 'center'));
+  TONES.forEach((f, i) => label(c, f.toLocaleString('en-US'), KX(i), KBASE + 74, 'lbl s', 'center'));
+  label(c, 'bin', KX(0) - 110, KBASE + 14, 'lbl s', 'right');
+  label(c, 'Hz', KX(0) - 110, KBASE + 74, 'lbl s', 'right');
+  const barAt = f => f < si ? 0.12 : f < si + 24 ? 0.12 - 0.06 * (f - si) / 24 : 0.06;
+  anim(c, sceneStart(2), sceneEnd(2), f => { const v = barAt(f), y = KBASE - v * KH; return hline(KX(0) - 80, KX(7) + 80, y, C.accent, 5, DASH) + `<text x="${KX(7) + 80}" y="${(y - 18).toFixed(1)}" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">bar: ${Math.round(v * 100)}%</text>`; }, 2);
+  M.show(label(a, 'faint 5, rural line', 130, 280, 'lbl'), sceneStart(2));
+  keyChart(a, faint5, sceneStart(2) - 8, { axis: false, hot: () => false, live: lo });
+  M.show(label(a, 'heard: 5', 1180, 300, 'lbl ok'), ru);
+  M.show(tick(a, 1460, 340), ru + 4);
+  M.show(label(b, 'loud 4', 130, 280, 'lbl'), lo);
+  keyChart(b, loud4, lo, { axis: false, hot: (i, v) => i < 4 && i !== 1 && v > 0.06, live: sceneEnd(2) });
+  M.show(label(b, '1, 4, 7, * at once?', KX(4) + 70, 270, 'lbl acc'), lo + 12);
+  M.show(label(b, 'thrown out', KX(4) + 70, 330, 'lbl big acc'), lo + 12);
+  M.show(label(b, 'bins 31.25 Hz apart,', 130, 80, 'lbl s'), wh);
+  M.show(label(b, 'rows 73 Hz or more apart', 130, 140, 'lbl s'), wh);
+  M.show(label(b, '770 Hz in bin 27?', 1790, 80, 'lbl big', 'right'), wh);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const ei = word(3, ['eight', '8']), th = word(3, ['thousand', '1000', '1,000'], 1), on = word(3, ['hundred', '100', '100%']), ha = word(3, 'halfway'), fi = word(3, ['fifteen', '1500', '1,500']), si = word(3, ['sixty', '60']), ev = word(3, 'every'), le = word(3, 'leakage');
+  M.show(label(c, '8 samples: bins 1,000 Hz apart', 960, 80, 'lbl', 'center'), sceneStart(3));
+  const panel = (x0, f, at, valsAt, leakAt) => {
+    const vals = range(0, 4).map(k => binMatch([[f, 1, 0]], 8, k, false));
+    const sx = n => x0 + 60 + n * 82, sy = 270;
+    const samp = hline(sx(0) - 30, sx(7) + 30, sy, C.rule, 2) + range(0, 7).map(n => { const v = Math.cos(TAU * f * n / FS); return Math.abs(v) < 1e-6 ? ringSvg(sx(n), sy, 8, C.soft, 4) : `<line x1="${sx(n)}" y1="${sy}" x2="${sx(n)}" y2="${(sy - 52 * v).toFixed(1)}" stroke="${C.ink}" stroke-width="6"/>` + dotSvg(sx(n), sy - 52 * v, 12); }).join('');
+    const sl = layer(c, samp); grow(sl, sx(3.5), sy, at, 8); flicker(sl, 0, 0, at + 10, sceneEnd(3), 0.5, x0);
+    M.show(label(c, `${f.toLocaleString('en-US')} Hz`, x0 + 340, 160, 'lbl', 'center'), at);
+    const bx = k => x0 + 70 + k * 160, base = 740, H = 330;
+    M.show(layer(c, hline(bx(0) - 60, bx(4) + 60, base, C.ink, 3)), at);
+    range(0, 4).forEach(k => M.show(label(c, (k * 1000).toLocaleString('en-US'), bx(k), base + 14, 'lbl s', 'center'), at));
+    vals.forEach((v, k) => {
+      const h = Math.max(3, v * H), leak = f === 1500 && (k === 0 || k >= 3);
+      const sel = layer(c, `<rect x="${bx(k) - 34}" y="${base - h}" width="68" height="${h}" fill="${leak ? C.accentSoft : C.ink}" stroke="${leak ? C.accent : C.ink}" stroke-width="5"/>`);
+      grow(sel, bx(k), base, valsAt + 3 * k, 8);
+      M.show(label(c, pct(v), bx(k), base - h - 64, leak ? 'lbl acc' : 'lbl', 'center'), valsAt + 3 * k + 6);
+    });
+    if (leakAt) M.show(label(c, 'leakage', bx(3), 330, 'lbl big acc', 'center'), leakAt);
+  };
+  layer(c, vline(950, 140, 860, C.rule, 3));
+  panel(120, 1000, ei, on - 6);
+  panel(1000, 1500, fi, si - 6, le);
+  M.show(label(c, 'on a bin', 670, 450, 'lbl ok', 'center'), on);
+  drift(3);
+}
+{
+  const c = cam(4);
+  const ex = word(4, 'exactly'), on = word(4, ['one', '1'], 0), fi = word(4, ['fifteen', '1500', '1,500']), ha = word(4, 'halfway'), pa = word(4, 'partway');
+  const wheel = (cx, f, at, endTxt, endCls, endAt) => {
+    const R = 210, cy = 470, step = 360 * f / FS, SP = 7;
+    const rim = layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="5"/>` + hline(cx - R - 30, cx + R + 30, cy, C.rule, 2));
+    flicker(rim, 0, 0, sceneStart(4) + 2, sceneEnd(4), 0.4, cx);
+    label(c, `${f.toLocaleString('en-US')} Hz: ${step}° a sample`, cx, 130, 'lbl', 'center');
+    anim(c, sceneStart(4), sceneEnd(4), fr => {
+      const n = Math.max(0, Math.min(8, Math.floor((fr - at) / SP)));
+      const tot = n * step, rr = a2 => R - 34 - 30 * a2 / 360;
+      const trail = tot > 0 ? curve(range(0, tot, 3).concat([tot]).map(a2 => pt(cx, cy, rr(a2), a2)), C.soft, 4) : '';
+      const dots = range(0, n).map(m => dotSvg(...pt(cx, cy, R, m * step), m === 0 ? 14 : 9, m === 0 ? C.ink : C.soft)).join('');
+      return trail + dots + arrowSvg(cx, cy, ...pt(cx, cy, R - 4, tot), n === 8 ? (f === 1000 ? C.input : C.accent) : C.ink, 7);
+    }, 2);
+    M.show(label(c, endTxt, cx, 700, endCls, 'center'), endAt);
+  };
+  wheel(520, 1000, sceneStart(4) + 4, 'back at the start', 'lbl ok', on + 10);
+  wheel(1400, 1500, fi - 50, 'stops halfway round', 'lbl acc', ha);
+  M.show(label(c, 'the block ends partway through a turn', 960, 770, 'lbl acc', 'center'), pa);
+  drift(4);
+}
+{
+  const c = cam(5);
+  const te = word(5, 'test'), ti = word(5, 'tip'), fr = word(5, 'freeze'), pi = word(5, 'pile'), of = word(5, 'off'), le = word(5, 'leftover'), fa = word(5, 'fans'), si = word(5, ['sixty-four', '64', '64%']), mi = word(5, "mirror's"), sx = word(5, ['sixty', '60', '60%']), wh = word(5, ['whole', 'hole']);
+  const L = 82;
+  M.show(label(c, 'test wheel turns each arrow back', 130, 84, 'lbl s'), sceneStart(5));
+  anim(c, sceneStart(5), sceneEnd(5), f => `<circle cx="1200" cy="120" r="46" fill="none" stroke="${C.ink}" stroke-width="4"/>` + arrowSvg(1200, 120, ...pt(1200, 120, 42, -45 * Math.floor((f - sceneStart(5)) / 6)), C.ink, 5, '', false, 16, 9), 2);
+  M.show(label(c, 'on the bin: frozen', 130, 150, 'lbl'), fr);
+  range(0, 7).forEach(n => { const ar = layer(c, arrowSvg(130 + n * L, 300, 130 + (n + 1) * L, 300, C.ink, 6)); M.show(ar, fr + 3 * n); flicker(ar, 0, 0, fr + 3 * n + 4, sceneEnd(5), 0.5, 57 + n); });
+  M.show(label(c, 'full pile: 100%', 130 + 4 * L, 330, 'lbl ok', 'center'), pi);
+  const sx0 = 840, sy0 = 760, A = 90;
+  let p = [sx0, sy0]; const longPts = [p];
+  range(0, 7).forEach(n => { p = [p[0] + A * cosd(22.5 * n), p[1] - A * sind(22.5 * n)]; longPts.push(p); });
+  M.show(label(c, 'off the bin:', 1150, 280, 'lbl'), of);
+  M.show(label(c, 'leftover arrow,', 1150, 338, 'lbl'), le);
+  M.show(label(c, '22.5° a sample', 1150, 396, 'lbl s'), le);
+  range(0, 7).forEach(n => M.show(layer(c, arrowSvg(...longPts[n], ...longPts[n + 1], C.ink, 6)), le + 4 * n));
+  const lEnd = longPts[8];
+  const ds = layer(c, seg(sx0, sy0, ...lEnd, C.accent, 5, '12 9')); M.show(ds, si); flicker(ds, 0, 0, si + 4, sceneEnd(5), 0.4, 51);
+  M.show(label(c, 'long chain: 64%', 1150, 470, 'lbl acc'), si);
+  let q = lEnd; const shortPts = [q];
+  range(0, 7).forEach(n => { q = [q[0] + A * cosd(-112.5 * n), q[1] - A * sind(-112.5 * n)]; shortPts.push(q); });
+  range(0, 7).forEach(n => M.show(layer(c, arrowSvg(...shortPts[n], ...shortPts[n + 1], C.soft, 6, '10 7', true, 24, 12)), mi + 2 * n));
+  const mx = 660, my = 590, M2 = 2;
+  let mq = [mx - M2 * (shortPts[8][0] - lEnd[0]) / 2, my - M2 * (shortPts[8][1] - lEnd[1]) / 2];
+  range(0, 7).forEach(n => { const nq = [mq[0] + M2 * (shortPts[n + 1][0] - shortPts[n][0]), mq[1] + M2 * (shortPts[n + 1][1] - shortPts[n][1])]; M.show(layer(c, arrowSvg(...mq, ...nq, C.soft, 6, '10 7', true, 24, 12)), mi + 2 * n); mq = nq; });
+  M.show(label(c, 'mirror chain, ×2', mx, 400, 'lbl s', 'center'), mi);
+  const tot = layer(c, arrowSvg(sx0, sy0, ...shortPts[8], C.accent, 8)); M.show(tot, sx); flicker(tot, 0, 0, sx + 4, sceneEnd(5), 0.5, 53);
+  M.show(label(c, "the tone's mirror", 1150, 540, 'lbl s'), mi);
+  M.show(label(c, 'arrow (lesson 6)', 1150, 598, 'lbl s'), mi);
+  M.show(label(c, 'with the mirror', 1150, 670, 'lbl acc'), sx);
+  M.show(label(c, 'chain: 60%', 1150, 732, 'lbl acc'), sx);
+  const ox = 330, oy = 600, s = 80;
+  let o = [ox - s / 2, oy + s * 1.2]; const st = [...o];
+  range(0, 7).forEach(n => { const nx = [o[0] + s * cosd(45 * n), o[1] - s * sind(45 * n)]; M.show(layer(c, arrowSvg(...o, ...nx, C.input, 6)), wh + 3 * n); o = nx; });
+  M.show(layer(c, ringSvg(...st, 14, C.input, 5)), wh + 24);
+  M.show(label(c, 'whole turns: closed, 0', 130, 740, 'lbl ok'), wh);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const sl = word(6, 'slide'), cu = word(6, 'curve'), hu = word(6, 'hump'), ma = word(6, 'main'), bi = word(6, 'bin'), sd = word(6, 'side'), tw = word(6, ['twenty-two', '22', '22%']), sh = word(6, ['shrink', 'shrinks']);
+  const X = d => 960 + d * 105, base = 690, H = 530, Y = v => base - v * H;
+  axes(c, X, Y, range(-6, 6).map(d => [d, d > 0 ? '+' + d : String(d).replace('-', '−')]), [[1, '100%'], [0.5, '50%']], -6.6, 6.6, 0, 1);
+  label(c, 'bins from the tone', X(6.6), base + 80, 'lbl s', 'right');
+  const pts = range(-6.6, 6.6, 0.02).map(d => [X(d), Y(plainAt(d))]);
+  const lobe = layer(c, `<path d="${path(range(-1, 1, 0.02).map(d => [X(d), Y(plainAt(d))]))}L${X(1)} ${base}L${X(-1)} ${base}Z" fill="${C.paper2}"/>`);
+  M.show(lobe, ma);
+  const cv = layer(c, curve(pts, C.ink, 5), [X(-6.6) - 6, X(6.6) + 6]);
+  reveal(cv, sl, cu + 16, 'cruise');
+  M.show(label(c, 'main lobe', X(0), Y(1) - 80, 'lbl', 'center'), ma);
+  M.show(layer(c, ringSvg(X(-1), base, 12, C.ink, 5) + ringSvg(X(1), base, 12, C.ink, 5)), bi);
+  M.show(label(c, '0 at ±1 bin', X(1) + 30, Y(0.75), 'lbl'), bi);
+  M.show(label(c, 'lesson 10: the tall hump', 1790, 84, 'note', 'right'), hu);
+  M.show(label(c, 'side lobes', X(-4.5), Y(0.22) - 160, 'lbl', 'center'), sd);
+  M.show(label(c, 'side lobes', X(4.5), Y(0.22) - 160, 'lbl', 'center'), sd);
+  M.show(layer(c, ringSvg(X(1.43), Y(plainAt(1.43)), 14, C.accent, 5)), tw);
+  M.show(label(c, 'first: 22%', X(1.43) + 30, Y(0.217) - 20, 'lbl acc'), tw);
+  M.show(label(c, 'shrinking slowly', X(4.5), Y(0.22) - 100, 'lbl s', 'center'), sh);
+  flicker(cv, 960, base, cu + 16, sceneEnd(6), 0.5, 61);
+  drift(6);
+}
+{
+  const c = cam(7), a = sub(c), b = sub(c);
+  const ke = word(7, 'keypad'), sd = word(7, 'side'), st = word(7, 'starts'), ni = word(7, ['nine', '9']), fa = word(7, 'faint'), un = word(7, 'under'), we = word(7, 'weaker'), fi = word(7, 'fits');
+  M.show('#' + a.id, 0, fa); M.show('#' + b.id, fa);
+  const X = f => 260 + (f - 600) * 3.6, base = 760, H = 520 / 0.25, Y = v => base - Math.min(0.27, v) * H;
+  axes(a, X, Y, [[650, '650'], [700, '700'], [750, '750'], [800, '800'], [850, '850'], [900, '900'], [950, '950']], [[0.2, '20%'], [0.1, '10%']], 600, 1000, 0, 0.25);
+  label(a, 'Hz', X(1000) + 20, base + 22, 'lbl s');
+  label(a, 'loud 770 Hz, 256 samples, no window', 130, 84, 'lbl s');
+  const pts = range(600, 1000, 1).map(f => [X(f), Y(toneCurve(770, 256, f, false))]);
+  const cv = layer(a, curve(pts, C.ink, 5), [X(600) - 6, X(1000) + 6]);
+  reveal(cv, ke - 6, ke + 26, 'cruise');
+  flicker(cv, 0, 0, ke + 28, fa, 0.5, 71);
+  M.show(label(a, 'bin 25: 81% ↑', X(745) - 12, Y(0.27) - 20, 'lbl s', 'right'), ke + 20);
+  M.show(layer(a, hline(X(600), X(1000), Y(0.12), C.accent, 5, DASH)), ke);
+  M.show(label(a, 'bar: 12%', X(1000), Y(0.12) - 66, 'lbl acc', 'right'), ke);
+  ROWS.forEach((f, i) => {
+    const k = Math.round(f * 256 / FS), bf = k * 31.25, v = toneCurve(770, 256, bf, false), hot = k === 27;
+    if (k === 25) return;
+    M.show(layer(a, vline(X(bf), Y(0), Y(v), C.rule, 3, '6 6') + dotSvg(X(bf), Y(v), 15, hot ? C.accent : C.ink)), ke + 20 + 3 * i);
+    M.show(label(a, pct(v), X(bf) + (k === 22 ? -40 : 0), Y(v) - (k === 22 ? 110 : 70), hot ? 'lbl acc' : 'lbl s', k === 22 ? 'right' : 'center'), hot ? sd : ke + 26 + 3 * i);
+  });
+  M.show(label(a, "the 7's bin, 27", X(843.75) + 70, Y(0.13) - 170, 'lbl acc'), sd);
+  M.show(label(a, 'on a side lobe', X(843.75) + 70, Y(0.13) - 110, 'lbl s'), sd);
+  M.show(label(a, 'loud 4, all starts:', 1790, 120, 'lbl s', 'right'), st);
+  M.show(label(a, '8.9% to 14.6%', 1790, 180, 'lbl acc', 'right'), ni);
+  const SY = v => 800 - v * 32, LX = 720, FX = 1440;
+  layer(b, vline(480, SY(0), SY(16), C.ink, 3) + range(0, 16, 4).map(v => hline(468, 480, SY(v), C.ink, 3)).join(''));
+  range(0, 12, 4).forEach(v => label(b, v + '%', 450, SY(v) - 29, 'lbl s', 'right'));
+  layer(b, `<rect x="${LX - 110}" y="${SY(14.6)}" width="220" height="${SY(8.9) - SY(14.6)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="5"/>`);
+  label(b, 'loud 4: leak', LX, SY(14.6) - 193, 'lbl acc', 'center');
+  label(b, '8.9% to 14.6%', LX, SY(14.6) - 133, 'lbl acc', 'center');
+  M.show(layer(b, `<rect x="${FX - 110}" y="${SY(10.2)}" width="220" height="${SY(7.7) - SY(10.2)}" fill="${C.inputSoft}" stroke="${C.input}" stroke-width="5"/>`), un);
+  M.show(label(b, 'faint keys', FX, SY(14.6) - 193, 'lbl ok', 'center'), un);
+  M.show(label(b, '7.7% to 10.2%', FX, SY(14.6) - 133, 'lbl ok', 'center'), un);
+  const barAt = f => 12 - 6 * (0.5 - 0.5 * Math.cos(TAU * Math.max(0, f - un) / 80));
+  anim(b, fa, sceneEnd(7), f => { const v = barAt(f); return hline(500, 1600, SY(v), C.accent, 5, DASH) + `<text x="1790" y="790" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">bar: ${v.toFixed(1)}%</text>`; }, 2);
+  M.show(label(b, 'above bar → thrown out', LX, SY(14.6) - 73, 'lbl s acc', 'center'), fa);
+  M.show(label(b, 'below bar → never heard', FX, SY(14.6) - 73, 'lbl s ok', 'center'), un);
+  M.show(label(b, 'no bar fits', 960, 700, 'lbl big acc', 'center'), fi);
+  drift(7);
+}
+{
+  const c = cam(8), a = sub(c), b = sub(c);
+  const ed = word(8, 'edges'), cu = word(8, 'cuts'), ta = word(8, 'taper'), ha = word(8, ['hann', 'hon', 'han', 'hahn']), fd = word(8, 'fading'), sh = word(8, 'shrink'), fl = word(8, 'falls'), two = word(8, ['7', '.7'], 0), no = word(8, 'now'), fn = word(8, ['nine', '9', '9.2']), ba = word(8, 'bar'), ev = word(8, 'every');
+  M.show('#' + a.id, 0, no); M.show('#' + b.id, no);
+  const N = 256, BX = n => 200 + n * 5.4, BY = 240, BA = 80;
+  const xs = n => Math.cos(TAU * 770 * n / FS);
+  label(a, 'a block of 770 Hz, 256 samples', 200, 84, 'lbl s');
+  const plain = layer(a, hline(BX(0), BX(255), BY, C.rule, 2) + curve(range(0, 255).map(n => [BX(n), BY - BA * xs(n)]), C.ink, 3));
+  M.hide(plain, fd);
+  const ends = layer(a, [0, 255].map(n => `<circle cx="${BX(n).toFixed(1)}" cy="${(BY - BA * xs(n)).toFixed(1)}" r="24" fill="none" stroke="${C.accent}" stroke-width="5"/>`).join(''));
+  M.show(ends, cu, fd);
+  M.show(label(a, 'cut mid-turn, at full size', 200, 350, 'lbl acc'), cu, ha - 4);
+  const win = layer(a, curve(range(0, 256).map(n => [BX(n), BY - (BA + 10) * hannW(n, N)]), C.input, 6) + curve(range(0, 256).map(n => [BX(n), BY + (BA + 10) * hannW(n, N)]), C.input, 6, '10 8'), [BX(0) - 6, BX(256) + 6]);
+  reveal(win, ha - 4, ha + 20, 'cruise');
+  M.show(label(a, 'Hann window: 0 at both ends', 200, 350, 'lbl ok'), ha);
+  const windowed = layer(a, hline(BX(0), BX(255), BY, C.rule, 2) + curve(range(0, 255).map(n => [BX(n), BY - BA * hannW(n, N) * xs(n)]), C.ink, 3));
+  fadeIn(windowed, fd, 10);
+  flicker(plain, 0, 0, sceneStart(8) + 2, fd, 0.5, 81);
+  const X = d => 960 + d * 100, base = 740, H = 290, Y = v => base - v * H;
+  axes(a, X, Y, range(-6, 6, 2).map(d => [d, d > 0 ? '+' + d : String(d).replace('-', '−')]), [[1, '100%']], -6.6, 6.6, 0, 1);
+  label(a, 'bins', X(6.6), base - 70, 'lbl s', 'right');
+  const pc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(plainAt(d))]), C.soft, 4, DASH));
+  M.show(pc, sceneStart(8));
+  const hc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(hannAt(d))]), C.input, 6), [X(-6.6) - 6, X(6.6) + 6]);
+  reveal(hc, sh, fl, 'cruise');
+  flicker(hc, 0, 0, fl + 2, no, 0.5, 83);
+  flicker(pc, 0, 0, sceneStart(8) + 2, no, 0.5, 84);
+  M.show(label(a, 'dashed: no window', 330, 470, 'lbl s'), sceneStart(8));
+  M.show(label(a, 'solid: Hann', 330, 530, 'lbl ok'), sh);
+  M.show(label(a, 'first side lobe: 22%', 1790, 470, 'lbl s', 'right'), fl);
+  M.show(label(a, '→ 2.7%', 1790, 530, 'lbl ok', 'right'), two);
+  const SY = v => 800 - v * 32, LX = 780, FX = 1440;
+  label(b, 'Hann, 256 samples', 130, 80, 'lbl');
+  layer(b, vline(480, SY(0), SY(16), C.ink, 3) + range(0, 16, 4).map(v => hline(468, 480, SY(v), C.ink, 3)).join(''));
+  range(0, 16, 4).forEach(v => label(b, v + '%', 450, SY(v) - 29, 'lbl s', 'right'));
+  layer(b, `<rect x="${LX - 110}" y="${SY(14.6)}" width="220" height="${SY(8.9) - SY(14.6)}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="10 8"/><rect x="${FX - 110}" y="${SY(10.2)}" width="220" height="${SY(7.7) - SY(10.2)}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="10 8"/>`);
+  label(b, 'dashed: no window', 900, 360, 'lbl s');
+  const leak = layer(b, `<rect x="${LX - 110}" y="${SY(2.7)}" width="220" height="${SY(0) - SY(2.7)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="5"/>`);
+  grow(leak, LX, SY(0), no, 10);
+  flicker(leak, 0, 0, no + 12, sceneEnd(8), 0.5, 85);
+  label(b, 'loud: worst leak', LX, SY(14.6) - 130, 'lbl acc', 'center');
+  M.show(label(b, '2.7%', LX + 130, SY(2.7) - 50, 'lbl acc'), no);
+  M.show(layer(b, `<rect x="${FX - 110}" y="${SY(9.9)}" width="220" height="${SY(9.2) - SY(9.9)}" fill="${C.inputSoft}" stroke="${C.input}" stroke-width="5"/>`), fn);
+  label(b, 'faint: weakest', FX, SY(14.6) - 70, 'lbl ok', 'center');
+  M.show(label(b, '9.2%', FX + 130, SY(9.2) - 10, 'lbl ok'), fn);
+  M.show(layer(b, hline(500, 1500, SY(5), C.accent, 6, DASH)), ba);
+  M.show(label(b, 'bar: 5%', 1520, SY(5) - 30, 'lbl acc'), ba);
+  M.show(label(b, 'every press decodes', 1790, 80, 'lbl big ok', 'right'), ev);
+  M.show(tick(b, 1720, 470, 1.3), ev + 4);
+  drift(8, 1, 1.04);
+}
+{
+  const c = cam(9), a = sub(c), b = sub(c);
+  const sb = word(9, 'shorter'), on = word(9, ['one', '1'], 0), si = word(9, ['sixty-one', '61', '61%']), wi = word(9, 'wide'), lg = word(9, 'longer'), tf = word(9, ['twenty-four', '224'], 0), oe = word(9, ['208', 'oh']), la = word(9, 'land'), po = word(9, ['75', 'point', '1.75']), tfs = word(9, ['fifty-six', '256']);
+  M.show('#' + a.id, 0, lg); M.show('#' + b.id, lg);
+  const X = f => 280 + (f - 550) * 3.1, base = 760, H = 560, Y = v => base - v * H;
+  axes(a, X, Y, [[600, '600'], [700, '700'], [800, '800'], [900, '900'], [1000, '1,000 Hz']], [[1, '100%'], [0.5, '50%']], 550, 1020, 0, 1);
+  M.show(label(a, 'loud 697 Hz, 128 samples', 130, 84, 'lbl s'), sceneStart(9));
+  const pp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, false))]), C.soft, 4, DASH));
+  M.show(pp, on);
+  const hp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, true))]), C.input, 6), [X(550) - 6, X(1020) + 6]);
+  reveal(hp, on, on + 24, 'cruise');
+  flicker(hp, 0, 0, on + 26, lg, 0.5, 91);
+  flicker(pp, 0, 0, on + 2, lg, 0.5, 92);
+  M.show(label(a, 'dashed: no window', 1790, 210, 'lbl s', 'right'), on);
+  M.show(label(a, 'solid: Hann', 1790, 270, 'lbl ok', 'right'), on);
+  [11, 12, 14, 15].forEach(k => {
+    const f = k * 62.5, v = toneCurve(697, 128, f, true), hot = k === 12;
+    M.show(layer(a, vline(X(f), Y(0), Y(v), C.rule, 3, '6 6') + dotSvg(X(f), Y(v), 15, hot ? C.accent : C.ink)), on + 20);
+  });
+  M.show(label(a, "the 4's bin: 61%", X(750) + 30, Y(0.61) - 40, 'lbl acc'), si);
+  M.show(layer(a, bracket(X(697), X(697 + 125), Y(1.08), C.input, -16)), wi);
+  M.show(label(a, 'main lobe: 125 Hz', X(697 + 125) + 30, Y(1.08) - 29, 'lbl ok'), wi);
+  const LEN = [176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 264, 272, 280, 288, 296, 304, 312, 320];
+  const DIST = [1.67, 1.60, 1.27, 1.57, 1.85, 1.79, 1.56, 1.79, 2.09, 1.87, 2.26, 2.00, 2.18, 2.61, 2.67, 2.21, 2.51, 2.82, 2.80];
+  const PASS = n => n === 208 || n === 216 || n === 232 || n >= 240;
+  const rd = word(9, 'read');
+  const LX = n => 300 + (n - 176) * 4.6, LY = d => 730 - (d - 1) * 175;
+  M.show(label(b, 'where the bins land', 130, 84, 'lbl s'), la);
+  M.show(label(b, 'closest tone, bins from the bin read', 130, 144, 'lbl s'), rd);
+  layer(b, hline(LX(170), LX(326), LY(1), C.ink, 3) + vline(LX(170), LY(1), LY(3), C.ink, 3));
+  [176, 208, 256, 320].forEach(n => { layer(b, vline(LX(n), LY(1), LY(1) + 12, C.ink, 3)); label(b, n === 320 ? '320 samples' : String(n), LX(n), LY(1) + 22, 'lbl s', 'center'); });
+  [1, 2, 3].forEach(d => { layer(b, hline(LX(170) - 12, LX(170), LY(d), C.ink, 3)); label(b, String(d), LX(170) - 22, LY(d) - 29, 'lbl s', 'right'); });
+  LEN.forEach((n, i) => {
+    const x = LX(n), y = LY(DIST[i]);
+    const g = PASS(n) ? dotSvg(x, y, 12, C.ink) : seg(x - 12, y - 12, x + 12, y + 12, C.accent, 6) + seg(x - 12, y + 12, x + 12, y - 12, C.accent, 6);
+    M.show(layer(b, g), lg + Math.round(i * 1.2));
+  });
+  const IX = f => 1120 + (f - 680) * 5.5, IY = 310, bw = 8000 / 224;
+  M.show(layer(b, hline(IX(680), IX(800), IY, C.ink, 3) + [19, 20, 21, 22].map(k => vline(IX(k * bw), IY - 16, IY + 16, k === 20 ? C.accent : C.ink, k === 20 ? 6 : 3)).join('') + bracket(IX(20 * bw), IX(770), IY + 34, C.accent, -14)), tf);
+  const tone = layer(b, dotSvg(IX(770), IY, 15, C.accent));
+  M.show(tone, tf);
+  flicker(tone, 0, 0, tf + 6, sceneEnd(9), 0.4, 97);
+  M.show(label(b, "224: 1's bin, 714 Hz", IX(20 * bw) - 80, IY - 90, 'lbl s', 'center'), tf);
+  M.show(label(b, '770 Hz', IX(770), IY - 90, 'lbl s acc', 'center'), tf);
+  M.show(label(b, '1.56 bins (55.7 Hz)', (IX(20 * bw) + IX(770)) / 2, IY + 40, 'lbl s acc', 'center'), tf + 6);
+  M.show(layer(b, ringSvg(LX(224), LY(1.56), 24, C.accent, 5).replace(`fill="${C.paper}"`, 'fill="none"')), tf);
+  M.show(label(b, '224: 1.56, fails', 1120, 440, 'lbl acc'), tf);
+  M.show(layer(b, ringSvg(LX(208), LY(1.85), 24, C.ink, 5).replace(`fill="${C.paper}"`, 'fill="none"')), oe);
+  M.show(label(b, '208: 1.85, works', 1120, 502, 'lbl'), oe);
+  const rule = layer(b, hline(LX(170), LX(326), LY(1.75), C.input, 5, DASH));
+  M.show(rule, po);
+  flicker(rule, 0, 0, po + 4, sceneEnd(9), 0.4, 98);
+  M.show(label(b, 'dashed: about 1.75 bins', 1120, 650, 'lbl s ok'), po);
+  M.show(layer(b, ringSvg(LX(256), LY(2.26), 24, C.input, 6).replace(`fill="${C.paper}"`, 'fill="none"')), tfs);
+  M.show(label(b, '256: 2.26, works', 1120, 564, 'lbl ok'), tfs);
+  drift(9);
+}
+{
+  const c = cam(10), a = sub(c), b = sub(c);
+  const ca = word(10, ['centre', 'center'], 0), ch = word(10, 'choose'), th = word(10, ['thirty-two', '32']), nx = word(10, 'next'), sh = word(10, 'shifts'), se = word(10, 'second');
+  M.show('#' + a.id, 0, nx); M.show('#' + b.id, nx);
+  label(a, 'your turn, in the lab', 960, 80, 'lbl', 'center');
+  M.show(label(a, 'call centre: keys × 2', 960, 160, 'lbl acc', 'center'), ca);
+  M.show(label(a, '+ the rural line', 960, 230, 'lbl s', 'center'), ca + 6);
+  const row = (y, name, opts, at) => {
+    M.show(label(a, name, 520, y, 'lbl', 'right'), at);
+    const rl = layer(a, opts); M.show(rl, at); flicker(rl, 0, 0, at + 4, nx, 0.5, y);
+  };
+  row(330, 'window', `<rect x="560" y="320" width="300" height="80" rx="12" fill="${C.paper2}" stroke="${C.ink}" stroke-width="4"/><rect x="880" y="320" width="300" height="80" rx="12" fill="none" stroke="${C.ink}" stroke-width="4"/>`, sceneStart(10));
+  M.show(label(a, 'none', 710, 330, 'lbl', 'center'), sceneStart(10));
+  M.show(label(a, 'Hann', 1030, 330, 'lbl', 'center'), sceneStart(10));
+  const SX = n => 560 + (n - 64) * 2.4;
+  row(470, 'length', `<line x1="${SX(64)}" y1="500" x2="${SX(512)}" y2="500" stroke="${C.rule}" stroke-width="14" stroke-linecap="round"/>` + vline(SX(320), 470, 530, C.accent, 5, '6 6') + dotSvg(SX(256), 500, 22, C.ink), sceneStart(10));
+  M.show(label(a, '320: one press', SX(320) + 20, 530, 'lbl s'), sceneStart(10));
+  row(630, 'bar', `<line x1="560" y1="660" x2="1640" y2="660" stroke="${C.rule}" stroke-width="14" stroke-linecap="round"/>` + dotSvg(560 + 1080 * 0.12 / 0.2, 660, 22, C.ink), sceneStart(10));
+  M.show(label(a, '32 presses: ? decode', 960, 730, 'lbl big', 'center'), th);
+  label(b, 'next ticket: a tip line', 960, 84, 'note', 'center');
+  M.show(label(b, 'every call up 300 Hz', 130, 160, 'lbl'), sh);
+  const X = f => 200 + f * 0.38, base = 740;
+  const voice = (sh2, amp) => range(0, 4000, 10).map(f => { const g = f < 300 + sh2 || f > 3400 + sh2 ? 0 : Math.pow(Math.sin(Math.PI * (f - 300 - sh2) / 3100), 0.6) * (0.75 + 0.25 * Math.cos((f - sh2) / 160)); return [X(f), base - amp * g]; });
+  axes(b, X, v => base - v, [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000']], [], 0, 4000, 0, 340);
+  label(b, 'Hz', X(4000) + 20, base - 70, 'lbl s');
+  const orig = layer(b, curve(voice(0, 300), C.soft, 4, DASH));
+  M.show(label(b, 'dashed: the call', 1790, 160, 'lbl s', 'right'), sh);
+  const up = layer(b, curve(voice(300, 300), C.ink, 5), [X(0), X(4000)]);
+  reveal(up, sh, sh + 20, 'cruise');
+  M.show(label(b, 'solid: shifted up', 1790, 220, 'lbl', 'right'), sh + 10);
+  const gp = voice(-300, 140);
+  const ghost = layer(b, `<path d="${path(gp)}L${X(4000)} ${base}L${X(0)} ${base}Z" fill="${C.accentSoft}"/>` + curve(gp, C.accent, 5, '10 8'), [X(0), X(4000)]);
+  reveal(ghost, se, se + 20, 'cruise');
+  M.show(label(b, 'a second voice?', 1790, 300, 'lbl big acc', 'right'), se);
+  flicker(up, X(2000), base, sh + 20, END - 24, 0.5, 121);
+  flicker(orig, 0, 0, sceneStart(10), END - 24, 0.5, 122);
+  flicker(ghost, X(2000), base, se + 20, END - 24, 0.2, 131);
+  drift(10);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+window.__anchors = ANCHORS;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>
