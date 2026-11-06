@@ -1,0 +1,1995 @@
+{
+ "fps": 30,
+ "duration": 146.5,
+ "wpm": 198,
+ "lines": [
+  {
+   "line": 1,
+   "text": "A newspaper's tip line must disguise every voice, so you move every tone up three hundred hertz: you multiply every sample by a three hundred hertz tone.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo-fix2/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 8.14,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "A",
+     "frame": 18
+    },
+    {
+     "word": "newspaper's",
+     "frame": 26
+    },
+    {
+     "word": "tip",
+     "frame": 44
+    },
+    {
+     "word": "line",
+     "frame": 48
+    },
+    {
+     "word": "must",
+     "frame": 55
+    },
+    {
+     "word": "disguise",
+     "frame": 63
+    },
+    {
+     "word": "every",
+     "frame": 75
+    },
+    {
+     "word": "voice,",
+     "frame": 83
+    },
+    {
+     "word": "so",
+     "frame": 92
+    },
+    {
+     "word": "you",
+     "frame": 101
+    },
+    {
+     "word": "move",
+     "frame": 104
+    },
+    {
+     "word": "every",
+     "frame": 110
+    },
+    {
+     "word": "tone",
+     "frame": 117
+    },
+    {
+     "word": "up",
+     "frame": 124
+    },
+    {
+     "word": "300",
+     "frame": 129
+    },
+    {
+     "word": "Hz.",
+     "frame": 139
+    },
+    {
+     "word": "You",
+     "frame": 165
+    },
+    {
+     "word": "multiply",
+     "frame": 167
+    },
+    {
+     "word": "every",
+     "frame": 178
+    },
+    {
+     "word": "sample",
+     "frame": 187
+    },
+    {
+     "word": "by",
+     "frame": 196
+    },
+    {
+     "word": "a",
+     "frame": 202
+    },
+    {
+     "word": "300",
+     "frame": 205
+    },
+    {
+     "word": "Hz",
+     "frame": 216
+    },
+    {
+     "word": "tone.",
+     "frame": 226
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Within the hour, the reporters call back: there's a second voice under every caller, just as loud, a little lower. Where did it come from? You only multiplied.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line02.wav",
+   "at": 8.64,
+   "start": 8.64,
+   "end": 16.33,
+   "start_frame": 259,
+   "words": [
+    {
+     "word": "within",
+     "frame": 259
+    },
+    {
+     "word": "the",
+     "frame": 269
+    },
+    {
+     "word": "hour",
+     "frame": 275
+    },
+    {
+     "word": "the",
+     "frame": 282
+    },
+    {
+     "word": "reporters",
+     "frame": 287
+    },
+    {
+     "word": "call",
+     "frame": 299
+    },
+    {
+     "word": "back",
+     "frame": 307
+    },
+    {
+     "word": "there's",
+     "frame": 316
+    },
+    {
+     "word": "a",
+     "frame": 328
+    },
+    {
+     "word": "second",
+     "frame": 331
+    },
+    {
+     "word": "voice",
+     "frame": 338
+    },
+    {
+     "word": "under",
+     "frame": 346
+    },
+    {
+     "word": "every",
+     "frame": 353
+    },
+    {
+     "word": "caller",
+     "frame": 364
+    },
+    {
+     "word": "just",
+     "frame": 370
+    },
+    {
+     "word": "as",
+     "frame": 378
+    },
+    {
+     "word": "loud",
+     "frame": 383
+    },
+    {
+     "word": "a",
+     "frame": 391
+    },
+    {
+     "word": "little",
+     "frame": 397
+    },
+    {
+     "word": "lower",
+     "frame": 401
+    },
+    {
+     "word": "where",
+     "frame": 411
+    },
+    {
+     "word": "did",
+     "frame": 427
+    },
+    {
+     "word": "it",
+     "frame": 431
+    },
+    {
+     "word": "come",
+     "frame": 434
+    },
+    {
+     "word": "from",
+     "frame": 439
+    },
+    {
+     "word": "you",
+     "frame": 448
+    },
+    {
+     "word": "only",
+     "frame": 460
+    },
+    {
+     "word": "multiplied",
+     "frame": 465
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Multiply one tone, a thousand hertz, for eight samples. The product is half a thirteen hundred hertz tone plus half a seven hundred, sample for sample. The tone split in two: the upper half is the wanted copy, the lower half the ghost.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line03.wav",
+   "at": 17.53,
+   "start": 17.53,
+   "end": 28.88,
+   "start_frame": 526,
+   "words": [
+    {
+     "word": "Multiply",
+     "frame": 526
+    },
+    {
+     "word": "one",
+     "frame": 545
+    },
+    {
+     "word": "tone,",
+     "frame": 552
+    },
+    {
+     "word": "1000",
+     "frame": 563
+    },
+    {
+     "word": "Hz,",
+     "frame": 574
+    },
+    {
+     "word": "for",
+     "frame": 588
+    },
+    {
+     "word": "8",
+     "frame": 590
+    },
+    {
+     "word": "samples,",
+     "frame": 594
+    },
+    {
+     "word": "the",
+     "frame": 614
+    },
+    {
+     "word": "product",
+     "frame": 617
+    },
+    {
+     "word": "is",
+     "frame": 626
+    },
+    {
+     "word": "half",
+     "frame": 632
+    },
+    {
+     "word": "a",
+     "frame": 637
+    },
+    {
+     "word": "1300",
+     "frame": 640
+    },
+    {
+     "word": "Hz",
+     "frame": 651
+    },
+    {
+     "word": "tone",
+     "frame": 665
+    },
+    {
+     "word": "plus",
+     "frame": 674
+    },
+    {
+     "word": "half",
+     "frame": 681
+    },
+    {
+     "word": "a",
+     "frame": 688
+    },
+    {
+     "word": "700",
+     "frame": 693
+    },
+    {
+     "word": "sample",
+     "frame": 706
+    },
+    {
+     "word": "for",
+     "frame": 719
+    },
+    {
+     "word": "sample.",
+     "frame": 724
+    },
+    {
+     "word": "The",
+     "frame": 750
+    },
+    {
+     "word": "tone",
+     "frame": 753
+    },
+    {
+     "word": "split",
+     "frame": 759
+    },
+    {
+     "word": "in",
+     "frame": 766
+    },
+    {
+     "word": "two,",
+     "frame": 771
+    },
+    {
+     "word": "the",
+     "frame": 778
+    },
+    {
+     "word": "upper",
+     "frame": 782
+    },
+    {
+     "word": "half",
+     "frame": 789
+    },
+    {
+     "word": "is",
+     "frame": 795
+    },
+    {
+     "word": "the",
+     "frame": 800
+    },
+    {
+     "word": "wanted",
+     "frame": 803
+    },
+    {
+     "word": "copy,",
+     "frame": 811
+    },
+    {
+     "word": "the",
+     "frame": 826
+    },
+    {
+     "word": "lower",
+     "frame": 830
+    },
+    {
+     "word": "half",
+     "frame": 836
+    },
+    {
+     "word": "the",
+     "frame": 843
+    },
+    {
+     "word": "ghost.",
+     "frame": 847
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Filter it away? A voice runs from three hundred to thirty-four hundred hertz, so the ghosts land across the wanted copy: the ghost of two thousand sits at seventeen hundred, on the wanted fourteen hundred. No filter can tell them apart.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line04.wav",
+   "at": 29.48,
+   "start": 29.48,
+   "end": 41.04,
+   "start_frame": 884,
+   "words": [
+    {
+     "word": "filter",
+     "frame": 884
+    },
+    {
+     "word": "it",
+     "frame": 897
+    },
+    {
+     "word": "away",
+     "frame": 902
+    },
+    {
+     "word": "a",
+     "frame": 909
+    },
+    {
+     "word": "voice",
+     "frame": 923
+    },
+    {
+     "word": "runs",
+     "frame": 930
+    },
+    {
+     "word": "from",
+     "frame": 936
+    },
+    {
+     "word": "300",
+     "frame": 942
+    },
+    {
+     "word": "to",
+     "frame": 953
+    },
+    {
+     "word": "3400",
+     "frame": 961
+    },
+    {
+     "word": "hertz",
+     "frame": 984
+    },
+    {
+     "word": "so",
+     "frame": 991
+    },
+    {
+     "word": "the",
+     "frame": 1004
+    },
+    {
+     "word": "ghosts",
+     "frame": 1007
+    },
+    {
+     "word": "land",
+     "frame": 1015
+    },
+    {
+     "word": "across",
+     "frame": 1023
+    },
+    {
+     "word": "the",
+     "frame": 1030
+    },
+    {
+     "word": "wanted",
+     "frame": 1036
+    },
+    {
+     "word": "copy",
+     "frame": 1043
+    },
+    {
+     "word": "the",
+     "frame": 1064
+    },
+    {
+     "word": "ghost",
+     "frame": 1069
+    },
+    {
+     "word": "of",
+     "frame": 1076
+    },
+    {
+     "word": "2000",
+     "frame": 1081
+    },
+    {
+     "word": "sits",
+     "frame": 1093
+    },
+    {
+     "word": "at",
+     "frame": 1103
+    },
+    {
+     "word": "1700",
+     "frame": 1106
+    },
+    {
+     "word": "on",
+     "frame": 1121
+    },
+    {
+     "word": "the",
+     "frame": 1144
+    },
+    {
+     "word": "wanted",
+     "frame": 1147
+    },
+    {
+     "word": "1400",
+     "frame": 1154
+    },
+    {
+     "word": "no",
+     "frame": 1169
+    },
+    {
+     "word": "filter",
+     "frame": 1190
+    },
+    {
+     "word": "can",
+     "frame": 1199
+    },
+    {
+     "word": "tell",
+     "frame": 1205
+    },
+    {
+     "word": "them",
+     "frame": 1209
+    },
+    {
+     "word": "apart",
+     "frame": 1213
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Back to lesson three's wheel: a tone is a dot turning counter-clockwise, and the line stores only its left-right shadow. Lesson six split a real tone into two half-size arrows: the top one counter-clockwise, its mirror clockwise. A clockwise dot is a negative tone, and sounds like its positive twin.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo-fix/line02.wav",
+   "at": 41.84,
+   "start": 41.84,
+   "end": 56.42,
+   "start_frame": 1255,
+   "words": [
+    {
+     "word": "Back",
+     "frame": 1255
+    },
+    {
+     "word": "to",
+     "frame": 1265
+    },
+    {
+     "word": "lesson",
+     "frame": 1270
+    },
+    {
+     "word": "3's",
+     "frame": 1277
+    },
+    {
+     "word": "wheel,",
+     "frame": 1288
+    },
+    {
+     "word": "a",
+     "frame": 1301
+    },
+    {
+     "word": "tone",
+     "frame": 1306
+    },
+    {
+     "word": "is",
+     "frame": 1311
+    },
+    {
+     "word": "a",
+     "frame": 1315
+    },
+    {
+     "word": "dot",
+     "frame": 1318
+    },
+    {
+     "word": "turning",
+     "frame": 1324
+    },
+    {
+     "word": "counterclockwise,",
+     "frame": 1334
+    },
+    {
+     "word": "and",
+     "frame": 1363
+    },
+    {
+     "word": "the",
+     "frame": 1367
+    },
+    {
+     "word": "line",
+     "frame": 1370
+    },
+    {
+     "word": "stores",
+     "frame": 1376
+    },
+    {
+     "word": "only",
+     "frame": 1384
+    },
+    {
+     "word": "its",
+     "frame": 1393
+    },
+    {
+     "word": "left",
+     "frame": 1398
+    },
+    {
+     "word": "-right",
+     "frame": 1405
+    },
+    {
+     "word": "shadow.",
+     "frame": 1411
+    },
+    {
+     "word": "Lesson",
+     "frame": 1435
+    },
+    {
+     "word": "6",
+     "frame": 1442
+    },
+    {
+     "word": "split",
+     "frame": 1450
+    },
+    {
+     "word": "a",
+     "frame": 1457
+    },
+    {
+     "word": "real",
+     "frame": 1460
+    },
+    {
+     "word": "tone",
+     "frame": 1466
+    },
+    {
+     "word": "into",
+     "frame": 1474
+    },
+    {
+     "word": "two",
+     "frame": 1480
+    },
+    {
+     "word": "half",
+     "frame": 1486
+    },
+    {
+     "word": "-size",
+     "frame": 1493
+    },
+    {
+     "word": "arrows,",
+     "frame": 1499
+    },
+    {
+     "word": "the",
+     "frame": 1512
+    },
+    {
+     "word": "top",
+     "frame": 1514
+    },
+    {
+     "word": "one",
+     "frame": 1520
+    },
+    {
+     "word": "counterclockwise,",
+     "frame": 1527
+    },
+    {
+     "word": "its",
+     "frame": 1552
+    },
+    {
+     "word": "mirror",
+     "frame": 1556
+    },
+    {
+     "word": "clockwise.",
+     "frame": 1563
+    },
+    {
+     "word": "A",
+     "frame": 1587
+    },
+    {
+     "word": "clockwise",
+     "frame": 1589
+    },
+    {
+     "word": "dot",
+     "frame": 1598
+    },
+    {
+     "word": "is",
+     "frame": 1608
+    },
+    {
+     "word": "a",
+     "frame": 1615
+    },
+    {
+     "word": "negative",
+     "frame": 1618
+    },
+    {
+     "word": "tone,",
+     "frame": 1627
+    },
+    {
+     "word": "and",
+     "frame": 1642
+    },
+    {
+     "word": "sounds",
+     "frame": 1649
+    },
+    {
+     "word": "like",
+     "frame": 1656
+    },
+    {
+     "word": "its",
+     "frame": 1660
+    },
+    {
+     "word": "positive",
+     "frame": 1664
+    },
+    {
+     "word": "twin.",
+     "frame": 1675
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Multiplying arrows adds their turns: thirteen and a half degrees more per sample. The top arrow speeds up, to thirteen hundred hertz. The mirror turns the other way, so it slows down, to minus seven hundred, which sounds at seven hundred. The mirrors are the ghost.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line06.wav",
+   "at": 57.02,
+   "start": 57.02,
+   "end": 69.96,
+   "start_frame": 1711,
+   "words": [
+    {
+     "word": "Multiplying",
+     "frame": 1711
+    },
+    {
+     "word": "arrows",
+     "frame": 1732
+    },
+    {
+     "word": "adds",
+     "frame": 1742
+    },
+    {
+     "word": "their",
+     "frame": 1750
+    },
+    {
+     "word": "turns,",
+     "frame": 1757
+    },
+    {
+     "word": "13",
+     "frame": 1776
+    },
+    {
+     "word": "and",
+     "frame": 1786
+    },
+    {
+     "word": "a",
+     "frame": 1790
+    },
+    {
+     "word": "half",
+     "frame": 1793
+    },
+    {
+     "word": "degrees",
+     "frame": 1798
+    },
+    {
+     "word": "more",
+     "frame": 1807
+    },
+    {
+     "word": "per",
+     "frame": 1816
+    },
+    {
+     "word": "sample.",
+     "frame": 1821
+    },
+    {
+     "word": "The",
+     "frame": 1841
+    },
+    {
+     "word": "top",
+     "frame": 1843
+    },
+    {
+     "word": "arrow",
+     "frame": 1850
+    },
+    {
+     "word": "speeds",
+     "frame": 1858
+    },
+    {
+     "word": "up",
+     "frame": 1868
+    },
+    {
+     "word": "to",
+     "frame": 1876
+    },
+    {
+     "word": "1300",
+     "frame": 1880
+    },
+    {
+     "word": "hertz.",
+     "frame": 1892
+    },
+    {
+     "word": "The",
+     "frame": 1918
+    },
+    {
+     "word": "mirror",
+     "frame": 1920
+    },
+    {
+     "word": "turns",
+     "frame": 1928
+    },
+    {
+     "word": "the",
+     "frame": 1937
+    },
+    {
+     "word": "other",
+     "frame": 1942
+    },
+    {
+     "word": "way",
+     "frame": 1948
+    },
+    {
+     "word": "so",
+     "frame": 1955
+    },
+    {
+     "word": "it",
+     "frame": 1963
+    },
+    {
+     "word": "slows",
+     "frame": 1967
+    },
+    {
+     "word": "down",
+     "frame": 1975
+    },
+    {
+     "word": "to",
+     "frame": 1984
+    },
+    {
+     "word": "minus",
+     "frame": 1990
+    },
+    {
+     "word": "700",
+     "frame": 1997
+    },
+    {
+     "word": "which",
+     "frame": 2013
+    },
+    {
+     "word": "sounds",
+     "frame": 2023
+    },
+    {
+     "word": "at",
+     "frame": 2030
+    },
+    {
+     "word": "700.",
+     "frame": 2035
+    },
+    {
+     "word": "The",
+     "frame": 2061
+    },
+    {
+     "word": "mirrors",
+     "frame": 2064
+    },
+    {
+     "word": "are",
+     "frame": 2072
+    },
+    {
+     "word": "the",
+     "frame": 2077
+    },
+    {
+     "word": "ghost.",
+     "frame": 2080
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "So remove the mirrors first. A call made only of top arrows is the analytic signal. For one tone, that's a full-size dot: the cosine you store, plus the sine, its up-down part. The sine is the cosine a quarter turn behind.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line07.wav",
+   "at": 70.96,
+   "start": 70.96,
+   "end": 81.6,
+   "start_frame": 2129,
+   "words": [
+    {
+     "word": "so",
+     "frame": 2129
+    },
+    {
+     "word": "remove",
+     "frame": 2137
+    },
+    {
+     "word": "the",
+     "frame": 2146
+    },
+    {
+     "word": "mirrors",
+     "frame": 2150
+    },
+    {
+     "word": "first",
+     "frame": 2158
+    },
+    {
+     "word": "a",
+     "frame": 2167
+    },
+    {
+     "word": "call",
+     "frame": 2179
+    },
+    {
+     "word": "made",
+     "frame": 2186
+    },
+    {
+     "word": "only",
+     "frame": 2192
+    },
+    {
+     "word": "of",
+     "frame": 2198
+    },
+    {
+     "word": "top",
+     "frame": 2203
+    },
+    {
+     "word": "arrows",
+     "frame": 2209
+    },
+    {
+     "word": "is",
+     "frame": 2217
+    },
+    {
+     "word": "the",
+     "frame": 2224
+    },
+    {
+     "word": "analytic",
+     "frame": 2227
+    },
+    {
+     "word": "signal",
+     "frame": 2239
+    },
+    {
+     "word": "for",
+     "frame": 2249
+    },
+    {
+     "word": "one",
+     "frame": 2258
+    },
+    {
+     "word": "tone",
+     "frame": 2264
+    },
+    {
+     "word": "that's",
+     "frame": 2273
+    },
+    {
+     "word": "a",
+     "frame": 2279
+    },
+    {
+     "word": "full",
+     "frame": 2282
+    },
+    {
+     "word": "-size",
+     "frame": 2287
+    },
+    {
+     "word": "dot",
+     "frame": 2295
+    },
+    {
+     "word": "the",
+     "frame": 2303
+    },
+    {
+     "word": "cosine",
+     "frame": 2314
+    },
+    {
+     "word": "you",
+     "frame": 2323
+    },
+    {
+     "word": "store",
+     "frame": 2330
+    },
+    {
+     "word": "plus",
+     "frame": 2336
+    },
+    {
+     "word": "the",
+     "frame": 2344
+    },
+    {
+     "word": "sine",
+     "frame": 2350
+    },
+    {
+     "word": "it's",
+     "frame": 2357
+    },
+    {
+     "word": "up",
+     "frame": 2365
+    },
+    {
+     "word": "down",
+     "frame": 2368
+    },
+    {
+     "word": "part",
+     "frame": 2373
+    },
+    {
+     "word": "the",
+     "frame": 2382
+    },
+    {
+     "word": "sine",
+     "frame": 2389
+    },
+    {
+     "word": "is",
+     "frame": 2395
+    },
+    {
+     "word": "the",
+     "frame": 2399
+    },
+    {
+     "word": "cosine",
+     "frame": 2402
+    },
+    {
+     "word": "a",
+     "frame": 2414
+    },
+    {
+     "word": "quarter",
+     "frame": 2416
+    },
+    {
+     "word": "turn",
+     "frame": 2422
+    },
+    {
+     "word": "behind",
+     "frame": 2430
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "The filter that makes it is the Hilbert transformer. It turns positive tones back a quarter turn and negative tones forward, so the line can still carry it. Turn that output one more quarter turn forward, and add the call. The top arrow lands on itself: doubled. The mirror lands opposite. Oh, gone.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo-breath/line08.wav",
+   "at": 82.2,
+   "start": 82.2,
+   "end": 97.67,
+   "start_frame": 2466,
+   "words": [
+    {
+     "word": "The",
+     "frame": 2466
+    },
+    {
+     "word": "filter",
+     "frame": 2474
+    },
+    {
+     "word": "that",
+     "frame": 2482
+    },
+    {
+     "word": "makes",
+     "frame": 2486
+    },
+    {
+     "word": "it",
+     "frame": 2493
+    },
+    {
+     "word": "is",
+     "frame": 2497
+    },
+    {
+     "word": "the",
+     "frame": 2501
+    },
+    {
+     "word": "Hilbert",
+     "frame": 2505
+    },
+    {
+     "word": "Transformer.",
+     "frame": 2515
+    },
+    {
+     "word": "It",
+     "frame": 2543
+    },
+    {
+     "word": "turns",
+     "frame": 2545
+    },
+    {
+     "word": "positive",
+     "frame": 2552
+    },
+    {
+     "word": "tones",
+     "frame": 2564
+    },
+    {
+     "word": "back",
+     "frame": 2573
+    },
+    {
+     "word": "a",
+     "frame": 2581
+    },
+    {
+     "word": "quarter",
+     "frame": 2585
+    },
+    {
+     "word": "turn",
+     "frame": 2592
+    },
+    {
+     "word": "and",
+     "frame": 2601
+    },
+    {
+     "word": "negative",
+     "frame": 2606
+    },
+    {
+     "word": "tones",
+     "frame": 2614
+    },
+    {
+     "word": "forward",
+     "frame": 2624
+    },
+    {
+     "word": "so",
+     "frame": 2636
+    },
+    {
+     "word": "the",
+     "frame": 2644
+    },
+    {
+     "word": "line",
+     "frame": 2648
+    },
+    {
+     "word": "can",
+     "frame": 2654
+    },
+    {
+     "word": "still",
+     "frame": 2659
+    },
+    {
+     "word": "carry",
+     "frame": 2665
+    },
+    {
+     "word": "it.",
+     "frame": 2674
+    },
+    {
+     "word": "Turn",
+     "frame": 2705
+    },
+    {
+     "word": "that",
+     "frame": 2710
+    },
+    {
+     "word": "output",
+     "frame": 2714
+    },
+    {
+     "word": "one",
+     "frame": 2723
+    },
+    {
+     "word": "more",
+     "frame": 2731
+    },
+    {
+     "word": "quarter",
+     "frame": 2737
+    },
+    {
+     "word": "turn",
+     "frame": 2745
+    },
+    {
+     "word": "forward",
+     "frame": 2752
+    },
+    {
+     "word": "and",
+     "frame": 2764
+    },
+    {
+     "word": "add",
+     "frame": 2770
+    },
+    {
+     "word": "the",
+     "frame": 2776
+    },
+    {
+     "word": "call.",
+     "frame": 2779
+    },
+    {
+     "word": "The",
+     "frame": 2797
+    },
+    {
+     "word": "top",
+     "frame": 2800
+    },
+    {
+     "word": "arrow",
+     "frame": 2807
+    },
+    {
+     "word": "lands",
+     "frame": 2815
+    },
+    {
+     "word": "on",
+     "frame": 2824
+    },
+    {
+     "word": "itself.",
+     "frame": 2827
+    },
+    {
+     "word": "Doubled.",
+     "frame": 2846
+    },
+    {
+     "word": "The",
+     "frame": 2872
+    },
+    {
+     "word": "mirror",
+     "frame": 2875
+    },
+    {
+     "word": "lands",
+     "frame": 2881
+    },
+    {
+     "word": "opposite.",
+     "frame": 2890
+    },
+    {
+     "word": "Oh,",
+     "frame": 2906
+    },
+    {
+     "word": "gone.",
+     "frame": 2916
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Now shift by one arrow, three hundred hertz: no mirrors to slow down. Keep the shadow: the call times the cosine, minus the Hilbert output times the sine. A thousand hertz comes out as thirteen hundred, digit for digit. One copy only: that's single sideband.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line09.wav",
+   "at": 98.67,
+   "start": 98.67,
+   "end": 111.1,
+   "start_frame": 2960,
+   "words": [
+    {
+     "word": "now",
+     "frame": 2960
+    },
+    {
+     "word": "shift",
+     "frame": 2970
+    },
+    {
+     "word": "by",
+     "frame": 2978
+    },
+    {
+     "word": "one",
+     "frame": 2983
+    },
+    {
+     "word": "arrow",
+     "frame": 2989
+    },
+    {
+     "word": "300",
+     "frame": 2997
+    },
+    {
+     "word": "hertz",
+     "frame": 3008
+    },
+    {
+     "word": "no",
+     "frame": 3020
+    },
+    {
+     "word": "mirrors",
+     "frame": 3036
+    },
+    {
+     "word": "to",
+     "frame": 3045
+    },
+    {
+     "word": "slow",
+     "frame": 3051
+    },
+    {
+     "word": "down",
+     "frame": 3057
+    },
+    {
+     "word": "keep",
+     "frame": 3065
+    },
+    {
+     "word": "the",
+     "frame": 3072
+    },
+    {
+     "word": "shadow",
+     "frame": 3078
+    },
+    {
+     "word": "the",
+     "frame": 3086
+    },
+    {
+     "word": "call",
+     "frame": 3093
+    },
+    {
+     "word": "times",
+     "frame": 3099
+    },
+    {
+     "word": "the",
+     "frame": 3106
+    },
+    {
+     "word": "cosine",
+     "frame": 3112
+    },
+    {
+     "word": "minus",
+     "frame": 3120
+    },
+    {
+     "word": "the",
+     "frame": 3134
+    },
+    {
+     "word": "hilbert",
+     "frame": 3140
+    },
+    {
+     "word": "output",
+     "frame": 3148
+    },
+    {
+     "word": "times",
+     "frame": 3158
+    },
+    {
+     "word": "the",
+     "frame": 3165
+    },
+    {
+     "word": "sine",
+     "frame": 3171
+    },
+    {
+     "word": "a",
+     "frame": 3179
+    },
+    {
+     "word": "thousand",
+     "frame": 3193
+    },
+    {
+     "word": "hertz",
+     "frame": 3200
+    },
+    {
+     "word": "comes",
+     "frame": 3207
+    },
+    {
+     "word": "out",
+     "frame": 3214
+    },
+    {
+     "word": "as",
+     "frame": 3219
+    },
+    {
+     "word": "1300",
+     "frame": 3224
+    },
+    {
+     "word": "digit",
+     "frame": 3250
+    },
+    {
+     "word": "for",
+     "frame": 3254
+    },
+    {
+     "word": "digit",
+     "frame": 3258
+    },
+    {
+     "word": "one",
+     "frame": 3264
+    },
+    {
+     "word": "copy",
+     "frame": 3274
+    },
+    {
+     "word": "only",
+     "frame": 3283
+    },
+    {
+     "word": "that's",
+     "frame": 3292
+    },
+    {
+     "word": "single",
+     "frame": 3304
+    },
+    {
+     "word": "sideband",
+     "frame": 3312
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "The Hilbert transformer's coefficients never end, like lesson ten's ideal filter. Keep thirty-one, taper them with a Hann window: it runs fifteen samples late. Delay the plain call to match, or the ghost is back: forty-one percent at a thousand hertz.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo-fix/line03.wav",
+   "at": 111.9,
+   "start": 111.9,
+   "end": 124.46,
+   "start_frame": 3357,
+   "words": [
+    {
+     "word": "The",
+     "frame": 3357
+    },
+    {
+     "word": "Hilbert",
+     "frame": 3365
+    },
+    {
+     "word": "Transformer's",
+     "frame": 3374
+    },
+    {
+     "word": "coefficients",
+     "frame": 3393
+    },
+    {
+     "word": "never",
+     "frame": 3407
+    },
+    {
+     "word": "end,",
+     "frame": 3418
+    },
+    {
+     "word": "like",
+     "frame": 3430
+    },
+    {
+     "word": "Lesson",
+     "frame": 3437
+    },
+    {
+     "word": "10's",
+     "frame": 3449
+    },
+    {
+     "word": "ideal",
+     "frame": 3458
+    },
+    {
+     "word": "filter.",
+     "frame": 3466
+    },
+    {
+     "word": "Keep",
+     "frame": 3487
+    },
+    {
+     "word": "31,",
+     "frame": 3491
+    },
+    {
+     "word": "taper",
+     "frame": 3512
+    },
+    {
+     "word": "them",
+     "frame": 3521
+    },
+    {
+     "word": "with",
+     "frame": 3526
+    },
+    {
+     "word": "a",
+     "frame": 3530
+    },
+    {
+     "word": "Han",
+     "frame": 3533
+    },
+    {
+     "word": "window,",
+     "frame": 3538
+    },
+    {
+     "word": "it",
+     "frame": 3552
+    },
+    {
+     "word": "runs",
+     "frame": 3559
+    },
+    {
+     "word": "15",
+     "frame": 3565
+    },
+    {
+     "word": "samples",
+     "frame": 3575
+    },
+    {
+     "word": "late.",
+     "frame": 3589
+    },
+    {
+     "word": "Delay",
+     "frame": 3609
+    },
+    {
+     "word": "the",
+     "frame": 3615
+    },
+    {
+     "word": "plane",
+     "frame": 3619
+    },
+    {
+     "word": "call",
+     "frame": 3625
+    },
+    {
+     "word": "to",
+     "frame": 3631
+    },
+    {
+     "word": "match",
+     "frame": 3635
+    },
+    {
+     "word": "or",
+     "frame": 3643
+    },
+    {
+     "word": "the",
+     "frame": 3648
+    },
+    {
+     "word": "ghost",
+     "frame": 3652
+    },
+    {
+     "word": "is",
+     "frame": 3657
+    },
+    {
+     "word": "back,",
+     "frame": 3662
+    },
+    {
+     "word": "41",
+     "frame": 3673
+    },
+    {
+     "word": "%",
+     "frame": 3683
+    },
+    {
+     "word": "at",
+     "frame": 3692
+    },
+    {
+     "word": "1000",
+     "frame": 3701
+    },
+    {
+     "word": "Hz.",
+     "frame": 3710
+    }
+   ]
+  },
+  {
+   "line": 11,
+   "text": "The target: every ghost under five percent, from three hundred to thirty-four hundred hertz. Thirty-one coefficients just miss: five point two four percent at three hundred. Thirty-five, with a delay of seventeen: two point seven seven. The ghost is gone.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo/line11.wav",
+   "at": 125.26,
+   "start": 125.26,
+   "end": 137.79,
+   "start_frame": 3758,
+   "words": [
+    {
+     "word": "the",
+     "frame": 3758
+    },
+    {
+     "word": "target",
+     "frame": 3766
+    },
+    {
+     "word": "every",
+     "frame": 3775
+    },
+    {
+     "word": "ghost",
+     "frame": 3791
+    },
+    {
+     "word": "under",
+     "frame": 3799
+    },
+    {
+     "word": "five",
+     "frame": 3806
+    },
+    {
+     "word": "percent",
+     "frame": 3812
+    },
+    {
+     "word": "from",
+     "frame": 3823
+    },
+    {
+     "word": "300",
+     "frame": 3830
+    },
+    {
+     "word": "to",
+     "frame": 3844
+    },
+    {
+     "word": "3400",
+     "frame": 3851
+    },
+    {
+     "word": "hertz",
+     "frame": 3872
+    },
+    {
+     "word": "31",
+     "frame": 3891
+    },
+    {
+     "word": "coefficients",
+     "frame": 3899
+    },
+    {
+     "word": "just",
+     "frame": 3916
+    },
+    {
+     "word": "miss",
+     "frame": 3926
+    },
+    {
+     "word": "5",
+     "frame": 3950
+    },
+    {
+     "word": ".24",
+     "frame": 3953
+    },
+    {
+     "word": "percent",
+     "frame": 3967
+    },
+    {
+     "word": "at",
+     "frame": 3980
+    },
+    {
+     "word": "300",
+     "frame": 3988
+    },
+    {
+     "word": "35",
+     "frame": 4019
+    },
+    {
+     "word": "with",
+     "frame": 4027
+    },
+    {
+     "word": "a",
+     "frame": 4041
+    },
+    {
+     "word": "delay",
+     "frame": 4044
+    },
+    {
+     "word": "of",
+     "frame": 4050
+    },
+    {
+     "word": "17",
+     "frame": 4055
+    },
+    {
+     "word": "2",
+     "frame": 4066
+    },
+    {
+     "word": ".77",
+     "frame": 4075
+    },
+    {
+     "word": "the",
+     "frame": 4093
+    },
+    {
+     "word": "ghost",
+     "frame": 4108
+    },
+    {
+     "word": "is",
+     "frame": 4114
+    },
+    {
+     "word": "gone",
+     "frame": 4119
+    }
+   ]
+  },
+  {
+   "line": 12,
+   "text": "Next ticket: calls through a partner network across the sea carry an echo. Every route has its own delay, and you can't send the partner a click.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/15-hilbert/4-video/vo-fix/line05.wav",
+   "at": 138.79,
+   "start": 138.79,
+   "end": 145.8,
+   "start_frame": 4164,
+   "words": [
+    {
+     "word": "Next",
+     "frame": 4164
+    },
+    {
+     "word": "ticket.",
+     "frame": 4178
+    },
+    {
+     "word": "Calls",
+     "frame": 4193
+    },
+    {
+     "word": "through",
+     "frame": 4205
+    },
+    {
+     "word": "a",
+     "frame": 4209
+    },
+    {
+     "word": "partner",
+     "frame": 4212
+    },
+    {
+     "word": "network",
+     "frame": 4219
+    },
+    {
+     "word": "across",
+     "frame": 4230
+    },
+    {
+     "word": "the",
+     "frame": 4238
+    },
+    {
+     "word": "sea",
+     "frame": 4244
+    },
+    {
+     "word": "carry",
+     "frame": 4249
+    },
+    {
+     "word": "an",
+     "frame": 4257
+    },
+    {
+     "word": "echo.",
+     "frame": 4261
+    },
+    {
+     "word": "Every",
+     "frame": 4284
+    },
+    {
+     "word": "route",
+     "frame": 4288
+    },
+    {
+     "word": "has",
+     "frame": 4294
+    },
+    {
+     "word": "its",
+     "frame": 4300
+    },
+    {
+     "word": "own",
+     "frame": 4304
+    },
+    {
+     "word": "delay",
+     "frame": 4310
+    },
+    {
+     "word": "and",
+     "frame": 4319
+    },
+    {
+     "word": "you",
+     "frame": 4327
+    },
+    {
+     "word": "can't",
+     "frame": 4330
+    },
+    {
+     "word": "send",
+     "frame": 4338
+    },
+    {
+     "word": "the",
+     "frame": 4343
+    },
+    {
+     "word": "partner",
+     "frame": 4347
+    },
+    {
+     "word": "a",
+     "frame": 4354
+    },
+    {
+     "word": "click.",
+     "frame": 4360
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,295 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:03.060
+A newspaper's tip line
+must disguise every voice,
+
+2
+00:00:03.080 --> 00:00:05.340
+so you move every tone
+up three hundred hertz:
+
+3
+00:00:05.500 --> 00:00:08.100
+you multiply every sample
+by a three hundred hertz tone.
+
+4
+00:00:08.640 --> 00:00:10.500
+Within the hour, the reporters call back:
+
+5
+00:00:10.520 --> 00:00:12.300
+there's a second voice under every caller,
+
+6
+00:00:12.320 --> 00:00:13.680
+just as loud, a little lower.
+
+7
+00:00:13.700 --> 00:00:14.920
+Where did it come from?
+
+8
+00:00:14.940 --> 00:00:16.060
+You only multiplied.
+
+9
+00:00:17.530 --> 00:00:18.750
+Multiply one tone,
+
+10
+00:00:18.770 --> 00:00:20.430
+a thousand hertz, for eight samples.
+
+11
+00:00:20.450 --> 00:00:22.450
+The product
+is half a thirteen hundred hertz tone
+
+12
+00:00:22.470 --> 00:00:24.830
+plus half a seven hundred,
+sample for sample.
+
+13
+00:00:25.010 --> 00:00:27.530
+The tone split in two:
+the upper half is the wanted copy,
+
+14
+00:00:27.550 --> 00:00:28.830
+the lower half the ghost.
+
+15
+00:00:29.480 --> 00:00:30.280
+Filter it away?
+
+16
+00:00:30.300 --> 00:00:31.760
+A voice runs from three hundred
+
+17
+00:00:31.780 --> 00:00:33.000
+to thirty-four hundred hertz,
+
+18
+00:00:33.020 --> 00:00:35.220
+so the ghosts land across the wanted copy:
+
+19
+00:00:35.460 --> 00:00:36.740
+the ghost of two thousand sits
+
+20
+00:00:36.760 --> 00:00:38.960
+at seventeen hundred,
+on the wanted fourteen hundred.
+
+21
+00:00:38.980 --> 00:00:40.840
+No filter can tell them apart.
+
+22
+00:00:41.840 --> 00:00:43.340
+Back to lesson three's wheel:
+
+23
+00:00:43.360 --> 00:00:45.420
+a tone is a dot turning counter-clockwise,
+
+24
+00:00:45.440 --> 00:00:47.660
+and the line stores only
+its left-right shadow.
+
+25
+00:00:47.820 --> 00:00:50.380
+Lesson six split a real tone
+into two half-size arrows:
+
+26
+00:00:50.400 --> 00:00:52.880
+the top one counter-clockwise,
+its mirror clockwise.
+
+27
+00:00:52.900 --> 00:00:54.720
+A clockwise dot is a negative tone,
+
+28
+00:00:54.740 --> 00:00:56.380
+and sounds like its positive twin.
+
+29
+00:00:57.020 --> 00:00:59.180
+Multiplying arrows adds their turns:
+
+30
+00:00:59.200 --> 00:01:01.360
+thirteen and a half degrees
+more per sample.
+
+31
+00:01:01.380 --> 00:01:03.900
+The top arrow speeds up,
+to thirteen hundred hertz.
+
+32
+00:01:03.940 --> 00:01:05.140
+The mirror turns the other way,
+
+33
+00:01:05.160 --> 00:01:07.080
+so it slows down, to minus seven hundred,
+
+34
+00:01:07.100 --> 00:01:08.640
+which sounds at seven hundred.
+
+35
+00:01:08.700 --> 00:01:09.920
+The mirrors are the ghost.
+
+36
+00:01:10.960 --> 00:01:12.220
+So remove the mirrors first.
+
+37
+00:01:12.240 --> 00:01:14.960
+A call made only of top
+arrows is the analytic signal.
+
+38
+00:01:14.980 --> 00:01:17.840
+For one tone, that's a full-size dot:
+the cosine you store,
+
+39
+00:01:17.860 --> 00:01:19.380
+plus the sine, its up-down part.
+
+40
+00:01:19.400 --> 00:01:21.420
+The sine is the cosine
+a quarter turn behind.
+
+41
+00:01:22.200 --> 00:01:24.660
+The filter that makes it
+is the Hilbert transformer.
+
+42
+00:01:24.780 --> 00:01:27.840
+It turns positive tones back a quarter
+turn and negative tones forward,
+
+43
+00:01:27.860 --> 00:01:29.580
+so the line can still carry it.
+
+44
+00:01:30.160 --> 00:01:33.160
+Turn that output one more quarter
+turn forward, and add the call.
+
+45
+00:01:33.220 --> 00:01:35.680
+The top arrow lands on itself: doubled.
+
+46
+00:01:35.720 --> 00:01:37.680
+The mirror lands opposite. Oh, gone.
+
+47
+00:01:38.670 --> 00:01:40.630
+Now shift by one arrow,
+three hundred hertz:
+
+48
+00:01:40.650 --> 00:01:42.150
+no mirrors to slow down.
+
+49
+00:01:42.170 --> 00:01:43.990
+Keep the shadow:
+the call times the cosine,
+
+50
+00:01:44.010 --> 00:01:45.950
+minus the Hilbert output times the sine.
+
+51
+00:01:45.970 --> 00:01:48.770
+A thousand hertz comes out
+as thirteen hundred, digit for digit.
+
+52
+00:01:48.790 --> 00:01:51.010
+One copy only: that's single sideband.
+
+53
+00:01:51.900 --> 00:01:54.300
+The Hilbert transformer's
+coefficients never end,
+
+54
+00:01:54.320 --> 00:01:56.200
+like lesson ten's ideal filter.
+
+55
+00:01:56.240 --> 00:01:58.380
+Keep thirty-one,
+taper them with a Hann window:
+
+56
+00:01:58.400 --> 00:02:00.200
+it runs fifteen samples late.
+
+57
+00:02:00.300 --> 00:02:02.400
+Delay the plain call to match,
+or the ghost is back:
+
+58
+00:02:02.420 --> 00:02:04.360
+forty-one percent at a thousand hertz.
+
+59
+00:02:05.260 --> 00:02:07.400
+The target:
+every ghost under five percent,
+
+60
+00:02:07.420 --> 00:02:09.380
+from three hundred
+to thirty-four hundred hertz.
+
+61
+00:02:09.700 --> 00:02:11.300
+Thirty-one coefficients just miss:
+
+62
+00:02:11.680 --> 00:02:13.380
+five point two four
+percent at three hundred.
+
+63
+00:02:13.970 --> 00:02:16.400
+Thirty-five, with a delay of seventeen:
+two point seven seven.
+
+64
+00:02:16.420 --> 00:02:17.600
+The ghost is gone.
+
+65
+00:02:18.790 --> 00:02:22.650
+Next ticket: calls through a partner
+network across the sea carry an echo.
+
+66
+00:02:22.790 --> 00:02:25.750
+Every route has its own delay,
+and you can't send the partner a click.

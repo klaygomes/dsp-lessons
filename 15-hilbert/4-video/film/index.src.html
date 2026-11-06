@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Voice Underneath</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const STILL = END - 36;
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [], ANCHORS = [];
+const norm = s => s.toLowerCase().replace(/[“”"]/g, '').replace(/’/g, "'").replace(/^[^a-z0-9−-]+/, '').replace(/[^a-z0-9%]+$/, '');
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => fs.includes(norm(w.word)));
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  const h = hits[nth] || hits[hits.length - 1] || { word: '(none)', frame: lineStart(i) };
+  ANCHORS.push({ line: i, form: fs[0], nth, heard: h.word, frame: h.frame });
+  return h.frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function part(parent) { const id = 'P' + (++uid); return [el('div', { id, class: 'layer' }, parent), '#' + id]; }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03, end = sceneEnd(n)) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DOTS = '1 15';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15, hollow = false) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${hollow ? C.paper : color}" stroke="${color}" stroke-width="${hollow ? 5 : 0}"/>`;
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+const sq = (x, y, s = 14, color = C.ink, fill = C.ink) => `<rect x="${(x - s).toFixed(1)}" y="${(y - s).toFixed(1)}" width="${2 * s}" height="${2 * s}" fill="${fill}" stroke="${color}" stroke-width="4"/>`;
+const box = (x, y, w, h, stroke = C.ink, fill = C.paper, sw = 4) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="8"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, a, b, lo = 0.75, seed = 0) => { const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'opacity', keys); };
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 30, s = 15;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const topArrow = (x, y, len, a, color = C.ink) => { const [u, v] = pt(x, y, len, a); return arrowSvg(x, y, u, v, color, 8); };
+const mirArrow = (x, y, len, a, color = C.ink) => { const [u, v] = pt(x, y, len, a); return arrowSvg(x, y, u, v, color, 8, DOTS, true); };
+const refArrow = (x, y, len, a) => { const [u, v] = pt(x, y, len, a); return arrowSvg(x, y, u, v, C.soft, 4, '12 9'); };
+const wheel = (x, y, R) => `<circle cx="${x}" cy="${y}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="3"/>` + hline(x - R - 30, x + R + 30, y, C.rule, 3) + vline(x, y - R - 30, y + R + 30, C.rule, 3);
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(from)), from, to > from ? to : from + 1); }
+};
+const turnAt = (f, a0, segs) => { let a = a0, t = segs[0][0]; segs.forEach(([from, rate], k) => { const to = k + 1 < segs.length ? segs[k + 1][0] : Infinity; if (f > from) a += rate * (Math.min(f, to) - from); }); return a; };
+const SPS = 12;
+const hatch = id => `<defs><pattern id="${id}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="${C.accentSoft}"/><line x1="0" y1="0" x2="0" y2="18" stroke="${C.accent}" stroke-width="6"/></pattern></defs>`;
+const fmt = (v, d = 3) => (v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
+const hz = v => Math.round(v).toLocaleString('en-US');
+
+const hann = (n, D) => 0.5 + 0.5 * Math.cos(Math.PI * n / (D + 1));
+const gainOf = (N, win, f) => { const D = (N - 1) / 2, w = 2 * Math.PI * f / 8000; let s = 0; for (let n = 1; n <= D; n += 2) s += 2 * (2 / (Math.PI * n)) * (win ? hann(n, D) : 1) * Math.sin(w * n); return s; };
+const ghostOf = G => Math.abs(1 - G) / (1 + G);
+const worst = N => { let m = 0, at = 300; for (let f = 300; f <= 3400; f += 5) { const g = ghostOf(gainOf(N, true, f)); if (g > m) { m = g; at = f; } } return [m, at]; };
+const voiceAt = (t, ph) => { const env = 0.55 + 0.45 * Math.sin(t * 0.21 + 0.7) * Math.sin(t * 0.083 + ph); return env * (0.6 * Math.sin(t) + 0.3 * Math.sin(2.7 * t + 1) + 0.18 * Math.sin(5.3 * t + 2)); };
+const waveRow = (x0, x1, y, amp, ph, k = 1, color = C.ink, w = 5, dash = '') => curve(range(x0, x1, 4).map(x => [x, y - amp * voiceAt((x - x0) / 26 * k + ph, ph * 0.01)]), color, w, dash);
+
+function shifter(c, delay, dy = 0) {
+  const yT = 250 + dy, yB = 610 + dy, yM = 430 + dy, xs = 330, xMt = 1060, xMb = 1180, xS = 1440;
+  let s = '';
+  s += arrowSvg(160, yM, xs, yM, C.ink, 5) + dotSvg(xs, yM, 10);
+  s += seg(xs, yM, xs, yT, C.ink, 5) + seg(xs, yM, xs, yB, C.ink, 5);
+  s += delay ? seg(xs, yT, 520, yT, C.ink, 5) + seg(820, yT, xMt - 46, yT, C.ink, 5) : seg(xs, yT, xMt - 46, yT, C.ink, 5);
+  s += seg(xs, yB, 430, yB, C.ink, 5) + box(430, yB - 70, 580, 140, C.ink, C.paper2) + seg(1010, yB, xMb - 46, yB, C.ink, 5);
+  s += ringSvg(xMt, yT, 46, C.ink, 5) + ringSvg(xMb, yB, 46, C.ink, 5);
+  s += seg(xMt - 18, yT - 18, xMt + 18, yT + 18, C.ink, 5) + seg(xMt - 18, yT + 18, xMt + 18, yT - 18, C.ink, 5);
+  s += seg(xMb - 18, yB - 18, xMb + 18, yB + 18, C.ink, 5) + seg(xMb - 18, yB + 18, xMb + 18, yB - 18, C.ink, 5);
+  s += arrowSvg(xMt + 46, yT, xS - 30, yM - 40, C.ink, 5) + arrowSvg(xMb + 46, yB, xS - 30, yM + 40, C.ink, 5);
+  s += ringSvg(xS, yM, 50, C.ink, 5) + seg(xS - 22, yM, xS + 22, yM, C.ink, 6) + seg(xS, yM - 22, xS, yM + 22, C.ink, 6);
+  s += arrowSvg(xS + 50, yM, 1720, yM, C.ink, 5);
+  return { svg: s, yT, yB, yM, xMt, xMb, xS };
+}
+
+{
+  const c = cam(1);
+  const di = word(1, 'disguise'), th = word(1, ['three', '300']), mu = word(1, 'multiply');
+  label(c, 'a newspaper’s tip line', 160, 84, 'lbl s');
+  M.show(label(c, 'a caller', 160, 200, 'lbl s'), word(1, 'voice'));
+  stepped(c, 0, sceneEnd(1), 2, f => waveRow(160, 680, 430, 120, f * 0.12, 1) + (f >= mu ? waveRow(1240, 1760, 430, 120, f * 0.12, 1.25) : ''));
+  M.show(label(c, 'goal: disguise every voice', 160, 640, 'lbl ok'), di);
+  M.show(label(c, 'every tone + 300 Hz', 160, 730, 'lbl'), th);
+  fadeIn(layer(c, box(760, 300, 400, 260, C.ink, C.paper2) + curve(range(800, 1120, 3).map(x => [x, 480 - 34 * Math.sin((x - 800) / 16)]), C.input, 5) + arrowSvg(690, 430, 750, 430, C.ink, 5) + arrowSvg(1170, 430, 1230, 430, C.ink, 5)), mu, 8);
+  M.show(label(c, '× 300 Hz tone', 960, 220, 'lbl ok', 'center'), mu);
+  M.show(label(c, 'disguised', 1760, 640, 'lbl s', 'right'), mu + 6);
+  drift(1);
+}
+{
+  const c = cam(2);
+  const se = word(2, 'second'), lo = word(2, 'loud'), lw = word(2, 'lower'), wh = word(2, 'where'), mu = word(2, 'multiplied');
+  label(c, 'the reporters hear:', 160, 84, 'lbl s');
+  label(c, 'the disguised voice', 160, 150, 'lbl');
+  stepped(c, 0, sceneEnd(2), 2, f => waveRow(160, 1760, 340, 110, f * 0.12, 1.25) + (f >= se ? waveRow(160, 1760, 630, 110, f * 0.12, 0.85, C.accent, 5, '14 8') : ''));
+  M.show(label(c, 'a second voice', 160, 460, 'lbl acc'), se);
+  M.show(label(c, 'just as loud', 1760, 460, 'lbl acc', 'right'), lo);
+  M.show(label(c, 'a little lower', 1760, 770, 'lbl acc', 'right'), lw);
+  M.show(label(c, '?', 960, 440, 'lbl big acc', 'center'), wh);
+  M.show(label(c, 'you only multiplied', 160, 770, 'lbl s'), mu);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const th = word(3, ['thousand', '1000', '1,000']), ei = word(3, ['eight', '8']), ha = word(3, 'half'), se = word(3, ['seven', '700']), sa = word(3, 'sample', 1), sp = word(3, 'split'), wa = word(3, 'wanted'), gh = word(3, 'ghost');
+  const [pa, pA] = part(c), [pb, pB] = part(c);
+  M.show(pA, 0, sp); M.show(pB, sp);
+  const xN = n => 760 + n * 140, rows = [230, 450, 690], amp = 90;
+  const r1 = range(0, 7).map(n => cosd(45 * n)), r2 = range(0, 7).map(n => cosd(13.5 * n)), pr = r1.map((v, n) => v * r2[n]);
+  const half = range(0, 7).map(n => 0.5 * cosd(58.5 * n) + 0.5 * cosd(31.5 * n));
+  M.show(label(pa, '1,000 Hz', 160, rows[0] - 31), th);
+  M.show(label(pa, '× 300 Hz', 160, rows[1] - 31, 'lbl ok'), ei);
+  M.show(label(pa, '= product', 160, rows[2] - 31), ei + 10);
+  M.show(label(pa, 'n = 0 … 7, eight samples', 1780, 84, 'lbl s', 'right'), ei);
+  rows.forEach((y, k) => layer(pa, hline(xN(0) - 50, xN(7) + 50, y, C.rule, 3)));
+  grow(layer(pa, r1.map((v, n) => stemSvg(xN(n), rows[0], rows[0] - amp * v)).join('')), 960, rows[0], sceneStart(3), 10);
+  grow(layer(pa, r2.map((v, n) => stemSvg(xN(n), rows[1], rows[1] - amp * v, C.input)).join('')), 960, rows[1], ei, 10);
+  grow(layer(pa, pr.map((v, n) => stemSvg(xN(n), rows[2], rows[2] - amp * v)).join('')), 960, rows[2], ei + 10, 10);
+  fadeIn(layer(pa, half.map((v, n) => ringSvg(xN(n), rows[2] - amp * v, 26, C.accent, 5)).join('')), se, 8);
+  M.show(label(pa, 'sounds as: ½ 1,300 Hz + ½ 700 Hz', 160, 764, 'lbl s acc'), se);
+  M.show(label(pa, 'every sample matches', 160, 84, 'lbl s ok'), sa);
+  const X = f => 260 + f * 0.33, Y = v => 700 - v * 440;
+  layer(pb, hline(X(0), X(4000) + 20, Y(0), C.ink, 3) + [0, 1000, 2000, 3000, 4000].map(f => vline(X(f), Y(0), Y(0) + 12, C.ink, 3)).join(''));
+  [0, 1000, 2000, 3000, 4000].forEach(f => label(pb, f === 4000 ? '4,000 Hz' : hz(f), X(f), Y(0) + 26, 'lbl s', 'center'));
+  label(pb, 'one tone, × a 300 Hz tone', 160, 84, 'lbl s');
+  layer(pb, `<rect x="${X(1000) - 18}" y="${Y(1)}" width="36" height="${Y(0) - Y(1)}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="12 9"/>`);
+  label(pb, 'call tone, 1,000 Hz', X(1000), Y(1) - 70, 'lbl s', 'center');
+  stepped(pb, sp, sceneEnd(3), 2, f => { const p = Math.min(1, Math.max(0, (f - sp) / 20)), e = p * p * (3 - 2 * p), d = 300 * e * 0.36;
+    return hatch('h3' + f) + `<rect x="${X(1000) - 22 + d}" y="${Y(0.5)}" width="44" height="${Y(0) - Y(0.5)}" fill="${C.ink}"/><rect x="${X(1000) - 22 - d}" y="${Y(0.5)}" width="44" height="${Y(0) - Y(0.5)}" fill="url(#h3${f})" stroke="${C.accent}" stroke-width="4"/>`; });
+  M.show(label(pb, 'wanted copy, 1,300', X(1300) + 40, Y(0.5) - 40, 'lbl'), wa);
+  M.show(label(pb, 'ghost, 700', X(700) - 40, Y(0.5) - 40, 'lbl acc', 'right'), gh);
+  M.show(label(pb, '½', X(1300) + 40, Y(0.5) + 30, 'lbl s'), wa);
+  M.show(label(pb, '½', X(700) - 40, Y(0.5) + 30, 'lbl s', 'right'), gh);
+  drift(3);
+}
+{
+  const c = cam(4);
+  const vo = word(4, 'voice'), gh = word(4, 'ghosts'), wa = word(4, 'wanted'), sv = word(4, ['seventeen', '1700', '1,700']), te = word(4, 'tell');
+  const X = f => 300 + f * 0.33, rows = [160, 310, 460], H = 90;
+  const ax = 600;
+  layer(c, hline(X(0), X(4000) + 20, ax, C.ink, 3) + [0, 1000, 2000, 3000, 4000].map(f => vline(X(f), ax, ax + 12, C.ink, 3)).join(''));
+  [0, 1000, 2000, 3000, 4000].forEach(f => label(c, f === 4000 ? '4,000 Hz' : hz(f), X(f), ax + 26, 'lbl s', 'center'));
+  const band = (a, b, y, fill, stroke, dash = '') => `<rect x="${X(a).toFixed(1)}" y="${y}" width="${(X(b) - X(a)).toFixed(1)}" height="${H}" fill="${fill}" stroke="${stroke}" stroke-width="4"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+  M.show(label(c, 'voice, 300 to 3,400', X(300), rows[0] - 64, 'lbl s'), vo);
+  fadeIn(layer(c, band(300, 3400, rows[0], 'none', C.soft, '12 9')), vo, 8);
+  stepped(c, wa, sceneEnd(4), 2, f => { const p = Math.min(1, (f - wa) / 18), e = p * p * (3 - 2 * p); return band(300 + 300 * e, 3400 + 300 * e, rows[0] + (rows[1] - rows[0]) * e, C.paper2, C.ink); });
+  stepped(c, gh, sceneEnd(4), 2, f => { const p = Math.min(1, (f - gh) / 18), e = p * p * (3 - 2 * p); return hatch('h4' + f) + band(300 - 300 * e, 3400 - 300 * e, rows[0] + (rows[2] - rows[0]) * e, `url(#h4${f})`, C.accent); });
+  M.show(label(c, 'wanted copy, 600 to 3,700', X(600), rows[1] - 64, 'lbl'), wa + 18);
+  M.show(label(c, 'ghost, 0 to 3,100', X(0), rows[2] - 64, 'lbl acc'), gh + 18);
+  M.show(layer(c, vline(X(1700), rows[1] - 10, rows[2] + H + 10, C.ink, 7)), sv);
+  M.show(label(c, '1,700 Hz: ghost of 2,000 = wanted copy of 1,400', 960, 686, 'lbl', 'center'), sv);
+  M.show(label(c, 'no filter can tell these apart', 960, 748, 'note acc', 'center'), te);
+  drift(4);
+}
+{
+  const c = cam(5);
+  const wh = word(5, 'wheel'), sh = word(5, 'shadow'), si = word(5, ['six', '6']), to = word(5, 'top'), mi = word(5, 'mirror'), ne = word(5, 'negative'), so = word(5, 'sounds');
+  const cx = 500, cy = 430, R = 300, h = R / 2;
+  layer(c, wheel(cx, cy, R));
+  const rate = 45 / SPS;
+  stepped(c, 0, sceneEnd(5), 2, f => {
+    const a = turnAt(f, 0, [[0, rate]]), sx = cx + R * cosd(a);
+    if (f < si) { const [u, v] = pt(cx, cy, R, a); return topArrow(cx, cy, R, a) + dotSvg(u, v, 14) + (f >= sh ? seg(u, v, sx, cy, C.soft, 3, '6 8') + sq(sx, cy) : ''); }
+    const [u, v] = pt(cx, cy, h, a), [m, n] = pt(cx, cy, h, -a);
+    return (f >= mi ? mirArrow(cx, cy, h, -a) : '') + topArrow(cx, cy, h, a) + (f >= mi ? mirArrow(u, v, h, -a) : '') + sq(sx, cy);
+  });
+  M.show(label(c, 'lesson 3: a tone is a dot', 980, 90), wh);
+  M.show(label(c, 'turning counter-clockwise', 980, 160, 'lbl s'), wh + 8);
+  M.show(label(c, 'the line stores its shadow', 980, 270), sh);
+  M.show(label(c, '■ left-right only', 980, 340, 'lbl s'), sh + 6);
+  M.show(label(c, 'lesson 6: two half arrows', 980, 450), si);
+  M.show(label(c, 'top: counter-clockwise', 980, 520, 'lbl s'), to);
+  M.show(label(c, 'mirror: clockwise', 980, 590, 'lbl s'), mi);
+  M.show(label(c, 'clockwise = negative tone', 980, 700, 'lbl acc'), ne);
+  M.show(label(c, 'same shadow, same sound', 980, 770, 'lbl ok'), so);
+  M.show(label(c, 'tip to tail: the sample', cx, 764, 'lbl s', 'center'), mi + 10);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const th = word(6, ['13', 'thirteen']), sp = word(6, 'speeds'), t2 = word(6, ['1300', '1,300']), sl = word(6, 'slows'), mn = word(6, 'minus'), so = word(6, 'sounds'), gh = word(6, 'ghost');
+  const cx = 500, cy = 480, R = 290, h = 0.55 * R;
+  layer(c, wheel(cx, cy, R));
+  stepped(c, 0, sceneEnd(6), 2, f => {
+    const a = turnAt(f, 20, [[0, 45 / SPS], [sp, 58.5 / SPS]]), b = turnAt(f, -20, [[0, -45 / SPS], [sl, -31.5 / SPS]]);
+    const ghost = f >= sl, m = turnAt(f, 0, [[th - 6, 13.5 / SPS]]);
+    return (f >= th - 6 ? arrowSvg(cx, cy, ...pt(cx, cy, 0.33 * R, m), C.input, 7) : '') + topArrow(cx, cy, h, a) + (ghost ? arrowSvg(cx, cy, ...pt(cx, cy, h, b), C.accent, 10, DOTS, true) : mirArrow(cx, cy, h, b));
+  });
+  M.show(label(c, 'multiplying arrows adds turns', 160, 84, 'lbl s'), word(6, 'turns'));
+  M.show(label(c, '1,000 Hz = 45° per sample', 980, 140, 'lbl s'), word(6, 'turns'));
+  M.show(label(c, '× a 300 Hz arrow (teal):', 980, 215, 'lbl ok'), th - 6);
+  M.show(label(c, '+13.5° per sample', 980, 280, 'lbl ok'), th);
+  M.show(label(c, 'top: +45° → +58.5°', 980, 370), sp);
+  M.show(label(c, '= +1,300 Hz', 980, 432, 'lbl s'), t2);
+  M.show(label(c, 'mirror: −45° → −31.5°', 980, 530, 'lbl acc'), sl);
+  M.show(label(c, '= −700 Hz', 980, 592, 'lbl s'), mn);
+  M.show(label(c, 'its shadow: 700 Hz', 980, 690, 'lbl acc'), so);
+  M.show(label(c, 'mirrors = the ghost', 980, 760, 'lbl acc'), gh);
+  drift(6);
+}
+{
+  const c = cam(7);
+  const re = word(7, 'remove'), an = word(7, 'analytic'), co = word(7, 'cosine'), si = word(7, 'sine'), qu = word(7, 'quarter');
+  const cx = 460, cy = 450, R = 270;
+  layer(c, wheel(cx, cy, R));
+  stepped(c, 0, sceneEnd(7), 2, f => {
+    const a = turnAt(f, 0, [[0, 45 / SPS]]), [u, v] = pt(cx, cy, R, a), sx = cx + R * cosd(a), sy = cy - R * sind(a);
+    let s = '';
+    if (f >= qu) { const [p, q] = pt(cx, cy, R, a - 90); s += refArrow(cx, cy, R, a - 90) + seg(p, q, p, cy, C.soft, 3, '6 8') + `<circle cx="${p.toFixed(1)}" cy="${cy}" r="14" fill="${C.paper}" stroke="${C.ink}" stroke-width="5"/>`; }
+    if (f < re) s += mirArrow(cx, cy, R / 2, -a);
+    s += topArrow(cx, cy, f < re ? R / 2 : R, a) + (f >= re ? dotSvg(u, v, 14) : '');
+    if (f >= co) s += seg(u, v, sx, cy, C.soft, 3, '6 8') + sq(sx, cy);
+    if (f >= si) s += seg(u, v, cx, sy, C.soft, 3, '6 8') + `<circle cx="${cx}" cy="${sy.toFixed(1)}" r="14" fill="${C.paper}" stroke="${C.ink}" stroke-width="5"/>`;
+    return s;
+  });
+  M.show(label(c, 'only the top arrow', 160, 84, 'lbl s'), word(7, 'top'));
+  M.show(label(c, 'analytic signal', 1780, 84, 'lbl big acc', 'right'), an);
+  const xN = n => 1040 + n * 104, b1 = 360, b2 = 660, amp = 100;
+  M.show(label(c, '■ cos: left-right, stored', 1000, 190, 'lbl'), co);
+  grow(layer(c, hline(xN(0) - 40, xN(7) + 40, b1, C.rule, 3) + range(0, 7).map(n => stemSvg(xN(n), b1, b1 - amp * cosd(45 * n), C.ink, 6, 13)).join('')), 1400, b1, co, 10);
+  M.show(label(c, '○ sin: up-down, needed', 1000, 490, 'lbl'), si);
+  grow(layer(c, hline(xN(0) - 40, xN(7) + 40, b2, C.rule, 3) + range(0, 7).map(n => stemSvg(xN(n), b2, b2 - amp * sind(45 * n), C.ink, 6, 13, true)).join('')), 1400, b2, si, 10);
+  M.show(label(c, 'dashed: the dot a quarter turn behind', 160, 776, 'lbl s'), qu);
+  drift(7);
+}
+let HERO = 0;
+{
+  const c = cam(8);
+  const hi = word(8, 'hilbert'), ba = word(8, 'back'), fo = word(8, 'forward'), ca = word(8, 'carry'), tu = word(8, 'turn', 1), f2 = word(8, 'forward', 1), ad = word(8, 'add'), dd = word(8, 'doubled'), op = word(8, 'opposite'), go = word(8, 'gone');
+  HERO = go + 2;
+  const cy = 495, R = 195, h = R / 2, X = [370, 960, 1550];
+  X.forEach((x, k) => flicker(layer(c, wheel(x, cy, R)), hi, sceneEnd(8), 0.6, 20 + k));
+  label(c, 'a cosine', X[0], 184, 'lbl s', 'center');
+  layer(c, topArrow(X[0], cy, h, 45) + mirArrow(X[0], cy, h, -45));
+  label(c, 'top + mirror', X[0], 710, 'lbl s', 'center');
+  M.show(label(c, 'Hilbert transformer', 960, 84, 'lbl big', 'center'), hi);
+  M.show(label(c, 'the filter', X[1], 184, 'lbl s', 'center'), hi);
+  const ease = (f, a, len = 20) => { const p = Math.min(1, Math.max(0, (f - a) / len)); return p * p * (3 - 2 * p); };
+  stepped(c, hi, sceneEnd(8), 2, f => topArrow(X[1], cy, h, 45 - 90 * ease(f, ba)) + mirArrow(X[1], cy, h, -45 + 90 * ease(f, fo)));
+  M.show(label(c, 'top: ¼ turn back', X[1], 710, 'lbl', 'center'), ba);
+  M.show(label(c, 'mirror: ¼ forward', X[1], 770, 'lbl', 'center'), fo);
+  M.show(label(c, 'still a mirror pair', X[1], 238, 'lbl s', 'center'), ca);
+  M.show(label(c, '¼ forward, add', X[2], 184, 'lbl s', 'center'), tu);
+  const [tx, ty] = pt(X[2], cy, h, 45), [mx, my] = pt(X[2], cy, h, -45);
+  stepped(c, tu, sceneEnd(8), 2, f => {
+    const e = ease(f, f2), ta = -45 + 90 * e, ma = 45 + 90 * e, m = ease(f, ad, 14);
+    const ox = X[2] + (tx - X[2]) * m, oy = cy + (ty - cy) * m, px = X[2] + (mx - X[2]) * m, py = cy + (my - cy) * m;
+    return (f >= go ? `<circle cx="${X[2]}" cy="${cy}" r="34" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="4"/>` : '') + refArrow(X[2], cy, h, 45) + refArrow(X[2], cy, h, -45) + topArrow(ox, oy, h, ta) + (f >= f2 ? arrowSvg(px, py, ...pt(px, py, h, ma), C.accent, 10, DOTS, true) : mirArrow(px, py, h, ma));
+  });
+  M.show(label(c, 'top: 1 + 1 = 2', X[2], 710, 'lbl m', 'center'), dd);
+  M.show(label(c, 'mirror: 1 − 1 = 0', X[2], 770, 'lbl m acc', 'center'), op);
+  M.show(label(c, 'gone', X[2] - 40, cy + 40, 'lbl big acc', 'right'), go);
+  drift(8, 1, 1.015);
+}
+{
+  const c = cam(9);
+  const ar = word(9, 'arrow'), mi = word(9, 'mirrors'), sh = word(9, 'shadow'), co = word(9, 'cosine'), mn = word(9, 'minus'), si = word(9, 'sine'), th = word(9, ['thousand', '1000', '1,000']), di = word(9, 'digit'), on = word(9, 'one', 1), sb = word(9, 'sideband');
+  const [pa, pA] = part(c), [pb, pB] = part(c);
+  M.show(pA, 0, th); M.show(pB, th);
+  const S = shifter(pa, false);
+  label(pa, 'call', 160, S.yM - 80, 'lbl s');
+  M.show(label(pa, 'shift by one arrow, +300 Hz', 160, 84, 'lbl ok'), ar);
+  M.show(label(pa, 'no mirrors to slow down', 1780, 84, 'lbl s', 'right'), mi);
+  const parts = layer(pa, S.svg);
+  fadeIn(parts, sceneStart(9), 8);
+  label(pa, 'Hilbert transformer', 720, S.yB - 26, 'lbl m', 'center');
+  M.show(label(pa, '× cos 300 Hz', S.xMt - 60, S.yT - 75, 'lbl ok', 'right'), co);
+  M.show(label(pa, '× sin 300 Hz', S.xMb, S.yB + 60, 'lbl ok', 'center'), si);
+  M.show(label(pa, '−', S.xS - 120, S.yM + 40, 'lbl big'), mn);
+  M.show(label(pa, 'keep the shadow', 1760, S.yM - 200, 'lbl', 'right'), sh);
+  M.show(label(pa, 'shifted call', 1780, S.yM + 60, 'lbl s', 'right'), sh + 6);
+  const xN = n => 760 + n * 130, b = 260, amp = 110;
+  const y = range(0, 7).map(n => cosd(45 * n) * cosd(13.5 * n) - sind(45 * n) * sind(13.5 * n));
+  label(pb, '1,000 Hz in, out:', 160, b - 31);
+  layer(pb, hline(xN(0) - 40, xN(7) + 40, b, C.rule, 3));
+  grow(layer(pb, y.map((v, n) => stemSvg(xN(n), b, b - amp * v, C.ink, 6, 13)).join('')), 1200, b, th, 10);
+  const cl = layer(pb, curve(range(-0.3, 7.3, 0.05).map(n => [xN(n), b - amp * cosd(58.5 * n)]), C.input, 4, '10 8'), [xN(-0.3) - 6, xN(7.3) + 6]);
+  reveal(cl, di, di + 24, 'cruise');
+  M.show(label(pb, '= 1,300 Hz, digit for digit', 1760, 410, 'lbl ok', 'right'), di);
+  const X = f => 300 + f * 0.36, Y = v => 750 - v * 240;
+  layer(pb, hline(X(0), X(2000) + 20, Y(0), C.ink, 3) + [0, 500, 1000, 1500, 2000].map(f => vline(X(f), Y(0), Y(0) + 12, C.ink, 3)).join(''));
+  M.show(layer(pb, `<rect x="${X(1300) - 22}" y="${Y(1)}" width="44" height="${Y(0) - Y(1)}" fill="${C.ink}"/>`), th);
+  M.show(label(pb, 'wanted copy, full size', X(1300) + 50, Y(1) - 10, 'lbl'), th);
+  M.show(layer(pb, `<rect x="${X(700) - 22}" y="${Y(0.5)}" width="44" height="${Y(0) - Y(0.5)}" fill="none" stroke="${C.accent}" stroke-width="4" stroke-dasharray="10 8"/>` + seg(X(700) - 40, Y(0.5) - 10, X(700) + 40, Y(0) - 10, C.accent, 8) + seg(X(700) + 40, Y(0.5) - 10, X(700) - 40, Y(0) - 10, C.accent, 8)), on);
+  M.show(label(pb, 'no ghost', X(700) - 50, Y(0.5) - 10, 'lbl acc', 'right'), on);
+  M.show(label(pb, 'single sideband', 1780, 610, 'lbl big acc', 'right'), sb);
+  label(pb, '1,300 Hz', X(1300), Y(0) + 20, 'lbl s', 'center');
+  M.show(label(pb, '700', X(700), Y(0) + 20, 'lbl s', 'center'), on);
+  drift(9);
+}
+{
+  const c = cam(10);
+  const en = word(10, 'end'), th = word(10, ['thirty-one', '31']), ha = word(10, ['hann', 'han', 'hahn', 'hand']), la = word(10, 'late'), de = word(10, 'delay'), gh = word(10, 'ghost'), fo = word(10, ['41', '41%', 'forty-one']);
+  const [pa, pA] = part(c), [pb, pB] = part(c);
+  M.show(pA, 0, de); M.show(pB, de);
+  const xN = n => 960 + n * 30, b = 450, amp = 380;
+  const h = n => n % 2 ? 2 / (Math.PI * n) : 0;
+  label(pa, 'the Hilbert transformer’s coefficients', 160, 84, 'lbl s');
+  layer(pa, hline(xN(-27), xN(27), b, C.rule, 3));
+  const inner = range(-15, 15).map(n => n % 2 ? stemSvg(xN(n), b, b - amp * h(n), C.ink, 6, 10) : dotSvg(xN(n), b, 5, C.soft)).join('');
+  const outer = range(-27, 27).filter(n => Math.abs(n) > 15).map(n => n % 2 ? stemSvg(xN(n), b, b - amp * h(n), C.ink, 6, 10) : dotSvg(xN(n), b, 5, C.soft)).join('');
+  const raw = layer(pa, inner);
+  grow(raw, 960, b, sceneStart(10), 12);
+  const out = layer(pa, outer);
+  grow(out, 960, b, en - 6, 10);
+  M.kf(out, 'opacity', [[0, 1], [th, 1], [th + 10, 0.15]]);
+  M.show(label(pa, '… never end …', 960, 760, 'lbl s', 'center'), en, th);
+  M.show(layer(pa, `<path d="M${xN(-15.5)} 740V760H${xN(15.5)}V740" fill="none" stroke="${C.ink}" stroke-width="5"/>`), th);
+  M.show(label(pa, 'keep 31', 960, 770, 'lbl', 'center'), th);
+  const env = layer(pa, curve(range(-15.5, 15.5, 0.25).map(n => [xN(n), b - 0.7 * amp * hann(n, 15)]), C.input, 5, '14 9'), [xN(-16), xN(16)]);
+  reveal(env, ha, ha + 24, 'cruise');
+  M.show(label(pa, 'Hann window', xN(10), 170, 'lbl ok'), ha);
+  const win = layer(pa, range(-15, 15).map(n => n % 2 ? stemSvg(xN(n), b, b - amp * h(n) * hann(n, 15), C.ink, 6, 10) : dotSvg(xN(n), b, 5, C.soft)).join(''));
+  M.show(win, ha + 20); M.hide(raw, ha + 20);
+  M.show(layer(pa, arrowSvg(xN(-15), 700, xN(0), 700, C.input, 6)), la);
+  M.show(label(pa, 'runs 15 samples late', xN(1), 670, 'lbl ok'), la);
+  const S = shifter(pb, true, -40);
+  layer(pb, S.svg);
+  label(pb, 'call', 160, S.yM - 80, 'lbl s');
+  label(pb, 'Hilbert transformer', 720, S.yB - 26, 'lbl m', 'center');
+  label(pb, 'late by 15', 720, S.yB + 90, 'lbl s', 'center');
+  label(pb, '× cos', S.xMt, S.yT + 60, 'lbl ok', 'center');
+  label(pb, '× sin', S.xMb, S.yB + 60, 'lbl ok', 'center');
+  layer(pb, box(520, S.yT - 60, 300, 120, C.input, C.inputSoft, 6));
+  label(pb, 'delay 15', 670, S.yT - 31, 'lbl ok', 'center');
+  M.show(label(pb, 'skip it?', 520, S.yT - 125, 'lbl acc'), gh);
+  M.show(layer(pb, seg(520, S.yT - 60, 820, S.yT + 60, C.accent, 9) + seg(520, S.yT + 60, 820, S.yT - 60, C.accent, 9)), gh);
+  const miss = Math.abs(Math.tan(15 * 45 * Math.PI / 360));
+  M.show(label(pb, `ghost: ${Math.round(miss * 100)}% at 1,000 Hz`, 960, 724, 'lbl big acc', 'center'), fo);
+  drift(10);
+}
+{
+  const c = cam(11);
+  const ta = word(11, 'target'), fi = word(11, ['five', '5', '5%']), th = word(11, ['thirty-one', '31']), po = word(11, ['24', 'point', '5.24', '5.24%']), tf = word(11, ['thirty-five', '35']), tw = word(11, ['77', '2.77', '2.77%', 'seven']), go = word(11, 'gone');
+  const X = f => 300 + f * 0.33, Y = p => 730 - p * 70;
+  layer(c, `<rect x="${X(300)}" y="${Y(8)}" width="${X(3400) - X(300)}" height="${Y(0) - Y(8)}" fill="${C.paper2}"/>`);
+  layer(c, hline(X(0), X(4000) + 20, Y(0), C.ink, 3) + vline(X(0), Y(0), Y(8) - 20, C.ink, 3) + [0, 1000, 2000, 3000, 4000].map(f => vline(X(f), Y(0), Y(0) + 12, C.ink, 3)).join('') + [0, 2, 4, 6, 8].map(p => hline(X(0) - 12, X(0), Y(p), C.ink, 3)).join(''));
+  [0, 1000, 2000, 3000, 4000].forEach(f => label(c, f === 4000 ? '4,000 Hz' : hz(f), X(f), Y(0) + 26, 'lbl s', 'center'));
+  [0, 2, 4, 6, 8].forEach(p => label(c, p + '%', X(0) - 22, Y(p) - 29, 'lbl s', 'right'));
+  label(c, 'ghost, % of the wanted copy, 300 to 3,400 Hz', X(0) - 22, 84, 'lbl s');
+  M.show(layer(c, hline(X(0), X(4000), Y(5), C.accent, 4, '4 12')), fi);
+  M.show(label(c, '5% target', X(4000) + 20, Y(5) - 29, 'lbl acc', 'right'), fi);
+  const g31 = range(300, 3400, 10).map(f => [X(f), Y(100 * ghostOf(gainOf(31, true, f)))]);
+  const g35 = range(300, 3400, 10).map(f => [X(f), Y(100 * ghostOf(gainOf(35, true, f)))]);
+  const l31 = layer(c, curve(g31, C.ink, 6), [X(300) - 8, X(3400) + 8]);
+  reveal(l31, th, th + 24, 'cruise');
+  const [w31] = worst(31), [w35, a35] = worst(35);
+  M.show(layer(c, dotSvg(X(300), Y(100 * w31), 14)), po);
+  M.show(label(c, `31: ${(100 * w31).toFixed(2)}% at 300 Hz`, X(300) + 40, Y(100 * w31) - 130, 'lbl'), po);
+  const l35 = layer(c, curve(g35, C.input, 6, DASH), [X(300) - 8, X(3400) + 8]);
+  reveal(l35, tf, tf + 24, 'cruise');
+  M.show(layer(c, dotSvg(X(a35), Y(100 * w35), 14, C.input)), tw);
+  M.show(label(c, `35, delay 17: ${(100 * w35).toFixed(2)}%`, X(a35) + 40, Y(100 * w35) - 20, 'lbl ok'), tw);
+  flicker(l31, tf + 24, sceneEnd(11), 0.75, 7);
+  flicker(l35, tf + 24, sceneEnd(11), 0.75, 11);
+  M.show(label(c, 'ghost gone', 1760, 160, 'lbl big ok', 'right'), go);
+  M.show(tick(c, 1150, 230, 1.4), go);
+  drift(11);
+}
+{
+  const c = cam(12);
+  const ec = word(12, 'echo'), ro = word(12, 'route'), de = word(12, 'delay'), cl = word(12, 'click');
+  label(c, 'next ticket', 160, 84, 'lbl s');
+  const pn = word(12, 'partner');
+  M.show(label(c, 'your line', 360, 152, 'lbl s', 'center'), pn);
+  M.show(label(c, 'partner network', 1560, 152, 'lbl s', 'center'), pn);
+  layer(c, box(160, 220, 400, 260, C.ink, C.paper2) + box(1360, 220, 400, 260, C.ink, C.paper2));
+  const sea = f => range(0, 3).map(k => curve(range(600, 1320, 6).map(x => [x, 300 + k * 60 + 10 * Math.sin((x + f * 3 + k * 40) / 30)]), C.input, 3)).join('');
+  stepped(c, 0, STILL, 2, sea);
+  M.show(layer(c, sea(STILL)), STILL);
+  M.show(layer(c, [140, 190, 240].map((hh, k) => `<path d="M560 ${300 + k * 40} Q960 ${300 + k * 40 - hh * (k + 1) * 0.8} 1360 ${300 + k * 40}" fill="none" stroke="${C.ink}" stroke-width="4" stroke-dasharray="${k ? '12 9' : ''}"/>`).join('')), ro);
+  M.show(label(c, 'every route: its own delay', 960, 520, 'lbl', 'center'), de);
+  const W = (x0, a) => curve(range(x0, x0 + 300, 4).map(x => [x, 670 - a * 70 * Math.sin((x - x0) / 9) * Math.sin(Math.PI * (x - x0) / 300)]), a < 1 ? C.accent : C.ink, 5);
+  M.show(layer(c, W(300, 1)), ec);
+  M.show(layer(c, W(900, 0.5)), ec + 10);
+  M.show(label(c, 'echo', 1050, 756, 'lbl acc', 'center'), ec + 10);
+  M.show(label(c, 'delay: ?', 750, 756, 'lbl acc', 'center'), de);
+  M.show(label(c, 'send a click? no', 1760, 640, 'lbl acc', 'right'), cl);
+  drift(12, 1, 1.03, STILL);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+window.__anchors = ANCHORS;
+window.__hero = HERO;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>
