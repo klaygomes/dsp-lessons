@@ -77,7 +77,7 @@ The picture below steps both dots together for eight samples and writes their re
 
 There's another way to say the same thing. Ending 135° below the start is what a dot turning 135° *clockwise* would do. So a dot turning 225° per sample, seen once per sample, looks exactly like a 3,000 Hz dot turning backwards. And a sample can't tell backwards from forwards, because the mirror spots read the same.
 
-Here's the idea in one sentence: a wheel that turns more than half a turn per sample looks like a slower wheel turning backwards, and the samples can't tell backwards from forwards.
+Here's the whole idea. A wheel that turns more than half a turn per sample looks like a slower wheel turning backwards, and the samples can't tell backwards from forwards.
 
 You've seen this trick at the cinema. A film camera takes 24 pictures a second. A car wheel turning 23 times a second turns 23 ÷ 24 of a full turn between pictures: 345°, which is 15° short of a full turn. On screen, the wheel seems to creep backwards by 15° per picture, one slow turn backwards per second, while the car speeds forwards. The camera didn't blur anything. It just looked too rarely. The figure shows film frames in a row, the spoke stepping back 15° each time.
 
@@ -134,7 +134,7 @@ This course follows Oppenheim and Schafer, *Discrete-Time Signal Processing* (19
 
 \[ x[n] = x_c(nT) \]
 
-**Step two: sample a tone.** A true tone at \(f\) Hz turns \(f\) full turns every second, so by time \(t\) its dot has turned \(f t\) full turns, which the book writes as \(2\pi f t\), counting one full turn as \(2\pi\). Its left-right reading is \(x_c(t) = \cos(2\pi f t)\), so
+**Step two: sample a tone.** A true tone at \(f\) Hz turns \(f\) full turns every second, so by time \(t\) its dot has turned \(f t\) full turns. The book writes that as \(2\pi f t\), counting one full turn as \(2\pi\). Its left-right reading is \(x_c(t) = \cos(2\pi f t)\), so
 
 \[ x[n] = \cos(2\pi f n T) = \cos(\omega n), \qquad \omega = 2\pi f T = 2\pi \times \frac{f}{8000} \]
 
@@ -172,7 +172,7 @@ So the fix has to happen before sampling, while the sound is still a smooth wobb
 
 **Filter first.** Put a filter in front of the sampler. This one isn't a program. It's a small electronic circuit between the microphone and the sampler, so it works on the smooth sound before any numbers exist. That's the one place on the line where the true tone can still be touched. Its job is to keep the tones the line can store and remove the ones it can't. Lesson 3's frequency response still applies: it's a statement about tones, and the smooth sound is made of tones too. A circuit like this scales and delays each tone, just as the east route did.
 
-What should its frequency response be? Gain near 100% for the voice, and gain falling to nearly 0% by 4,600 Hz. The tone where a filter switches from keeping to removing is its **cutoff**. No real filter can drop from 100% to 0% in an instant. It needs some room to do it, and that's why phone lines carry the voice only up to about 3,400 Hz. The stretch from 3,400 to 4,600 Hz is the room the filter uses to go from keeping to removing. It also keeps the voice away from the knife edge. (There's a bonus, too: the little of a true tone between 4,000 and 4,600 Hz that still leaks through the slope folds into 3,400 to 4,000, above the voice.)
+What should its frequency response be? Gain near 100% for the voice, and gain falling to nearly 0% by 4,600 Hz. The tone where a filter switches from keeping to removing is its **cutoff**. No real filter can drop from 100% to 0% in an instant. It needs some room to do it, and that's why phone lines carry the voice only up to about 3,400 Hz. The stretch from 3,400 to 4,600 Hz is the room the filter uses to go from keeping to removing. It also keeps the voice away from the knife edge. (There's a bonus, too. A true tone between 4,000 and 4,600 Hz still leaks through the slope a little, and that little folds into 3,400 to 4,000, above the voice.)
 
 The figure shows the chain: microphone, then filter, then sampler. Above it sits the filter's gain curve, flat at 100% up to 3,400 Hz and sloping down to about 0 at 4,600. The voice is shaded, and the whistle and the squeal are marked beyond the cutoff.
 

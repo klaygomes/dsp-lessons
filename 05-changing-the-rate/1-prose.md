@@ -2,7 +2,7 @@
 
 ## A new neighbor
 
-Your phone line is in good shape. Lesson 4 fixed the whistle. A low-pass filter, which passes low tones and removes high ones, now sits in front of the sampler, so no tone above 4,000 Hz gets in to come back as an alias. Calls are clean.
+Your phone line is in good shape. Lesson 4 fixed the whistle by putting a low-pass filter in front of the sampler. It passes low tones and removes high ones, so no tone above 4,000 Hz gets in to come back as an alias. Calls are clean.
 
 Then the company makes a deal. A wideband line wants to connect to yours. Its phones take 16,000 samples per second, so they carry tones up to 8,000 Hz, with all the hiss of an "s" intact. Your job is the bridge between the two: 8,000 numbers a second go in on your side, 16,000 have to come out on theirs.
 
@@ -31,7 +31,7 @@ It looks harmless. The zeros are silence, and your samples are untouched, yet th
 
 ## The wheel, at two speeds
 
-You know the wheel from lesson 3. A tone is a dot turning 360° × tone ÷ 8,000 per sample, and its samples are the dot's left-right position, +1 at the far right and −1 at the far left. A 1,000 Hz tone turns 45° per sample, and the 4,000 Hz tone at the limit turns 180°, a flip. Two more facts we'll need. When the dot sits at angle θ, its left-right position is cos θ, and its up-down position is sin θ. That's what cosine and sine *are*: the dot's shadow on the horizontal line, and on the vertical one.
+You know the wheel from lesson 3. A tone is a dot turning 360° × tone ÷ 8,000 per sample. Its samples are the dot's left-right position, +1 at the far right and −1 at the far left. A 1,000 Hz tone turns 45° per sample, and the 4,000 Hz tone at the limit turns 180°, a flip. Two more facts we'll need. When the dot sits at angle θ, its left-right position is cos θ, and its up-down position is sin θ. That's what cosine and sine *are*: the dot's shadow on the horizontal line, and on the vertical one.
 
 The 8,000 is the sampling rate: the samples are snapshots of a turning wheel. Take them twice as often and the dot moves half as far between two. So on the wideband line, at 16,000 samples per second, a tone is a dot turning 360° × tone ÷ 16,000 per sample.
 
@@ -43,7 +43,7 @@ The 8,000 is the sampling rate: the samples are snapshots of a turning wheel. Ta
 | 7,000 Hz | 315°, same as 45° backwards | 157.5° |
 | 8,000 Hz | 360°, no visible turn | 180°, a flip |
 
-On your line, 7,000 Hz turns 315°, the same spot as 45° backwards, and a dot turning backwards casts the same left-right shadow as one turning forwards, so it is stored as its alias, 1,000 Hz. On the wideband line it turns 157.5°, less than half a turn, a real tone. And the flip, the limit, has moved up to 8,000 Hz.
+On your line, 7,000 Hz turns 315°, the same spot as 45° backwards. A dot turning backwards casts the same left-right shadow as one turning forwards, so 7,000 Hz is stored as its alias, 1,000 Hz. On the wideband line it turns 157.5°, less than half a turn, a real tone. And the flip, the limit, has moved up to 8,000 Hz.
 
 [[diagram:wheel-two-speeds]]
 
@@ -87,11 +87,11 @@ Now play with it. In the lab, a slider moves the hum from 0 Hz to 4,000 Hz. You 
 
 1,000 Hz made a ghost at 7,000 Hz, and 500 Hz made one at 7,500 Hz. The wheel argument works for any tone, not just these two. If a tone turns φ per sample on the wideband line, the ghost turns 180° − φ, the rest of the flip. On the wideband line 180° is 8,000 Hz, so the ghost always sits at 8,000 Hz minus the tone. The two sit equally far either side of 4,000 Hz, your old limit, reflected across a mirror line there. One goes up, the other goes down, just like the customer's mother and her squeak. The mirror figure below shows a tone and its image sliding apart along a frequency line, folded across 4,000 Hz.
 
-The ghost has a proper name. An **image** is a copy of a tone that upsampling creates at the mirror pitch, 8,000 Hz minus the tone. A phone voice lives between about 300 Hz and 3,400 Hz, so its images fill 4,600 Hz to 7,700 Hz: the whole voice again, upside down, the "whisper through a tin can".
+The ghost has a proper name. An **image** is a copy of a tone that upsampling creates at the mirror pitch, 8,000 Hz minus the tone. A phone voice lives between about 300 Hz and 3,400 Hz, so its images fill 4,600 Hz to 7,700 Hz. That's the whole voice again, upside down: the "whisper through a tin can".
 
 [[diagram:mirror]]
 
-Two more things follow. The table showed that the tone arrives at half height, and so does its image. And the image is not an accident that hits unlucky tones. It happens to every tone, and lesson 1's linearity does the rest: a voice is a sum of tones, so the bridge output is a sum of tones plus their images.
+Two more things follow. The table showed that the tone arrives at half height, and so does its image. And the image is not an accident that hits unlucky tones. It happens to every tone, and lesson 1's linearity does the rest. A voice is a sum of tones, so the bridge output is a sum of tones plus their images.
 
 So, in lesson 3's language: after the zeros, every tone below 4,000 Hz needs a gain of 2, to give back the half it lost. Every tone above 4,000 Hz, where the images live, needs a gain of 0. That's a low-pass filter again, on the wideband line.
 
@@ -161,7 +161,7 @@ Why stop at 2? Upsample by 3, with two zeros after every sample, and you reach 2
 | third of 9,000 Hz | 0.33 | −0.24 | 0.00 | 0.24 | −0.33 | 0.24 | 0.00 | −0.24 | 0.33 | −0.24 |
 | sum of the thirds | 1.00 | 0 | 0 | 0.71 | 0 | 0 | 0.00 | 0 | 0 | −0.71 |
 
-The sum is the bridge output again. Now there are two images, at 7,000 Hz and 9,000 Hz, each at a third of the height, and the hum itself keeps a third. In general, upsampling by L makes L − 1 images of every tone, at each multiple of 8,000 Hz plus and minus the tone, up to the new limit, and the filter afterwards needs a gain of L.
+The sum is the bridge output again. Now there are two images, at 7,000 Hz and 9,000 Hz, each at a third of the height, and the hum itself keeps a third. In general, upsampling by L makes L − 1 images of every tone, at each multiple of 8,000 Hz plus and minus the tone, up to the new limit. The filter afterwards needs a gain of L.
 
 [[diagram:triple]]
 
@@ -184,7 +184,7 @@ On the way up: put the zeros in first, then filter, because the images don't exi
 Now you fix the bridge. The bridge team warms you up first on a smaller job, a walkie-talkie gateway whose spec you only see in the lab. Then comes your own bridge, where a recorded call waits in each direction. Your colleague's voice goes up to the wideband line, and a wideband caller full of "s" sounds comes down to yours. You choose the rule's length (none, the neighbor average, or the ready-made 7, 15 or 31; a 47-sample rule is on the shelf, over budget) and, going down, where it sits.
 
 1. Going up: after the zeros, with a gain of 2, choose a length that clears the images.
-2. Going down: put the same step, with a gain of 1, in the right place, before or after dropping the samples, so no "s" lands on your line as a squeal.
+2. Going down: put the same step, with a gain of 1, in the right place, before or after dropping the samples. Get it right, and no "s" lands on your line as a squeal.
 
 The meter measures each tone's height at the output, as a share of the tone's height on the line it came from. Every voice tone from 300 Hz to 3,400 Hz must come out between 90% and 110%. Going up, every image, from 4,600 Hz to 7,700 Hz, must come out under 8%. Going down, every wideband tone that would fold onto the voice, from 4,600 Hz to 7,700 Hz, must also stay under 8%. The bridge chip can afford 31 weights per output sample, so any longer rule is over budget, however well it works. The lab measures every setting you try against the spec.
 
@@ -201,7 +201,7 @@ Upsampling sounds like an upgrade. Twice as many samples, room for tones up to 8
 - Upsampling by 2 puts a zero between every two samples; downsampling by 2 keeps every other sample.
 - Upsampling turns every tone into itself at half height plus an **image** at 8,000 Hz minus the tone, also at half height: a mirror across 4,000 Hz.
 - Downsampling folds every tone above 4,000 Hz onto the same mirror, as an alias.
-- The fix is one step at 4,000 Hz in both directions: after the zeros on the way up, with a gain of 2, and before dropping samples on the way down, with a gain of 1.
+- The fix is one step at 4,000 Hz in both directions. It goes after the zeros on the way up, with a gain of 2, and before dropping samples on the way down, with a gain of 1.
 - The closer a tone sits to 4,000 Hz, the closer its image, and the longer the rule must be.
 
 ## Next on the line

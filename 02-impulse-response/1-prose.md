@@ -94,7 +94,7 @@ In the next figure, each click launches its own small two-bar copy of h, and the
 
 Every entry is one input sample times one number of h. The 0.32 at n = 2,000 is 0.8 × 0.4. The 0.32 at n = 2,001 is two copies landing on the same sample: 0.4 × 0.4 from the second click, plus 0.8 × 0.2 from the first.
 
-Now check your guess. The echo starts at exactly 2,000, because h is silent before that. Its peak is 0.32, reached twice, well under the word's own 0.8. And it sounds for five samples. Why five? As lists, the word has 4 numbers and h has 2,002, so the echo list has 4 + 2,002 − 1 = 2,005 numbers (the last copy starts at the word's last sample and runs the full length of h, which is why you add the lengths and take one away). The first 2,000 are silence, which leaves 5 that sound: one more than the word, because h's spill adds one.
+Now check your guess. The echo starts at exactly 2,000, because h is silent before that. Its peak is 0.32, reached twice, well under the word's own 0.8. And it sounds for five samples. Why five? As lists, the word has 4 numbers and h has 2,002, so the echo list has 4 + 2,002 − 1 = 2,005 numbers. The last copy starts at the word's last sample and runs the full length of h, which is why you add the lengths and take one away. The first 2,000 are silence, which leaves 5 that sound: one more than the word, because h's spill adds one.
 
 There's one more thing to notice. The echo is not just the word made quieter. A quieter copy would be 0.32, 0.16, −0.24, −0.08. The real echo is 0.32, 0.32, −0.16, −0.20, −0.04, because the spill has blended neighboring samples into each other.
 
