@@ -3,40 +3,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Phone Line</title>
+<meta name="description" content="Story-driven lessons in discrete-time signal processing. Build a digital phone line and fix the bugs your callers can hear, one lab at a time.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="lesson.css">
 <style>
-.course { list-style: none; padding: 0; display: grid; gap: 18px; }
-.course li { display: grid; grid-template-columns: 3rem 1fr; gap: 12px; border-top: 1px solid var(--rule); padding-top: 14px; }
-.course .n { font-family: var(--font-mono, monospace); font-size: 1.4rem; color: var(--ink-soft); }
-.course h2 { margin: 0 0 4px; font-size: 1.15rem; }
-.course p { margin: 0 0 4px; }
+:root { scrollbar-color: var(--rule) var(--paper); }
+header { padding-top: 72px; gap: 0; }
+h1 { font-size: clamp(48px, 9vw, 84px); line-height: 0.95; letter-spacing: -0.02em; }
+.deck { font-family: var(--font-title); font-style: italic; font-size: clamp(22px, 3vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 10px; }
+.question { margin-top: 28px; font-size: 20px; line-height: 1.5; max-width: 31em; text-wrap: pretty; }
+.course { list-style: none; margin: 56px 0 0; padding: 0; border-bottom: 1px solid var(--rule); }
+.course li { display: grid; grid-template-columns: 3.25rem 1fr; gap: 18px; border-top: 1px solid var(--rule); padding: 22px 0 24px; }
+.course .n { font-family: var(--font-title); font-size: 44px; line-height: 0.9; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+.course h2 { font-size: 21px; line-height: 1.3; }
+.course h2 a { color: var(--ink); text-decoration: none; }
+.course h2 a:hover { color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; }
+.course .bug { font-family: var(--font-title); font-style: italic; font-size: 21px; line-height: 1.3; margin-top: 6px; max-width: 34em; text-wrap: pretty; }
+.course .meta { margin-top: 10px; font-size: 15px; color: var(--ink-soft); }
+.course li:hover .n { color: var(--accent-ink); }
 .soon { color: var(--ink-soft); }
+footer { border-top: 0; margin-top: 40px; }
+footer a { color: inherit; }
+@media (max-width: 520px) { header { padding-top: 44px; } .course li { grid-template-columns: 2.5rem 1fr; gap: 12px; } .course .n { font-size: 32px; } .course .bug { font-size: 19px; } }
 </style>
 <div class="wrap">
 <header>
-<p class="topic">Discrete-Time Signal Processing</p>
 <h1>The Phone Line</h1>
+<p class="deck">A course in discrete-time signal processing</p>
 <p class="question">You are building a digital phone line. Every lesson opens on a bug your customers can hear, and ends when you fix it yourself in a lab. Sixteen lessons, in the order of Oppenheim and Schafer's book (1989).</p>
 </header>
 <ol class="course">
-<li><span class="n">1</span><div><h2>Signals and systems (ch. 2)</h2><p>loud callers come out with a harsh buzz, quiet callers are fine</p><p class="links"><a href="01-signals-and-systems/3-page/3-page.html">Open the lesson</a> · <a href="01-signals-and-systems/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">2</span><div><h2>Impulse response and convolution (ch. 2)</h2><p>callers hear their own voice come back 0.25 s later</p><p class="links"><a href="02-impulse-response/3-page/3-page.html">Open the lesson</a> · <a href="02-impulse-response/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">3</span><div><h2>Frequency response (ch. 2)</h2><p>calls sound muffled, as if through a wall</p><p class="links"><a href="03-frequency-response/3-page/3-page.html">Open the lesson</a> · <a href="03-frequency-response/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">4</span><div><h2>Sampling and aliasing (ch. 3)</h2><p>a 5,000 Hz whistle comes out at 3,000 Hz</p><p class="links"><a href="04-sampling-aliasing/3-page/3-page.html">Open the lesson</a> · <a href="04-sampling-aliasing/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">5</span><div><h2>Changing the sampling rate (ch. 3)</h2><p>joining a 16,000 samples/s wideband line puts ghost copies of every voice above 4,000 Hz</p><p class="links"><a href="05-changing-the-rate/3-page/3-page.html">Open the lesson</a> · <a href="05-changing-the-rate/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">6</span><div><h2>Zeros and poles (ch. 4)</h2><p>calls carry a whine, first at 4,000 Hz, then at 2,000 Hz</p><p class="links"><a href="06-zeros-and-poles/3-page/3-page.html">Open the lesson</a> · <a href="06-zeros-and-poles/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">7</span><div><h2>How long a filter rings (ch. 5)</h2><p>every time a call starts, a faint ring at 2,000 Hz is left behind like a bell</p><p class="links"><a href="07-ringing/3-page/3-page.html">Open the lesson</a> · <a href="07-ringing/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">8</span><div><h2>Phase and delay (ch. 5)</h2><p>a fax modem&#x27;s tones arrive smeared (delays spread 2.9 samples across its band) though every tone is loud enough</p><p class="links"><a href="08-phase-and-delay/3-page/3-page.html">Open the lesson</a> · <a href="08-phase-and-delay/4-video/final.mp4">Watch the video</a></p></div></li>
-<li><span class="n">9</span><div><h2>Finite precision (ch. 6)</h2><p>the whine hops between 1,900, 2,000 and 2,100 Hz; three notches multiplied into one rule work on the laptop but hum and blow up on the cheap 8-bit chip</p><p class="links"><a href="09-finite-precision/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">10</span><div><h2>FIR design by windows (ch. 7)</h2><p>the anti-aliasing filter from lesson 5 lets a ripple of high tones through: a 4,000 to 8,000 Hz sweep comes out as a ghost gliding down the voice band</p><p class="links"><a href="10-fir-windows/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">11</span><div><h2>IIR design by the bilinear transform (ch. 7)</h2><p>copying the old analog exchange filter puts its cutoff at the wrong frequency</p><p class="links"><a href="11-bilinear-transform/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">12</span><div><h2>The DFT (ch. 8)</h2><p>the line must tell which keypad key was pressed from its two tones</p><p class="links"><a href="12-dft/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">13</span><div><h2>The FFT (ch. 9)</h2><p>the key detector is too slow to run live on the chip</p><p class="links"><a href="13-fft/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">14</span><div><h2>Spectrum analysis with windows (ch. 10)</h2><p>the detector sometimes rejects a 4 as two keys at once and misses faint keys</p><p class="links"><a href="14-spectrum-windows/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">15</span><div><h2>The Hilbert transform (ch. 11)</h2><p>shifting every call up 300 Hz to disguise tip-line callers also creates a ghost voice 300 Hz below the original</p><p class="links"><a href="15-hilbert/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
-<li><span class="n">16</span><div><h2>The cepstrum (ch. 12)</h2><p>an echo of unknown delay; lesson 2&#x27;s fix needs the delay</p><p class="links"><a href="16-cepstrum/3-page/3-page.html">Open the lesson</a> · <span class="soon">in progress</span></p></div></li>
+<li><span class="n">1</span><div><h2><a href="01-signals-and-systems/3-page/3-page.html">Signals and systems</a></h2><p class="bug">Loud callers come out with a harsh buzz, quiet callers are fine.</p><p class="meta"><a href="01-signals-and-systems/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="01-signals-and-systems/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;2</span></p></div></li>
+<li><span class="n">2</span><div><h2><a href="02-impulse-response/3-page/3-page.html">Impulse response and convolution</a></h2><p class="bug">Callers hear their own voice come back 0.25&nbsp;s later.</p><p class="meta"><a href="02-impulse-response/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="02-impulse-response/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;2</span></p></div></li>
+<li><span class="n">3</span><div><h2><a href="03-frequency-response/3-page/3-page.html">Frequency response</a></h2><p class="bug">Calls sound muffled, as if through a wall.</p><p class="meta"><a href="03-frequency-response/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="03-frequency-response/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;2</span></p></div></li>
+<li><span class="n">4</span><div><h2><a href="04-sampling-aliasing/3-page/3-page.html">Sampling and aliasing</a></h2><p class="bug">A 5,000&nbsp;Hz whistle comes out at 3,000&nbsp;Hz.</p><p class="meta"><a href="04-sampling-aliasing/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="04-sampling-aliasing/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;3</span></p></div></li>
+<li><span class="n">5</span><div><h2><a href="05-changing-the-rate/3-page/3-page.html">Changing the sampling rate</a></h2><p class="bug">Joining a 16,000 samples/s wideband line puts ghost copies of every voice above 4,000&nbsp;Hz.</p><p class="meta"><a href="05-changing-the-rate/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="05-changing-the-rate/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;3</span></p></div></li>
+<li><span class="n">6</span><div><h2><a href="06-zeros-and-poles/3-page/3-page.html">Zeros and poles</a></h2><p class="bug">Calls carry a whine, first at 4,000&nbsp;Hz, then at 2,000&nbsp;Hz.</p><p class="meta"><a href="06-zeros-and-poles/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="06-zeros-and-poles/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;4</span></p></div></li>
+<li><span class="n">7</span><div><h2><a href="07-ringing/3-page/3-page.html">How long a filter rings</a></h2><p class="bug">Every time a call starts, a faint ring at 2,000&nbsp;Hz is left behind like a bell.</p><p class="meta"><a href="07-ringing/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="07-ringing/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;5</span></p></div></li>
+<li><span class="n">8</span><div><h2><a href="08-phase-and-delay/3-page/3-page.html">Phase and delay</a></h2><p class="bug">A fax modem&#x27;s tones arrive smeared (delays spread 2.9 samples across its band) though every tone is loud enough.</p><p class="meta"><a href="08-phase-and-delay/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="08-phase-and-delay/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;5</span></p></div></li>
+<li><span class="n">9</span><div><h2><a href="09-finite-precision/3-page/3-page.html">Finite precision</a></h2><p class="bug">The whine hops between 1,900, 2,000 and 2,100&nbsp;Hz; three notches multiplied into one rule work on the laptop but hum and blow up on the cheap 8-bit chip.</p><p class="meta"><a href="09-finite-precision/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="09-finite-precision/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;6</span></p></div></li>
+<li><span class="n">10</span><div><h2><a href="10-fir-windows/3-page/3-page.html">FIR design by windows</a></h2><p class="bug">The anti-aliasing filter from lesson 5 lets a ripple of high tones through: a 4,000 to 8,000&nbsp;Hz sweep comes out as a ghost gliding down the voice band.</p><p class="meta"><a href="10-fir-windows/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="10-fir-windows/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;7</span></p></div></li>
+<li><span class="n">11</span><div><h2><a href="11-bilinear-transform/3-page/3-page.html">IIR design by the bilinear transform</a></h2><p class="bug">Copying the old analog exchange filter puts its cutoff at the wrong frequency.</p><p class="meta"><a href="11-bilinear-transform/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="11-bilinear-transform/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;7</span></p></div></li>
+<li><span class="n">12</span><div><h2><a href="12-dft/3-page/3-page.html">The DFT</a></h2><p class="bug">The line must tell which keypad key was pressed from its two tones.</p><p class="meta"><a href="12-dft/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="12-dft/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;8</span></p></div></li>
+<li><span class="n">13</span><div><h2><a href="13-fft/3-page/3-page.html">The FFT</a></h2><p class="bug">The key detector is too slow to run live on the chip.</p><p class="meta"><a href="13-fft/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="13-fft/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;9</span></p></div></li>
+<li><span class="n">14</span><div><h2><a href="14-spectrum-windows/3-page/3-page.html">Spectrum analysis with windows</a></h2><p class="bug">The detector sometimes rejects a 4 as two keys at once and misses faint keys.</p><p class="meta"><a href="14-spectrum-windows/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="14-spectrum-windows/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;10</span></p></div></li>
+<li><span class="n">15</span><div><h2><a href="15-hilbert/3-page/3-page.html">The Hilbert transform</a></h2><p class="bug">Shifting every call up 300&nbsp;Hz to disguise tip-line callers also creates a ghost voice 300&nbsp;Hz below the original.</p><p class="meta"><a href="15-hilbert/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="15-hilbert/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;11</span></p></div></li>
+<li><span class="n">16</span><div><h2><a href="16-cepstrum/3-page/3-page.html">The cepstrum</a></h2><p class="bug">An echo of unknown delay; lesson 2&#x27;s fix needs the delay.</p><p class="meta"><a href="16-cepstrum/3-page/3-page.html" tabindex="-1" aria-hidden="true">Read the lesson</a> · <a href="16-cepstrum/4-video/final.mp4">Watch the video</a> · <span class="soon">Chapter&nbsp;12</span></p></div></li>
 </ol>
-<footer><span>Lesson text, figures, pages and videos: CC BY-NC 4.0. Code: MIT. See NOTICE.</span></footer>
+<footer>
+<span>Based on Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989.</span>
+<span>Lesson text, figures, pages and videos: CC BY-NC 4.0. Code: MIT. See <a href="NOTICE">NOTICE</a>. Source on <a href="https://github.com/klaygomes/dsp-lessons">GitHub</a>.</span>
+</footer>
 </div>
 </html>

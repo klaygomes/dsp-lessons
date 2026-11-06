@@ -114,6 +114,23 @@
 .k-fig .k-legend-line { stroke-width: 2; }
 
 [hidden] { display: none !important; }
+:root { --measure: 34em; scrollbar-color: var(--rule) var(--paper); }
+section > p { text-wrap: pretty; }
+section > p + p { margin-top: 0; }
+header { padding-top: 20px; }
+.k-runner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-bottom: 12px; margin-bottom: 26px; border-bottom: 1px solid var(--rule); font-size: 15px; color: var(--ink-soft); }
+.k-runner a { font-family: var(--font-title); font-size: 22px; line-height: 1.2; color: var(--ink); text-decoration: none; }
+.k-runner a:hover { color: var(--accent-ink); }
+.k-runner span { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.k-pager { margin-top: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.k-pager a { display: grid; align-content: start; gap: 4px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: var(--radius); color: var(--ink); text-decoration: none; transition: border-color 160ms cubic-bezier(0.22, 1, 0.36, 1), background-color 160ms cubic-bezier(0.22, 1, 0.36, 1); }
+.k-pager a:hover { border-color: var(--ink-soft); background: var(--paper-2); }
+.k-pager .k-pager-next { grid-column: 2; text-align: right; }
+.k-pager-dir { font-size: 14px; color: var(--ink-soft); }
+.k-pager-title { font-weight: 600; color: var(--accent-ink); text-wrap: balance; }
+.k-pager-desc { font-family: var(--font-title); font-style: italic; font-size: 19px; line-height: 1.3; text-wrap: pretty; }
+.k-pager + footer { margin-top: 40px; }
+@media (max-width: 520px) { header { padding-top: 12px; } .k-runner { margin-bottom: 18px; } .k-pager { grid-template-columns: 1fr; margin-top: 56px; } .k-pager .k-pager-next { grid-column: 1; text-align: left; } }
 section > p, section > ul, section > ol { max-width: var(--measure); }
 section ul, section ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
 pre.code { margin: 0; background: var(--paper-2); border-radius: 6px; padding: 12px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 14px; line-height: 1.5; }
@@ -208,7 +225,7 @@ table.worked td, table.worked th { white-space: normal; }
 
 <div class="wrap">
   <header>
-    <p class="topic">Discrete-Time Signal Processing · lesson 13 · chapter 9</p>
+    <nav class="k-runner" aria-label="Course"><a href="../../index.html">The Phone Line</a><span>Lesson 13 of 16 · Chapter 9</span></nav>
     <h1>The Detector That Couldn't Keep Up</h1>
     <p class="question">The keypad detector gets every key right on the laptop. On the line's cheap chip it falls further behind with every call. Is the DFT really doing 42,230 different things per block, or the same things over and over?</p>
   </header>
@@ -979,9 +996,10 @@ table.worked td, table.worked th { white-space: normal; }
 </section>
 
 
+  <nav class="k-pager" aria-label="Lessons"><a class="k-pager-prev" rel="prev" href="../../12-dft/3-page/3-page.html"><span class="k-pager-dir">Previous lesson</span><span class="k-pager-title">12. The DFT</span></a><a class="k-pager-next" rel="next" href="../../14-spectrum-windows/3-page/3-page.html"><span class="k-pager-dir">Next lesson</span><span class="k-pager-title">14. Spectrum analysis with windows</span><span class="k-pager-desc">A loud 4 looks like two keys at once.</span></a></nav>
+
   <footer>
     <span>Source: Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989, chapter 9.</span>
-    <span>Next lesson: spectrum analysis with windows, where a loud 4 looks like two keys at once.</span>
     <span>Lab drawing adapted from the Sample Hold Ladder study in the <a href="https://github.com/kaganin/iwrzwr-visual-archive">iwrzwr visual archive</a> (MIT).</span>
   </footer>
 </div>

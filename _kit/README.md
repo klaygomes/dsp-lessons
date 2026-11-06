@@ -20,7 +20,8 @@ flowchart LR
 | `page.js` | Page runtime: holds each animated figure at its first frame until it is on screen, plays it once, adds "Replay"; unlocks the working when a lab reports it is solved, after which its button shows and hides it. Plays nothing under reduced motion. |
 | `lab.js` | `window.Kit` for labs: prediction questions, meters, canvas stage, pen, 30 fps loop, WAV parser, 8,000 samples/s player, tone sizes from a block of samples. |
 | `build-figures.mjs` | Writes `NAME.html` (wide) and `NAME.phone.html` (phone) per figure, each a standalone diagram that passes diagram-design's `self_check.py` and `verify-geometry.py`, plus `index.json` with captions. |
-| `page.py` | Builds the page and runs the build checks. |
+| `page.py` | Builds the page and runs the build checks. Replaces the shell's `<p class="topic">` with the course masthead and adds the previous/next pager before `<footer>`, taking the next lesson's teaser from the footer's "Next lesson: X, where Y." line. |
+| `course.py` | Reads the lesson table in `series.md`; shared by `page.py` and `index.py`. |
 | `demo/` | One figure using the primitives lesson 1 does not: wheel, tip-to-tail arrows, gain curve. |
 
 ## A lesson's folder

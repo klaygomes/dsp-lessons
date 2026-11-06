@@ -13,6 +13,8 @@ import tempfile
 from collections import Counter
 from pathlib import Path
 
+import course
+
 KIT = Path(__file__).resolve().parent
 LADDER = Path(os.environ.get("LADDER_SKILL", Path.home() / ".claude/skills/klay-learning-ladder"))
 EM_DASH = chr(0x2014)
@@ -152,6 +154,45 @@ def keep_punctuation(html):
     return "".join(part if i % 2 else tie(part) for i, part in enumerate(parts))
 
 
+def chrome(page, lesson):
+    rows = course.lessons()
+    me = next((r for r in rows if r["folder"] == lesson.name), None)
+    if not me:
+        return page
+    up = "../../"
+    chapter = f" · Chapter {me['chapter']}" if me["chapter"] else ""
+    runner = (f'<nav class="k-runner" aria-label="Course"><a href="{up}index.html">The Phone Line</a>'
+              f'<span>Lesson {me["n"]} of {len(rows)}{chapter}</span></nav>')
+    page = re.sub(r'<p class="topic">.*?</p>', lambda _: runner, page, count=1, flags=re.S)
+    teaser = None
+    m = re.search(r'\s*<span>Next lesson: (.*?)</span>', page, re.S)
+    if m:
+        text = re.sub(r"<[^>]+>", "", m.group(1)).strip()
+        where = re.search(r", where (.+)$", text, re.S)
+        teaser = where.group(1)[0].upper() + where.group(1)[1:] if where else None
+        page = page[: m.start()] + page[m.end():]
+
+    def card(rel, label, title, href, desc=None):
+        d = f'<span class="k-pager-desc">{html.escape(desc)}</span>' if desc else ""
+        return (f'<a class="k-pager-{rel}" rel="{rel}" href="{href}"><span class="k-pager-dir">{label}</span>'
+                f'<span class="k-pager-title">{html.escape(title)}</span>{d}</a>')
+
+    at = rows.index(me)
+    prev = rows[at - 1] if at else None
+    nxt = rows[at + 1] if at + 1 < len(rows) else None
+    cards = []
+    if prev:
+        cards.append(card("prev", "Previous lesson", f'{prev["n"]}. {prev["title"]}', f'{up}{prev["folder"]}/3-page/3-page.html'))
+    else:
+        cards.append(card("prev", "The course", f"All {len(rows)} lessons", f"{up}index.html"))
+    if nxt:
+        cards.append(card("next", "Next lesson", f'{nxt["n"]}. {nxt["title"]}', f'{up}{nxt["folder"]}/3-page/3-page.html', teaser or nxt["bug"]))
+    else:
+        cards.append(card("next", "The course", f"All {len(rows)} lessons", f"{up}index.html"))
+    pager = f'<nav class="k-pager" aria-label="Lessons">{"".join(cards)}</nav>\n\n  '
+    return re.sub(r"<footer>", lambda _: pager + "<footer>", page, count=1)
+
+
 def build(lesson, figures=True, drop_heading=None, append=None, working=None, still_text=None, more=None):
     lesson = Path(lesson).resolve()
     here = lesson / "3-page"
@@ -173,7 +214,7 @@ def build(lesson, figures=True, drop_heading=None, append=None, working=None, st
     body = wrap_more(body, more)
     body = wrap_working(body, working)
     body = motion_text(body, still_text)
-    page = fill((here / "shell.html").read_text(encoding="utf-8"), here, body)
+    page = chrome(fill((here / "shell.html").read_text(encoding="utf-8"), here, body), lesson)
     (here / "3-page.src.html").write_text(page, encoding="utf-8")
     subprocess.run(["node", str(LADDER / "scripts/math.mjs"), str(here / "3-page.src.html"), str(here / "3-page.html")], check=True)
     shutil.copyfile(LADDER / "assets/lesson.css", here / "lesson.css")
