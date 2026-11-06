@@ -168,7 +168,7 @@ export default k => {
       line(R.x0, R.y0 + 2, R.x0, R.y0 + 18 + 2 * gap + bh, { cls: 'k-axis' }),
       [[0.81, '0.81'], [2.8576, '2.8576']].map(([v, s]) => g({}, line(R.X(v), R.y0 + 4, R.X(v), R.y0 + 18 + 2 * gap + bh, { cls: 'k-guide' }),
         text(R.X(v), R.y0 + 36 + 2 * gap + bh, s, { cls: 'k-tick' }))));
-    return [A, B, step(5, 'one step for the whole rule: the biggest coefficient picks it', g({ anim: { k: 'in', d: 5, len: 0.8 } }, panel))];
+    return [A, B, panel];
   };
 
   const poleDrift = L => {
@@ -186,7 +186,7 @@ export default k => {
       path(arcPath(P, 1, 1680, 2320), { cls: 'k-wheel' }),
       text(P.X(0.255), P.Y(0.955), 'unit circle', { anchor: 'end', cls: 'k-tick' }),
       step(1, 'the laptop poles at radius 0.98, at 1,900, 2,000 and 2,100 Hz',
-        g({}, lap.map(([x, y]) => laptopPole(x, y)), toneLab, text(lap[2][0] - 14, lap[2][1] + 4, ph ? '0.98' : 'radius 0.98', { anchor: 'end', cls: 'k-num' }))),
+        g({}, lap.map(([x, y]) => laptopPole(x, y)), toneLab, ph ? text(P.X(-0.25), P.Y(0.885), 'laptop poles: 0.98', { anchor: 'start', cls: 'k-num' }) : text(lap[2][0] - 14, lap[2][1] + 4, 'radius 0.98', { anchor: 'end', cls: 'k-num' }))),
       step(2, 'on the chip the outer pairs slide out past the circle and the middle pair slides in',
         chip.map(([x, y], i) => g({ anim: { k: 'move', dx: lap[i][0] - x, dy: lap[i][1] - y, d: 1, len: 2 } }, chipPole(x, y, i !== 1)))),
       step(3, 'where they land: 1.0567 at 1,817 and 2,183 Hz, 0.8378 at 2,000 Hz',
@@ -319,7 +319,7 @@ export default k => {
       return g({},
         text(cx, cy - R - 26, title, { cls: 'k-name' }),
         fullCircle(cx, cy, R), line(cx - R - 10, cy, cx + R + 10, cy, { cls: 'k-axis' }),
-        others.map(f => { const [x, y] = at(f), d = Math.hypot(x - top[0], y - top[1]); return d > 30 ? arrow(L.slug, [top, [x + (top[0] - x) * 8 / d, y + (top[1] - y) * 8 / d]], { cls: 'k-vec' }) : line(top[0], top[1], x, y, { cls: 'k-stem-accent' }); }),
+        others.map(f => { const [x, y] = at(f), d = Math.hypot(x - top[0], y - top[1]); return d > 30 ? arrow(L.slug, [[x + (top[0] - x) * 6 / d, y + (top[1] - y) * 6 / d], [top[0] + (x - top[0]) * 8 / d, top[1] + (y - top[1]) * 8 / d]], { cls: 'k-vec' }) : line(top[0], top[1], x, y, { cls: 'k-stem-accent' }); }),
         fs.map(f => laptopPole(...at(f), 3)),
         lines.map(([s, cls], i) => text(cx, cy + R + 32 + i * 20, s, { cls })));
     };
@@ -330,8 +330,8 @@ export default k => {
     return [
       panel(cx1, cy1, ph ? 'crowded: the 2,000 Hz pole' : 'three crowded pairs: the 2,000 Hz pole', crowdFs, l1),
       panel(cx2, cy2, 'a lone pair', loneFs, l2),
-      text(ph ? cx1 - 46 : cx1 + 46, cy1 - R - 4, 'two short ones, 0.077', { anchor: ph ? 'end' : 'start', cls: 'k-tick' }),
-      line(ph ? cx1 - 44 : cx1 + 44, cy1 - R - 8, ph ? cx1 - 8 : cx1 + 8, cy1 - R * 0.98 + 2, { cls: 'k-axis' }),
+      text(cx1 + 46, cy1 - R - 4, ph ? 'two short: 0.077' : 'two short ones, 0.077', { anchor: 'start', cls: 'k-tick' }),
+      line(cx1 + 44, cy1 - R - 8, cx1 + 8, cy1 - R * 0.98 + 2, { cls: 'k-axis' }),
       ph ? '' : text(L.W / 2, L.H - 12, 'a pole moves by about the error × 1 / the product of its arrows', { cls: 'k-note' }),
       ph ? text(L.W / 2, L.H - 12, 'move ≈ error × 1 / product of arrows', { cls: 'k-note' }) : '',
     ];
@@ -356,8 +356,8 @@ export default k => {
       path(arc, { cls: 'k-axis' }), line(cx, cy, ...zAt(1), { cls: 'k-guide' }),
       text(cx + 30, cy - 40, '85.5°', { anchor: 'start', cls: 'k-tick' }),
       [1, -1].map(s => g({}, zeroMark(...zAt(s), 6), chipPole(...pAt(s), false, 4))),
-      text(zAt(1)[0] - 14, zAt(1)[1] - 6, 'zero on the circle,', { anchor: 'end', cls: 'k-tick' }),
-      text(zAt(1)[0] - 14, zAt(1)[1] + 8, 'pole just inside', { anchor: 'end', cls: 'k-tick' }),
+      text(zAt(1)[0] - 14, zAt(1)[1] - (ph ? 24 : 6), 'zero on the circle,', { anchor: 'end', cls: 'k-tick' }),
+      text(zAt(1)[0] - 14, zAt(1)[1] + (ph ? -10 : 8), 'pole just inside', { anchor: 'end', cls: 'k-tick' }),
       text(cx + R - 8, cy - 8, '0 Hz', { anchor: 'end', cls: 'k-tick' }),
       ph ? keyRow(30, L.H - 14, [[keyZero, 'zero'], [(x, y) => chipPole(x, y, false, 4), 'pole']], { dx: 120 })
         : keyRow(470, L.H - 14, [[keyZero, 'zero'], [(x, y) => chipPole(x, y, false, 4), 'pole']], { dx: 110 }),
@@ -434,8 +434,8 @@ export default k => {
       pts.map(([b, r]) => (r === 1 ? g({}, zeroMark(P.X(b), P.Y(r), 6), xMark(P.X(b), P.Y(r), { s: 3.5, cls: 'k-stem' }))
         : b === 8 ? circle(P.X(b), P.Y(r), 5, { cls: 'k-stem-accent-dot' }) : circle(P.X(b), P.Y(r), 4, { cls: 'k-stem-dot' }))),
       text(P.X(8) + 10, P.Y(1.0567) + 4, ph ? '1.0567: the hum' : '8 bits: 1.0567, the hum', { anchor: 'start', cls: 'k-num-accent' }),
-      text(P.X(9.1), P.Y(1) - (ph ? 34 : 30), ph ? '9 to 12: pole on a zero,' : '9 to 12 bits: a pole exactly on the circle, on a zero:', { anchor: 'start', cls: 'k-tick' }),
-      text(P.X(9.1), P.Y(1) - (ph ? 18 : 14), 'silent only in exact arithmetic', { anchor: 'start', cls: 'k-tick' }),
+      text(P.X(9.1), P.Y(1) - (ph ? 52 : 30), ph ? '9 to 12: pole on a zero,' : '9 to 12 bits: a pole exactly on the circle, on a zero:', { anchor: 'start', cls: 'k-tick' }),
+      text(P.X(9.1), P.Y(1) - (ph ? 36 : 14), 'silent only in exact arithmetic', { anchor: 'start', cls: 'k-tick' }),
       text(P.X(14.5), P.Y(0.985) - 12, ph ? '13 up: near 0.98' : '13 bits and up: near 0.98', { cls: 'k-tick' }),
       ph ? keyRow(30, L.H - 14, [[(x, y) => g({}, zeroMark(x, y, 6), xMark(x, y, { s: 3.5 })), 'pole on a zero']], { dx: 150 })
         : keyRow(90, L.H - 14, [[(x, y) => g({}, zeroMark(x, y, 6), xMark(x, y, { s: 3.5 })), 'pole sitting on a zero']], { dx: 200 }),
@@ -456,7 +456,7 @@ export default k => {
       'Lesson 6’s notch, one wire per sample. The three numbers in the circles are its coefficients: change a number, change the filter.', coefficients),
     fig('chip-steps', [620, 640], 'The chip snaps every coefficient to a tick',
       '0.81 between ticks 103 and 104 of step 1/128 snaps to 104, which is 0.8125, an error of +0.0025; 2.8576 between ticks of step 1/32 snaps to 91, which is 2.84375, an error of −0.0138. Steps of 1/128, 1/64 and 1/32 reach 0.99, 1.98 and 3.97.',
-      'Each coefficient is stored as the nearest whole number of steps. One step serves the whole rule, so the biggest coefficient decides how coarse every tick is.', chipSteps, 5),
+      'Each coefficient is stored as the nearest whole number of steps. One step serves the whole rule, so the biggest coefficient decides how coarse every tick is.', chipSteps, 4),
     fig('pole-drift', [450, 500], 'Rounding moves the crowded poles',
       'The top of the unit circle, 1,700 to 2,300 Hz. The laptop poles at radius 0.98 at 1,900, 2,000 and 2,100 Hz move on the chip to 1.0567 at 1,817 and 2,183 Hz, outside the circle, and to 0.8378 at 2,000 Hz, inside. Lesson 6’s notch at the same zoom moves from 0.9 to 0.9014.',
       'Zoomed on the top of the unit circle. The outer pole pairs cross the rim; lesson 6’s notch, at the same zoom, barely moves.', poleDrift, 4),
@@ -470,8 +470,8 @@ export default k => {
       'Two curves crossing zero, each lifted by the same small error ε: the steep one’s crossing slides 0.17, the flat one’s slides 0.84. The slide is ε divided by the steepness of the tangent.',
       'Lift a curve by ε and its crossing slides by ε ÷ steepness. Steep: a short slide. Flat: a long one.', tangent),
     fig('crowd', [400, 760], 'Crowded poles have a big multiplier',
-      'Six laptop poles at 0.98. From the 2,000 Hz pole, two short arrows of 0.077 reach its neighbors and three of about 1.96 reach the mirrors: product 0.045, multiplier 22. A lone pair has one arrow of 1.96: multiplier 0.5.',
-      'The steepness at a pole is the product of its arrows to the other poles. Two short arrows make it tiny, and the multiplier huge.', crowd),
+      'Six laptop poles at 0.98. From the 2,000 Hz pole, two short arrows of 0.077 come in from its neighbors and three of about 1.96 from the mirrors: product 0.045, multiplier 22. A lone pair has one arrow of 1.96: multiplier 0.5.',
+      'The steepness at a pole is the product of the arrows from the other poles to it. Two short arrows make it tiny, and the multiplier huge.', crowd),
     fig('section', [400, 570], 'In a section, every number means something',
       'The 1,900 Hz section’s program, output[n] = 0.9802 × (input[n] − 0.1569 × input[n − 1] + input[n − 2]) + 0.1538 × output[n − 1] − 0.9604 × output[n − 2], with each number tied to what it sets: the volume, the zero angle, the zeros on the circle, the pole angle, the pole radius squared.',
       'The 1,900 Hz section. Every number is something you can see: the volume, the zeros’ angle and place on the circle, the poles’ angle and radius.', section),

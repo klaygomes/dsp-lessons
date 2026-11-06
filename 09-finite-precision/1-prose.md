@@ -4,18 +4,23 @@
 
 The fax goes through, and the company orders ten thousand cheap chips, one for every exchange. The catch is printed on the box: it's an 8-bit chip. It can only store a few hundred different numbers, where your laptop stores almost any decimal you like.
 
-Meanwhile, the clock chip's whine has learned a new trick. It no longer sits politely at 2,000 Hz. It hops: depending on how warm the clock chip runs, it whines at 1,900 Hz, at 2,000 Hz or at 2,100 Hz. One notch can't cover all three. So the team builds three narrow notches, one on each whine, each with its pole pair at radius 0.98 so the voice beside it stays crisp. The picture shows what the three do together: three narrow dips in an otherwise flat line.
+Meanwhile, the clock chip's whine has learned a new trick. It no longer sits politely at 2,000 Hz. It hops: depending on how warm the clock chip runs, it whines at 1,900 Hz, at 2,000 Hz or at 2,100 Hz. One notch can't cover all three. So the team builds three narrow notches, one on each whine, each with its pole pair at radius 0.98 so the voice beside it stays crisp. (A reminder from lesson 6: every pure tone is a point on the unit circle, at angle 360° × its frequency ÷ 8,000, so 2,000 Hz sits straight up. A zero pair on the circle removes its tone, and a pole pair just inside at the same angle keeps that notch narrow. A pole's radius is how much an echo keeps per sample.) The picture shows what the three do together: three narrow dips in an otherwise flat line.
 
 [[diagram:three-notches]]
 
 To keep the chip's job simple, the team multiplies the three notches together into a single rule:
 
 ```
-output[n] = 0.9418 × input[n] + 2.8021 × input[n - 2] + 2.8021 × input[n - 4] + 0.9418 × input[n - 6]
-          - 2.8576 × output[n - 2] - 2.7444 × output[n - 4] - 0.8858 × output[n - 6]
+output[n] = 0.9418 × input[n]
+          + 2.8021 × input[n - 2]
+          + 2.8021 × input[n - 4]
+          + 0.9418 × input[n - 6]
+          - 2.8576 × output[n - 2]
+          - 2.7444 × output[n - 4]
+          - 0.8858 × output[n - 6]
 ```
 
-One recurrence, one loop. Where these numbers come from is worth a section of its own, and it gets one below. On the laptop the rule is beautiful. The whine is removed at 1,900, 2,000 and 2,100 Hz, a voice tone at 1,500 Hz keeps 99.6%, and a click dies away as fast as it should.
+One rule, one loop. Where these numbers come from is worth a section of its own, and it gets one below. On the laptop the rule is beautiful. The whine is removed at 1,900, 2,000 and 2,100 Hz, a voice tone at 1,500 Hz keeps 99.6%, and a click dies away as fast as it should.
 
 Then it's loaded onto the chip, and the first test call is a disaster. A hum starts the moment anything gets in: a click, a breath, the first syllable. The figure shows the output after a single click, on the laptop and on the chip. On the laptop it dies away. On the chip it grows sample by sample until it slams into the largest numbers the chip can hold, positive and negative. From then on it swings from one limit to the other and back, at full volume, for as long as the call lasts.
 
@@ -46,19 +51,21 @@ There's a catch with the step. A step of 1/128 only reaches up to 127/128, just 
 Before we hunt the hum, let's put a filter we trust on the chip. Here is lesson 6's notch:
 
 ```
-output[n] = 0.905 × (input[n] + input[n - 2]) - 0.81 × output[n - 2]
+output[n] = 0.905 × input[n]
+          + 0.905 × input[n - 2]
+          - 0.81 × output[n - 2]
 ```
 
 Its biggest coefficient is 0.905, under 1, so the chip can use the fine step of 1/128.
 
-| coefficient | × 128 | stored whole number | stored value | error |
+| coefficient | × 128 | stored | worth | error |
 |---|---|---|---|---|
 | 0.905 | 115.84 | 116 | 0.90625 | +0.00125 |
 | 0.81 | 103.68 | 104 | 0.8125 | +0.0025 |
 
 So the chip runs a slightly different filter, with 0.90625 and 0.8125. Where are its poles now?
 
-Recall lesson 6's **system function H(z)**: the number a tone \(z^n\) is multiplied by when it passes through the filter. For a filter like this one, it's a fraction. The top comes from the input side, the bottom from the feedback side. One sign needs care. The program subtracts `0.81 × output[n - 2]`. Move that term to the left of the equals sign and it becomes `output[n] + 0.81 × output[n - 2] = 0.905 × (...)`. So a minus in the program is a plus in the bottom:
+Recall lesson 6's **system function H(z)**: the number a tone \(z^n\) is multiplied by when it passes through the filter. (A tone \(z^n\) is a point \(z\) on the unit circle multiplied by itself once per sample, so it turns by the same angle every sample.) For a filter like this one, it's a fraction. The top comes from the input side, the bottom from the feedback side. One sign needs care. The program subtracts `0.81 × output[n - 2]`. Move that term to the left of the equals sign and the left side becomes `output[n] + 0.81 × output[n - 2]`. So a minus in the program is a plus in the bottom. In it, \(z^{-1}\) and \(z^{-2}\) stand for one and two samples ago:
 
 \[ H(z) = \frac{0.905\,(1 + z^{-2})}{1 + 0.81\, z^{-2}} \]
 
@@ -72,11 +79,11 @@ That's the job of the 0.905 in front of the input side. Call it the notch's **vo
 
 The notch your line runs today, lesson 7's version with poles at 0.85, fares just as well: its poles land at 0.848.
 
-In the lab, you can be the chip. Pick a step, watch each coefficient snap to its tick, and see where the poles go. Try to make lesson 6's notch fail. Before you start, guess: how coarse must the step be before it goes unstable?
-
-(Spoiler, for readers without the lab: it never crosses the rim. Only at a step of 1/2 does 0.81 round up to 1, and that puts the poles exactly on the circle.)
+In the lab, you can be the chip. Pick a step, watch each coefficient snap to its tick, and see where the poles go. Try to make lesson 6's notch fail. Before you start, guess: how coarse must the step be before its poles reach the rim? (The rim is the unit circle itself, seen from a pole inside it.)
 
 [[lab]]
+
+(The answer, in words: only at a step of 1/2 does 0.81 round up to 1, and that puts the poles exactly on the circle, on top of the zeros. They never go past it. But on the rim the notch is gone, and a speck of rounding noise would ring there forever: a ring that never dies.)
 
 So why does the three-notch rule fall over?
 
@@ -84,7 +91,7 @@ So why does the three-notch rule fall over?
 
 Let's round the three-notch rule the way the chip does. Its biggest coefficient is 2.8576. A step of 1/64 only reaches 1.98, so the chip is forced to the step of 1/32, four times coarser than the notch above got. Here are the feedback coefficients, the ones that make the poles:
 
-| laptop | × 32 | stored whole number | stored on the chip | error |
+| laptop | × 32 | stored | worth | error |
 |---|---|---|---|---|
 | 2.8576 | 91.44 | 91 | 2.84375 | −0.0138 |
 | 2.7444 | 87.82 | 88 | 2.75 | +0.0056 |
@@ -134,7 +141,11 @@ Each one is tidy: the 0.9604 is the radius squared, the 0.1538 says the angle, a
 
 Now multiply the first and the last. The \(z^{-1}\) terms cancel (−0.1538 + 0.1538), and so do the \(z^{-3}\) terms. What's left is
 
-\[ 1 + (2 \times 0.9604 - 0.1538^2)\, z^{-2} + 0.9604^2\, z^{-4} = 1 + 1.8972\, z^{-2} + 0.9224\, z^{-4} \]
+\[ 1 + (2 \times 0.9604 - 0.1538^2)\, z^{-2} + 0.9604^2\, z^{-4} \]
+
+which is
+
+\[ 1 + 1.8972\, z^{-2} + 0.9224\, z^{-4} \]
 
 Multiply in the middle one, \(1 + 0.9604\, z^{-2}\):
 
@@ -142,13 +153,31 @@ Multiply in the middle one, \(1 + 0.9604\, z^{-2}\):
 
 That's the feedback side of the laptop rule. (The program writes these with minus signs, because it moves them to the other side of the equals sign. More on that in a moment.) That cancelling is also why only even delays appear in the rule.
 
-The input side comes from the zero pairs in the same way. The zeros sit on the circle, so they use \(2\cos\theta\) without the radius: 0.1569 at 1,900 Hz. Multiplied out, the three zero pairs give \(1 + 2.9754\, z^{-2} + 2.9754\, z^{-4} + z^{-6}\). Each notch also carries a volume factor, worked out by the 0 Hz shortcut from worked example 1. For each notch that factor is 0.9802, and three of them make 0.9802³ = 0.9418. That's the rule's first number, and 0.9418 × 2.9754 = 2.8021 is its second.
+The input side comes from the zero pairs in the same way. The zeros sit on the circle, so they use \(2\cos\theta\) without the radius: 0.1569 at 1,900 Hz. Multiplied out, the three zero pairs give \(1 + 2.9754\, z^{-2} + 2.9754\, z^{-4} + z^{-6}\). Each notch also carries a volume factor, worked out by the 0 Hz shortcut from worked example 1. For each notch that factor is 0.9802, and three of them make 0.94177, rounded to 0.9418. That's the rule's first number. Its second is that factor times the 2.9754 (2.97538 before rounding): 0.94177 × 2.97538 = 2.8021.
 
 Two things happened. The numbers grew. Multiplying three things that are each close to 1 piles them up, like the 1, 3, 3, 1 you get when you multiply out \((1 + x)^3\). (On the input side that pile-up is what the chip rounded to exactly 1, 3, 3, 1.) That's why the chip needed the coarse step. And the numbers stopped meaning anything you can see. No single coefficient is "the radius" or "the angle" of any pole any more. Each one is a blend of all six poles, so a rounding error in any coefficient tugs on all of them at once.
 
 ## Why crowded poles jump
 
-Here's the derivation, from chapter 6 of Oppenheim and Schafer, *Discrete-Time Signal Processing* (1989). It uses one idea from calculus, the slope of a curve at a point, and the figures draw it instead of assuming it.
+Here's the answer first. It comes from chapter 6 of Oppenheim and Schafer, *Discrete-Time Signal Processing* (1989). Measure a pole's distances to the five other poles, \(d_1\) to \(d_5\). A rounding error moves the pole by about
+
+\[ \text{its move} \approx \frac{\text{the error}}{d_1 \times d_2 \times d_3 \times d_4 \times d_5} \]
+
+One over that product is the pole's **multiplier**: the error times the multiplier is the size of the move. The figure draws the distances as arrows, from every other pole to the one at 2,000 Hz, and beside it a lone pair.
+
+[[diagram:crowd]]
+
+Lesson 6's notch has two poles, 1.8 apart, so its multiplier is 1 ÷ 1.8 = 0.56. The error shrinks: 0.0025 × 0.56 = 0.0014, exactly the move you computed. A lone pole is calm.
+
+The three-notch rule has six poles, and three of them are crammed together near the top of the circle. Take the one at 2,000 Hz. Its neighbors at 1,900 and 2,100 Hz are only 0.077 away on each side. (That's the straight-line distance between two points at radius 0.98 that are 4.5° apart: 2 × 0.98 × sin 2.25° = 0.077.) Its three mirror poles on the bottom half are about 1.96 away. The product of all five distances is
+
+\[ 0.077 \times 0.077 \times 1.96 \times 1.96 \times 1.96 = 0.045 \]
+
+so its multiplier is 1 ÷ 0.045 = 22. For the poles at 1,900 and 2,100 Hz, whose product is 0.089, the multiplier is 11. A lone pole pair, with only its mirror 1.96 away, has a multiplier of 0.5. So these crowded poles feel every rounding error 22 or 11 times over, where a lone pair would feel half of it.
+
+Each error's push also has a direction, and the pushes add like arrows. On the middle pole they all point inward; on its two neighbors, outward. That's why the middle pair went in and its neighbors went out. The rule is a straight-line estimate, and moves this big are past where straight lines hold: it predicts 0.3 to 0.65, the computer finds 0.10 to 0.14. But it gets the directions right, and its warning is right: these poles are nowhere near where you put them.
+
+Where does the rule come from? The derivation uses one idea from calculus, the slope of a curve at a point, and its figures draw it instead of assuming it. It is worth reading once, but the rest of the lesson only needs the rule above.
 
 **Step one: switch to positive powers.** As in worked example 1, the program's minus signs become plus signs in the bottom, which reads \(1 + 2.8576\, z^{-2} + 2.7444\, z^{-4} + 0.8858\, z^{-6}\). Multiply the top and the bottom of the fraction by \(z^6\). That doesn't change \(H(z)\), and the bottom becomes a plain polynomial:
 
@@ -156,7 +185,9 @@ Here's the derivation, from chapter 6 of Oppenheim and Schafer, *Discrete-Time S
 
 **Step two: the poles are its roots.** With the six poles called \(p_1\) to \(p_6\), the polynomial is the product of six factors, one per pole:
 
-\[ P(z) = (z - p_1)(z - p_2)(z - p_3)(z - p_4)(z - p_5)(z - p_6) \]
+\[ P(z) = (z - p_1)(z - p_2)(z - p_3) \]
+
+\[ \times\, (z - p_4)(z - p_5)(z - p_6) \]
 
 **Step three: rounding nudges the curve.** Quantization changes one coefficient by a small error \(\varepsilon\). For the first feedback coefficient, that adds \(\varepsilon\, z^4\) to \(P\). Near a pole, \(z^4\) has a size close to 1 (0.98⁴ = 0.92). So near the pole, the error lifts the polynomial by about \(\varepsilon\).
 
@@ -166,27 +197,13 @@ Here's the derivation, from chapter 6 of Oppenheim and Schafer, *Discrete-Time S
 
 So a pole slides by about the error divided by the steepness of \(P\) at the pole. (The poles are complex numbers, and so is the steepness, but the rule works the same way.)
 
-**Step five: the steepness is a product of arrows.** Take the factor for pole \(p_1\) out in front: \(P(z) = (z - p_1) \times\) (the other five factors). Close to \(p_1\), the first factor is tiny and changing fast, while the other five barely change. They're about \((p_1 - p_2)(p_1 - p_3)\cdots(p_1 - p_6)\): one arrow from \(p_1\) to every other pole, multiplied together. So near the pole, \(P\) behaves like \((z - p_1)\) times that fixed product, and the product is the steepness. The figure draws those five arrows.
+**Step five: the steepness is a product of arrows.** Take the factor for pole \(p_1\) out in front: \(P(z) = (z - p_1) \times\) (the other five factors). Close to \(p_1\), the first factor is tiny and changing fast, while the other five barely change. They're about \((p_1 - p_2)(p_1 - p_3)\cdots(p_1 - p_6)\): one arrow from every other pole to \(p_1\), multiplied together. So near the pole, \(P\) behaves like \((z - p_1)\) times that fixed product, and the product is the steepness: the five arrows in the figure above.
 
-[[diagram:crowd]]
-
-**Step six: put it together.** Call a pole's distances to the five other poles \(d_1\) to \(d_5\). A pole moves by about
-
-\[ \text{its move} \approx \frac{\text{the error}}{d_1 \times d_2 \times d_3 \times d_4 \times d_5} \]
-
-One over that product is the pole's multiplier: the error times the multiplier is the size of the move.
-
-Now look at the numbers. Lesson 6's notch has two poles, 1.8 apart, so its multiplier is 1 ÷ 1.8 = 0.56. The error shrinks: 0.0025 × 0.56 = 0.0014, exactly the move you computed. A lone pole is calm.
-
-The three-notch rule has six poles, and three of them are crammed together near the top of the circle. Take the one at 2,000 Hz. Its neighbors at 1,900 and 2,100 Hz are only 0.077 away on each side. (That's the straight-line distance between two points at radius 0.98 that are 4.5° apart: 2 × 0.98 × sin 2.25° = 0.077.) Its three mirror poles on the bottom half are about 1.96 away. The product of all five distances is
-
-\[ 0.077 \times 0.077 \times 1.96 \times 1.96 \times 1.96 = 0.045 \]
-
-so its multiplier is 1 ÷ 0.045 = 22. For the poles at 1,900 and 2,100 Hz, whose product is 0.089, the multiplier is 11. A lone pole pair, with only its mirror 1.96 away, has a multiplier of 0.5. So these crowded poles feel every rounding error 22 or 11 times over, where a lone pair would feel half of it.
+**Step six: put it together.** A pole slides by the error divided by the steepness, and the steepness has the size of the product of its five arrows. So it moves by the error divided by the product of its distances to the other poles: the rule from the top of this section.
 
 Each coefficient's error gives its own push, and the pushes add up like arrows, so a push has a direction as well as a size.
 
-Work one out by hand, for the 2,000 Hz pole at the very top of the circle, \(z = 0.98j\). Each rounded coefficient lifts \(P\) by its error times \(z^4\), \(z^2\) or 1. At the top of the circle those powers are plain numbers: \(z^2 = -0.96\) and \(z^4 = +0.92\).
+Work one out by hand, for the 2,000 Hz pole at the very top of the circle, \(z = 0.98j\). (Lesson 6's \(j\): the point at distance 1 straight up, whose square is \(-1\).) Each rounded coefficient lifts \(P\) by its error times \(z^4\), \(z^2\) or 1. At the top of the circle those powers are plain numbers: \(z^2 = -0.96\) and \(z^4 = +0.92\).
 
 | coefficient, and the power of z it multiplies | error | lift: error × power |
 |---|---|---|
@@ -208,7 +225,7 @@ The 1,900 Hz pole gets pushes of 0.143, 0.061 and 0.122, all pointing outward, f
 
 So don't multiply them out. Build one notch at a time, the way lesson 6 did.
 
-A **second-order section** is a filter that reaches back at most two samples on its input and its output. That means it holds one pole pair and one zero pair. Lesson 6's notch is one. So is lesson 8's all-pass. Here's the 1,900 Hz one, built from scratch:
+A **second-order section** is a filter that reaches back at most two samples on its input and its output. That means it holds one pole pair and one zero pair. Lesson 6's notch is one. So is lesson 8's all-pass, the filter that passes every tone at full strength and only delays some more than others. Here's the 1,900 Hz one, built from scratch:
 
 - **The zero pair** sits on the circle at 85.5°, right on the whine. Lesson 6's recipe gives the input side \(1 - 2\cos 85.5°\, z^{-1} + z^{-2}\), which is \(1 - 0.1569\, z^{-1} + z^{-2}\).
 - **The pole pair** sits just inside, at radius 0.98 and the same angle. The feedback side is \(1 - 0.1538\, z^{-1} + 0.9604\, z^{-2}\).
@@ -221,8 +238,11 @@ A **second-order section** is a filter that reaches back at most two samples on 
 As a program, with the feedback moved back across the equals sign so its signs flip:
 
 ```
-output[n] = 0.9802 × (input[n] - 0.1569 × input[n - 1] + input[n - 2])
-          + 0.1538 × output[n - 1] - 0.9604 × output[n - 2]
+output[n] = 0.9802 × (input[n]
+            - 0.1569 × input[n - 1]
+            + input[n - 2])
+          + 0.1538 × output[n - 1]
+          - 0.9604 × output[n - 2]
 ```
 
 The figure labels each of these numbers with what it controls. The 0.1569 sets the zeros' angle, the 1s keep them on the circle, the 0.9604 is the poles' radius squared, the 0.1538 sets their angle, and the 0.9802 sets the volume.
@@ -270,7 +290,9 @@ The obvious objection: buy a better chip with more bits. That works, eventually.
 | 13 | 1/1,024 | all three pairs between 0.9797 and 0.9805 |
 | 16 | 1/8,192 | all three pairs between 0.9798 and 0.9805 |
 
-From 9 to 12 bits, the rule is balanced on the edge. One pole pair lands exactly on the unit circle at 2,000 Hz: a ring that never dies. In exact arithmetic it would stay silent, because one of the zeros sits on exactly the same spot and cancels it. But remember the other rounding, of every product the chip computes. That tiny noise enters the feedback loop after the zeros have done their work, and nothing cancels it there. So on a real chip the pole on the circle would ring forever. The zeros aren't right either. At 8 bits they had collapsed onto 2,000 Hz; at 9 bits they've come back only to 1,917.8 and 2,082.2 Hz, so the whines at 1,900 and 2,100 Hz still get through. Only at 13 bits do all six poles come back close to where you put them, and even then the improvement isn't steady: at 14 bits two of them wander off again before 15 bits settles them.
+From 9 to 12 bits, the rule is balanced on the edge. One pole pair lands exactly on the unit circle at 2,000 Hz: a ring that never dies. Only at 13 bits do all six poles come back close to where you put them.
+
+Why does a pole on the circle ring, with a zero right on top of it? In exact arithmetic it would stay silent, because one of the zeros sits on exactly the same spot and cancels it. But remember the other rounding, of every product the chip computes. That tiny noise enters the feedback loop after the zeros have done their work, and nothing cancels it there. So on a real chip the pole on the circle would ring forever. The zeros aren't right either. At 8 bits they had collapsed onto 2,000 Hz; at 9 bits they've come back only to 1,917.8 and 2,082.2 Hz, so the whines at 1,900 and 2,100 Hz still get through. And even past 13 bits the improvement isn't steady: at 14 bits two of them wander off again before 15 bits settles them.
 
 Each extra bit doubles the number of values a coefficient can take, and costs chip area and power in every multiplier. A sharper filter, with poles crowded closer, would demand even more. The cascade fixes the cause instead: it stops crowding the poles into one polynomial, and it's happy at 8 bits.
 

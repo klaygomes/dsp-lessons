@@ -41,6 +41,7 @@
     const s = Math.sqrt(-disc); return [[-a1 / 2, s / 2], [-a1 / 2, -s / 2]];
   };
   const radius = z => Math.hypot(z[0], z[1]);
+  const RIM = 1 - 1e-6, onRim = z => radius(z) >= RIM;
   const toneOf = z => Math.abs(Math.atan2(z[1], z[0])) * FS / TAU;
   function run(B, A, x, clip) {
     const y = new Float32Array(x.length);
@@ -197,7 +198,7 @@
     (view.lap || []).filter(shown).forEach(z => { const [x, y] = P(z); ctx.setLineDash([2, 2]); pen.ring(x, y, 7, c.soft, 1.2); ctx.setLineDash([]); xm(x, y, 3, c.soft, 1); });
     (view.pin || []).filter(shown).forEach(z => { const [x, y] = P(z); ctx.setLineDash([3, 3]); pen.ring(x, y, 9, c.input, 1.5); ctx.setLineDash([]); });
     (view.chip || []).filter(shown).forEach(z => {
-      const [x, y] = P(z), out = radius(z) >= 1 - 1e-9;
+      const [x, y] = P(z), out = onRim(z);
       if (out) { ctx.strokeStyle = c.accent; ctx.lineWidth = 1.6; ctx.strokeRect(x - 8, y - 8, 16, 16); }
       xm(x, y, 5, out ? c.accent : c.ink, 2.2);
     });
@@ -288,7 +289,8 @@
     function act2Cascade() {
       const cas = cascadeOf(st.secs);
       const live = cas.chips.filter(Boolean), poles = live.flatMap(c => quad(c.a[1], c.a[2])), zeros = live.flatMap(c => quad(c.b[1], 1));
-      return { cas, poles, zeros, rmax: Math.max(...poles.map(radius)) };
+      const ringing = live.some(c => c.a[2] >= RIM && c.a[1] !== c.b[1]);
+      return { cas, poles, zeros, rmax: Math.max(...poles.map(radius)), ringing };
     }
     function clickResponse(fn) { const x = new Float32Array(400); x[0] = 0.1; return fn(x); }
 
@@ -302,12 +304,12 @@
       if (st.form === 'multi') {
         const m = act2Multi();
         const y = clickResponse(x => run(m.cm.B, m.cm.A, x, true));
-        return { zoom: true, voice: true, band, ticks, lap: m.lap, chip: m.poles, zeros: roots(m.cm.B.map(v => v / m.cm.B[0])), lapGain: f => gainOf(m.cm.L.B, m.cm.L.A, f), chipGain: m.rmax >= 1 ? 'unstable' : f => gainOf(m.cm.B, m.cm.A, f),
-          strip: { y, bad: m.rmax >= 1, title: 'on the chip, after one click' } };
+        return { zoom: true, voice: true, band, ticks, lap: m.lap, chip: m.poles, zeros: roots(m.cm.B.map(v => v / m.cm.B[0])), lapGain: f => gainOf(m.cm.L.B, m.cm.L.A, f), chipGain: m.rmax >= RIM ? 'unstable' : f => gainOf(m.cm.B, m.cm.A, f),
+          strip: { y, bad: m.rmax >= RIM, title: 'on the chip, after one click' } };
       }
       const cz = act2Cascade(), y = clickResponse(x => runCascade(cz.cas, x, true));
       return { zoom: true, voice: true, band, ticks, chip: cz.poles, zeros: cz.zeros, lap: st.secs.filter(s => s.f !== null && !s.bad).map(s => [s.r * Math.cos(TAU * s.f / FS), s.r * Math.sin(TAU * s.f / FS)]).flatMap(z => [z, [z[0], -z[1]]]),
-        chipGain: cz.rmax >= 1 - 1e-9 ? 'unstable' : f => gainOf(cz.cas.B, cz.cas.A, f), strip: { y, bad: cz.rmax >= 1 - 1e-9 || y.some(v => Math.abs(v) >= 1), title: 'on the chip, after one click' } };
+        chipGain: cz.ringing || cz.rmax > 1 + 1e-6 ? 'unstable' : f => gainOf(cz.cas.B, cz.cas.A, f), strip: { y, bad: cz.ringing || y.some(v => Math.abs(v) >= 1), title: 'on the chip, after one click' } };
     }
 
     function act1Why(a) {
@@ -327,10 +329,11 @@
       if (bad.length) return { ok: false, msg: `Fix the tone in section ${bad[0][1] + 1} first: type a whole number of hertz from 100 to 3,900.` };
       const filled = st.secs.map((s, i) => i).filter(i => st.secs[i].f !== null);
       if (!filled.length) return { ok: false, msg: 'Give each section a tone: the whine pitches you read off the chart of the call’s tones. Zoom in until you can read each one to within a few hertz.' };
-      const onCircle = filled.filter(i => cz.cas.chips[i].a[2] >= 1 - 1e-9);
+      const onCircle = filled.filter(i => cz.cas.chips[i].a[2] >= RIM);
       if (onCircle.length) {
-        const i = onCircle[0], r = st.secs[i].r;
-        return { ok: false, msg: `Section ${i + 1}: at radius ${fmt(r, 3)}, r² = ${fmt(r * r, 4)} rounds to 64/64 = 1 at step 1/64, so its poles sit exactly on the circle. The output strip shows the ring that never dies. Bring that radius in.` };
+        const i = onCircle[0], r = st.secs[i].r, ch = cz.cas.chips[i], head = `Section ${i + 1}: at radius ${fmt(r, 3)}, r² = ${fmt(r * r, 4)} rounds to 64/64 = 1 at step 1/64, so its poles sit exactly on the circle.`;
+        if (ch.a[1] === ch.b[1]) return { ok: false, msg: `${head} The chip rounds its zeros to the very same spot, so pole and zero cancel: the strip stays flat, but this notch is gone and its whine passes. On a real chip, one speck of rounding noise in the loop would ring there forever. Bring that radius in.` };
+        return { ok: false, msg: `${head} Its zeros land just beside them, so nothing cancels: the output strip shows the ring that never dies. Bring that radius in.` };
       }
       const gW = whines.map(f => gainOf(cz.cas.B, cz.cas.A, f));
       const zeroTone = i => toneOf(quad(cz.cas.chips[i].b[1], 1)[0]);
@@ -355,7 +358,9 @@
         }
         const j = free.reduce((b, i) => (Math.abs(zeroTone(i) - f) < Math.abs(zeroTone(b) - f) ? i : b), free[0]), off = zeroTone(j) - f, dir = off < 0 ? 'low' : 'high';
         const by = Math.abs(off) < 15 ? `a few hertz too ${dir}` : Math.abs(off) < 60 ? `tens of hertz too ${dir}` : `far too ${dir}`;
-        return { ok: false, msg: `The ${name} whine gets through at ${pct(gW[w])}: no section sits on it. The nearest free one, section ${j + 1}, puts its zeros at ${hz(zeroTone(j))} Hz, ${by}. Zoom in on that peak of the chart and read it again.` };
+        const typed = st.secs[j].f, landed = Math.round(zeroTone(j));
+        const where = typed === landed ? `you typed ${hz(typed)} Hz, and the chip puts its zeros there` : `you typed ${hz(typed)} Hz, and the chip rounds that to ${hz(landed)} Hz`;
+        return { ok: false, msg: `The ${name} whine gets through at ${pct(gW[w])}: no section sits on it. The nearest free one is section ${j + 1}: ${where}, ${by}. Zoom in on that peak of the chart and read it again.` };
       }
       const v = gainOf(cz.cas.B, cz.cas.A, 1500);
       if (v < 0.95) {
@@ -363,7 +368,8 @@
         return { ok: false, msg: `Every whine is under 2%, but the voice at 1,500 Hz keeps only ${(Math.floor(v * 1000) / 10).toFixed(1)}%, and it needs more than 95%. Poles far inside the circle make wide notches that bite into the voice; section ${lo + 1} is at ${fmt(st.secs[lo].r, 3)}. Move the poles closer to the circle.` };
       }
       const rs = filled.map(i => fmt(Math.sqrt(cz.cas.chips[i].a[2]), 4));
-      return { ok: true, msg: `Fixed. Every chip pole is inside the circle (radii ${joinList([...new Set(rs)])}), the whine is at ${joinList(gW.map(pct))} at ${joinList(whines.map(hz))} Hz, and the voice at 1,500 Hz keeps ${pct(v)}. Play it: the hum is gone, and so is the whine.` };
+      const over = v > 1.005 ? ', a little over 100%: the volume factor sets 0 Hz to 100%, and poles this close to the circle lift the tones beside their notches a few percent' : '';
+      return { ok: true, msg: `Fixed. Every chip pole is inside the circle (radii ${joinList([...new Set(rs)])}), the whine is at ${joinList(gW.map(pct))} at ${joinList(whines.map(hz))} Hz, and the voice at 1,500 Hz keeps ${pct(v)}${over}. Play it: the hum is gone, and so is the whine.` };
     }
 
     function nowText() {
@@ -420,7 +426,7 @@
         host.querySelectorAll('[data-form]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.form === st.form)); b.disabled = b.dataset.form === 'cascade' && !st.unlocked; });
         $('sections').hidden = st.form !== 'cascade' || !st.unlocked;
         if (st.form === 'multi') {
-          const m = act2Multi(), outs = m.poles.filter(z => radius(z) >= 1 && z[1] >= 0), radii = [...new Set(outs.map(z => fmt(radius(z), 4)))];
+          const m = act2Multi(), outs = m.poles.filter(z => onRim(z) && z[1] >= 0), radii = [...new Set(outs.map(z => fmt(radius(z), 4)))];
           const pairs = outs.length === 1 ? 'one pole pair lands' : `${outs.length === 2 ? 'two' : outs.length === 3 ? 'three' : outs.length} pole pairs land`;
           $('result').textContent = `multiplied-out rule · biggest coefficient ${fmt(Math.max(...m.cm.L.A.map(Math.abs)), 4)} forces step 1/${m.cm.den} · largest chip pole ${fmt(m.rmax, 4)}`;
           $('why').textContent = outs.length ? `On the chip, ${pairs} on or outside the circle, at radius ${joinList(radii)}: one click grows until it pins at the limits, as the output strip shows. Play the call to hear the hum build. Then rebuild it as a cascade.` : 'All the chip poles are inside the circle.';
@@ -476,6 +482,7 @@
           s.bad = false; err.textContent = ''; s.f = v; s.text = hz(v); render();
         };
         t.addEventListener('change', () => { apply(); if (!s.bad) t.value = s.text; });
+        t.addEventListener('input', () => { const raw = t.value.replace(/[,\s]/g, ''); if (!raw || (/^\d+$/.test(raw) && Number(raw) >= 100 && Number(raw) <= 3900)) apply(); });
         t.addEventListener('keydown', e => {
           if (e.key === 'Enter') { apply(); if (!s.bad) t.value = s.text; }
           if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -492,12 +499,12 @@
     function buildAsks() {
       if (!act2) {
         K.ask($('ask'), {
-          question: 'Lesson 6’s notch has its poles at 0.9. Make the chip’s step coarser and coarser. At which step do the poles first land past the rim, so the notch goes unstable?',
-          options: [['64', 'At 1/64'], ['16', 'At 1/16'], ['4', 'At 1/4'], ['2', 'At 1/2'], ['never', 'At no step']], right: 'never',
-          hints: { 64: 'At 1/64, 0.81 × 64 = 51.84, stored as 52. What is 52/64, and its square root?', 16: 'At 1/16, 0.81 × 16 = 12.96, stored as 13. What is 13/16, and its square root?', 4: 'At 1/4, 0.81 × 4 = 3.24 rounds down to 3. Does a smaller number move the poles in or out?', 2: 'At 1/2, 0.81 × 2 = 1.62 rounds up to 2, so the chip stores 2/2 = 1. The poles sit at radius √1. Is that past the rim, or on it?' },
-          explain: 'Rounding 0.81 to a coarser step mostly lands it on 0.8125 or 0.75, both inside. Only at 1/2 does it round up to 1, and that puts the poles exactly on the rim, not past it. The step is yours: try every one.',
+          question: 'Lesson 6’s notch has its poles at 0.9. Make the chip’s step coarser and coarser. At which step do the poles first reach the rim, on it or past it?',
+          options: [['64', 'At 1/64'], ['16', 'At 1/16'], ['4', 'At 1/4'], ['2', 'At 1/2'], ['never', 'At no step']], right: '2',
+          hints: { 64: 'At 1/64, 0.81 × 64 = 51.84, stored as 52. What is 52/64, and its square root?', 16: 'At 1/16, 0.81 × 16 = 12.96, stored as 13. What is 13/16, and its square root?', 4: 'At 1/4, 0.81 × 4 = 3.24 rounds down to 3. Does a smaller number move the poles in or out?', never: 'Rounding can go up as well as down. For each step, which whole number of steps is nearest to 0.81, and where does that put the poles?' },
+          explain: 'Rounding 0.81 to a coarser step mostly lands it on 0.8125 or 0.75, both inside. Only at 1/2 does it round up to 1, and that puts the poles exactly on the rim, on top of the zeros. They never go past it. The step is yours: try every one.',
           reveal: 'Skip: show me', solved: st.revealed ? 'right' : null,
-          onSolved: () => { st.revealed = true; document.dispatchEvent(new CustomEvent('k:solved', { detail: 'act1' })); render(); }, focusAfter: () => $('step'),
+          onSolved: () => { st.revealed = true; host.querySelectorAll('[data-k="ask"] button.quiet').forEach(b => { b.disabled = true; }); document.dispatchEvent(new CustomEvent('k:solved', { detail: 'act1' })); render(); }, focusAfter: () => $('step'),
         });
         return;
       }
@@ -508,48 +515,52 @@
       K.ask(q, {
         question: 'Before you build: each section’s pole radius starts at 0.85, and you will slide it anywhere from 0.80 up to 1. What will its pole on the chip do?',
         options: [['smooth', 'Follow the slider smoothly'], ['jumps', 'Hop between a few fixed radii'], ['drag', 'Pull the other poles along with it']], right: 'jumps',
-        hints: { smooth: 'The chip stores the section’s r² as a whole number of 64ths. Between r = 0.80 and r = 1, how many whole numbers can r² × 64 be?', drag: 'Which numbers does one section’s radius change? Does any other section store them?' },
-        explain: 'The chip stores r² as a whole number of 64ths, so the pole can only sit at radii like √(61/64) = 0.9763, √(62/64) = 0.9843, √(63/64) = 0.9922 and √(64/64) = 1. Between those it stays put, then hops. Watch the circle and the chip line under each section while you slide.',
-        onSolved: () => { st.unlocked = true; st.form = 'cascade'; buildSections(); render(); }, focusAfter: () => host.querySelector('.sec input'),
+        hints: { smooth: 'The chip stores the section’s r² as a whole number of 64ths. What happens to that stored number when the slider moves only a little?', drag: 'Which numbers does one section’s radius change? Does any other section store them?' },
+        explain: 'The chip stores r² as a whole number of 64ths, so while the slider moves the chip pole stays put, then hops to the next radius the chip can store. When you build the cascade, watch the circle and the chip line under each section while you slide.',
+        onSolved: () => { st.unlocked = true; render(); }, focusAfter: () => host.querySelector('[data-form="cascade"]'),
       });
     }
 
     if (act2) {
-      ['step-control', 'jump', 'pin'].forEach(k => { $(k).hidden = true; });
+      ['step-control', 'jump', 'pin'].forEach(k => { $(k).remove(); });
       ['task', 'form', 'meter', 'spec'].forEach(k => { $(k).hidden = false; });
-      buildAsks();
     } else {
-      buildAsks();
+      ['task', 'spec', 'meter', 'form', 'ask2', 'sections', 'another'].forEach(k => { $(k).remove(); });
     }
+    buildAsks();
 
-    $('step').addEventListener('input', () => { st.stepIx = Number($('step').value); render(); });
-    host.querySelectorAll('[data-span]').forEach((btn, i) => btn.addEventListener('click', () => { spec.spanIx = i; renderSpec(); }));
-    $('centre').addEventListener('input', () => { spec.centre = Number($('centre').value); renderSpec(); });
-    $('spec-stage').addEventListener('click', e => {
-      if (!act2) return;
-      const v = specView(), r = $('spec-stage').getBoundingClientRect(), gx = 40, gw = r.width - 66;
-      const f = v.f0 + (e.clientX - r.left - gx) / gw * (v.f1 - v.f0);
-      if (f < v.f0 || f > v.f1) return;
-      spec.centre = Math.round(f / 5) * 5;
-      if (spec.spanIx < SPANS.length - 1) spec.spanIx++;
-      renderSpec();
-    });
-    $('pin').addEventListener('click', () => { const a = act1State(); st.pinned = { den: a.den, r: a.r, g: a.g, poles: a.chipPoles }; render(); });
+    if (!act2) {
+      $('step').addEventListener('input', () => { st.stepIx = Number($('step').value); render(); });
+      $('pin').addEventListener('click', () => { const a = act1State(); st.pinned = { den: a.den, r: a.r, g: a.g, poles: a.chipPoles }; render(); });
+    } else {
+      host.querySelectorAll('[data-span]').forEach((btn, i) => btn.addEventListener('click', () => { spec.spanIx = i; renderSpec(); }));
+      $('centre').addEventListener('input', () => { spec.centre = Number($('centre').value); renderSpec(); });
+      $('spec-stage').addEventListener('click', e => {
+        const v = specView(), r = $('spec-stage').getBoundingClientRect(), gx = 40, gw = r.width - 66;
+        const f = v.f0 + (e.clientX - r.left - gx) / gw * (v.f1 - v.f0);
+        if (f < v.f0 || f > v.f1) return;
+        spec.centre = Math.round(f / 5) * 5;
+        if (spec.spanIx < SPANS.length - 1) spec.spanIx++;
+        renderSpec();
+      });
+    }
     $('play').addEventListener('click', () => (audio.playing ? audio.stop() : audio.play(render8k)));
     $('filter').addEventListener('click', () => { st.filter = !st.filter; render(); });
     $('source').addEventListener('click', () => { st.source = st.source === 'call' ? 'clicks' : 'call'; render(); });
-    host.querySelectorAll('[data-form]').forEach(b => b.addEventListener('click', () => {
-      st.form = b.dataset.form;
-      if (st.form === 'cascade' && !host.querySelector('.sec')) buildSections();
-      render();
-    }));
-    $('another').addEventListener('click', () => {
-      audio.stop();
-      st.caseIx = (st.caseIx + 1) % CASES.length;
-      Object.assign(st, { form: 'multi', solved: false, secs: defaults() });
-      Object.assign(spec, { spanIx: 0, centre: 2000 });
-      buildSections(); render(); host.querySelector('[data-form="multi"]').focus();
-    });
+    if (act2) {
+      host.querySelectorAll('[data-form]').forEach(b => b.addEventListener('click', () => {
+        st.form = b.dataset.form;
+        if (st.form === 'cascade' && !host.querySelector('.sec')) buildSections();
+        render();
+      }));
+      $('another').addEventListener('click', () => {
+        audio.stop();
+        st.caseIx = (st.caseIx + 1) % CASES.length;
+        Object.assign(st, { form: 'multi', solved: false, secs: defaults() });
+        Object.assign(spec, { spanIx: 0, centre: 2000 });
+        buildSections(); render(); host.querySelector('[data-form="multi"]').focus();
+      });
+    }
     $('reset').addEventListener('click', () => {
       audio.stop();
       if (!act2) Object.assign(st, { stepIx: 0, pinned: null, filter: true, source: 'call' });
@@ -564,7 +575,7 @@
     question: 'The chip’s errors are about a hundredth each. The poles sit at 0.98, so a move of 0.02 outward is enough to cross the rim. How far will the errors move the poles?',
     options: [['003', 'About 0.03'], ['01', 'About 0.1'], ['03', 'About 0.3'], ['1', 'About 1']],
     right: '01',
-    hints: { '003': 'That is just enough to cross, three times the errors. But these six poles sit 4.5° apart, and errors in a crowded rule are amplified far more than that. The real move is bigger.', '03': 'That would throw a pole from 0.98 out to 1.28 or in to 0.68. The amplification is big, but not thirty times. The real move is smaller.', '1': 'A move of 1 would carry a pole from the rim to the middle of the circle. The real move is much smaller.' },
+    hints: { '003': 'That is just enough to cross, three times the errors. But on each half of the circle the three poles sit only 4.5° from their neighbors, and errors in a crowded rule are amplified far more than that. The real move is bigger.', '03': 'That would throw a pole from 0.98 out to 1.28 or in to 0.68. A straight-line estimate, coming up below, does say about 0.3, but the real move is smaller.', '1': 'A move of 1 would carry a pole from the rim to the middle of the circle. The real move is much smaller.' },
     explain: 'About ten times the errors: the poles move 0.10 to 0.14, and two pairs land at 1.0567, outside the circle. Here is the computer’s answer.',
     onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-drift' })),
   });
