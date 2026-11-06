@@ -12,15 +12,20 @@
 .key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
 .key .k-curve { width: 22px; border-top: 2px solid var(--ink); }
 .key .k-ideal { width: 22px; border-top: 2px dashed var(--ink-soft); }
-.key .k-pin { width: 22px; border-top: 2px dashed var(--input); }
+.key .k-pin { width: 22px; border-top: 3px dotted var(--input); }
 .key .k-ghost-mark { width: 22px; height: 6px; background: var(--accent); border-radius: 3px; }
+.key .k-ghost-ok { width: 22px; height: 8px; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 3px; background: transparent; }
+.key .k-dip { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--ink); box-sizing: border-box; }
+.key .k-limit { width: 22px; border-top: 2px dashed var(--ink-soft); }
 .key .k-peak { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 .key .k-zone { width: 16px; height: 12px; background: var(--input-soft); }
-.lab canvas.stage { height: 400px; }
+.lab canvas.stage { height: 470px; }
 .k-meter .bar { position: relative; }
-.k-meter .bar::after { content: ""; position: absolute; left: 10%; top: -2px; bottom: -2px; border-left: 2px solid var(--ink); }
+.k-meter .bar::after { content: ""; position: absolute; left: var(--limit, 10%); top: -2px; bottom: -2px; border-left: 2px solid var(--ink); }
 .k-meter.k-ok .fill { background: var(--input); }
 .k-meter.k-ok output { color: var(--input); }
+.k-meter.k-off .fill { background: var(--ink-soft); opacity: 0.45; }
+.k-meter.k-off output { color: var(--ink-soft); }
 .meters { display: grid; gap: 12px; }
 .meters .k-meter { grid-template-columns: 1fr auto; }
 .meters .k-meter > span:first-child { grid-column: 1 / -1; }
@@ -28,13 +33,18 @@
 .meters .k-meter output { grid-column: 2; grid-row: 2; }
 .meters .k-meter .scale { grid-column: 1; grid-row: 3; }
 .act2 { display: grid; }
+div.table { overflow-x: auto; background: linear-gradient(to right, var(--paper) 30%, transparent) left / 32px 100% no-repeat local, linear-gradient(to left, var(--paper) 30%, transparent) right / 32px 100% no-repeat local, linear-gradient(to left, color-mix(in srgb, var(--ink) 22%, transparent), transparent) right / 14px 100% no-repeat scroll, linear-gradient(to right, color-mix(in srgb, var(--ink) 22%, transparent), transparent) left / 14px 100% no-repeat scroll; }
+@media (max-width: 560px) {
+  .meters .k-meter { grid-template-columns: 1fr; }
+  .meters .k-meter output { grid-column: 1; grid-row: 4; }
+}
 </style>
 
 <div class="wrap">
   <header>
     <p class="topic">Discrete-Time Signal Processing · lesson 10 · chapter 7</p>
     <h1>The Ghost in the Sweep</h1>
-    <p class="question">A sweep from 4,000 to 8,000 Hz should come out of lesson 5’s filter as silence. Instead a ghost glides down through the voice band, swelling and fading. How does a filter that only multiplies and adds let it through, and even make some tones louder?</p>
+    <p class="question">A sweep from 4,000 to 8,000 Hz should come out of lesson 5’s filter as silence. Instead a ghost glides down into the range where voices live, swelling and fading. How does a filter that only multiplies and adds let it through, and even make some tones louder?</p>
   </header>
 
 <!--BODY-->
@@ -62,8 +72,11 @@
     <span><i class="k-curve"></i>gain at each input tone</span>
     <span data-k="key-step"><i class="k-ideal"></i>the ideal step</span>
     <span data-k="key-pin" hidden><i class="k-pin"></i>pinned</span>
-    <span><i class="k-ghost-mark"></i>ghost in the band, over 1%</span>
-    <span data-k="key-db" hidden><i class="k-ideal"></i>in dB: the −40 dB line, 1%</span>
+    <span data-k="key-ghost-item"><i class="k-ghost-mark"></i><span data-k="key-ghost">the ghost, thicker where louder</span></span>
+    <span data-k="key-ok" hidden><i class="k-ghost-ok"></i><span data-k="key-ok-text">ghost within this line’s limit</span></span>
+    <span data-k="key-dip"><i class="k-dip"></i>the dip past the cutoff, on the strip</span>
+    <span data-k="key-worst" hidden><i class="k-peak"></i>where the band strays most, or the ghost leaks most, over the limit</span>
+    <span data-k="key-db" hidden><i class="k-limit"></i><span data-k="key-db-text">in dB: the −40 dB line, 1%</span></span>
   </div>
   <div class="meters" data-k="meters" hidden>
     <div class="k-meter" data-k="m-band">

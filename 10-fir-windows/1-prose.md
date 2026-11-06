@@ -16,11 +16,11 @@ To answer them, we'll rebuild lesson 5's filter from scratch.
 
 In lesson 3, a tone is a dot on a wheel, turning 360° × tone ÷ 8,000 per sample. Lesson 6 marked every tone on that wheel at once and called it the unit circle. On the wideband side only the count changes. There are 16,000 samples per second, so the dot turns half as far between two samples: 360° × tone ÷ 16,000. So 4,000 Hz is a quarter turn, 90°, at the top. 8,000 Hz, the wideband limit, is a flip, 180°, at the far left.
 
-The picture below is that wheel. The top-right quarter, 0° to 90°, is shaded "pass". The top-left quarter, 90° to 180°, is shaded "remove". The bottom half, which holds the mirror arrows, is greyed out.
+The picture below is that wheel. The top-right quarter, 0° to 90°, is shaded "pass". The top-left quarter, 90° to 180°, is shaded "remove". The bottom half is greyed out. Remember lesson 6's mirror arrow: a real tone is two half-size arrows turning opposite ways, one in the top half and its mirror in the bottom half. The bottom half holds only those mirrors, so it adds nothing new. On an inner dotted ring, a 4,000 Hz tone steps around sample by sample; the small numbers there count samples, with n = 0 for the first sample, n = 1 for the next, and so on.
 
 [[diagram:wheel16k]]
 
-The second picture is lesson 3's frequency response, drawn as a curve. Tones run along the bottom from 0 Hz to 8,000 Hz, and the height is the gain, how much of each tone gets out. A gain of 1 means the tone passes whole, 0 means it's removed. The filter we want has a curve shaped like a step: flat at 1 up to 4,000 Hz, a sheer cliff down to 0, then flat at 0. Lesson 4 called the tone where a filter switches from keeping to removing its **cutoff**. For this lesson's filters we measure it where the gain is half, halfway down the cliff. Ours is 4,000 Hz. The next picture is exactly that step, with the cliff labeled.
+Now lesson 3's frequency response, drawn as a curve. Tones run along the bottom from 0 Hz to 8,000 Hz, and the height is the gain, how much of each tone gets out. A gain of 1 means the tone passes whole, 0 means it's removed. The filter we want has a curve shaped like a step: flat at 1 up to 4,000 Hz, a sheer cliff down to 0, then flat at 0. Lesson 4 called the tone where a filter switches from keeping to removing its **cutoff**. For this lesson's filters we measure it where the gain is half, halfway down the cliff. Ours is 4,000 Hz. The next picture is exactly that step, with the cliff labeled.
 
 [[diagram:cutoff]]
 
@@ -28,13 +28,17 @@ The second picture is lesson 3's frequency response, drawn as a curve. Tones run
 
 Imagine a low-pass with no compromise at all: gain exactly 1 for every tone below the cutoff, exactly 0 for every tone above it. That's the **ideal low-pass**, and it's what lesson 5's note promised. What would it look like as a program?
 
-Without feedback, a filter is just a list of numbers. Multiply the current sample by the first, the one before by the second, and so on, then add it all up. Those fixed numbers are the filter's coefficients. Lesson 2 gives them a second meaning. Send in a single click, a 1 followed by zeros, and what comes out, sample by sample, is the coefficient list itself. So the coefficients are the impulse response. Such a filter is an **FIR filter**, for finite impulse response: it has no feedback, so its impulse response is its coefficient list, and then it stops. The picture below shows a click going in and the list coming out, one number per sample, then nothing.
+Without feedback, a filter is just a list of numbers. Multiply the current sample by the first, the one before by the second, and so on, then add it all up. Those fixed numbers are the filter's coefficients. We'll write them h[0], h[1], h[2] and so on: h[n] is the coefficient that multiplies the sample from n samples ago. Lesson 2 gives them a second meaning. Send in a single click, a 1 followed by zeros, and what comes out, sample by sample, is the coefficient list itself. So the coefficients are the impulse response. Such a filter is an **FIR filter**, for finite impulse response: it has no feedback, so its impulse response is its coefficient list, and then it stops. The picture below shows a click going in and the list coming out, one number per sample, then nothing.
 
 [[diagram:fir]]
 
-So what is the ideal low-pass's coefficient list? Here it is, for a cutoff of 4,000 Hz at 16,000 samples per second. We'll derive the formula later. It counts angles in lesson 6's radians, where a full turn is 2π, so π/2 is the quarter turn, 90°, that 4,000 Hz makes on this wheel.
+The picture counts the list from its first number, h[0] to h[4], with the middle one at h[2]. From here on we number the list from its middle instead: the middle coefficient is h[0], the ones after it h[1], h[2], and the ones before it get negative numbers, h[−1], h[−2]. Same list, just counted from the centre.
+
+So what is the ideal low-pass's coefficient list? Here it is, for a cutoff of 4,000 Hz at 16,000 samples per second. We'll derive the formula later. It counts angles in lesson 6's radians, where a full turn is 2π, so π/2 is the quarter turn, 90°, that 4,000 Hz makes on this wheel. And sin, the sine, is the height of a dot on the wheel after turning by that angle: 0 at no turn, 1 at a quarter turn, 0 again at a half turn.
 
 \[ h[n] = \frac{\sin(\pi n / 2)}{\pi n}, \qquad h[0] = \tfrac{1}{2} \]
+
+At n = 0 the formula would read 0 ÷ 0, so the middle gets its own value: one half, the average height of the step, since half the tones pass.
 
 The list runs both ways from the middle, so there's an h[−1] as well as an h[1], and they're equal. The table shows each value once for both signs.
 
@@ -72,7 +76,7 @@ How good is the cut filter? Start with 0 Hz, a constant: feed in 1, 1, 1, 1 and 
 
 [[diagram:truncation]]
 
-What about other tones? Here's the step that makes every tone easy. A tone is a spinning arrow. The coefficient h[m] works on the input from m samples ago, which is the arrow turned back by m steps. Its partner h[−m] works on the input from m samples ahead, the arrow turned forward by m steps. The two coefficients are equal, so the pair adds an arrow and its mirror. That's lesson 6's trick. Their up-and-down parts cancel, and what's left lies flat, 2 cos(m × turn) long.
+What about other tones? Here's the step that makes every tone easy. A tone is a spinning arrow that turns by the same angle every sample; call that angle the turn. On this wheel 4,000 Hz has a turn of 90°, and 2,000 Hz a turn of 45°. The coefficient h[m] works on the input from m samples ago, which is the arrow turned back by m steps. Its partner h[−m] works on the input from m samples ahead, the arrow turned forward by m steps. The two coefficients are equal, so the pair adds an arrow and its mirror. That's lesson 6's trick. Their up-and-down parts cancel, and what's left lies flat, 2 cos(m × turn) long. Here cos, the cosine, is sin's partner: the dot's left-right position on the wheel after that turn, 1 at no turn, 0 at a quarter turn, −1 at a half turn.
 
 So each pair contributes 2 h[m] cos(m × turn), a plain real number that can be positive or negative. The animation below shows the two arrows turning opposite ways, with their sum sliding along the flat line. It ends on one frozen frame, the arrows at 30° with their flat sum marked.
 
@@ -80,20 +84,20 @@ So each pair contributes 2 h[m] cos(m × turn), a plain real number that can be 
 
 The gain at any tone is h[0] plus all those pair contributions. Try the cutoff, 4,000 Hz, a turn of 90° per sample. Every pair has odd m, and cos(90° × m) is zero for odd m. Only the middle coefficient survives, so the gain is exactly 0.5 at any length. Every cut filter passes half of the cutoff tone, sitting halfway down the cliff. That's the tone she heard right at the start of the sweep.
 
-The trouble lives on either side of the cliff. In the lab you get the plain cut and one slider, its length, from 7 to 255 coefficients. It moves in steps of four, one new nonzero pair at a time: the even coefficients are zero, so a step of two would change nothing every other time. The curve shows the gain at every tone. Drag the slider and watch the bump just left of the cliff and the wiggles just right of it.
+The trouble lives on either side of the cliff. In the lab you get the plain cut and one slider, its length, from 7 to 255 coefficients. It moves in steps of four, one new nonzero pair at a time: the even coefficients are zero, so a step of two would change nothing every other time. The curve shows the gain at every tone. Drag the slider and watch the bump just left of the cliff and the wiggles just right of it. Below the curve, a strip draws the engineer's sweep as it comes out on your side, thicker where the ghost is louder. "Play the sweep" lets you hear it: the ten-second sweep runs through the filter and the downsampler, over and over until you stop it. "Filter on" switches the filter out, so you can hear what the downsampler alone does to the sweep.
 
 [[lab]]
 
-## Nine percent, forever
+## Above one and below zero
 
 You saw the curve bump above 1 just before the cliff, and dip below 0 just after. A gain below zero sounds impossible, but you just saw where it comes from: a sum of cosines can be negative. A gain of −0.09 means 9% of the tone gets out, flipped upside down. Here's the 31-coefficient filter near its cutoff, with where each input tone lands on your side:
 
-| tone in | 3,400 | 3,500 | 4,000 | 4,200 | 4,300 | 4,500 | 4,600 | 5,000 | 6,000 | 7,000 |
-|---|---|---|---|---|---|---|---|---|---|---|
-| gain | 1.073 | 1.090 | 0.500 | 0.133 | 0.006 | −0.090 | −0.073 | 0.050 | 0.028 | 0.021 |
-| heard at | 3,400 | 3,500 | 4,000 | 3,800 | 3,700 | 3,500 | 3,400 | 3,000 | 2,000 | 1,000 |
+| tone in | 3,500 | 4,000 | 4,500 | 5,000 | 7,000 |
+|---|---|---|---|---|---|
+| gain | 1.090 | 0.500 | −0.090 | 0.050 | 0.021 |
+| heard at | 3,500 | 4,000 | 3,500 | 3,000 | 1,000 |
 
-Every number in the bug is in that table. To see a negative gain built from its parts, take 4,500 Hz, a turn of 101.25° per sample. The picture below is a bar for each pair's contribution: 0.5 for the middle, then −0.124, −0.118, −0.106, and on down to −0.008. Every pair pulls down, and together they land on −0.090.
+Those are the bug's numbers. To see a negative gain built from its parts, take 4,500 Hz, a turn of 101.25° per sample. The picture below is a bar for each pair's contribution: 0.5 for the middle, then −0.124, −0.118, −0.106, and on down to −0.008. Every pair pulls down, and together they land on −0.090.
 
 [[diagram:pair-bars]]
 
@@ -101,24 +105,17 @@ Between the swells the gain crosses zero, near 4,306, 4,778 and 5,267 Hz, every 
 
 [[diagram:sweep-ghost]]
 
-Now the natural fix: use more coefficients. The 0 Hz table got better with every pair. Surely the bump does too? Here's the peak of the bump for longer cuts:
-
-| coefficients | 15 | 31 | 63 | 127 | 255 |
-|---|---|---|---|---|---|
-| highest gain below the cutoff | 1.092 | 1.090 | 1.090 | 1.090 | 1.090 |
-| at tone (Hz) | 3,000 | 3,500 | 3,750 | 3,875 | 3,938 |
-
-The bump never shrinks. It slides closer to the cutoff and gets narrower, but its height is stuck near 9%. The leak on the far side does the same, mirrored. This stubborn overshoot is the **Gibbs phenomenon**: a cut-short sum of wiggles overshoots a cliff by about 9% of its height, no matter how many wiggles you keep. Josiah Willard Gibbs described it in 1899, and Maxime Bôcher analysed it in 1906 and named it after Gibbs. The exact number is 8.95%. The next picture overlays the curves for 15, 63 and 255 coefficients, with a guide line at 1.09 that every peak touches.
+Now the natural fix, the one you tried in the lab: use more coefficients. The 0 Hz table got better with every pair, but the bump never shrinks. It slides closer to the cutoff and gets narrower, but its height is stuck near 9%. The leak on the far side does the same, mirrored. This stubborn overshoot is the **Gibbs phenomenon**: a cut-short sum of wiggles overshoots a cliff by about 9% of its height, no matter how many wiggles you keep. Josiah Willard Gibbs described it in 1899, and Maxime Bôcher analysed it in 1906 and named it after Gibbs. The exact number is 8.95%. The next picture overlays the curves for 15, 63 and 255 coefficients, with a guide line at 1.09 that every peak touches.
 
 [[diagram:gibbs]]
 
-People who design filters usually say decibels rather than percent. A gain in **decibels** (dB) is 20 × log10 of the gain. It turns factors of ten into steps of 20: 10% is −20 dB, 1% is −40 dB, 0.1% is −60 dB. The Gibbs leak, 9%, is about −21 dB. The picture below is that ladder, with the 9% leak marked at −21 dB and 1% at −40 dB.
+People who design filters usually say decibels rather than percent. A gain in **decibels** (dB) is 20 × log10 of the gain, where log10 of a number is the power of ten that makes it: log10 of 100 is 2, log10 of 0.01 is −2. It turns factors of ten into steps of 20: 10% is −20 dB, 1% is −40 dB, 0.1% is −60 dB. The Gibbs leak, 9%, is about −21 dB. The picture below is that ladder, with the 9% leak marked at −21 dB and 1% at −40 dB.
 
 [[diagram:decibels]]
 
 ## Where the coefficients come from
 
-Before explaining the 9%, let's earn the formula. This is where chapter 7 of Oppenheim and Schafer's *Discrete-Time Signal Processing* (1989), the book this course follows, begins. Four steps, no new tools.
+Before explaining the 9%, where does the formula come from? This is where chapter 7 of Oppenheim and Schafer's *Discrete-Time Signal Processing* (1989), the book this course follows, begins. The short version: the gain curve is a sum of cosine wiggles across the tones, one per coefficient pair, and each coefficient is the average of the gain times its own wiggle. The proof takes four steps, no new tools, and a pencil check; open it if you want it, or skip ahead.
 
 **Step one: the curve is a sum of wiggles.** The gain at a tone is h[0] plus 2 h[1] cos(turn) plus 2 h[2] cos(2 × turn), and so on. Each term is a wiggle across the tones. From 0 to 8,000 Hz the turn goes from 0° to 180°, so cos(turn) makes one half-swing, falling from 1 to −1. cos(2 × turn) makes two half-swings, down and back up. cos(15 × turn) makes fifteen. Each coefficient sets one wiggle's size. The picture below stacks the first three odd wiggles above their running sum, which already leans toward the step.
 
@@ -148,7 +145,7 @@ Cutting the list to 31 coefficients is the same as multiplying the ideal list, n
 
 [[diagram:window]]
 
-A window is a list of numbers, so it has a frequency response of its own. The rectangle's response, drawn in the still picture below, is a tall central hump with smaller side humps on each side. The first side hump on each side is negative, about 22% as tall as the main one, and they alternate after that, shrinking slowly. These side humps are called side lobes, and they come from the rectangle's sharp edges. Beside it is the Hamming window's response, which we'll meet in a moment: a wider hump, and side lobes too small to see.
+A window is a list of numbers, so it has a frequency response of its own. The rectangle's response, drawn in the still picture below, is a tall central hump with smaller side humps on each side. The first side hump on each side is negative, about 22% as tall as the main one, and they alternate after that, shrinking slowly. These side humps are called side lobes, and they come from the rectangle's sharp edges. Beside it is a window of the same length, 31, with soft edges instead: its weights fade smoothly from 1 in the middle to almost 0 at the ends, instead of stopping dead. A window that fades out like that is called a **taper**. This one is the Hamming window, and we'll build it in a moment. At the same length its response has a hump about twice as wide, and side lobes too small to see.
 
 [[diagram:rect-response]]
 
@@ -176,44 +173,50 @@ The picture below draws this job on the frequency axis. A shaded "pass" strip ru
 
 [[diagram:spec]]
 
-The plain cut can meet this job, but only by brute force. Trying every length, the shortest rectangle that works has 271 coefficients. It passes the voice band within 0.93%, and its slope runs from 3,408 to 4,592 Hz. Your chip can afford 63: the bridge has since moved to a faster chip than lesson 5's, which could afford only 31.
+The plain cut can meet this job, but only by brute force. Trying every length, the shortest rectangle that works has 271 coefficients. It passes the voice band within 0.93%, and its slope runs from 3,408 to 4,592 Hz. Your chip can afford 47: the bridge has since moved to a faster chip than lesson 5's, which could afford only 31.
 
 ## A window with soft edges
 
-Fade the list out instead of chopping it. One popular taper is the Hamming window. For 45 coefficients, n from −22 to 22:
+Fade the list out instead of chopping it: use a taper. The popular one, the one in the last two pictures, is the Hamming window. For 31 coefficients, n from −15 to 15:
 
-\[ w[n] = 0.54 + 0.46\cos\!\left(\frac{2\pi n}{44}\right) \]
+\[ w[n] = 0.54 + 0.46\cos\!\left(\frac{2\pi n}{30}\right) \]
 
-The 44 makes the cosine reach a half turn exactly at the ends, n = ±22. The 0.54 and 0.46 are Richard Hamming's tuning: 1 in the middle, 0.08 at the ends, and the smallest first side lobe. The picture below draws this bell shape over the 45 ideal stems.
+The 30 makes the cosine reach a half turn exactly at the ends, n = ±15. The 0.54 and 0.46 are Richard Hamming's tuning: 1 in the middle, 0.08 at the ends, and the smallest first side lobe. The picture below draws this bell shape over the 31 ideal stems.
 
 [[diagram:taper]]
 
 Let's build the new filter with a pencil, multiplying each ideal coefficient by its weight:
 
-| n | 0 | ±1 | ±3 | ±5 | ±7 | ±9 | ±11 | ±13 | ±15 | ±17 | ±19 | ±21 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| ideal h[n] | 0.5000 | 0.3183 | −0.1061 | 0.0637 | −0.0455 | 0.0354 | −0.0289 | 0.0245 | −0.0212 | 0.0187 | −0.0168 | 0.0152 |
-| window w[n] | 1.000 | 0.995 | 0.958 | 0.888 | 0.789 | 0.670 | 0.540 | 0.410 | 0.291 | 0.192 | 0.122 | 0.085 |
-| new coefficient | 0.5000 | 0.3168 | −0.1017 | 0.0565 | −0.0359 | 0.0237 | −0.0156 | 0.0100 | −0.0062 | 0.0036 | −0.0020 | 0.0013 |
+| n | ideal h[n] | window w[n] | new coefficient |
+|---|---|---|---|
+| 0 | 0.5000 | 1.000 | 0.5000 |
+| ±1 | 0.3183 | 0.990 | 0.3151 |
+| ±3 | −0.1061 | 0.912 | −0.0968 |
+| ±5 | 0.0637 | 0.770 | 0.0490 |
+| ±7 | −0.0455 | 0.588 | −0.0267 |
+| ±9 | 0.0354 | 0.398 | 0.0141 |
+| ±11 | −0.0289 | 0.232 | −0.0067 |
+| ±13 | 0.0245 | 0.120 | 0.0029 |
+| ±15 | −0.0212 | 0.080 | −0.0017 |
 
-The taper barely touches the big middle coefficients and squashes the small outer ones, whose abrupt disappearance caused the trouble. To be fair, compare it with a plain cut of the same length, 45:
+The taper barely touches the big middle coefficients and squashes the small outer ones, whose abrupt disappearance caused the trouble. To be fair, compare a Hamming filter with a plain cut of the same length:
 
 | tone in | 1,000 | 3,000 | 3,400 | 3,500 | 4,000 | 4,300 | 4,500 | 4,600 | 4,700 | 5,000 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | plain cut, 45 | 0.989 | 1.023 | 0.982 | 1.039 | 0.500 | −0.073 | −0.039 | 0.018 | 0.048 | −0.023 |
 | Hamming, 45 | 0.999 | 1.001 | 0.998 | 0.981 | 0.500 | 0.125 | 0.019 | 0.002 | −0.002 | −0.001 |
 
-The plain cut still wobbles by up to 5% in the voice band and leaks 5% above 4,600 Hz. The Hamming filter keeps the voice band within 0.24% and leaks at most 0.24% above 4,600 Hz, which is −52 dB. Past 4,700 Hz its ripple stays below −54 dB, the window's real ripple level; the −52 dB at 4,600 Hz is just the end of the slope.
+The plain cut still wobbles by up to 5% in the voice band and leaks 5% above 4,600 Hz. The Hamming filter keeps the voice band within 0.24% and leaks at most 0.24% above 4,600 Hz, which is −52 dB. Past 4,700 Hz its ripple stays below −54 dB; the −52 dB at 4,600 Hz is just the end of the slope. That ripple floor shifts a little with length: at 31 coefficients it sits near −51 dB.
 
-But look at 4,300 Hz. The Hamming filter passes 12% there, where the plain cut passed 7% (flipped). The tapered window's hump is wider, so the cliff becomes a slope.
+But look at one tone just past the cutoff, 4,300 Hz. At 31 coefficients the Hamming filter passes 22% there, where the plain cut passes almost nothing, 0.6%. The tapered window's hump is wider, so the cliff becomes a slope.
 
 Why 45 and not fewer? A Hamming window of 31 is too short for this job: it passes only 94.7% at 3,400 Hz and leaks 5.3% at 4,600 Hz. At 41 it scrapes through with 0.93%, too close for comfort. At 45 there's room to spare.
 
-That slope deserves a name. The **transition band** is the stretch of tones between the last tone a filter passes within 1% and the first tone it removes to below 1%. For the Hamming filter with 45 coefficients, it runs from 3,458 Hz to 4,542 Hz, about 1,100 Hz wide. Double the length to 89 and it narrows to 3,729 through 4,271 Hz, about 540 Hz. The plain cut of 45 has no transition band by this definition, because its ripples never settle within 1%. The picture below shades the Hamming band, with thin 1% strips around 1 and around 0.
+That slope deserves a name. The **transition band** is the stretch of tones between the last tone a filter passes within 1% and the first tone it removes to below 1%. Take the Hamming filter of 31 coefficients, the one in the earlier pictures: its transition band runs from 3,191 Hz to 4,809 Hz, about 1,600 Hz wide. Make it nearly three times as long, 89, and it narrows to 3,729 through 4,271 Hz, about 540 Hz. The plain cut of 31 has no transition band by this definition, because its ripples never settle within 1%. The picture below shades the Hamming band, with thin 1% strips around 1 and around 0.
 
 [[diagram:transition-band]]
 
-So here's the trade every window designer makes: the window's shape sets the ripple height, and its length sets the transition band's width. The next picture puts the rectangle and Hamming weights on top and their two responses in dB below. Their ripple levels are marked: −21 dB for the rectangle, −54 dB for Hamming.
+So here's the trade every window designer makes: the window's shape sets the ripple height, and its length sets the transition band's width. The next picture puts the rectangle and Hamming weights, both 31 long, on top and their two responses in dB below. Their ripple levels are marked: −21 dB for the rectangle, −51 dB for Hamming.
 
 [[diagram:trade]]
 
@@ -221,13 +224,13 @@ The sweep's first moment still leaks, fading below 1% by 4,542 Hz, but it all la
 
 ## Your turn
 
-The lab gives you a chip that can afford at most 63 coefficients. You choose a window and a length, and the engineer's sweep plays through your filter and out the downsampler. A meter shows two bars: how far any voice-band tone strays from whole, and the loudest leak from any tone above 4,600 Hz. The two bars always show the same number: with every even coefficient but the middle one at zero, this kind of filter treats both sides of the cutoff the same way, so each tone that strays in the band has a mirror tone above the cutoff that leaks by exactly as much. Your job:
+The lab gives you a chip that can afford at most 47 coefficients. You choose a window and a length, and the engineer's sweep plays through your filter and out the downsampler. A meter shows two bars: how far any voice-band tone strays from whole, and the loudest leak from any tone above 4,600 Hz. The two bars always show the same number: with every even coefficient but the middle one at zero, this kind of filter treats both sides of the cutoff the same way, so each tone that strays in the band has a mirror tone above the cutoff that leaks by exactly as much. Your job:
 
 1. Keep the voice-band bar within 1%.
 2. Keep the ghost bar below 1%, that is, below −40 dB.
-3. Use no more than 63 coefficients.
+3. Use no more than 47 coefficients.
 
-You're done when both bars show a tick and the sweep leaves no ghost anywhere in the voice band. The lab starts on a second wideband bridge, whose phones carry a little more of the voice than yours and whose job it prints for you; then it's your own line's turn.
+You're done when both bars show a tick and the sweep leaves no ghost anywhere in the voice band. But first the lab hands you a different line, the loading-dock intercom, which prints its own job: its limits and its chip are not yours, so think before you reach for a window. Then it's your own line's turn. The length moves in steps of two here, because a Hamming window changes at every odd length; a plain cut only changes every four, and the readout tells you when two lengths give the same filter.
 
 [[lab-act2]]
 

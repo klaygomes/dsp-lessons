@@ -18,9 +18,13 @@ const CSS = `
 .k-fig .w-m-accent { fill: var(--accent); }
 .k-fig .w-ghost { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.4; fill: none; }
 .k-fig .w-ghost-band { fill: var(--accent); }
+.k-fig .w-ghost-path { stroke: var(--ink); stroke-width: 1.3; stroke-dasharray: 2 5; stroke-linecap: round; fill: none; }
 .k-fig .w-sum { stroke: var(--accent); stroke-width: 3.5; }
 .k-fig .w-hump { fill: var(--paper-2); stroke: var(--ink-soft); stroke-width: 1.4; }
 .k-fig .w-left-out { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+.k-fig .w-lo-bg { fill: var(--accent-soft); }
+.k-fig .w-lo-line { stroke: var(--ink); stroke-width: 1.4; }
+.k-fig .w-ring-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2.2; }
 .k-fig .w-cell { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
 .k-fig .w-cell-on { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
 .k-fig .w-bar-accent { fill: var(--accent); }
@@ -77,8 +81,8 @@ export default k => {
     const at = (d, r = R) => [cx + r * Math.cos(d * PI / 180), cy - r * Math.sin(d * PI / 180)];
     const wedge = (a0, a1, cls, fill) => { const [x0, y0] = at(a0), [x1, y1] = at(a1); return path(`M${cx} ${cy}L${r2(x0)} ${r2(y0)}A${R} ${R} 0 0 0 ${r2(x1)} ${r2(y1)}Z`, { cls, fill }); };
     const tones = [[0, '0 Hz'], [45, '2,000'], [90, '4,000 Hz'], [135, '6,000'], [180, '8,000 Hz']];
-    const stops = [[0, 'n = 0, 4'], [90, '1'], [180, '2'], [270, '3']];
-    const [dx, dy] = at(0);
+    const stops = [[0, 'n = 0, 4'], [90, '1'], [180, '2'], [270, '3']], rs = R * 0.7;
+    const [dx, dy] = at(0, R * 0.7);
     const textX = ph ? 24 : 400;
     const lines = ph
       ? [['k-name', '360° × tone ÷ 16,000 per sample'], ['k-label', '4,000 Hz: 90° per sample'], ['k-label', '8,000 Hz, the wideband limit: 180°']]
@@ -88,17 +92,17 @@ export default k => {
       step(1, 'the wheel at 16,000 samples per second: pass quarter, remove quarter, mirror half',
         wedge(0, 90, 'w-pass'), wedge(90, 180, '', `url(#${L.slug}-stripe)`),
         path(`M${cx - R} ${cy}A${R} ${R} 0 0 0 ${cx + R} ${cy}Z`, { cls: 'w-mirror' }),
-        line(cx - R, cy, cx + R, cy, { cls: 'k-axis' }), circle(cx, cy, R, { cls: 'k-wheel', fill: 'none' }),
+        line(cx - R, cy, cx + R, cy, { cls: 'k-axis' }), circle(cx, cy, R, { cls: 'k-wheel', fill: 'none' }), circle(cx, cy, R * 0.7, { cls: 'w-ghost-path' }),
         masked(...at(45, R * 0.55), 'pass', { cls: 'k-name', size: 15 }),
         masked(...at(135, R * 0.55), 'remove', { cls: 'k-name', size: 15 }),
         text(cx, cy + R * 0.45, 'mirror arrows', { cls: 'k-label' }),
         tones.map(([d, s]) => { const [x, y] = at(d), [lx, ly] = at(d, R + 16); return g({}, circle(x, y, 4.5, { cls: 'k-stem-dot' }), text(d === 0 ? lx - 4 : d === 180 ? lx + 4 : lx, ly + (d === 90 ? -2 : 4), s, { anchor: d === 0 ? 'start' : d === 180 ? 'end' : d === 45 ? 'start' : d === 135 ? 'end' : 'middle', cls: 'k-num' })); }),
-        stops.map(([d, s]) => { const [x, y] = at(d), [lx, ly] = at(d, R - 14); return g({}, circle(x, y, 3, { cls: 'k-stop' }), text(lx, d === 0 || d === 180 ? ly - 10 : d === 90 ? ly + 10 : ly - 2, s, { cls: 'k-tick', anchor: d === 0 ? 'end' : d === 180 ? 'start' : 'middle' })); }),
+        stops.map(([d, s]) => { const [x, y] = at(d, rs), [lx, ly] = at(d, rs - 14); return g({}, circle(x, y, 3, { cls: 'k-stop' }), text(lx, d === 0 || d === 180 ? ly - 10 : d === 90 ? ly + 10 : ly - 2, s, { cls: 'k-tick', anchor: d === 0 ? 'end' : d === 180 ? 'start' : 'middle' })); }),
         lines.map(([cls, s], i) => text(textX, (ph ? 330 : 120) + i * 26, s, { anchor: 'start', cls }))),
       step(2, 'a 4,000 Hz dot steps a quarter turn, 90°, per sample, for four samples',
         g({ anim: { k: 'turn', r0: '360deg', steps: 5, d: 0.4, len: 4 }, style: `transform-origin:${cx}px ${cy}px` },
           line(cx, cy, dx, dy, { cls: 'k-spoke-line' }), circle(dx, dy, 7, { cls: 'k-dot' })),
-        text(textX, ph ? 330 + 3 * 26 : 120 + 4 * 26, ph ? 'big dot: 4,000 Hz, samples 0 to 4' : 'big dot: the 4,000 Hz tone, samples 0 to 4', { anchor: 'start', cls: 'k-label' })),
+        text(textX, ph ? 330 + 3 * 26 : 120 + 4 * 26, ph ? 'dotted ring: 4,000 Hz at samples n = 0 to 4' : 'dotted ring: 4,000 Hz, samples n = 0 to 4', { anchor: 'start', cls: 'k-label' })),
     ];
   };
 
@@ -153,8 +157,8 @@ export default k => {
       axes(P, { yTicks: [[0.5, '0.5'], [0, '0']], xTicks: [[-15, `${M}15`], [-5, `${M}5`], [0, 'n = 0'], [5, '5'], [15, '15']] }),
       stems(P, range(-15, 15).map(n => [n, hI(n)]), { dot: 3.5 }),
       Object.entries(lab).map(([n, s]) => text(P.X(Number(n)) + (Number(n) === -3 ? -8 : 0), hI(Number(n)) >= 0 ? P.Y(hI(Number(n))) - 10 : P.Y(hI(Number(n))) + 4, s, { cls: 'k-num', anchor: Number(n) === 1 ? 'start' : Number(n) === -3 ? 'end' : 'middle' })),
-      arrow(L.slug, [[P.X(-12), P.y0 + 62], [P.x0, P.y0 + 62]]), arrow(L.slug, [[P.X(12), P.y0 + 62], [P.x1, P.y0 + 62]]),
-      text(P.x0, P.y0 + 50, 'continues forever', { anchor: 'start', cls: 'k-tick' }), text(P.x1, P.y0 + 50, 'continues forever', { anchor: 'end', cls: 'k-tick' }),
+      arrow(L.slug, [[P.X(-12), P.y0 + (ph ? 102 : 62)], [P.x0, P.y0 + (ph ? 102 : 62)]]), arrow(L.slug, [[P.X(12), P.y0 + (ph ? 102 : 62)], [P.x1, P.y0 + (ph ? 102 : 62)]]),
+      text(P.x0, P.y0 + (ph ? 90 : 50), 'continues forever', { anchor: 'start', cls: 'k-tick' }), text(P.x1, P.y0 + (ph ? 90 : 50), 'continues forever', { anchor: 'end', cls: 'k-tick' }),
       ph ? arrow(L.slug, [[180, 290], [180, 318]]) : arrow(L.slug, [[P.x1 + 14, 160], [S.x0 - 10, 160]]),
       text(S.x0, S.y0 - 14, 'its gain: the step', { anchor: 'start', cls: 'k-name' }),
       axes(S, { zero: false, yTicks: [[0, '0'], [1, '1']], xTicks: [[0, '0'], [4000, '4,000'], [8000, '8,000 Hz']] }),
@@ -281,7 +285,7 @@ export default k => {
     const T = plot({ x: x0, y: 50, w, h: ph ? 110 : 120, xs: [0, 10], ys: [4000, 8000] });
     const B = plot({ x: x0, y: ph ? 236 : 240, w, h: ph ? 200 : 140, xs: [0, 10], ys: [0, 4000] });
     const fin = t => 4000 + 400 * t;
-    const half = t => 11 * Math.pow(Math.abs(H31(fin(t))), 0.6);
+    const half = t => Math.max(0, Math.min(16, 90 * Math.abs(H31(fin(t)))) - 0.6);
     const n = 600, ts = range(0, n).map(i => 10 * i / n);
     const up = ts.map(t => [B.X(t), B.Y(8000 - fin(t)) - half(t)]), dn = ts.map(t => [B.X(t), B.Y(8000 - fin(t)) + half(t)]).reverse();
     const d = [...up, ...dn].map(([x, y], i) => `${i ? 'L' : 'M'}${r2(x)} ${r2(y)}`).join('') + 'Z';
@@ -292,14 +296,14 @@ export default k => {
       path(`M${T.X(0)} ${T.Y(4000)}L${T.X(10)} ${T.Y(8000)}`, { cls: 'w-main' }),
       text(B.x0, B.y0 - 20, ph ? 'the ghost (Hz), 8,000 samples/s' : 'the ghost on your side, 8,000 samples per second: thicker is louder', { anchor: 'start', cls: 'k-name' }),
       rect(B.x0, B.Y(3400), B.w, B.Y(0) - B.Y(3400), { cls: 'w-mirror' }),
-      text(B.x0 + 6, B.y1 - 8, 'voice band', { anchor: 'start', cls: 'k-label' }),
+      text(B.x0 + 6, B.y1 - 8, 'where voices live', { anchor: 'start', cls: 'k-label' }),
       axes(B, { zero: false, yTicks: [[0, ph ? '0' : '0 Hz'], [3400, '3,400'], [4000, '4,000']], xTicks: tTicks }),
-      line(B.X(0), B.Y(4000), B.X(10), B.Y(0), { cls: 'k-guide' }),
+      line(B.X(0), B.Y(4000), B.X(10), B.Y(0), { cls: 'w-ghost-path' }),
       path(d, { cls: 'w-ghost-band' }),
-      [0, 1.25, 2.5, 7.5].map(t => circle(B.X(t), B.Y(8000 - fin(t)), 3.5, { cls: 'k-dot' })),
+      [0, 1.25, 2.5, 7.5].map(t => circle(B.X(t), B.Y(8000 - fin(t)), 5, { cls: 'w-ring-dot' })),
       ['ghost loudness, dots:', '50% at the start,', 'gone by 0.75 s;', '9% at 3,500 Hz,', '5% at 3,000 Hz,', '2% at 1,000 Hz'].map((s, i) => text(B.x1 - 4, B.y0 + 16 + i * 16, s, { anchor: 'end', cls: i ? 'k-num-accent' : 'k-tick', style: ph ? 'font-size:10.5px' : undefined })),
       text(B.x0, B.y1 + 44, ph ? 'gaps: the gain crosses 0, every 500 Hz or so' : 'gaps: the gain crosses 0 (inputs 4,306, 4,778, 5,267 Hz, and on every 500 Hz or so)', { anchor: 'start', cls: 'k-tick' }),
-      ph ? text(B.x0, B.y1 + 62, 'dashed: where the ghost would sit', { anchor: 'start', cls: 'k-tick' }) : text(B.x0, B.y1 + 62, 'dashed: where the ghost would sit if it were loud all the way', { anchor: 'start', cls: 'k-tick' }),
+      ph ? text(B.x0, B.y1 + 62, 'dotted: where the ghost would sit', { anchor: 'start', cls: 'k-tick' }) : text(B.x0, B.y1 + 62, 'dotted: where the ghost would sit if it were loud all the way', { anchor: 'start', cls: 'k-tick' }),
     ];
   };
 
@@ -377,7 +381,7 @@ export default k => {
         line(P.x0, P.Y(avgVal), P.x1, P.Y(avgVal), { cls: 'k-guide' }),
         step(d + 1, `the running average of ${title} settles on ${avgLabel}`,
           path(dpath, { cls: 'w-main', style: 'stroke:var(--accent);stroke-width:3', pathLength: 1, anim: { k: 'draw', d: 0.3 + d * 2.6, len: 2.2 } })),
-        text(P.x0, P.y1 + 40, `coral: running average → ${avgLabel}`, { anchor: 'start', cls: 'k-num-accent' }));
+        text(P.x0, P.y1 + 40, `thick line: running average → ${avgLabel}`, { anchor: 'start', cls: 'k-num-accent' }));
     };
     return [
       panel(ph ? 50 : 50, 54, f => Math.cos(tf(f)) * Math.cos(3 * tf(f)), 'cos(turn) × cos(3 × turn)', '0', 0, 0),
@@ -443,8 +447,8 @@ export default k => {
         circle(P.X(738), P.Y(fr(738)), 4.5, { cls: 'k-dot' }), circle(P.X(-738), P.Y(fr(-738)), 4.5, { cls: 'k-dot' }),
         text(P.X(738) + 8, P.Y(fr(738)) + 20, `${M}22%`, { anchor: 'start', cls: 'k-num-accent' }),
         text(P.X(1250), P.Y(0.24), 'side lobes', { cls: 'k-label' }))),
-      panel(ph ? 50 : 420, ph ? 316 : 50, 'hamming', 45, 'Hamming, 45 long, same scale', P => g({},
-        text(P.X(0) + 10, P.Y(1) + 4, 'wider hump', { anchor: 'start', cls: 'k-label' }),
+      panel(ph ? 50 : 420, ph ? 316 : 50, 'hamming', 31, 'Hamming, also 31 long, same scale', P => g({},
+        text(P.X(700), P.Y(1) + 4, 'wider hump', { anchor: 'start', cls: 'k-label' }),
         text(P.X(1300), P.Y(0.36), 'side lobes:', { cls: 'k-label' }), text(P.X(1300), P.Y(0.36) + 16, 'under 1%', { cls: 'k-label' }))),
       text(ph ? 20 : 60, L.H - 14, ph ? 'across: distance from the hump’s center' : 'across: distance from the hump’s center, in Hz; up: the hump’s height, 1 at its center', { anchor: 'start', cls: 'k-tick' }),
     ];
@@ -468,17 +472,18 @@ export default k => {
         stepPath(P),
         step(d + 1, `${title}: the hump slides to the cliff and draws the curve`,
           g({ 'clip-path': `url(#${clip})` }, `<clipPath id="${clip}"><rect x="${P.x0}" y="${P.y0 - 10}" width="${P.w}" height="${P.h + 20}"/></clipPath>`, g({ anim: { k: 'move', dx, d: 0.3 + d * 3.2, len: 2.4 }, style: lin }, path(humpD, { cls: 'w-hump' }))),
-          g({}, path(seg(xs[0], start), { cls: 'w-main' }), path(seg(start, center), { cls: 'w-main', pathLength: 1, style: lin, anim: { k: 'draw', d: 0.3 + d * 3.2, len: 2.4 } }), g({ anim: { k: 'in', d: 2.7 + d * 3.2, len: 0.5 } }, path(seg(center, xs[1]), { cls: 'w-main' }), path(outD, { cls: 'w-left-out' }), circle(P.X(center), P.Y(H(center)), 5, { cls: 'k-dot' }),
+          g({}, path(seg(xs[0], start), { cls: 'w-main' }), path(seg(start, center), { cls: 'w-main', pathLength: 1, style: lin, anim: { k: 'draw', d: 0.3 + d * 3.2, len: 2.4 } }), g({ anim: { k: 'in', d: 2.7 + d * 3.2, len: 0.5 } }, path(seg(center, xs[1]), { cls: 'w-main' }), path(outD, { cls: 'w-left-out', style: `fill:url(#${L.slug}-leftout)` }), circle(P.X(center), P.Y(H(center)), 5, { cls: 'k-dot' }),
             text(P.X(center) - 8, P.Y(H(center)) - 10, fmt(H(center), 2), { anchor: 'end', cls: 'k-num-accent' }),
             text(P.X(4000) + 8, P.Y(-0.33), leftLabel, { anchor: 'start', cls: 'k-num-accent' })))));
     };
     return [
+      `<defs><pattern id="${L.slug}-leftout" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="w-lo-bg"/><line x1="0" y1="0" x2="0" y2="6" class="w-lo-line"/></pattern></defs>`,
       panel(56, 'rect', 31, 3484, 'rectangle, 31 long', ph ? 'left out: −9%' : 'left out: −9% of the area', 0),
-      panel(ph ? 290 : 262, 'hamming', 45, 3251, 'Hamming, 45 long', 'left out: under 1%', 1),
+      panel(ph ? 290 : 262, 'hamming', 31, 2968, 'Hamming, 31 long', 'left out: under 1%', 1),
       ph ? g({}, key(20, 512, [['w-ref', null, null, 'dashed: the ideal step'], ['w-main', null, null, 'the curve the slide draws']], { cols: 1, dy: 22 }), text(20, 566, 'grey: the hump, parked at the cliff', { anchor: 'start', cls: 'k-label' }))
         : g({}, text(556, 100, 'grey: the window’s', { anchor: 'start', cls: 'k-label' }), text(556, 118, 'hump, parked at', { anchor: 'start', cls: 'k-label' }), text(556, 136, 'the cliff', { anchor: 'start', cls: 'k-label' }),
           key(556, 176, [['w-main', null, null, 'the curve'], ['w-ref', null, null, 'ideal step']], { cols: 1, dy: 22 }),
-          text(556, 236, 'edged in coral:', { anchor: 'start', cls: 'k-label' }), text(556, 254, 'the part past the', { anchor: 'start', cls: 'k-label' }), text(556, 272, 'cliff, left out', { anchor: 'start', cls: 'k-label' })),
+          text(556, 236, 'hatched and edged:', { anchor: 'start', cls: 'k-label' }), text(556, 254, 'the part past the', { anchor: 'start', cls: 'k-label' }), text(556, 272, 'cliff, left out', { anchor: 'start', cls: 'k-label' })),
     ];
   };
 
@@ -508,16 +513,16 @@ export default k => {
   };
 
   const taper = (L) => {
-    const ph = L.phone, P = ph ? plot({ x: 40, y: 60, w: 300, h: 210, xs: [-23, 23], ys: [-0.15, 1.08] }) : plot({ x: 60, y: 60, w: 420, h: 210, xs: [-23, 23], ys: [-0.15, 1.08] });
-    const wv = n => weight.hamming(n, 45);
+    const ph = L.phone, P = ph ? plot({ x: 40, y: 60, w: 300, h: 210, xs: [-16, 16], ys: [-0.15, 1.08] }) : plot({ x: 60, y: 60, w: 420, h: 210, xs: [-16, 16], ys: [-0.15, 1.08] });
+    const wv = n => weight.hamming(n, 31);
     return [
-      text(P.x0, 30, ph ? 'Hamming weights over the ideal list' : 'Hamming weights over the 45 ideal coefficients', { anchor: 'start', cls: 'k-name' }),
-      axes(P, { yTicks: [[1, '1'], [0.5, '0.5'], [0, '0']], xTicks: [[-22, `${M}22`], [-11, `${M}11`], [0, 'n = 0'], [11, '11'], [22, '22']] }),
-      k.curve(P, wv, { from: -22, to: 22, cls: 'w-win' }),
-      stems(P, range(-22, 22).map(n => [n, hI(n)]), { cls: 'k-stem-soft', dot: 3 }),
-      stems(P, range(-22, 22).map(n => [n, hI(n) * wv(n)]), { cls: 'k-stem', dot: 3 }),
+      text(P.x0, 30, ph ? 'Hamming weights over the ideal list' : 'Hamming weights over the 31 ideal coefficients', { anchor: 'start', cls: 'k-name' }),
+      axes(P, { yTicks: [[1, '1'], [0.5, '0.5'], [0, '0']], xTicks: [[-15, `${M}15`], [-7, `${M}7`], [0, 'n = 0'], [7, '7'], [15, '15']] }),
+      k.curve(P, wv, { from: -15, to: 15, cls: 'w-win' }),
+      stems(P, range(-15, 15).map(n => [n, hI(n)]), { cls: 'k-stem-soft', dot: 3 }),
+      stems(P, range(-15, 15).map(n => [n, hI(n) * wv(n)]), { cls: 'k-stem', dot: 3 }),
       text(P.X(0) + 8, P.Y(1) - 6, '1.000', { anchor: 'start', cls: 'k-num-input' }),
-      text(P.X(22), P.Y(0.08) - 14, '0.08', { anchor: 'middle', cls: 'k-num-input' }), text(P.X(-22), P.Y(0.08) - 14, '0.08', { anchor: 'middle', cls: 'k-num-input' }),
+      text(P.X(15), P.Y(0.08) - 14, '0.08', { anchor: 'middle', cls: 'k-num-input' }), text(P.X(-15), P.Y(0.08) - 14, '0.08', { anchor: 'middle', cls: 'k-num-input' }),
       ph ? key(20, 330, [['w-win', null, null, 'Hamming weight w[n]'], ['k-stem-soft', 'circle', 'w-m-soft-hollow', 'ideal coefficient, dashed'], ['w-main', 'circle', 'w-m-ink', 'new: ideal × weight']], { cols: 1, dy: 22 })
         : key(500, 110, [['w-win', null, null, 'Hamming weight w[n]'], ['k-stem-soft', 'circle', 'w-m-soft-hollow', 'ideal, dashed'], ['w-main', 'circle', 'w-m-ink', 'new: ideal × weight']], { cols: 1, dy: 30 }),
       ph ? '' : text(500, 220, 'the middle barely moves;', { anchor: 'start', cls: 'k-note' }),
@@ -527,49 +532,45 @@ export default k => {
 
   const transitionBand = (L) => {
     const ph = L.phone, P = ph ? plot({ x: 44, y: 84, w: 274, h: 220, xs: [2500, 5500], ys: [-0.1, 1.14] }) : plot({ x: 60, y: 84, w: 620, h: 210, xs: [2000, 6000], ys: [-0.1, 1.14] });
-    const H = resp('hamming', 45);
+    const H = resp('hamming', 31);
     return [
-      rect(P.X(3458), P.y0, P.X(4542) - P.X(3458), P.h, { cls: 'w-tb' }),
+      rect(P.X(3191), P.y0, P.X(4809) - P.X(3191), P.h, { cls: 'w-tb' }),
       rect(P.x0, P.Y(1.01), P.w, P.Y(0.99) - P.Y(1.01), { cls: 'w-strip' }),
       rect(P.x0, P.Y(0.01), P.w, P.Y(-0.01) - P.Y(0.01), { cls: 'w-strip' }),
       axes(P, { zero: false, yTicks: [[0, '0'], [0.5, '0.5'], [1, '1']], xTicks: hzTicks(ph ? [2500, 4000, 5500] : [2000, 3000, 4000, 5000, 6000]) }),
       text(P.x0 - 8, P.y0 - 10, 'gain', { anchor: 'end', cls: 'k-tick' }),
       poly(P, H, P.xs[0], P.xs[1], 400),
-      text((P.X(3458) + P.X(4542)) / 2, P.y0 - 30, 'transition band, about 1,100 Hz', { cls: 'k-name' }),
-      line(P.X(3458), P.y0 - 20, P.X(3458), P.y0, { cls: 'k-axis' }), line(P.X(4542), P.y0 - 20, P.X(4542), P.y0, { cls: 'k-axis' }),
-      text(P.X(3458) - 6, P.y0 - 6, '3,458', { anchor: 'end', cls: 'k-num' }), text(P.X(4542) + 6, P.y0 - 6, '4,542 Hz', { anchor: 'start', cls: 'k-num' }),
-      text(P.x0 + 6, P.Y(1.01) + 22, ph ? '1% strip' : 'teal strip: within 1% of 1', { anchor: 'start', cls: 'k-label' }),
-      text(P.x1 - 6, P.Y(0.01) - 10, ph ? '1% strip' : 'teal strip: within 1% of 0', { anchor: 'end', cls: 'k-label' }),
-      text(ph ? 20 : P.x0, 24, ph ? 'Hamming, 45 coefficients' : 'the Hamming filter, 45 coefficients', { anchor: 'start', cls: 'k-label' }),
+      text((P.X(3191) + P.X(4809)) / 2, P.y0 - 30, 'transition band, about 1,600 Hz', { cls: 'k-name' }),
+      line(P.X(3191), P.y0 - 20, P.X(3191), P.y0, { cls: 'k-axis' }), line(P.X(4809), P.y0 - 20, P.X(4809), P.y0, { cls: 'k-axis' }),
+      text(P.X(3191) - 6, P.y0 - 6, '3,191', { anchor: 'end', cls: 'k-num' }), text(P.X(4809) + 6, P.y0 - 6, '4,809 Hz', { anchor: 'start', cls: 'k-num' }),
+      text(P.x0 + 6, P.Y(1.01) + 22, ph ? '1% strip' : 'thin strip: within 1% of 1', { anchor: 'start', cls: 'k-label' }),
+      text(P.x1 - 6, P.Y(0.01) - 10, ph ? '1% strip' : 'thin strip: within 1% of 0', { anchor: 'end', cls: 'k-label' }),
+      text(ph ? 20 : P.x0, 24, ph ? 'Hamming, 31 coefficients' : 'the Hamming filter, 31 coefficients', { anchor: 'start', cls: 'k-label' }),
     ];
   };
 
   const trade = (L) => {
     const ph = L.phone, dB = v => Math.max(-80, 20 * Math.log10(Math.max(Math.abs(v), 1e-5)));
     const mini = (x, y, kind, title) => {
-      const P = plot({ x, y, w: ph ? 300 : 280, h: 70, xs: [-23, 23], ys: [0, 1.1] });
-      return g({}, text(P.x0, y - 12, title, { anchor: 'start', cls: 'k-label' }), axes(P, { xTicks: [[-22, `${M}22`], [0, 'n = 0'], [22, '22']] }), stems(P, range(-22, 22).map(n => [n, weight[kind](n, 45)]), { cls: 'k-stem-input', dot: 2.4 }));
+      const P = plot({ x, y, w: ph ? 300 : 280, h: 70, xs: [-16, 16], ys: [0, 1.1] });
+      return g({}, text(P.x0, y - 12, title, { anchor: 'start', cls: 'k-label' }), axes(P, { xTicks: [[-15, `${M}15`], [0, 'n = 0'], [15, '15']] }), stems(P, range(-15, 15).map(n => [n, weight[kind](n, 31)]), { cls: 'k-stem-input', dot: 2.4 }));
     };
     const top = ph ? 0 : 0;
     const P = ph ? plot({ x: 54, y: 330, w: 264, h: 220, xs: [0, 8000], ys: [-80, 5] }) : plot({ x: 70, y: 200, w: 460, h: 220, xs: [0, 8000], ys: [-80, 5] });
-    const Hr = resp('rect', 45), Hh = resp('hamming', 45);
+    const Hr = resp('rect', 31), Hh = resp('hamming', 31);
     const lbl = (y, s, cls) => text(ph ? P.x0 + 6 : P.x1 + 10, y + 4, s, { anchor: 'start', cls });
     return [
-      text(20, 28 + top, 'weights, 45 long', { anchor: 'start', cls: 'k-name' }),
+      text(20, 28 + top, 'weights, 31 long', { anchor: 'start', cls: 'k-name' }),
       mini(ph ? 40 : 60, ph ? 66 : 66, 'rect', 'rectangle'), mini(ph ? 40 : 400, ph ? 180 : 66, 'hamming', 'Hamming'),
       text(20, P.y0 - 24, 'their responses, in dB', { anchor: 'start', cls: 'k-name' }),
       axes(P, { zero: false, yTicks: [[0, '0'], [-20, `${M}20`], [-40, `${M}40`], [-60, `${M}60`], [-80, `${M}80`]], xTicks: hzTicks(ph ? [0, 4000, 8000] : [0, 2000, 4000, 6000, 8000]) }),
       text(P.x0 - 8, P.y0 - 8, 'dB', { anchor: 'end', cls: 'k-tick' }),
-      poly(P, f => dB(Hr(f)), 0, 8000, 800, { cls: 'w-dot' }),
       poly(P, f => dB(Hh(f)), 0, 8000, 800, { cls: 'w-main' }),
-      line(P.X(4000), P.Y(-21), P.x1, P.Y(-21), { cls: 'k-guide' }), line(P.X(4700), P.Y(-54), P.x1, P.Y(-54), { cls: 'k-guide' }),
+      poly(P, f => dB(Hr(f)), 0, 8000, 800, { cls: 'w-dot' }),
+      line(P.X(4000), P.Y(-21), P.x1, P.Y(-21), { cls: 'k-guide' }), line(P.X(5000), P.Y(-51), P.x1, P.Y(-51), { cls: 'k-guide' }),
       lbl(P.Y(-21), ph ? '−21 dB, rectangle' : '−21 dB, rectangle', 'k-num'),
-      lbl(P.Y(-54), ph ? '−54 dB, Hamming' : '−54 dB, Hamming,', 'k-num'),
-      ph ? '' : text(P.x1 + 10, P.Y(-54) + 20, 'from 4,700 Hz up', { anchor: 'start', cls: 'k-num' }),
-      marker('triangle', P.X(4600), P.Y(dB(Hh(4600))), 'w-m-ink', 4.5),
-      marker('triangle', P.X(300), P.Y(-66), 'w-m-ink', 4.5),
-      text(P.X(300) + 10, P.Y(-66) + 4, ph ? '4,600 Hz: −52 dB,' : '−52 dB at 4,600 Hz:', { anchor: 'start', cls: 'k-tick' }),
-      text(P.X(300) + 10, P.Y(-66) + 20, ph ? 'end of the slope' : 'the end of the slope', { anchor: 'start', cls: 'k-tick' }),
+      lbl(P.Y(-51), ph ? '−51 dB, Hamming' : '−51 dB, Hamming,', 'k-num'),
+      ph ? '' : text(P.x1 + 10, P.Y(-51) + 20, 'from 5,000 Hz up', { anchor: 'start', cls: 'k-num' }),
       ph ? key(20, 610, [['w-dot', null, null, 'rectangle'], ['w-main', null, null, 'Hamming']], { dx: 150 })
         : key(560, 300, [['w-dot', null, null, 'rectangle'], ['w-main', null, null, 'Hamming']], { cols: 1, dy: 24 }),
     ];
@@ -584,7 +585,7 @@ export default k => {
       rect(P.X(0), P.y0, P.X(3400) - P.X(0), P.h, { cls: 'w-pass' }),
       rect(P.X(4600), P.y0, P.x1 - P.X(4600), P.h, { fill: `url(#${L.slug}-stripe)` }),
       masked(P.X(1700), P.Y(0.45), 'pass', { cls: 'k-name', size: 14 }), text(P.X(4000), P.y0 - 6, 'slope', { cls: 'k-label' }), masked(P.X(6300), P.Y(0.45), 'remove', { cls: 'k-name', size: 14 }),
-      axes(P, { zero: false, yTicks: [[0, '0'], [1, '1']], xTicks: hzTicks(ph ? [0, 3400, 8000] : [0, 3400, 4600, 8000]) }),
+      axes(P, { zero: false, yTicks: [[0, '0'], [1, '1']], xTicks: hzTicks([0, 3400, 4600, 8000]) }),
       text(P.x0 - 8, P.y0 - 10, 'gain', { anchor: 'end', cls: 'k-tick' }),
       poly(P, H, 0, 8000, 400),
       text(P.x0, 32, ph ? 'Hamming 45 against the job' : 'the Hamming filter, 45 coefficients, against the job', { anchor: 'start', cls: 'k-name' }),
@@ -619,8 +620,8 @@ export default k => {
       'Bars for each pair’s contribution at 4,500 Hz: 0.500 for the middle, then −0.124, −0.118, −0.106, −0.089, −0.069, −0.048, −0.027, −0.008, and a final coral bar for the sum, −0.090; an inset shows a tone and its small flipped copy, labelled −0.09 is 9%, upside down.',
       'At 4,500 Hz every pair pulls the gain down, and together they land on −0.090: 9% of the tone gets out, upside down.', pairBars),
     fig('sweep-ghost', [460, 540], 'The sweep and its ghost, in time',
-      'Top: over 10 seconds the sweep rises from 4,000 to 8,000 Hz. Bottom, on the same time axis: the ghost on your side falls from 4,000 to 0 Hz, drawn thicker where it is louder: 50% at the start, gone by 0.75 s, then swells of 9% at 3,500 Hz, 5% at 3,000 Hz and 2% at 1,000 Hz, with gaps where the gain crosses zero; the voice band, 0 to 3,400 Hz, is shaded.',
-      'The rising sweep comes out as a falling ghost that swells and vanishes every 500 Hz or so, deep inside the voice band.', sweepGhost),
+      'Top: over 10 seconds the sweep rises from 4,000 to 8,000 Hz. Bottom, on the same time axis: the ghost on your side falls from 4,000 to 0 Hz, drawn thicker where it is louder: 50% at the start, gone by 0.75 s, then swells of 9% at 3,500 Hz, 5% at 3,000 Hz and 2% at 1,000 Hz, with gaps where the gain crosses zero; the range where voices live, 0 to 3,400 Hz, is shaded.',
+      'The rising sweep comes out as a falling ghost that swells and vanishes every 500 Hz or so, deep in the range where voices live.', sweepGhost),
     fig('gibbs', [320, 430], 'Longer cuts: the bump narrows, its height stays',
       'Plain-cut responses near the 4,000 Hz cutoff for 15, 63 and 255 coefficients, each with its own line style and marker; every peak touches the guide at 1.09, at 3,000, 3,750 and 3,938 Hz.',
       'More coefficients squeeze the ripple toward the cliff, but every bump still reaches 1.09.', gibbs, 3),
@@ -640,8 +641,8 @@ export default k => {
       'Three stem rows: the ideal list from −22 to 22 that continues forever, times the rectangle, 1 from −15 to 15 and 0 outside, equals the 31 kept coefficients.',
       'Keeping 31 coefficients is the same as multiplying the ideal list by a rectangle of ones.', windowFig),
     fig('rect-response', [290, 560], 'A window has a response of its own',
-      'Left: the 31-long rectangle’s response, a tall central hump with side lobes, the first one negative at −22% of the hump. Right, on the same scale: the 45-long Hamming window’s response, a wider hump with side lobes under 1%, too small to see.',
-      'The rectangle’s sharp edges give its response side lobes; the first is −22% of the hump. Hamming’s soft edges leave a wider hump and almost no side lobes.', rectResponse),
+      'Left: the 31-long rectangle’s response, a tall central hump with side lobes, the first one negative at −22% of the hump. Right, at the same length and on the same scale: the 31-long Hamming window’s response, a hump about twice as wide with side lobes under 1%, too small to see.',
+      'The rectangle’s sharp edges give its response side lobes; the first is −22% of the hump. At the same length, Hamming’s soft edges leave a hump about twice as wide and almost no side lobes.', rectResponse),
     fig('smear', [460, 580], 'Sliding the hump along the cliff',
       'Two panels. Top: the rectangle’s hump slides along the ideal step and the curve it draws overshoots to 1.09; parked with its main hump touching the cliff, the part past the cliff, left out, is shaded: −9% of its area. Bottom: the Hamming hump slides and draws a gentle slope, leaving out under 1%.',
       'The cut filter’s gain at each tone is the share of the hump’s area still on the pass side. The rectangle’s left-out side lobes are worth −9%, so 109% remains.', smear, 2),
@@ -649,14 +650,14 @@ export default k => {
       'Input tones from 0 to 8,000 Hz: pass from 0 to 3,400 Hz, slope from 3,400 to 4,600 Hz, remove from 4,600 to 8,000 Hz. After downsampling, the remove band folds onto the voice band, 0 to 3,400 Hz, and the slope lands in the margin, 3,400 to 4,000 Hz.',
       'Anything above 4,600 Hz lands in the voice band and must go. The slope may live between 3,400 and 4,600 Hz, because it lands in the empty margin.', spec, 2),
     fig('taper', [300, 420], 'The Hamming taper over the ideal list',
-      'The Hamming weights, 1 in the middle and 0.08 at the ends, drawn as a bell over the 45 ideal coefficients from −22 to 22; the new coefficients, ideal times weight, form a second set that barely changes in the middle and shrinks at the ends.',
+      'The Hamming weights, 1 in the middle and 0.08 at the ends, drawn as a bell over the 31 ideal coefficients from −15 to 15; the new coefficients, ideal times weight, form a second set that barely changes in the middle and shrinks at the ends.',
       'Hamming barely touches the big middle coefficients and squashes the small outer ones.', taper),
     fig('transition-band', [334, 434], 'The transition band of the Hamming filter',
-      'The Hamming 45 response from 2,000 to 6,000 Hz with thin strips within 1% of 1 and of 0; the transition band from 3,458 to 4,542 Hz, about 1,100 Hz wide, is shaded.',
-      'Between 3,458 and 4,542 Hz the filter is neither within 1% of whole nor below 1%: that stretch is its transition band.', transitionBand),
+      'The Hamming 31 response from 2,000 to 6,000 Hz with thin strips within 1% of 1 and of 0; the transition band from 3,191 to 4,809 Hz, about 1,600 Hz wide, is shaded.',
+      'Between 3,191 and 4,809 Hz the Hamming filter of 31 is neither within 1% of whole nor below 1%: that stretch is its transition band.', transitionBand),
     fig('trade', [450, 640], 'The window trade: shape sets the ripple',
-      'Top: rectangle and Hamming weights, 45 long. Bottom: their responses in dB from 0 to 8,000 Hz; the rectangle’s ripple reaches −21 dB, Hamming’s stays below −54 dB from 4,700 Hz up, with −52 dB at 4,600 Hz marked as the end of the slope.',
-      'Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −54 dB.', trade),
+      'Top: rectangle and Hamming weights, 31 long. Bottom: their responses in dB from 0 to 8,000 Hz; the rectangle’s ripple reaches −21 dB, Hamming’s stays below −51 dB from 5,000 Hz up.',
+      'Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −51 dB.', trade),
     fig('done', [300, 450], 'What done looks like',
       'The Hamming 45 response over the job: inside the pass region from 0 to 3,400 Hz, inside the remove region above 4,600 Hz, with its slope crossing the gap; the meter reads 0.24% for the voice band and 0.24% for the ghost, both ticked.',
       'Hamming, 45 coefficients: the voice band within 0.24%, the ghost below 0.24%, and the slope only in the margin.', done),

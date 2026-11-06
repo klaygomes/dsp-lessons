@@ -43,7 +43,7 @@
   },
   "sweep-ghost": {
     "title": "The sweep and its ghost, in time",
-    "caption": "The rising sweep comes out as a falling ghost that swells and vanishes every 500 Hz or so, deep inside the voice band.",
+    "caption": "The rising sweep comes out as a falling ghost that swells and vanishes every 500 Hz or so, deep in the range where voices live.",
     "animated": false,
     "phone": true
   },
@@ -85,7 +85,7 @@
   },
   "rect-response": {
     "title": "A window has a response of its own",
-    "caption": "The rectangle’s sharp edges give its response side lobes; the first is −22% of the hump. Hamming’s soft edges leave a wider hump and almost no side lobes.",
+    "caption": "The rectangle’s sharp edges give its response side lobes; the first is −22% of the hump. At the same length, Hamming’s soft edges leave a hump about twice as wide and almost no side lobes.",
     "animated": false,
     "phone": true
   },
@@ -109,13 +109,13 @@
   },
   "transition-band": {
     "title": "The transition band of the Hamming filter",
-    "caption": "Between 3,458 and 4,542 Hz the filter is neither within 1% of whole nor below 1%: that stretch is its transition band.",
+    "caption": "Between 3,191 and 4,809 Hz the Hamming filter of 31 is neither within 1% of whole nor below 1%: that stretch is its transition band.",
     "animated": false,
     "phone": true
   },
   "trade": {
     "title": "The window trade: shape sets the ripple",
-    "caption": "Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −54 dB.",
+    "caption": "Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −51 dB.",
     "animated": false,
     "phone": true
   },
