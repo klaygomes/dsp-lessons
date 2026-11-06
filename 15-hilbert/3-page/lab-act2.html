@@ -4,27 +4,27 @@
     <h3>Lab: build the single-sideband shifter</h3>
     <div class="task"><p id="a2-task"></p></div>
     <div id="a2-ask"></div>
-    <svg class="circuit" id="a2-circuit" viewBox="-12 0 384 214" role="img" aria-labelledby="a2-circuit-title">
+    <svg class="circuit" id="a2-circuit" viewBox="-12 0 384 236" role="img" aria-labelledby="a2-circuit-title">
       <title id="a2-circuit-title">The shifter as wired now</title>
       <defs><marker id="a2-head" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="head" points="0 0, 8 3, 0 6"/></marker></defs>
       <text x="180" y="16" text-anchor="middle" class="name">x[n], the call</text>
       <path d="M180 24V40M92 40H268M92 40V58M268 40V58" marker-end="url(#a2-head)"/>
       <path d="M92 40V58" marker-end="url(#a2-head)"/>
-      <rect x="16" y="60" width="152" height="50" rx="6"/>
+      <rect x="6" y="60" width="168" height="50" rx="6"/>
       <text x="92" y="80" text-anchor="middle" class="name">delay box</text>
       <text x="92" y="99" text-anchor="middle" class="live" id="a2-c-delay">0 samples</text>
-      <rect x="192" y="60" width="152" height="50" rx="6"/>
+      <rect x="186" y="60" width="168" height="50" rx="6"/>
       <text x="268" y="80" text-anchor="middle" class="name">Hilbert transformer</text>
       <text x="268" y="99" text-anchor="middle" class="live" id="a2-c-hilbert">31, Hann</text>
       <path d="M92 110V136" marker-end="url(#a2-head)"/><path d="M268 110V136" marker-end="url(#a2-head)"/>
       <circle cx="92" cy="150" r="14"/><text x="92" y="155" text-anchor="middle" class="name">×</text>
       <circle cx="268" cy="150" r="14"/><text x="268" y="155" text-anchor="middle" class="name">×</text>
-      <text x="74" y="154" text-anchor="end" class="live side" id="a2-c-cos">cos 300 Hz</text>
-      <text x="286" y="154" class="live side" id="a2-c-sin">sin 300 Hz</text>
+      <text x="72" y="147" text-anchor="end" class="side">cos</text><text x="72" y="164" text-anchor="end" class="live side" id="a2-c-cos">+300 Hz</text>
+      <text x="288" y="147" class="side">sin</text><text x="288" y="164" class="live side" id="a2-c-sin">+300 Hz</text>
       <path d="M92 164V188H158M268 164V188H202" marker-end="url(#a2-head)"/>
       <circle cx="180" cy="188" r="14"/><text x="180" y="193" text-anchor="middle" class="name">−</text>
       <text x="140" y="180" text-anchor="middle">+</text><text x="220" y="180" text-anchor="middle">−</text>
-      <text x="180" y="212" text-anchor="middle" class="name">y[n]</text>
+      <text x="180" y="226" text-anchor="middle" class="name">y[n]</text>
     </svg>
     <canvas id="a2-stage" class="stage" role="img" aria-label="The ghost as a share of the wanted copy, against tone."></canvas>
     <div class="key">
@@ -37,7 +37,7 @@
       <span id="a2-meter-label">Ghost meter</span>
       <div class="bar" aria-hidden="true"><div class="fill"></div></div>
       <output aria-live="polite">?</output>
-      <div class="scale" aria-hidden="true"><span>0%</span><span>10%</span></div>
+      <div class="scale" aria-hidden="true"><span>0%</span><span id="a2-target-label">5% target</span><span>10%</span></div>
     </div>
     <div class="readout" aria-live="polite">
       <div class="result" id="a2-result"></div>
@@ -49,7 +49,7 @@
         <input id="a2-len" type="range" min="7" max="63" step="4" value="31" disabled>
       </div>
       <div class="control">
-        <label for="a2-delay">Delay box on the plain path: <output id="a2-delay-out">0 samples</output></label>
+        <label for="a2-delay">Delay box: <output id="a2-delay-out">0 samples</output></label>
         <input id="a2-delay" type="range" min="0" max="31" step="1" value="0" disabled>
       </div>
       <div class="control">

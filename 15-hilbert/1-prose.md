@@ -12,7 +12,7 @@ Where did a second voice come from? You only multiplied.
 
 ## One tone, eight samples
 
-Let's do the multiplication by hand on a single tone, 1,000 Hz. The 300 Hz tone turns its dot 13.5° per sample, and the 1,000 Hz tone turns 45° per sample. Here are eight samples of each, and their product.
+Let's do the multiplication by hand on a single tone, 1,000 Hz. The 300 Hz tone turns its dot 13.5° per sample (lesson 3's wheel: a tone is a dot going round a circle; more on it below), and the 1,000 Hz tone turns 45° per sample. Here are eight samples of each, and their product.
 
 | n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|---|
@@ -20,11 +20,9 @@ Let's do the multiplication by hand on a single tone, 1,000 Hz. The 300 Hz tone 
 | 300 Hz | 1.000 | 0.972 | 0.891 | 0.760 | 0.588 | 0.383 | 0.156 | −0.078 |
 | product | 1.000 | 0.688 | 0.000 | −0.538 | −0.588 | −0.271 | 0.000 | −0.055 |
 
-You were hoping the product is a 1,300 Hz tone. It isn't. So what is it?
-
 [[predict-split]]
 
-Here's a guess worth testing. Take half of a 1,300 Hz tone and half of a 700 Hz tone, and add them:
+Test it. Take half of a 1,300 Hz tone and half of a 700 Hz tone, and add them:
 
 | n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|---|
@@ -40,11 +38,9 @@ The ghost has to be stopped before it's made. To stop it, you need to see where 
 
 ## Every tone is two arrows
 
-This part is a recap of two pictures you already own.
+A quick recap of two pictures you already own. Lesson 3's wheel: a tone is a dot turning counter-clockwise, 45° per sample for every 1,000 Hz. The line from the centre to the dot is the tone's arrow, and the phone stores only its left-right position, the arrow's shadow.
 
-The first is the wheel from lesson 3. A tone is a dot turning counter-clockwise, 360° × tone ÷ 8,000 per sample, which is 45° for every 1,000 Hz. Draw a line from the centre of the wheel to the dot, and you have the tone's arrow. The phone stores only how far left or right the arrow's tip sits. Lesson 7 called that left-right position the arrow's shadow.
-
-The second is lesson 6's mirror arrow. A real tone, the cosine on the line, is two half-size arrows. One turns counter-clockwise on the top half of the circle. Its mirror, reflected across the horizontal line, turns clockwise on the bottom half. Their up-down parts always cancel, and their shadows add up to the cosine.
+Lesson 6's mirror arrow: a real tone, the cosine on the line, is two half-size arrows. One turns counter-clockwise on top; its mirror, reflected across the horizontal line, turns clockwise below. Their up-down parts cancel, and their shadows add up to the cosine.
 
 It helps to give the mirror its own name. A **negative tone** is a dot turning clockwise: −1,000 Hz turns −45° per sample, and its shadow sounds exactly like +1,000 Hz. So every real tone on the line is a positive tone and its negative tone, travelling together.
 
@@ -61,7 +57,7 @@ Now watch the multiplication again, in arrows. Multiplying two arrows adds their
 
 Four arrows, two real tones: 1,300 Hz and 700 Hz, each a positive tone with its mirror. That's the table you checked by hand.
 
-Here's the question that matters: what if the multiplier had no mirror? Suppose you had a perfect multiplier, a single arrow turning +300 Hz. Could the chip even use one? Yes. Inside the chip you can keep two numbers per sample, an arrow's left-right and up-down parts, and multiply whole arrows. Only what goes out on the line has to be a shadow, a real signal.
+Here's the question that matters: what if the multiplier had no mirror? Suppose you had a perfect multiplier, a single arrow turning +300 Hz. Could the chip even use one? Yes. Inside the chip you can keep two numbers per sample, an arrow's left-right and up-down parts, and multiply whole arrows. Only what goes out on the line has to be a shadow, a real signal. (How to turn the line's one number into an arrow's two is the next section's job.)
 
 [[diagram:chip-boundary]]
 
@@ -75,7 +71,7 @@ So the ghost doesn't come from the 300 Hz tone. It comes from the call itself. E
 
 [[diagram:ghost-arrows]]
 
-Play with it before going on. Put a tone on the wheel and drag the shift. Watch the mirror arrow slow down as the top arrow speeds up, and watch its shadow, the ghost, slide down the spectrum.
+Try it in the lab before going on. It opens with one question; answer it and the controls are yours. The lab's wheel draws one arrow for each row of the arrow table above, four of them, each a quarter size, half times half, and the call's own two arrows stay faintly behind them. Put a tone on the wheel and drag the shift. Watch the mirror arrow slow down as the top arrow speeds up, and watch its shadow, the ghost, slide down the spectrum.
 
 [[lab]]
 
@@ -128,7 +124,11 @@ The Hilbert transformer turns every tone by the same quarter turn, whatever its 
 
 Call the shift's turn \(\omega_0 = 2\pi \times 300 / 8000\), the 13.5° per sample of a 300 Hz tone.
 
-Now shift the analytic signal. Multiply it by one arrow turning +300 Hz, \(\cos\omega_0 n + j \sin\omega_0 n\). Every top arrow turns 300 Hz faster, and there are no mirrors to turn slower. The product, in two steps:
+Now shift the analytic signal. Multiply it by one arrow turning +300 Hz, \(\cos\omega_0 n + j \sin\omega_0 n\). Every top arrow turns 300 Hz faster, and there are no mirrors to turn slower. The line needs a real signal, so keep the shadow, the plain part of the product:
+
+\[ y[n] = x[n]\cos\omega_0 n - \hat x[n]\sin\omega_0 n \]
+
+Here is the multiplication that gives it, in two steps:
 
 \[ (x + j\hat x)(\cos\omega_0 n + j\sin\omega_0 n) = x\cos\omega_0 n + j\,x\sin\omega_0 n + j\,\hat x\cos\omega_0 n + j \cdot j\,\hat x\sin\omega_0 n \]
 
@@ -136,9 +136,7 @@ The last term has \(j \times j = -1\). Gather the plain parts and the \(j\) part
 
 \[ = \left(x\cos\omega_0 n - \hat x\sin\omega_0 n\right) + j\left(x\sin\omega_0 n + \hat x\cos\omega_0 n\right) \]
 
-The line needs a real signal, so keep the shadow, the plain part:
-
-\[ y[n] = x[n]\cos\omega_0 n - \hat x[n]\sin\omega_0 n \]
+The plain part is the shadow, the line above.
 
 That's two multiplications and a subtraction per sample. As a circuit it's two paths. The top path is the plain call times the 300 Hz cosine. The bottom path is the Hilbert output times the 300 Hz sine, and the bottom is subtracted from the top. The top path also has a delay box, which keeps it in step with the Hilbert transformer. We'll see why it matters soon.
 
@@ -160,7 +158,7 @@ A plain multiplication makes two copies of every tone, one 300 Hz up and one 300
 
 ## Building the Hilbert transformer
 
-To run the Hilbert transformer on the chip, we need its coefficients, the samples you'd get back from one click (lesson 2's impulse response). In radians, its frequency response is \(-j\) for every positive tone and \(+j\) for every negative one:
+To run the Hilbert transformer on the chip, we need its coefficients, the samples you'd get back from one click (lesson 2's impulse response). In radians, its frequency response, written \(H(e^{j\omega})\) for what the filter does to a tone turning ω per sample, is \(-j\) for every positive tone and \(+j\) for every negative one:
 
 \[ H(e^{j\omega}) = -j \ \text{ for } 0 < \omega < \pi, \qquad H(e^{j\omega}) = +j \ \text{ for } -\pi < \omega < 0 \]
 
@@ -168,15 +166,9 @@ To run the Hilbert transformer on the chip, we need its coefficients, the sample
 
 Notice the jump at 0 Hz, from \(+j\) straight to \(-j\). Hold on to it.
 
-In lesson 10 you got the ideal low-pass's coefficients by adding up every wheel it passes, each scaled by the response. Do the same here, and pair each positive tone with its mirror. The positive tone gets \(-j\) and the mirror gets \(+j\), and together they make \(-j\,e^{j\omega n} + j\,e^{-j\omega n} = 2\sin(\omega n)\). So, roughly speaking, each coefficient is an average of sine waves, one per tone:
-
-\[ h[n] = \text{the average of } \sin(\omega n) \text{ over all tones from 0 to 4,000 Hz} = \frac{1}{\pi}\int_0^{\pi} \sin(\omega n)\, d\omega \]
-
-As \(\omega\) runs from 0 to \(\pi\), \(\sin(\omega n)\) makes n half-waves, alternately up and down. For even n they cancel in pairs, so h[n] = 0. For odd n, one upward half-wave is left over. A half-wave of \(\sin(\omega n)\) has area 2 ÷ n, and averaging over a stretch of length \(\pi\) gives
+The coefficients turn out to be strikingly simple. Every even one is zero, and every odd one is 2 ÷ (πn):
 
 \[ h[n] = \frac{2}{\pi n} \ \text{ for odd } n, \qquad h[n] = 0 \ \text{ for even } n \]
-
-[[diagram:h-sketch]]
 
 | n | 1 | 3 | 5 | 7 | 9 |
 |---|---|---|---|---|---|
@@ -184,11 +176,19 @@ As \(\omega\) runs from 0 to \(\pi\), \(\sin(\omega n)\) makes n half-waves, alt
 
 The negative \(n\) have the same numbers with a minus sign.
 
-[[diagram:taps]]
+Where do those numbers come from? In lesson 10 you got the ideal low-pass's coefficients by adding up every wheel it passes, each scaled by the response. Do the same here, and pair each positive tone with its mirror. The positive tone gets \(-j\) and the mirror gets \(+j\), and together they make \(-j\,e^{j\omega n} + j\,e^{-j\omega n} = 2\sin(\omega n)\). So, roughly speaking, each coefficient is an average of sine waves, one per tone. The words on the left say it all; the integral on the right is the same average written in calculus, and you can skip it:
+
+\[ h[n] = \text{the average of } \sin(\omega n) \text{ over all tones from 0 to 4,000 Hz} = \frac{1}{\pi}\int_0^{\pi} \sin(\omega n)\, d\omega \]
+
+As \(\omega\) runs from 0 to \(\pi\), \(\sin(\omega n)\) makes n half-waves, alternately up and down. For even n they cancel in pairs, so h[n] = 0. For odd n, one upward half-wave is left over. A half-wave of \(\sin(\omega n)\) has area 2 ÷ n, and averaging over a stretch of length \(\pi\) divides by \(\pi\): that's the 2 ÷ (πn) above.
+
+[[diagram:h-sketch]]
 
 Two problems jump out. These coefficients shrink like 1 ÷ n, slowly, and never stop. And they reach backwards, to negative n, so the ideal Hilbert transformer would need to hear the future. That's lesson 10 all over again: the ideal filter is infinitely long. Lesson 10's fix works here too. Keep n from −15 to 15, taper the coefficients with a window, and delay the whole thing 15 samples so nothing reaches the future. We'll use lesson 14's Hann window, stretched over the 31 coefficients and centred on n = 0:
 
 \[ w[n] = \tfrac12 + \tfrac12\cos(\pi n / 16), \qquad n = -15, \dots, 15 \]
+
+[[diagram:taps]]
 
 That's 31 coefficients and a delay of 15 samples, under 2 milliseconds.
 
@@ -196,16 +196,17 @@ That's 31 coefficients and a delay of 15 samples, under 2 milliseconds.
 
 The Hilbert path is now 15 samples late. So the plain path, \(x[n]\), must be delayed 15 samples too, before the two meet at the subtraction. That's the box marked "delay" on the top path of the circuit. Skip it, and what happens?
 
-Use the same arrow arithmetic. Fifteen samples late means the Hilbert output's top arrow sits an extra θ = 15 × 45° = 675° clockwise, for a 1,000 Hz tone. Its mirror sits 675° the other way. Now build the analytic signal again:
-
-- top arrow: \(1 + e^{-j\theta} = e^{-j\theta/2}\left(e^{j\theta/2} + e^{-j\theta/2}\right) = 2\cos(\theta/2)\, e^{-j\theta/2}\), which has length \(2\left|\cos(\theta/2)\right|\)
-- mirror arrow: \(1 - e^{j\theta}\), which has length \(2\left|\sin(\theta/2)\right|\)
-
-The top arrow's length uses lesson 6's cosine as two mirror arrows; the mirror's is lesson 14's chord. The mirror no longer cancels. The ghost is left at \(\left|\tan(\theta/2)\right|\) of the wanted copy, and with θ = 675° that's 41%.
-
-And it changes with the tone, because θ does. At 500 Hz the ghost is 20%. At 2,000 Hz it's exactly as loud as the wanted copy. At 3,000 Hz it's the louder of the two. One missing box ruins the whole shifter.
+For a 1,000 Hz tone, 15 samples late is an extra 15 × 45° = 675° of turn on the Hilbert path. The mirror arrows no longer land exactly opposite each other, so they no longer cancel, and the ghost comes back at 41% of the wanted copy.
 
 [[diagram:delay-catch]]
+
+And it changes with the tone, because the extra turn does. At 500 Hz the ghost is 20%. At 2,000 Hz it's exactly as loud as the wanted copy. At 3,000 Hz it's the louder of the two. One missing box ruins the whole shifter.
+
+Here is the arrow arithmetic behind those numbers. Call the extra turn θ, 675° at 1,000 Hz. The Hilbert output's top arrow sits θ further clockwise, and its mirror θ the other way. Two reminders first. Lesson 6 wrote a cosine as two mirror arrows. Lesson 14's chord is the straight-line distance between two points on the circle: two points an angle x apart are \(2\left|\sin(x/2)\right|\) apart. Now build the analytic signal again. The top arrow is
+
+\[ 1 + e^{-j\theta} = e^{-j\theta/2}\left(e^{j\theta/2} + e^{-j\theta/2}\right) = 2\cos(\theta/2)\, e^{-j\theta/2} \]
+
+which has length \(2\left|\cos(\theta/2)\right|\), by the cosine as two mirror arrows. The mirror arrow is \(1 - e^{j\theta}\), a chord, so its length is \(2\left|\sin(\theta/2)\right|\). Divide one length by the other, and the ghost is \(\left|\tan(\theta/2)\right|\) of the wanted copy, 41% for θ = 675°.
 
 ## The edges of the band
 
@@ -220,11 +221,11 @@ Here are the gains with the Hann window, and the ghost each one leaves.
 
 [[diagram:edges]]
 
-In the middle of the voice it's nearly perfect. Near 0 Hz it falls apart. Why? Remember the jump in the frequency response. Near 0 Hz, a top arrow and its mirror are almost the same arrow, barely turning, yet the filter must turn one back and the other forward. That's a jump at 0 Hz. Lesson 10 showed that only an infinitely long filter can make a sharp jump. A short one smooths it into a transition band. The same thing happens near 4,000 Hz, but it doesn't matter here. The voice stops at 3,400 Hz, and the Hilbert transformer runs before the shift, so it never sees anything higher.
+In the middle of the voice it's nearly perfect. Near 0 Hz it falls apart. Why? Remember the jump in the frequency response. Near 0 Hz, a top arrow and its mirror are almost the same arrow, barely turning, yet the filter must turn one back and the other forward. That's a jump at 0 Hz. Lesson 10 showed that only an infinitely long filter can make a sharp jump. A short one smooths it into a transition band, lesson 10's name for the stretch of tones where the gain ramps instead of jumping. The same thing happens near 4,000 Hz, but it doesn't matter here. The voice stops at 3,400 Hz, and the Hilbert transformer runs before the shift, so it never sees anything higher.
 
 A phone voice starts at 300 Hz, so the transition band at the bottom only has to end there. With 31 coefficients it almost does. The ghost at 300 Hz is 5.24%, just missing the 5% target. A slightly longer filter pushes the transition band lower, and the lab will show you how much longer is enough.
 
-Try it without the window, just the cut. At 1,000 Hz the gain is 0.9443 instead of 1.0016, and the ghost there jumps to 2.9%. At 300 Hz the gain overshoots to 1.1458, and the ghost is 6.79%, the plain cut's worst in the voice band. That fails the 5% target outright. The ripple is lesson 10's Gibbs phenomenon, now leaking ghost into the voice.
+Try it without the window, just the cut. At 1,000 Hz the gain is 0.9443 instead of 1.0016, and the ghost there jumps to 2.9%. At 300 Hz the gain overshoots to 1.1458, and the ghost is 6.79%, the plain cut's worst in the voice band. That fails the 5% target outright. The ripple is lesson 10's Gibbs phenomenon, the overshoot a plain cut always leaves next to a jump, now leaking ghost into the voice.
 
 ## Your turn
 

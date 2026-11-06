@@ -150,30 +150,31 @@ export default k => {
   const negTone = (L) => {
     const ph = L.phone, cx = ph ? 180 : 190, cy = ph ? 166 : 180, r = ph ? 96 : 120;
     const frame = (n, last) => {
-      const a = 45 * n, [tx, ty] = pt(cx, cy, r, a), [mx, my] = pt(cx, cy, r, -a), sx = cx + r * cosd(a);
-      const num = n === 0 ? text(cx + r + 24, cy + 4, '0', { anchor: 'start', cls: 'k-tick' })
-        : g({}, text(...pt(cx, cy, r + 14, a).map((v, i) => v + (i ? 4 : 0)), String(n), { cls: 'k-tick' }), text(...pt(cx, cy, r + 14, -a).map((v, i) => v + (i ? 4 : 0)), String(n), { cls: 'k-tick' }));
+      const h = r / 2, a = 45 * n, [tx, ty] = pt(cx, cy, h, a), [mx, my] = pt(cx, cy, h, -a), sx = cx + h * cosd(a);
+      const num = n === 0 ? text(cx + h + 18, cy - 8, '0', { anchor: 'start', cls: 'k-tick' })
+        : g({}, text(...pt(cx, cy, h + 14, a).map((v, i) => v + (i ? 4 : 0)), String(n), { cls: 'k-tick' }), text(...pt(cx, cy, h + 14, -a).map((v, i) => v + (i ? 4 : 0)), String(n), { cls: 'k-tick' }));
       const body = g({}, n ? line(tx, ty, sx, cy, { cls: 'k-guide' }) : '', n ? line(mx, my, sx, cy, { cls: 'k-guide' }) : '',
-        polar(cx, cy, r, a, 'top'), polar(cx, cy, r, -a, 'mirror'), sq(sx, cy), num);
+        polar(cx, cy, h, a, 'top'), polar(cx, cy, h, -a, 'mirror'), sq(sx, cy), num);
       return g({ anim: { k: 'in', d: n * 1.3, len: 0.5 } }, last ? body : g({ cls: 'k-faint', anim: { k: 'fade', o0: 1, d: (n + 1) * 1.3, len: 0.5 } }, body));
     };
     const Q = ph ? plot({ x: 46, y: 452, w: 290, h: 110, xs: [-0.5, 7.5], ys: [-1.1, 1.1] }) : plot({ x: 460, y: 100, w: 240, h: 150, xs: [-0.5, 7.5], ys: [-1.1, 1.1] });
     const cosPts = range(0, 7).map(n => [n, cosd(45 * n)]);
     return [
       ring(cx, cy, r),
-      turnArc(cx, cy, 34, 6, 38), turnArc(cx, cy, 34, -6, -38),
+      turnArc(cx, cy, 24, 6, 38), turnArc(cx, cy, 24, -6, -38),
       text(cx, cy - r - 34, '+1,000 Hz: +45° per sample', { cls: 'k-label' }),
       text(cx, cy + r + 46, `${M}1,000 Hz: ${M}45° per sample`, { cls: 'k-label' }),
       step(1, 'sample 0: both arrows point right, the shadow is at the rim', frame(0, false)),
       step(2, 'sample 1: the top arrow has turned 45 degrees counter-clockwise, the mirror 45 degrees clockwise; their shadows land on the same spot', frame(1, false)),
       step(3, 'sample 2: the top arrow points straight up, the mirror straight down; the shadow is at the centre', frame(2, true)),
-      step(4, 'both shadows added, sample by sample, give the 1,000 Hz cosine: 1.000, 0.707, 0.000 and on',
+      step(4, 'the two half-size shadows added, sample by sample, give the full-size 1,000 Hz cosine: 1.000, 0.707, 0.000 and on',
         g({ anim: { k: 'in', d: 4.2, len: 1 } },
           text(Q.x0 - 30, Q.y0 - 24, ph ? 'both shadows added: the 1,000 Hz tone' : 'both shadows added, n = 0 to 7', { anchor: 'start', cls: 'k-name' }),
           axes(Q, { xTicks: range(0, 7).map(n => [n, n ? String(n) : 'n = 0']), yTicks: [[1, '1'], [-1, `${M}1`]] }),
           stems(Q, cosPts, { dot: 4 }))),
-      ph ? g({}, keyLine(24, 356, 'top', 'top arrow, counter-clockwise', { w: 26 }), keyLine(24, 378, 'mirror', 'mirror arrow, clockwise', { w: 26 }), keyLine(24, 400, 'square', 'their shared shadow'))
-        : g({}, keyLine(460, 306, 'top', 'top arrow: counter-clockwise', { w: 26 }), keyLine(460, 330, 'mirror', 'mirror arrow: clockwise', { w: 26 }), keyLine(460, 354, 'square', 'their shared shadow')),
+      text(ph ? 24 : 460, ph ? 612 : 382, '0, 1, 2 at the tips: sample numbers', { anchor: 'start', cls: 'k-tick' }),
+      ph ? g({}, keyLine(24, 356, 'top', 'top arrow, counter-clockwise', { w: 26 }), keyLine(24, 378, 'mirror', 'mirror arrow, clockwise', { w: 26 }), keyLine(24, 400, 'square', 'both shadows, one spot'))
+        : g({}, keyLine(460, 306, 'top', 'top arrow: counter-clockwise', { w: 26 }), keyLine(460, 330, 'mirror', 'mirror arrow: clockwise', { w: 26 }), keyLine(460, 354, 'square', 'both shadows, one spot')),
     ];
   };
 
@@ -186,7 +187,7 @@ export default k => {
         A(L.slug, [[180, 40], [180, 92]]),
         rect(24, 70, 312, 330, { cls: 'h-chip', rx: 8 }),
         text(40, 92, 'inside the chip', { anchor: 'start', cls: 'k-name' }),
-        k.box(bx, 108, bw, 60, { name: 'make an arrow', sub: 'left-right and up-down' }),
+        k.box(bx, 108, bw, 60, { name: 'make an arrow', sub: 'how: the next section' }),
         A(L.slug, [[180, 168], [180, 202]]),
         text(196, 190, 'two numbers', { anchor: 'start', cls: 'k-tick' }),
         k.box(bx, 206, bw, 60, { name: '× one arrow', sub: '+300 Hz, no mirror' }),
@@ -204,12 +205,12 @@ export default k => {
       A(L.slug, [[124, y], [170, y]]),
       rect(146, 50, 432, 156, { cls: 'h-chip', rx: 8 }),
       text(162, 74, 'inside the chip', { anchor: 'start', cls: 'k-name' }),
-      k.box(174, y - 30, 120, 60, { name: 'an arrow', sub: 'two numbers' }),
+      k.box(174, y - 30, 120, 60, { name: 'make an arrow', sub: 'two numbers' }),
       A(L.slug, [[294, y], [322, y]]),
       k.box(326, y - 30, 104, 60, { name: '× arrow', sub: '+300 Hz' }),
       A(L.slug, [[430, y], [458, y]]),
       k.box(462, y - 30, 100, 60, { name: 'shadow', sub: 'left-right', cls: 'k-box-accent' }),
-      text(174, y + 58, 'each arrow: left-right and up-down', { anchor: 'start', cls: 'k-tick' }),
+      text(174, y + 58, 'how to make the arrow: the next section', { anchor: 'start', cls: 'k-tick' }),
       A(L.slug, [[562, y], [612, y]], { tone: 'accent' }),
       text(620, y - 6, 'to the line', { anchor: 'start', cls: 'k-name' }), text(620, y + 14, 'one number', { anchor: 'start', cls: 'k-tick' }), text(620, y + 30, 'per sample', { anchor: 'start', cls: 'k-tick' }),
       text(360, 244, 'only what goes out on the line has to be a shadow', { cls: 'k-note' }),
@@ -269,9 +270,9 @@ export default k => {
       col(X), col(S),
       text(X.x0 - 30, X.y0 - 18, 'x[n] = cos: left-right, stored', { anchor: 'start', cls: 'k-name' }),
       axes(X, { xTicks: [], yTicks: [] }), stems(X, ns.map(n => [n, cosd(45 * n)]), { dot: 4 }),
-      text(S.x0 - 30, S.y0 - 18, 'x̂[n] = sin: up-down, needed', { anchor: 'start', cls: 'k-name' }),
+      text(S.x0 - 30, S.y0 - 18, 'sin: up-down, needed', { anchor: 'start', cls: 'k-name' }),
       axes(S, { xTicks: ns.map(n => [n, n ? String(n) : 'n = 0']), yTicks: [] }), stems(S, ns.map(n => [n, sind(45 * n)]), { dot: 4.5, hollow: true }),
-      text(ph ? 180 : 555, ph ? 654 : 350, 'x + j x̂ = the dot itself', { cls: 'k-math' }),
+      text(ph ? 180 : 555, ph ? 654 : 350, 'cos + j sin = the dot itself', { cls: 'k-math' }),
     ];
   };
 
@@ -343,7 +344,7 @@ export default k => {
         k.box(16, 86, 152, 56, { name: 'delay', sub: 'D = 15 samples' }),
         k.box(192, 86, 152, 56, { sub: '31 coefficients' }), text(rx, 110, 'Hilbert transformer', { cls: 'k-name', style: 'font-size:13px' }),
         A([[lx, 142], [lx, 181]]), A([[rx, 142], [rx, 181]]),
-        text(rx + 8, 166, 'x̂[n]', { anchor: 'start', cls: 'k-label' }),
+        text(rx - 8, 166, 'x̂[n]', { anchor: 'end', cls: 'k-label' }),
         mul(lx, 196), mul(rx, 196),
         A([[20, 196], [73, 196]]), text(16, 178, 'cos 300 Hz', { anchor: 'start', cls: 'k-label' }),
         A([[340, 196], [287, 196]]), text(344, 178, 'sin 300 Hz', { anchor: 'end', cls: 'k-label' }),
@@ -412,8 +413,8 @@ export default k => {
       text(P.X(-2000), P.Y(1) - 12, ph ? '+j: forward' : '+j: a quarter turn forward', { cls: 'k-label' }),
       text(P.X(2000), P.Y(-1) + 22, ph ? '−j: back' : '−j: a quarter turn back', { cls: 'k-label' }),
       text(P.X(0) + 10, P.Y(0.62), 'the jump at 0 Hz', { anchor: 'start', cls: 'k-label' }),
-      ph ? g({}, keyLine(20, 318, 'dashed', 'what the ideal asks for', { w: 26 }), keyLine(20, 340, 'curve', '31 Hann coefficients', { w: 26 }))
-        : g({}, keyLine(110, 312, 'dashed', 'what the ideal Hilbert transformer asks for', { w: 26 }), keyLine(110, 336, 'curve', '31 Hann coefficients: the jump smoothed over about 0 to 300 Hz', { w: 26 })),
+      ph ? g({}, keyLine(20, 318, 'dashed', 'what the ideal asks for', { w: 26 }), keyLine(20, 340, 'curve', 'a real 31-coefficient filter', { w: 26 }))
+        : g({}, keyLine(110, 312, 'dashed', 'what the ideal Hilbert transformer asks for', { w: 26 }), keyLine(110, 336, 'curve', 'a real 31-coefficient filter, built below: the jump smoothed over 0 to 300 Hz', { w: 26 })),
     ];
   };
 
@@ -425,7 +426,8 @@ export default k => {
         const a = i * Math.PI / n, b = (i + 1) * Math.PI / n, up = i % 2 === 0, left = n % 2 === 1 && i === n - 1;
         const pts = range(0, 30).map(j => { const t = a + (b - a) * j / 30; return `L${r2(P.X(t))} ${r2(P.Y(Math.sin(t * n)))}`; }).join('');
         const shape = up ? path(`M${r2(P.X(a))} ${r2(P.Y(0))}${pts}L${r2(P.X(b))} ${r2(P.Y(0))}Z`, { cls: left ? 'h-lobe-left' : 'k-fill', fill: undefined }) : '';
-        return g({}, shape, text(P.X((a + b) / 2), P.Y(up ? 0.4 : -0.4) + 5, up ? (left ? '+ left over' : '+') : M, { cls: left ? 'k-num-accent' : 'k-num' }));
+        return g({}, shape, text(P.X((a + b) / 2), P.Y(up ? 0.4 : -0.4) + 5, up ? '+' : M, { cls: left ? 'k-num-accent' : 'k-num' }),
+          left ? text(P.X((a + b) / 2), P.Y(-0.45) + 5, 'left over', { cls: 'k-num-accent' }) : '');
       });
       return g({}, lobes,
         axes(P, { xTicks: [[0, '0'], [Math.PI / 2, 'π/2'], [Math.PI, 'π']], yTicks: [[1, '1'], [-1, `${M}1`]] }),
@@ -499,7 +501,7 @@ export default k => {
         g({ anim: { k: 'in', d: 2.6, len: 1.2 } }, clipped(P, f => Math.abs(Math.tan(15 * Math.PI * f / 8000)), 3.05, 2))),
       step(4, 'marked: 20% at 500 Hz, 41% at 1,000 Hz, 100% at 2,000 Hz, 241% at 3,000 Hz',
         g({}, marks.map(([f, v, s], i) => g({ anim: { k: 'in', d: 4 + i * 0.6, len: 0.5 } },
-          circle(P.X(f), P.Y(v), 4.5, { cls: 'k-dot' }), k.masked(P.X(f) + (f === 3000 ? -10 : 8), P.Y(v) - 8, s, { anchor: f === 3000 ? 'end' : 'start', cls: 'k-num' }))))),
+          circle(P.X(f), P.Y(v), 4.5, { cls: 'k-dot' }), k.masked(P.X(f) + (f === 1000 ? 8 : -10), P.Y(v) + (f === 500 ? 4 : -8), s, { anchor: f === 1000 ? 'start' : 'end', cls: 'k-num' }))))),
       text(P.x0, P.y1 + (ph ? 58 : 52), 'where the curve runs off the top,', { anchor: 'start', cls: 'k-tick' }),
       text(P.x0, P.y1 + (ph ? 74 : 68), 'the wanted copy itself cancels', { anchor: 'start', cls: 'k-tick' }),
       ph ? keyLine(20, 538, 'ref', 'the original, then the late arrow', { w: 22 }) : keyLine(24, 320, 'ref', 'the original, then the late arrow', { w: 22 }),
@@ -527,8 +529,8 @@ export default k => {
       line(Q.x0, Q.Y(0.05), Q.x1, Q.Y(0.05), { cls: 'h-ref' }),
       clipped(Q, gh(31, false), 0.2, 5, 'h-dotted'),
       clipped(Q, gh(31, true), 0.2, 5),
-      circle(Q.X(300), Q.Y(0.0524), 4, { cls: 'k-dot' }), k.masked(Q.X(300) + 10, Q.Y(0.0524) + 18, '5.24%', { anchor: 'start', cls: 'k-num-accent' }),
-      circle(Q.X(300), Q.Y(0.0679), 4, { cls: 'h-hollow-dot' }), k.masked(Q.X(300) + 10, Q.Y(0.0679) - 4, '6.79%', { anchor: 'start', cls: 'k-num' }),
+      circle(Q.X(300), Q.Y(0.0524), 4, { cls: 'k-dot' }), k.masked(Q.X(300) + 12, Q.Y(0.0524) + 26, '5.24%: Hann', { anchor: 'start', cls: 'k-num-accent' }),
+      circle(Q.X(300), Q.Y(0.0679), 4, { cls: 'h-hollow-dot' }), k.masked(Q.X(300) + 12, Q.Y(0.0679) - 14, '6.79%: plain cut', { anchor: 'start', cls: 'k-num' }),
       text(Q.X(ph ? 520 : 480), Q.Y(0.2) + 14, ph ? '100 Hz: 44.2%, off the top' : 'at 100 Hz the ghost is 44.2%, off the top', { anchor: 'start', cls: 'k-tick' }),
       ph ? g({}, keyLine(20, 512, 'curve', '31 coefficients, Hann window', { w: 26 }), keyLine(20, 534, 'dotted', '31 coefficients, plain cut', { w: 26 }), keyLine(20, 556, 'dashed', 'the 5% target', { w: 26 }), keyLine(20, 580, 'fill', 'the voice band'))
         : g({}, keyLine(80, 494, 'curve', '31 coefficients, Hann window', { w: 26 }), keyLine(380, 494, 'dotted', '31 coefficients, plain cut', { w: 26 }), keyLine(80, 518, 'dashed', 'the 5% target', { w: 26 }), keyLine(380, 518, 'fill', 'the voice band')),
@@ -541,17 +543,17 @@ export default k => {
     fig('split', [490, 530], 'One tone in, two tones out',
       'A 1,000 Hz tone times a 300 Hz tone splits into two half-size tones, 1,300 Hz, the wanted copy, and 700 Hz, the ghost. A whole voice from 300 to 3,400 Hz splits the same way into a wanted copy from 600 to 3,700 Hz and a ghost from 0 to 3,100 Hz; they overlap from 600 to 3,100 Hz, and at 1,700 Hz the wanted copy of 1,400 and the ghost of 2,000 land together.',
       'Top: the 1,000 Hz tone splits into two half-size tones. Bottom: a whole voice splits into a wanted copy and a ghost that overlap almost everywhere, so no filter can pull them apart.', split, 4),
-    fig('negative-tone', [370, 600], 'Two arrows, one shadow',
+    fig('negative-tone', [400, 630], 'Two arrows, one shadow',
       'A 1,000 Hz tone drawn as two half-size arrows: the top arrow turns counter-clockwise 45 degrees per sample, the mirror arrow turns clockwise 45 degrees per sample. At samples 0, 1 and 2 they share the same shadow on the horizontal line, and their shadows added give the 1,000 Hz cosine.',
       'The top arrow is +1,000 Hz, the mirror arrow is the negative tone, −1,000 Hz. Sample by sample they cast the same shadow, so on the line they sound the same.', negTone, 4),
     fig('chip-boundary', [270, 520], 'Arrows inside, shadows outside',
       'The chip takes one number per sample from the line, keeps each sample as an arrow of two numbers, left-right and up-down, multiplies arrows by one arrow turning +300 Hz, and sends only the shadow, one number per sample, back out to the line.',
-      'Inside the chip a sample can be an arrow, two numbers. Only what goes out on the line has to be a shadow.', chipBoundary),
+      'Inside the chip a sample can be an arrow, two numbers. Only what goes out on the line has to be a shadow. How to make the arrow from one number is the next section.', chipBoundary),
     fig('ghost-arrows', [350, 660], 'The mirror arrow is the ghost',
       'Before: the top arrow turns +45 degrees per sample and the mirror −45 degrees. Times one arrow turning +13.5 degrees per sample, both turn 13.5 degrees further counter-clockwise: the top arrow speeds up to +58.5 degrees, +1,300 Hz, and the mirror slows to −31.5 degrees, −700 Hz, whose shadow sounds at 700 Hz, the ghost.',
       'One arrow turning +300 Hz adds 13.5° per sample to both arrows. The top arrow speeds up to 1,300 Hz; the mirror slows to −700 Hz, and its shadow is the 700 Hz ghost.', ghostArrows, 3),
     fig('analytic', [380, 670], 'The analytic signal: the dot itself',
-      'One full-size arrow at sample 1, 45 degrees: its left-right part is the cosine x, 0.707, and its up-down part is the sine x̂, 0.707. The same dot a quarter turn behind, at −45 degrees, has a left-right part of 0.707 too. Beside it, x[n] and x̂[n] for n = 0 to 7.',
+      'One full-size arrow at sample 1, 45 degrees: its left-right part is the cosine x, 0.707, and its up-down part is the sine, 0.707. The same dot a quarter turn behind, at −45 degrees, has a left-right part of 0.707 too. Beside it, the cosine x[n] and the sine for n = 0 to 7.',
       'The analytic signal of one tone is the dot: its left-right part is the cosine you store, its up-down part the sine you need. That sine is the left-right part of the dot a quarter turn behind.', analytic),
     fig('hilbert', [380, 930], 'Two quarter turns cancel the mirror',
       'Three steps for a cosine’s two half-size arrows: the Hilbert transformer turns the top arrow a quarter turn clockwise and the mirror a quarter turn counter-clockwise, keeping them mirror images; times j turns both a quarter turn counter-clockwise; placed tip to tail on the original arrows, the top arrow reaches twice as far, doubled, and the mirror arrow comes back to the centre, cancelled.',
@@ -566,7 +568,7 @@ export default k => {
       'Around the 1,000 Hz call tone, a plain multiplication by the 300 Hz shift makes two half-size sidebands: the upper at 1,300 Hz and the lower at 700 Hz. Single sideband keeps the upper one and removes the lower one.',
       'A plain multiplication makes both sidebands. Single sideband keeps the upper one, 1,300 Hz, and removes the lower one, the ghost.', sideband),
     fig('hilbert-response', [360, 360], 'The Hilbert transformer’s response',
-      'The ideal response is +j for every negative tone and −j for every positive tone, with a jump at 0 Hz. The 31-coefficient Hann version follows it across the middle and smooths the jump over about 0 to 300 Hz, and the same near 4,000 Hz.',
+      'The ideal response is +j for every negative tone and −j for every positive tone, with a jump at 0 Hz. The real 31-coefficient filter built later in this section follows it across the middle and smooths the jump over about 0 to 300 Hz, and the same near 4,000 Hz.',
       'Every positive tone is turned back a quarter turn (−j, down), every negative tone forward (+j, up). The real 31-coefficient filter cannot jump at 0 Hz; it ramps.', hilbertResponse),
     fig('h-sketch', [340, 560], 'Where 2 ÷ (πn) comes from',
       'For n = 2, sin(2ω) over ω from 0 to π makes one half-wave up and one down; they cancel, so h[2] = 0. For n = 3 there are three half-waves; one up and one down cancel and one up is left over, area 2 ÷ 3, so h[3] = (2 ÷ 3) ÷ π = 0.212.',
