@@ -100,6 +100,8 @@ export default k => {
     const cx = ph ? 180 : 210, cy = ph ? 170 : 175, R = ph ? 92 : 110;
     const pts = [[0, '0°', 'start: right'], [90, '90° back', 'π/2'], [180, '180° back', 'π'], [270, '270° back', '3π/2']];
     const out = [line(cx - R - 16, cy, cx + R + 16, cy, { cls: 'k-axis' }), line(cx, cy - R - 16, cx, cy + R + 16, { cls: 'k-axis' }), circle(cx, cy, R, { cls: 'k-wheel', fill: 'none' })];
+    const [sx, sy] = at(cx, cy, R, 45), [lx45, ly45] = at(cx, cy, R + 12, 45);
+    out.push(line(cx, cy, sx, sy, { cls: 'k-guide' }), circle(sx, sy, 4, { cls: 'l13-mk-soft' }), text(lx45 + 2, ly45 + 8, ph ? '45°: one step' : '45° back: one step', { anchor: 'start', cls: 'k-tick' }));
     out.push(arcArrow(cx, cy, R * 0.32, 0, 88, { tone: '' , cls: 'l13-arc-ink' }), arcArrow(cx, cy, R * 0.5, 0, 178, { tone: '', cls: 'l13-arc-ink' }), arcArrow(cx, cy, R * 0.68, 0, 268, { tone: '', cls: 'l13-arc-ink' }));
     pts.forEach(([d, a, b]) => {
       const [x, y] = at(cx, cy, R, d);
@@ -177,7 +179,7 @@ export default k => {
       step(1, 'the four odd arrows, right, up, right, up, laid tip to tail', g({}, steps)),
       step(2, 'they add up to 2 right and 2 up: length 2.83, pointing 45 degrees up',
         g({ anim: { k: 'in', d: 2.2 } }, vec(ax, ay, ax + 2 * u, ay - 2 * u, { tone: '', s: 10, cls: 'l13-thick' }),
-          text(ax + u - 14, ay - u - 14, '2.83, 45° up', { anchor: 'end', cls: 'k-num' })))];
+          text(ax + 2 * u, ay - 2 * u - 14, '2.83, 45° up', { cls: 'k-num' })))];
     const B = [titleB,
       line(bx - 10, by, bx + L2 + 24, by, { cls: 'k-axis' }),
       vec(bx, by, bx + 2 * u, by - 2 * u, { tone: 'faint', s: 9 }),
@@ -299,7 +301,7 @@ export default k => {
         out.push(g({},
           line(a0x, a0y, a1x, a1y, { cls }), line(b0x, b0y, b1x, b1y, { cls }),
           line(aSx, aSy, bEx, bEy, { cls }), line(bSx, bSy, aEx, aEy, { cls }),
-          ph ? text(b0x + 5, b0y + 16, W8(tw), { anchor: 'start', cls: hi ? 'k-num-accent' : 'k-tick' }) : text(b0x + 4, b0y - 7, W8(tw), { anchor: 'start', cls: hi ? 'k-num-accent' : 'k-tick' }),
+          ph ? text(b0x + 5, b0y + 18, W8(tw), { anchor: 'start', cls: hi ? 'k-num-accent' : 'k-num', style: 'font-size:14px' }) : text(b0x + 4, b0y - 8, W8(tw), { anchor: 'start', cls: hi ? 'k-num-accent' : 'k-num', style: 'font-size:15px' }),
           ph ? text(b1x + 4, b1y - 6, M, { anchor: 'start', cls: 'k-tick' }) : text(b1x - 12, b1y + 14, M, { cls: 'k-tick' })));
       }
     }
@@ -317,13 +319,13 @@ export default k => {
     if (ph) {
       out.push(text(14, 30, 'position', { anchor: 'start', cls: 'k-tick' }));
       [1, 2, 3].forEach(l => { const y = (lay(l - 1) + lay(l)) / 2; out.push(text(6, y - 4, 'layer', { anchor: 'start', cls: 'k-tick' }), text(6, y + 10, String(l), { anchor: 'start', cls: 'k-tick' })); });
-      out.push(text(180, 600, 'inputs in bit-reversed order', { cls: 'k-tick' }), text(180, 618, 'W₈ᵏ: turn back k × 45°; −: subtract', { cls: 'k-tick' }), text(180, 636, 'thick lines: the bin 1 / bin 5 butterfly', { cls: 'k-tick' }));
+      out.push(text(180, 600, 'inputs in a shuffled order, explained below', { cls: 'k-tick' }), text(180, 618, 'W₈ᵏ: the wheel’s arrow, k × 45° back; −: subtract', { cls: 'k-tick' }), text(180, 636, 'thickest lines: the bin 1 / bin 5 butterfly', { cls: 'k-tick' }));
     } else {
       out.push(text(26, 40, 'position', { cls: 'k-tick' }));
       [1, 2, 3].forEach(l => out.push(text((lay(l - 1) + lay(l)) / 2, 40, `layer ${l}`, { cls: 'k-name' })));
       out.push(text(lay(0) - 12, 40, 'input', { anchor: 'end', cls: 'k-tick' }), text(lay(3) + 12, 40, 'bin', { anchor: 'start', cls: 'k-tick' }));
-      out.push(text(360, 384, 'inputs in bit-reversed order · W₈ᵏ: turn back k × 45° · −: subtract this leg', { cls: 'k-tick' }),
-        text(360, 404, 'thick lines: the butterfly that makes bins 1 and 5, as in the hand example', { cls: 'k-tick' }));
+      out.push(text(360, 384, 'W₈ᵏ: the 8-sample wheel’s arrow, k × 45° back · −: subtract this leg', { cls: 'k-tick' }),
+        text(360, 404, 'inputs in a shuffled order, explained below · thick: the bin 1 / bin 5 butterfly', { cls: 'k-tick' }));
     }
     return out;
   };
@@ -348,7 +350,7 @@ export default k => {
       poly(dir), Ns.map(n => marker('circle', P.X(n), P.Y(dir(n)))),
       polyF, Ns.map(n => marker('square', P.X(n), P.Y(fft(n)), 'accent')),
       ratio(3, '', 'right'), text(P.X(3) + 16, P.y1 - 8, ph ? '2.7×' : '2.7 times fewer', { anchor: 'start', cls: 'k-num' }), ratio(8, ph ? '32×' : '32 times fewer', 'right'), ratio(10, '', ph ? 'left' : 'right'),
-      text(P.X(10) + (ph ? -16 : 16), (P.Y(dir(10)) + P.Y(fft(10))) / 2 - 4, ph ? '102×' : '102 times', { anchor: ph ? 'end' : 'start', cls: 'k-num' }), ph ? '' : text(P.X(10) + 16, (P.Y(dir(10)) + P.Y(fft(10))) / 2 + 12, 'fewer', { anchor: 'start', cls: 'k-num' }),
+      text(P.X(10) + (ph ? -16 : 16), (P.Y(dir(10)) + P.Y(fft(10))) / 2 + (ph ? 16 : -4), ph ? '102×' : '102 times', { anchor: ph ? 'end' : 'start', cls: 'k-num' }), ph ? '' : text(P.X(10) + 16, (P.Y(dir(10)) + P.Y(fft(10))) / 2 + 12, 'fewer', { anchor: 'start', cls: 'k-num' }),
       ph ? key(20, 340, [[keyLine('k-curve', 'circle'), 'direct DFT, 2 × N × N'], [keyLine('k-curve-accent', 'square', 'accent'), 'FFT, 2 × N × log₂ N']], { cols: 1, dy: 24 })
         : key(110, 356, [[keyLine('k-curve', 'circle'), 'direct DFT, 2 × N × N'], [keyLine('k-curve-accent', 'square', 'accent'), 'FFT, 2 × N × log₂ N']], { dx: 280 }),
     ];
@@ -415,40 +417,40 @@ export default k => {
   const budget = L => {
     const ph = L.phone;
     const rows = range(0, 8).map(s => { const m = 256 >> s, small = m > 1 ? (2 ** s) * 2 * m * m : 0, bf = s * 512; return { s, small, bf, total: small + bf, fits: small + bf <= 32000 }; });
-    const lg = v => Math.log10(v);
-    const seg = (fits, part) => (part === 'bf' ? 'l13-dots' : fits ? 'l13-solid' : 'l13-hollow');
+    const seg = fits => (fits ? 'l13-solid' : 'l13-hollow');
+    const dots = (x, y, w, h) => g({}, rect(x, y, w, h, { fill: `url(#${L.slug}-dots)` }), rect(x, y, w, h, { cls: 'l13-dots-edge' }));
+    const keyItems = [[keySwatch('l13-solid'), 'small DFTs, fits'], [keySwatch('l13-hollow'), 'small DFTs, over'], [(x, y) => dots(x + 4, y - 7, 18, 14), 'butterfly multiplications']];
     const out = [];
     if (ph) {
-      const P = plot({ x: 60, y: 60, w: 210, h: 360, xs: [3, 5.3], ys: [8.6, -0.6] });
-      const bh = 22, Yc = s => P.Y(s);
+      const P = plot({ x: 44, y: 60, w: 250, h: 360, xs: [0, 140000], ys: [-0.6, 8.6] });
+      const bh = 24;
       rows.forEach(r => {
-        const y = Yc(r.s) - bh / 2, xs = P.X(3), xm = r.small ? P.X(lg(r.small)) : xs, xe = P.X(lg(r.total));
-        if (r.small) out.push(rect(xs, y, xm - xs, bh, { cls: seg(r.fits, 'small') }));
-        out.push(rect(xm, y, Math.max(xe - xm, 1.5), bh, { cls: 'l13-dots', fill: `url(#${L.slug}-dots)` }), rect(xm, y, Math.max(xe - xm, 1.5), bh, { cls: 'l13-dots-edge' }));
-        const xl = P.X(lg(32000)), lx0 = xe + 6 < xl + 4 && xe + 50 > xl ? xl + 6 : xe + 6;
-        out.push(text(lx0, y + 15, n0(r.total), { anchor: 'start', cls: r.fits ? 'k-num' : 'k-tick' }), text(xs - 8, y + 15, String(r.s), { anchor: 'end', cls: 'k-tick' }));
+        const yc = P.y0 + (r.s + 0.5) / 9.2 * P.h, y = yc - bh / 2, xs = P.X(0), xm = P.X(r.small), xe = P.X(r.total);
+        if (r.small) out.push(rect(xs, y, xm - xs, bh, { cls: seg(r.fits) }));
+        if (r.bf) out.push(dots(xm, y, Math.max(xe - xm, 2), bh));
+        out.push(masked(Math.max(xe, xs + 2) + 6, yc + 4, n0(r.total), { anchor: 'start', cls: r.fits ? 'k-num' : 'k-tick', size: 12 }), text(xs - 8, yc + 4, String(r.s), { anchor: 'end', cls: 'k-tick' }));
       });
-      out.push(line(P.X(3), P.y0 - 10, P.X(3), P.y1 + 6, { cls: 'k-axis' }));
-      [[3, '1,000'], [4, '10,000'], [5, '100,000']].forEach(([v, s]) => out.push(line(P.X(v), P.y1 + 6, P.X(v), P.y1 + 12, { cls: 'k-axis' }), text(P.X(v), P.y1 + 26, s, { cls: 'k-tick' })));
-      out.push(line(P.X(lg(32000)), P.y0 - 14, P.X(lg(32000)), P.y1 + 4, { cls: 'k-curve-soft' }), text(P.X(lg(32000)) - 4, P.y0 - 20, '32,000 budget', { anchor: 'middle', cls: 'k-num' }));
-      out.push(text(20, 24, 'splits at N = 256, and multiplications per block', { anchor: 'start', cls: 'k-tick' }), text(270, P.y1 + 42, 'log scale, from 1,000', { anchor: 'end', cls: 'k-tick' }),
-        text(20, P.y1 + 66, '205 = 5 × 41: no split at all', { anchor: 'start', cls: 'k-label' }),
-        key(20, P.y1 + 96, [[keySwatch('l13-solid'), 'small DFTs, fits'], [keySwatch('l13-hollow'), 'small DFTs, over budget'], [(x, y) => g({}, rect(x + 4, y - 7, 18, 14, { fill: `url(#${L.slug}-dots)` }), rect(x + 4, y - 7, 18, 14, { cls: 'l13-dots-edge' })), 'butterfly multiplications'], [keyLine('k-curve-soft'), 'the chip’s budget']], { cols: 1, dy: 22 }));
+      out.push(line(P.X(0), P.y0 - 6, P.X(0), P.y1 + 6, { cls: 'k-axis' }), line(P.X(0), P.y1 + 6, P.X(140000), P.y1 + 6, { cls: 'k-axis' }));
+      [[0, '0'], [50000, '50,000'], [100000, '100,000']].forEach(([v, t]) => out.push(line(P.X(v), P.y1 + 6, P.X(v), P.y1 + 12, { cls: 'k-axis' }), text(P.X(v), P.y1 + 26, t, { cls: 'k-tick' })));
+      out.unshift(line(P.X(32000), P.y0 - 14, P.X(32000), P.y1 + 6, { cls: 'k-curve-soft' }), text(P.X(32000) + 4, P.y0 - 18, '32,000: the budget', { anchor: 'start', cls: 'k-num' }));
+      out.push(text(14, 24, 'splits at N = 256, multiplications per block', { anchor: 'start', cls: 'k-tick' }), text(P.x1, P.y1 + 44, 'axis from 0', { anchor: 'end', cls: 'k-tick' }),
+        text(20, P.y1 + 72, '205 = 5 × 41: no split at all', { anchor: 'start', cls: 'k-label' }),
+        key(20, P.y1 + 102, [...keyItems, [keyLine('k-curve-soft'), 'the chip’s budget']], { cols: 1, dy: 22 }));
       return [dotsDef(L.slug), out];
     }
-    const P = plot({ x: 110, y: 50, w: 470, h: 250, xs: [-0.6, 8.6], ys: [3, 5.3] });
+    const P = plot({ x: 110, y: 50, w: 470, h: 250, xs: [-0.6, 8.6], ys: [0, 140000] });
     const bw = 30;
     rows.forEach(r => {
-      const x = P.X(r.s) - bw / 2, yb = P.Y(3), ym = r.small ? P.Y(lg(r.small)) : yb, ye = P.Y(lg(r.total));
-      if (r.small) out.push(rect(x, ym, bw, yb - ym, { cls: seg(r.fits, 'small') }));
-      out.push(rect(x, ye, bw, Math.max(ym - ye, 1.5), { fill: `url(#${L.slug}-dots)` }), rect(x, ye, bw, Math.max(ym - ye, 1.5), { cls: 'l13-dots-edge' }));
-      out.push(text(P.X(r.s), ye - 8, n0(r.total), { cls: r.fits ? 'k-num' : 'k-tick', style: 'font-size:11px' }));
+      const x = P.X(r.s) - bw / 2, yb = P.Y(0), ym = P.Y(r.small), ye = P.Y(r.total);
+      if (r.small) out.push(rect(x, ym, bw, yb - ym, { cls: seg(r.fits) }));
+      if (r.bf) out.push(dots(x, ye, bw, Math.max(ym - ye, 2)));
+      out.push(text(P.X(r.s), Math.min(ye, yb - 2) - 8, n0(r.total), { cls: r.fits ? 'k-num' : 'k-tick', style: 'font-size:11px' }));
     });
-    out.push(axes(P, { yTicks: [[3, '1,000'], [4, '10,000'], [5, '100,000']], xTicks: range(0, 8).map(s => [s, String(s)]), zero: false }));
-    out.push(line(P.x0, P.Y(lg(32000)), P.x1 + 10, P.Y(lg(32000)), { cls: 'k-curve-soft' }), text(P.x1 + 14, P.Y(lg(32000)) + 4, '32,000:', { anchor: 'start', cls: 'k-num' }), text(P.x1 + 14, P.Y(lg(32000)) + 20, 'the chip’s budget', { anchor: 'start', cls: 'k-tick' }), text(P.x1 + 14, P.Y(lg(32000)) + 34, 'per block', { anchor: 'start', cls: 'k-tick' }));
-    out.push(text(P.x0, 30, 'multiplications per block (log scale, from 1,000)', { anchor: 'start', cls: 'k-tick' }), text(P.x1, P.y1 + 36, 'splits, at N = 256', { anchor: 'end', cls: 'k-tick' }),
+    out.push(axes(P, { yTicks: [[0, '0'], [50000, '50,000'], [100000, '100,000']], xTicks: range(0, 8).map(s => [s, String(s)]), zero: false }));
+    out.push(line(P.x0, P.Y(32000), P.x1 + 10, P.Y(32000), { cls: 'k-curve-soft' }), text(P.x1 + 14, P.Y(32000) + 4, '32,000:', { anchor: 'start', cls: 'k-num' }), text(P.x1 + 14, P.Y(32000) + 20, 'the chip’s budget', { anchor: 'start', cls: 'k-tick' }), text(P.x1 + 14, P.Y(32000) + 34, 'per block', { anchor: 'start', cls: 'k-tick' }));
+    out.push(text(P.x0, 30, 'multiplications per block (from 0)', { anchor: 'start', cls: 'k-tick' }), text(P.x1, P.y1 + 36, 'splits, at N = 256', { anchor: 'end', cls: 'k-tick' }),
       text(P.x1 + 14, 60, '205 = 5 × 41:', { anchor: 'start', cls: 'k-label' }), text(P.x1 + 14, 76, 'no split at all', { anchor: 'start', cls: 'k-label' }));
-    out.push(key(40, 372, [[keySwatch('l13-solid'), 'small DFTs, fits'], [keySwatch('l13-hollow'), 'small DFTs, over'], [(x, y) => g({}, rect(x + 4, y - 7, 18, 14, { fill: `url(#${L.slug}-dots)` }), rect(x + 4, y - 7, 18, 14, { cls: 'l13-dots-edge' })), 'butterfly multiplications']], { dx: 200 }));
+    out.push(key(40, 372, keyItems, { dx: 200 }));
     return [dotsDef(L.slug), out];
   };
   const dotsDef = slug => `<defs><pattern id="${slug}-dots" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" class="l13-dots-bg"/><circle cx="2.5" cy="2.5" r="1.1" class="l13-dots-dot"/></pattern></defs>`;
@@ -470,11 +472,11 @@ export default k => {
     const out = [];
     if (ph) {
       range(0, 3).forEach(k => {
-        const y = 100 + k * 150;
+        const y = 100 + k * 170;
         out.push(step(k * 2 + 1, `bin ${k}: ${k * 90} degrees back per sample`, g({ anim: { k: 'in', d: k * 0.8, len: 0.6 } }, text(90, y - 64, `bin ${k}`, { cls: 'k-name' }), text(90, y + 70, sub(k), { cls: 'k-tick' }), wheel(k, 90, y, 32))),
           step(k * 2 + 2, `bin ${k + 4}: ${(k + 4) * 90} degrees, lands on bin ${k}`, g({ anim: { k: 'in', d: 3.4 + k * 0.8, len: 0.6 } }, text(270, y - 64, `bin ${k + 4}`, { cls: 'k-name' }), text(270, y + 70, sub(k + 4), { cls: 'k-tick' }), wheel(k + 4, 270, y, 32), text(180, y + 5, '=', { cls: 'k-name' }))));
       });
-      out.push(text(180, 650, 'a 4-sample wheel; numbers: which samples point there', { cls: 'k-tick' }));
+      out.push(text(180, 716, 'a 4-sample wheel; numbers: which samples point there', { cls: 'k-tick' }));
       return out;
     }
     range(0, 7).forEach(k => {
@@ -520,10 +522,10 @@ export default k => {
     const plotPart = [
       text(P.x0, P.y0 - 20, 's[n], the filter’s output', { anchor: 'start', cls: 'k-name' }),
       axes(P, { yTicks: [[150, '150'], [0, '0'], [-150, `${M}150`]], xTicks: [[0, 'n = 0'], [100, '100'], [204, '204']] }),
-      step(3, 'key 5 pushes the ring up steadily: about 8.5 in the first ten samples, 90 around sample 100, 158 by the end',
+      step(3, 'key 5 pushes the ring up steadily: a swing of about 8.5 in the first ten samples, 90 around sample 100, 158 near the end',
         g({}, poly(S5, 'k-curve', { k: 'draw', d: 2, len: 3 }),
-          g({ anim: { k: 'in', d: 4.6 } }, circle(P.X(i10), P.Y(S5[i10]), 3, { cls: 'l13-mk' }), line(P.X(i10), P.Y(S5[i10]) - 5, P.X(i10), P.Y(48), { cls: 'l13-leader' }), text(P.X(i10), P.Y(48) - 6, '8.5', { cls: 'k-num', style: 'font-size:11px' }),
-            note(i100, S5[i100], '90', 0, S5[i100] > 0 ? -10 : 20), circle(P.X(203), P.Y(S5[203]), 3, { cls: 'l13-mk' }), text(P.X(203) + 8, P.Y(S5[203]) + 4, '158', { anchor: 'start', cls: 'k-num', style: 'font-size:11px' }), marker('circle', P.X(204), P.Y(S5[204]))))),
+          g({ anim: { k: 'in', d: 4.6 } }, circle(P.X(i10), P.Y(S5[i10]), 3, { cls: 'l13-mk' }), line(P.X(i10), P.Y(S5[i10]) - 5, P.X(i10), P.Y(48), { cls: 'l13-leader' }), text(P.X(i10), P.Y(48) - 6, `${M}8.5`, { cls: 'k-num', style: 'font-size:11px' }),
+            note(i100, S5[i100], '90', 0, S5[i100] > 0 ? -10 : 20), circle(P.X(203), P.Y(S5[203]), 3, { cls: 'l13-mk' }), text(P.X(203) - 8, P.Y(S5[203]) + 4, `${M}158`, { anchor: 'end', cls: 'k-num', style: 'font-size:11px' }), marker('circle', P.X(204), P.Y(S5[204]))))),
       step(4, 'a tone at the wrong speed, 1,336 Hz alone, stays small',
         g({ anim: { k: 'in', d: 5.4 } }, poly(SW, 'k-curve-soft'), marker('square', P.X(204), P.Y(SW[204]), 'soft'))),
       ph ? key(20, 610, [[keyLine('k-curve', 'circle'), 'key 5, 770 + 1,336 Hz'], [keyLine('k-curve-soft', 'square', 'soft'), '1,336 Hz alone: wrong speed']], { cols: 1, dy: 22 })
@@ -612,7 +614,7 @@ export default k => {
 .k-fig .l13-cellbox { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
 .k-fig .l13-link { fill: none; stroke: var(--ink-soft); stroke-width: 1.2; }
 .k-fig .l13-net { stroke: var(--ink-soft); stroke-width: 1.2; }
-.k-fig .l13-net-hi { stroke: var(--accent); stroke-width: 2.2; }
+.k-fig .l13-net-hi { stroke: var(--accent); stroke-width: 4.5; }
 .k-fig .l13-bracket { stroke: var(--ink-soft); stroke-width: 1.2; }
 .k-fig .l13-shade { fill: var(--paper-2); }
 .k-fig .l13-leader { stroke: var(--ink-soft); stroke-width: 1; }
@@ -640,19 +642,19 @@ export default k => {
       'Bin 1 against bin 5, sample by sample. Even samples: the same arrow. Odd samples: flipped, half a turn apart.', sharedArrows, 8),
     fig('odd-walk', [300, 780], 'The odd part, by hand',
       'The four odd arrows, right, up, right, up, add to 2.83 at 45 degrees up; turned back 45 degrees it points right; added to the even part 2 it gives bin 1 = 4.83, subtracted it gives bin 5 = −0.83.',
-      'Left: the odd part laid tip to tail. Middle: turned back the extra 45°. Right: added to the even part for bin 1, subtracted for bin 5.', oddWalk, 5),
+      'In order: 1, the odd part laid tip to tail; 2, turned back the extra 45°; 3, added to the even part for bin 1 and subtracted for bin 5.', oddWalk, 5),
     fig('butterfly', [310, 470], 'One butterfly',
       'E[1] = 2 and O[1] = 2.83 at 45 degrees enter on the left; the odd leg is turned back 45 degrees by W₈¹ to 2.83 right; the crossing lines add it for X[1] = 4.83 and subtract it for X[5] = −0.83.',
-      'The two results enter on the left, the odd one is turned, and the crossing lines add and subtract it.', butterfly),
+      'The even and odd results come in, the odd one is turned, and the crossing lines add it for bin 1 and subtract it for bin 5. X[k] means bin k.', butterfly),
     fig('split-tree', [390, 450], 'Splitting all the way down',
       'An 8-sample block splits into even and odd samples, then again, down to single samples; the multiplications fall from 128 for the direct DFT to 80 after one split, 64 after two and 48 all the way, where only butterflies are left.',
       'Each level splits every block into its even and odd samples. The numbers count the multiplications if you stop splitting at that level.', splitTree, 5),
     fig('butterfly-network', [420, 650], 'The 8-sample FFT',
       'Three layers of four butterflies; the inputs enter at positions 0 to 7 in bit-reversed order, x[0], x[4], x[2], x[6], x[1], x[5], x[3], x[7]; each turn is labelled W₈ᵏ, and the bins X[0] to X[7] come out in order; the butterfly making bins 1 and 5 is highlighted.',
-      'Read left to right: three layers of four butterflies, each turn labelled with the arrow it turns by. The highlighted butterfly is the one you computed by hand.', network),
+      'Read from the inputs to the bins: three layers of four butterflies, each turn labelled with the arrow it turns by. The thick butterfly is the one you computed by hand.', network),
     fig('growth', [390, 400], 'The FFT’s gain grows with N',
       'On log scales, the direct DFT’s 2N² multiplications climb from 128 at N = 8 to 2,097,152 at 1,024, while the FFT’s 2N log₂ N climbs from 48 to 20,480: 2.7 times fewer at 8, 32 at 256, 102 at 1,024.',
-      'Both axes are on log scales. The gap between the lines is how many times fewer multiplications the FFT needs.', growth),
+      'Both axes are on log scales: going up, each grid line is ten times the one below; going right, N doubles at each tick. The gap between the lines is how many times fewer multiplications the FFT needs.', growth),
     fig('bit-reverse', [380, 430], 'Bit-reversed order',
       'Samples 0 to 7 go to positions whose binary digits are their own read backwards: sample 4, 100, goes to position 1, 001.',
       'Write each sample number in binary and read it backwards: that is the position it enters the network at.', bitReverse),
@@ -660,14 +662,14 @@ export default k => {
       'On a frequency axis from 650 to 1,650 Hz with a bin every 31.25 Hz, the eight keypad tones fall on bins 22, 25, 27, 30, 39, 43, 47 and 52, with an empty bin between neighbors; 770 Hz is 0.36 bin from bin 25; the 205-sample bins, 39.02 Hz apart, are drawn dashed above for comparison.',
       'Each tone lands on its own bin with at least one empty bin between neighbors. The dashed ticks are the old 205-sample bins.', bins256),
     fig('budget', [400, 640], 'What each split costs',
-      'Multiplications per block at N = 256 after 0 to 8 splits: 131,072, 66,048, 33,792, 17,920, 10,240, 6,656, 5,120, 4,608 and 4,096, each split into small DFTs and butterfly multiplications, against a 32,000 budget line; three or more splits fit.',
-      'Each bar is one choice of splits. Solid bars fit under the chip’s budget, hollow ones do not; the dotted top of each bar is the butterflies.', budget),
-    fig('wrap-wheel', [472, 670], 'A 4-sample DFT repeats after 4 bins',
+      'On an axis from 0, multiplications per block at N = 256 after 0 to 8 splits: 131,072, 66,048, 33,792, 17,920, 10,240, 6,656, 5,120, 4,608 and 4,096, each split into small DFTs and butterfly multiplications, against a 32,000 budget line; three or more splits fit.',
+      'Each bar is one choice of splits, on an ordinary axis from 0. Solid bars fit under the chip’s budget, hollow ones do not; the dotted part of each bar is the butterflies, which stay small.', budget),
+    fig('wrap-wheel', [472, 736], 'A 4-sample DFT repeats after 4 bins',
       'For a 4-sample wheel, bins 0 to 3 turn back 0, 90, 180 and 270 degrees per sample; bins 4 to 7 turn back a full turn more, so their four sample arrows land exactly on those of bins 0 to 3.',
       'Bin k turns back k × 90° per sample. Bins 4 to 7 add a full turn, which does not count, so each lands on the bin four below it.', wrapWheel, 8),
     fig('goertzel-swing', [400, 680], 'Goertzel’s filter, pushed in time',
-      'A pole pair on the unit circle at 35.1 degrees and its mirror, whose sum is 1.636 on the horizontal axis; fed key 5, the filter’s output swings up to about 8.5 in the first ten samples, 90 around sample 100 and 158 at the end, while 1,336 Hz alone stays small.',
-      'Left: the pole pair and their sum, 2 × cos 35.1°. Right: the filter’s output, growing like a swing pushed in time, against a tone at the wrong speed.', goertzelSwing, 4),
+      'A pole pair on the unit circle at 35.1 degrees and its mirror, whose sum is 1.636 on the horizontal axis; fed key 5, the filter’s output swings to about −8.5 in the first ten samples, 90 around sample 100 and −158 near the end, while 1,336 Hz alone stays small.',
+      'The pole pair and their sum, 2 × cos 35.1°, then the filter’s output, growing like a swing pushed in time, against a tone at the wrong speed.', goertzelSwing, 4),
     fig('goertzel-final', [380, 480], 'The last step of Goertzel',
       'The last output, −117.2, lies on the horizontal axis; the one before, −158.1, turned back 35.1 degrees, becomes the arrow −129.3 right, 91.0 up; subtracting it tip to tail lands at 12.2 right, 91.0 down, an arrow of length 91.8: the match of bin 20.',
       'Take the last output, subtract the one before it turned back one step of the test wheel, and the length of the result is the bin’s match.', goertzelFinal),

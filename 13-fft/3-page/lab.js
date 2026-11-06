@@ -3,7 +3,7 @@
   const { fmt, MINUS } = K;
   const n0 = v => Math.round(v).toLocaleString('en-US');
   const ROWS = [697, 770, 852, 941], COLS = [1209, 1336, 1477, 1633], KEYS = ['123A', '456B', '789C', '*0#D'];
-  const TONE = [1, 1, 0, -1, -1, -1, 0, 1];
+  const TONE = [1, 1, 0, -1, -1, -1, 0, 1], CLICK = [1, 2, 0, 1, -1, 0, 1, 0];
 
   function fftSplit(x, splits) {
     let mults = 0;
@@ -62,7 +62,8 @@
 
   function act1() {
     const root = document.getElementById('lab'), $ = id => document.getElementById(`lab-${id}`);
-    const st = { x: TONE.slice(), k: 3, method: 0, pinned: null, solved: new Map(), matched: new Set() };
+    const st = { x: CLICK.slice(), k: 3, method: 0, pinned: null, solved: new Map(), matched: new Set(), bin5: false };
+    document.addEventListener('k:solved', e => { if (e.detail === 'predict-bin5') { st.bin5 = true; render(true); } });
     const cells = [];
     for (let n = 0; n < 8; n++) {
       const lab = document.createElement('label'), inp = document.createElement('input');
@@ -87,10 +88,11 @@
     const fmtInt = v => (v < 0 ? MINUS + Math.abs(v) : String(v));
     const caseKey = () => `${st.x.join(',')}|${st.k}`;
 
-    function parts() {
+    const recKey = () => st.x.join(',');
+    function parts(kk = st.k) {
       const ev = [0, 2, 4, 6].map(n => st.x[n]), od = [1, 3, 5, 7].map(n => st.x[n]);
       const dft4 = (v, k) => v.reduce((a, s, r) => add(a, [s * Math.cos(-2 * Math.PI * k * r / 4), s * Math.sin(-2 * Math.PI * k * r / 4)]), [0, 0]);
-      const E = dft4(ev, st.k), O = dft4(od, st.k), WO = cmul(W8(st.k), O);
+      const E = dft4(ev, kk), O = dft4(od, kk), WO = cmul(W8(kk), O);
       return { E, O, WO, Xk: add(E, WO), Xk4: sub(E, WO) };
     }
     function options(p) {
@@ -114,7 +116,7 @@
           const ang = 45 * b * n * Math.PI / 180, cy = rowY[r];
           pen.ring(cx, cy, R, c.rule, 1);
           const flip = r === 1 && n % 2 === 1;
-          arrowOn(s, cx, cy, cx + (R - 2) * Math.cos(ang), cy + (R - 2) * Math.sin(ang), flip ? c.accent : c.ink, 1.8);
+          arrowOn(s, cx, cy, cx + (R - 2) * Math.cos(ang), cy + (R - 2) * Math.sin(ang), r === 1 ? c.accent : c.ink, r === 1 ? 2 : 1.8, r === 1 ? [4, 2.5] : []);
         });
         pen.text(n % 2 ? (narrow ? 'flip' : 'flipped') : 'same', cx, rowY[1] + R + 14, { color: n % 2 ? c.accentInk : c.soft, size: narrow ? 9 : 10 });
       }
@@ -128,19 +130,20 @@
         pen.text(narrow && i === 2 ? `bins ${k} and ${k + 4}` : narrow && i === 1 ? 'odd part, turned' : titles[i], x0 + pw / 2, y0 + 12, { color: c.soft, size: 11 });
         const P = v => [cx + v[0] * sc, cy - v[1] * sc];
         if (i === 0) arrowOn(s, cx, cy, ...P(p.E), c.ink, 2.2);
-        if (i === 1) { arrowOn(s, cx, cy, ...P(p.O), c.soft, 1.8, [], 0.5); arrowOn(s, cx, cy, ...P(p.WO), c.ink, 2.2); }
+        if (i === 1) { arrowOn(s, cx, cy, ...P(p.O), c.soft, 1.8, [1.5, 3]); arrowOn(s, cx, cy, ...P(p.WO), c.ink, 2.2); }
         if (i === 2) {
           const e = P(p.E);
           arrowOn(s, cx, cy, ...e, c.soft, 1.6);
           arrowOn(s, ...e, ...P(p.Xk), c.ink, 2.2);
           pen.dot(...P(p.Xk), 3.5, c.ink);
-          if (shown) { arrowOn(s, ...e, ...P(p.Xk4), c.accent, 2.4); pen.dot(...P(p.Xk4), 3.5, c.accent); }
+          if (shown) { arrowOn(s, ...e, ...P(p.Xk4), c.accent, 2.4, [6, 3]); pen.dot(...P(p.Xk4), 3.5, c.accent); }
           else pen.text('?', e[0] - 12, e[1] - 10, { color: c.accentInk, size: 16, weight: 600 });
-          if (st.pinned) [st.pinned.Xk, st.pinned.Xk4].forEach(v => pen.ring(...P(v), 6, c.input, 1.6));
+          if (st.pinned) { s.ctx.setLineDash([3, 2.5]); [st.pinned.Xk, ...(st.pinned.shown ? [st.pinned.Xk4] : [])].forEach(v => pen.ring(...P(v), 7, c.input, 1.8)); s.ctx.setLineDash([]); }
         }
       });
     }, { height: w => (w < 560 ? 520 : 360) });
 
+    const handEx = () => st.k === 1 && st.x.every((v, i) => v === TONE[i]);
     function render(keepAsk = false) {
       const p = parts(), key = caseKey(), deg = len(p.WO) < 0.005, shown = st.solved.has(key) || deg, k = st.k;
       cells.forEach((inp, n) => { inp.value = fmtInt(st.x[n]); });
@@ -159,7 +162,7 @@
           },
           explain: `Bin ${k + 4} = E ${MINUS} turned odd part = ${words(p.Xk4)}, and the slow DFT agrees.`,
           solved: st.solved.get(key) || null,
-          onSolved: how => { st.solved.set(key, how ? 'shown' : 'right'); if (!how) st.matched.add(key); render(true); },
+          onSolved: how => { st.solved.set(key, how ? 'shown' : 'right'); if (!how && !handEx() && !st.matched.has(recKey())) st.matched.add(recKey()); render(true); },
         });
       }
       $('result').textContent = `E = ${words(p.E)} · turned odd = ${words(p.WO)} · bin ${k} = ${words(p.Xk)} · bin ${k + 4} = ${shown ? words(p.Xk4) : '?'}`;
@@ -171,16 +174,22 @@
         : shown ? `${extra}${turnNote} Bin ${k} adds the turned odd part to E, bin ${k + 4} subtracts it: one turn shared by two bins.` : `${extra}${turnNote} Predict bin ${k + 4} above.`;
       const all = fftSplit(st.x, st.method), slow = fftSplit(st.x, 0);
       const diff = Math.max(...all.re.map((v, i) => Math.hypot(v - slow.re[i], all.im[i] - slow.im[i])));
-      const list = [...all.re].map((v, i) => (i === k + 4 && !shown ? '?' : words([v, all.im[i]]))).map((s, i) => `${i}: ${s}`).join(' · ');
-      $('bins').textContent = `${['Slow DFT', 'One split', 'Full FFT'][[0, 1, 3].indexOf(st.method)]}, ${all.mults} multiplications. Bins ${list}. Largest difference from the slow DFT: ${diff < 0.005 ? '0.00, rounding only' : fmt(diff)}.`;
+      const tone = st.x.every((v, i) => v === TONE[i]), early = tone && !st.bin5 && !(k === 1 && shown);
+      const open = kk => st.solved.has(`${recKey()}|${kk}`) || len(parts(kk).WO) < 0.005;
+      const waiting = [0, 1, 2, 3].filter(kk => !open(kk)).flatMap(kk => [kk + 4, (4 - kk + 8) % 8]);
+      const hide = i => i !== k && (waiting.includes(i) || (early && (i === 5 || i === 3)));
+      const list = [...all.re].map((v, i) => (hide(i) ? '?' : words([v, all.im[i]]))).map((s, i) => `${i}: ${s}`).join(' · ');
+      const held = early && k !== 1 ? ' Bins 3 and 5 stay hidden until you answer the bin 5 question in the text above.' : waiting.some(i => i !== k) ? ' Bins marked ? wait for a prediction on this recording: a bin k + 4 you have not predicted yet, or its mirror bin, which would give it away.' : '';
+      $('bins').textContent = `${['Slow DFT', 'Split once', 'Split all the way'][[0, 1, 3].indexOf(st.method)]}, ${all.mults} multiplications. Bins ${list}. Largest difference from the slow DFT: ${diff < 0.005 ? '0.00, rounding only' : fmt(diff)}.${held}`;
       const n = st.matched.size;
-      $('count').textContent = n >= 3 ? 'Three predictions matched the slow DFT. You have the butterfly: the lab is yours to keep exploring.' : `Predictions that matched the slow DFT: ${n} of 3. Each needs a new bin or a new recording.`;
+      const note = handEx() ? ' Bin 5 on the rough tone is the hand example from the text, so it does not count here.' : st.matched.has(recKey()) ? ' This recording has already counted one.' : '';
+      $('count').textContent = n >= 3 ? 'Three predictions matched the slow DFT. You have the butterfly: the lab is yours to keep exploring.' : `Predictions that matched the slow DFT: ${n} of 3. Each one needs its own recording: edit a sample or pick a preset.${note}`;
       $('key-pin').hidden = !st.pinned;
       $('compare').hidden = !st.pinned;
       if (st.pinned) {
         const pk = st.pinned;
         const same2 = same(pk.Xk, p.Xk) && same(pk.Xk4, p.Xk4);
-        $('compare').textContent = `Pinned: bin ${pk.k} = ${words(pk.Xk)}, bin ${pk.k + 4} = ${words(pk.Xk4)} (rings). Now: bin ${k} = ${words(p.Xk)}, bin ${k + 4} = ${shown ? words(p.Xk4) : '?'}. ${same2 ? 'The same two bins.' : pk.k === k ? 'Same bins, a different recording: both parts changed, but the rule did not.' : 'A different pair of bins: different arrows, the same add-and-subtract.'}`;
+        $('compare').textContent = `Pinned (the dashed teal rings in the bins panel): bin ${pk.k} = ${words(pk.Xk)}, bin ${pk.k + 4} = ${pk.shown ? words(pk.Xk4) : '?'}. Now: bin ${k} = ${words(p.Xk)}, bin ${k + 4} = ${shown ? words(p.Xk4) : '?'}. ${same2 ? 'The same two bins.' : pk.k === k ? 'Same bins, a different recording: both parts changed, but the rule did not.' : 'A different pair of bins: different arrows, the same add-and-subtract.'}`;
       }
       $('stage').setAttribute('aria-label', `Bin ${k} and bin ${k + 4}: test-wheel arrows for samples 0 to 7, the odd ones flipped for bin ${k + 4}; the even part ${words(p.E)}, the turned odd part ${words(p.WO)}, bin ${k} ${words(p.Xk)}${shown ? `, bin ${k + 4} ${words(p.Xk4)}` : ''}.`);
       stage.redraw();
@@ -190,13 +199,13 @@
     root.querySelectorAll('[data-splits]').forEach(b => b.addEventListener('click', () => { st.method = Number(b.dataset.splits); render(); }));
     root.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => {
       const pr = b.dataset.preset;
-      st.x = pr === 'tone' ? TONE.slice() : pr === 'click' ? [0, 1, 0, 0, 0, 0, 0, 0] : Array.from({ length: 8 }, () => Math.floor(Math.random() * 7) - 3);
+      st.x = pr === 'tone' ? TONE.slice() : pr === 'click' ? CLICK.slice() : Array.from({ length: 8 }, () => Math.floor(Math.random() * 7) - 3);
       cells.forEach(c => c.removeAttribute('aria-invalid')); $('err').textContent = '';
       render();
     }));
-    $('pin').addEventListener('click', () => { const p = parts(); st.pinned = { k: st.k, Xk: p.Xk, Xk4: p.Xk4 }; render(); });
+    $('pin').addEventListener('click', () => { const p = parts(); st.pinned = { k: st.k, Xk: p.Xk, Xk4: p.Xk4, shown: st.solved.has(caseKey()) || len(p.WO) < 0.005 }; render(); });
     $('reset').addEventListener('click', () => {
-      Object.assign(st, { x: TONE.slice(), k: 3, method: 0, pinned: null });
+      Object.assign(st, { x: CLICK.slice(), k: 3, method: 0, pinned: null });
       cells.forEach(c => c.removeAttribute('aria-invalid')); $('err').textContent = '';
       render(); $('reset').focus();
     });
@@ -208,11 +217,22 @@
     options: [['4.83', '4.83'], ['0.83', '0.83'], ['-0.83', `${MINUS}0.83`], ['2', '2.00']], right: '-0.83',
     hints: {
       '4.83': 'That is bin 1. For bin 5 the odd samples’ arrows are flipped, so the turned odd part changes sign.',
-      '0.83': 'The right size, the wrong way round: the turned odd part (2.83) is subtracted from the even part (2), and 2 is the smaller.',
+      '0.83': 'Look again at which part is subtracted from which.',
       2: 'The odd part does not vanish for bin 5. Its arrows flip, so it is subtracted.',
     },
     explain: `Bin 5 = 2 ${MINUS} 2.83 = ${MINUS}0.83, an arrow of length 0.83 pointing left. Here is the whole step drawn out.`,
     onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-bin5' })),
+  });
+
+  K.ask(document.getElementById('predict-same'), {
+    question: 'At how many of the eight samples, n = 0 to 7, do the test wheels of bin 1 and bin 5 point the same way?',
+    options: [['1', 'Only at n = 0'], ['4', 'At four of them'], ['8', 'At all eight']], right: '4',
+    hints: {
+      1: 'Try n = 2: bin 1 has turned back 90°, bin 5 has turned back 450°, a full turn plus 90°.',
+      8: 'Try n = 1: bin 1 has turned back 45°, bin 5 225°.',
+    },
+    explain: 'At four: the even samples, 0, 2, 4 and 6. At the odd ones they point opposite ways. Here is every sample.',
+    onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-same' })),
   });
 
   act1();
@@ -275,7 +295,7 @@
     host.replaceChildren(document.getElementById('act2-lab').content.cloneNode(true));
     const $ = k => host.querySelector(`[data-k="${k}"]`);
     host.querySelectorAll('[data-k]').forEach(el => { el.id = `lab2-${el.dataset.k}`; });
-    const st = { caseIx: 0, N: 205, splits: 0, method: 'dft', unlocked: false, solved: false, everSolved: false, call: makeCall(), played: false };
+    const st = { caseIx: 0, N: 205, splits: 0, method: 'dft', unlocked: false, solved: false, everSolved: false, call: makeCall(), played: false, guessed: false };
     let result = null;
 
     const budgetOf = N => CASES[st.caseIx].rate * N / FS;
@@ -285,7 +305,7 @@
     const stage = K.stage($('stage'), s => {
       const { w, h, c, pen } = s;
       if (!result) return;
-      const x0 = 70, x1 = w - 16, rows = [40, 104];
+      const x0 = 70, x1 = w - 30, rows = [40, 104];
       const ev = result.events, lastT = Math.max(CALL + 0.3, ...ev.map(e => e.at + 0.2));
       const tmax = Math.min(Math.max(2, Math.ceil(lastT * 2) / 2), 8), X = t => x0 + Math.min(t, tmax) / tmax * (x1 - x0);
       pen.text('caller', 4, rows[0] + 4, { align: 'left', color: c.ink, size: 12, font: 'body', weight: 600 });
@@ -302,10 +322,10 @@
       });
       ev.forEach((e, i) => {
         const press = LEAD + i * GAP, late = e.delay > result.T + 1e-6, beyond = e.at > tmax;
-        const xd = X(e.at);
-        pen.line([[X(press + PRESS / 2), rows[0] + 13], [xd, rows[1] - 13]], late ? c.accent : c.ink, 1.2, [], 0.8);
-        pen.rect(xd - bw / 2, rows[1] - 12, bw, 24, late ? c.accentSoft : c.paper2);
-        s.ctx.strokeStyle = late ? c.accent : c.ink; s.ctx.lineWidth = 1.5; s.ctx.strokeRect(xd - bw / 2 + 0.5, rows[1] - 11.5, bw - 1, 23);
+        const xl = Math.min(X(e.at), x1 + 30 - bw), xd = xl + bw / 2;
+        pen.line([[X(press + PRESS / 2), rows[0] + 13], [xl, rows[1] - 13]], late ? c.accent : c.ink, 1.2, late ? [4, 3] : [], 0.8);
+        pen.rect(xl, rows[1] - 12, bw, 24, late ? c.accentSoft : c.paper2);
+        s.ctx.strokeStyle = late ? c.accent : c.ink; s.ctx.lineWidth = late ? 2 : 1.5; s.ctx.setLineDash(late ? [4, 3] : []); s.ctx.strokeRect(xl + 0.5, rows[1] - 11.5, bw - 1, 23); s.ctx.setLineDash([]);
         pen.text(e.key, xd, rows[1] + 5, { color: late ? c.accentInk : c.ink, size: 13, weight: 500 });
         if (late) pen.text(beyond ? `${fmt(e.at, 1)} s →` : `+${fmt(e.at - press - PRESS, 1)} s`, xd, rows[1] + 26, { color: c.accentInk, size: 10 });
       });
@@ -318,22 +338,28 @@
       $('task-text').textContent = CASES[st.caseIx].text;
       host.querySelectorAll('[data-n]').forEach(b => { b.setAttribute('aria-pressed', String(Number(b.dataset.n) === st.N)); b.disabled = !st.unlocked; });
       host.querySelectorAll('[data-method]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.method === st.method)));
-      $('methods').hidden = !st.everSolved;
-      const canSplit = st.unlocked && st.N === 256 && st.method === 'dft';
+      askSplits();
+      const canSplit = st.unlocked && st.guessed && st.N === 256 && st.method === 'dft';
       $('split').disabled = !canSplit || st.splits >= 8; $('join').disabled = !canSplit || st.splits <= 0;
       $('splits-out').textContent = st.N === 256 && st.method === 'dft' ? `${st.splits} (${2 ** st.splits} DFT${st.splits ? 's' : ''} of ${256 >> st.splits})` : '0';
-      $('split-note').textContent = st.method === 'goertzel' ? 'Goertzel runs one filter per bin: nothing to split.' : st.N === 205 ? '205 = 5 × 41 cannot be halved.' : st.splits === 8 ? 'All the way: only butterflies are left.' : '';
+      $('split-note').textContent = st.method === 'goertzel' ? 'Goertzel runs one filter per bin: nothing to split.' : st.N === 205 ? '205 = 5 × 41 cannot be halved.' : !st.guessed ? 'Answer the question above first.' : st.splits === 8 ? 'All the way: only butterflies are left.' : '';
       $('play').disabled = !st.unlocked;
       const meter = $('meter');
       meter.querySelector('.fill').style.width = st.unlocked ? `${pos(m) * 100}%` : '0%';
+      meter.dataset.fits = String(st.unlocked && fits);
       meter.querySelector('.budget').style.left = `${pos(budget) * 100}%`;
-      meter.querySelector('output').textContent = st.unlocked ? `${n0(m)} of ${n0(budget)}${fits ? '' : ', past the budget'}` : '?';
+      meter.querySelector('output').textContent = st.unlocked ? `${n0(m)} of ${n0(budget)}${fits ? ': within the budget ✓' : ': past the budget ✗'}` : '?';
+      $('budget-cue').textContent = st.caseIx ? `New exchange, new chip: ${n0(CASES[st.caseIx].rate)} multiplications a second, so the dashed budget mark has moved to ${n0(budget)} per ${st.N}-sample block.` : '';
+      const land = [...ROWS, ...COLS].map(f => binOf(f, st.N)), distinct = new Set(land).size === 8, gaps = land.slice(1).every((b, i) => i === 3 || b - land[i] >= 2);
+      $('landings').textContent = st.unlocked ? `Keypad tones at ${st.N} samples (bins ${fmt(FS / st.N, 2)} Hz apart): ${[...ROWS, ...COLS].map((f, i) => `${n0(f)} Hz → bin ${land[i]}`).join(' · ')}. ${distinct ? `Eight different bins${gaps ? ', with an empty bin between neighbors' : ''}.` : 'Two tones share a bin.'}` : '';
       $('meter-label').textContent = `Multiplications per ${st.N}-sample block, log scale; dashed mark: the chip’s budget, ${n0(budget)}`;
       const what = st.method === 'goertzel' ? `eight Goertzel filters on ${st.N} samples` : st.N === 205 ? 'direct DFT, bins 0 to 102 of 205 samples' : st.splits === 0 ? 'direct DFT, all 256 bins' : st.splits === 8 ? 'full FFT, 256 samples' : `${st.splits} split${st.splits > 1 ? 's' : ''}: ${2 ** st.splits} DFTs of ${256 >> st.splits}, then butterflies`;
       $('result').textContent = st.unlocked ? `${what} · ${n0(m)} multiplications per block · budget ${n0(budget)}` : 'Answer the question above to unlock the controls.';
       $('why').textContent = st.unlocked ? feedback(m, budget, fits) : '';
+      $('methods').hidden = !st.everSolved;
       const lastPress = result.last;
-      $('matches').textContent = lastPress ? `Last digit, ${lastPress.key}, in its strongest block: ${n0(ROWS[lastPress.r])} Hz ${Math.round(lastPress.pct[lastPress.r] * 100)}%, ${n0(COLS[lastPress.c])} Hz ${Math.round(lastPress.pct[4 + lastPress.c] * 100)}%; the other six keypad bins at most ${Math.round(Math.max(...lastPress.pct.filter((_, i) => i !== lastPress.r && i !== 4 + lastPress.c)) * 100)}%, against the lab’s 25% bar.` : '';
+      const over = lastPress && (lastPress.pct[lastPress.r] > 1.005 || lastPress.pct[4 + lastPress.c] > 1.005);
+      $('matches').textContent = lastPress ? `Last digit, ${lastPress.key}, in its strongest block: ${n0(ROWS[lastPress.r])} Hz ${Math.round(lastPress.pct[lastPress.r] * 100)}%, ${n0(COLS[lastPress.c])} Hz ${Math.round(lastPress.pct[4 + lastPress.c] * 100)}%; the other six keypad bins at most ${Math.round(Math.max(...lastPress.pct.filter((_, i) => i !== lastPress.r && i !== 4 + lastPress.c)) * 100)}%, against the lab’s 25% bar.${over ? ' A score can pass 100% by a point or two: a perfect on-bin tone alone scores 100%, and the key’s other tone spills a little into this bin as well.' : ''}` : '';
       $('stage').setAttribute('aria-label', `Timeline: the caller presses ${st.call.digits.join(' ')}; the detector reports ${result.events.map(e => `${e.key} at ${fmt(e.at, 2)} s`).join(', ')}.`);
       $('another').hidden = !st.solved;
       $('another').textContent = st.caseIx === CASES.length - 1 ? 'Back to your own line' : 'Try another exchange';
@@ -350,10 +376,10 @@
         if (!fits) return `${n0(m)} per block is over the budget of ${n0(budget)}.`;
         return `${n0(m)} per block, well under ${n0(budget)}, and the digits come out live. But eight filters read only eight bins: they can’t see a voice’s energy everywhere else, so they can’t reject a voice that fakes a key. Your line keeps the FFT.`;
       }
-      if (st.N === 205) return `${n0(m)} per block against ${n0(budget)}: ${Math.round((m / budget - 1) * 100)}% over. Each second of sound takes ${fmt(m / budget, 2)} s to process, so the detector falls ${perMin} s further behind every minute and the digits come out late. 205 = 5 × 41 can’t even be halved: switch the block to 256 samples first.`;
+      if (st.N === 205) return `${n0(m)} per block against ${n0(budget)}: ${Math.round((m / budget - 1) * 100)}% over. Each second of sound takes ${fmt(m / budget, 2)} s to process, so the detector falls ${perMin} s further behind every minute and the digits come out late. And 205 = 5 × 41 can’t be halved even once.`;
       if (!fits) {
         const head = st.splits === 0 ? `${n0(m)} per block: worse than at 205, because this direct DFT computes all 256 bins.` : st.splits === 1 ? `One split: two DFTs of 128 plus 128 butterflies, ${n0(m)} per block.` : `${st.splits} splits: ${n0(m)} per block.`;
-        return `${head} That is ${n0(over)} over the budget of ${n0(budget)}, so the detector falls ${perMin} s further behind every minute. Split again.`;
+        return `${head} That is ${n0(over)} over the budget of ${n0(budget)}, so the detector falls ${perMin} s further behind every minute.`;
       }
       st.solved = true;
       const spare = `under the budget of ${n0(budget)}, with ${n0(budget - m)} to spare`;
@@ -388,14 +414,31 @@
       stage.redraw();
     });
 
+    function askSplits() {
+      if (!st.unlocked || st.guessed || st.N !== 256 || st.method !== 'dft' || $('ask').querySelector('[data-q="splits"]')) return;
+      const b = budgetOf(256), need = minSplits(b), lo = Math.max(0, Math.min(need - 1 - (st.caseIx % 2), 5));
+      const q = document.createElement('div'); q.dataset.q = 'splits'; $('ask').append(q);
+      const say = v => `${v} split${v === 1 ? '' : 's'}`;
+      K.ask(q, {
+        question: `The block is 256 samples now and the budget is ${n0(b)} per block. Before you split: how many splits until the detector fits?`,
+        options: [lo, lo + 1, lo + 2, lo + 3].map(v => [String(v), say(v)]), right: String(need),
+        hints: Object.fromEntries([lo, lo + 1, lo + 2, lo + 3].filter(v => v !== need).map(v => [String(v), v < need
+          ? `Count it out: with ${say(v)} the small DFTs left are still big, and the total does not fit under ${n0(b)}.`
+          : `${say(v)} would fit, but check whether fewer would as well.`])),
+        explain: `${say(need)}: ${n0(cost(256, need, 'dft'))} per block, under ${n0(b)}, while ${say(need - 1)} still cost ${n0(cost(256, need - 1, 'dft'))}. The split button is yours.`,
+        onSolved: () => { st.guessed = true; render(); }, focusAfter: () => $('split'),
+      });
+    }
+
     function buildAsk() {
       $('ask').replaceChildren();
+      st.guessed = false;
       if (st.caseIx !== 0 || st.unlocked) { st.unlocked = true; return; }
       const q = document.createElement('div'); $('ask').append(q);
       K.ask(q, {
         question: 'Before you change anything: at 205 samples the detector needs 42,230 multiplications per block and the chip gives it 25,625. After one minute of live call, how far behind the sound is it?',
         options: [['0.65', 'About 0.65 s'], ['39', 'About 39 s'], ['0', 'Not at all: it only works hard during key presses']], right: '39',
-        hints: { '0.65': '0.65 s is how far it falls behind in each second of sound. A minute has 60 of them.', 0: 'The detector runs the DFT on every block, key or no key: the cost is per block, not per press.' },
+        hints: { '0.65': 'That is the lag after one second of sound. The lag keeps growing for as long as the call lasts.', 0: 'The detector runs the DFT on every block, key or no key: the cost is per block, not per press.' },
         explain: 'Each second of sound takes 42,230 ÷ 25,625 = 1.65 s of chip time, so the detector loses 0.65 s every second: about 39 s behind after a minute. The controls are yours: make it keep up.',
         onSolved: () => { st.unlocked = true; render(); }, focusAfter: () => host.querySelector('[data-n="256"]'),
       });

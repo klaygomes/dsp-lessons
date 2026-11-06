@@ -25,13 +25,13 @@
   },
   "odd-walk": {
     "title": "The odd part, by hand",
-    "caption": "Left: the odd part laid tip to tail. Middle: turned back the extra 45°. Right: added to the even part for bin 1, subtracted for bin 5.",
+    "caption": "In order: 1, the odd part laid tip to tail; 2, turned back the extra 45°; 3, added to the even part for bin 1 and subtracted for bin 5.",
     "animated": true,
     "phone": true
   },
   "butterfly": {
     "title": "One butterfly",
-    "caption": "The two results enter on the left, the odd one is turned, and the crossing lines add and subtract it.",
+    "caption": "The even and odd results come in, the odd one is turned, and the crossing lines add it for bin 1 and subtract it for bin 5. X[k] means bin k.",
     "animated": false,
     "phone": true
   },
@@ -43,13 +43,13 @@
   },
   "butterfly-network": {
     "title": "The 8-sample FFT",
-    "caption": "Read left to right: three layers of four butterflies, each turn labelled with the arrow it turns by. The highlighted butterfly is the one you computed by hand.",
+    "caption": "Read from the inputs to the bins: three layers of four butterflies, each turn labelled with the arrow it turns by. The thick butterfly is the one you computed by hand.",
     "animated": false,
     "phone": true
   },
   "growth": {
     "title": "The FFT’s gain grows with N",
-    "caption": "Both axes are on log scales. The gap between the lines is how many times fewer multiplications the FFT needs.",
+    "caption": "Both axes are on log scales: going up, each grid line is ten times the one below; going right, N doubles at each tick. The gap between the lines is how many times fewer multiplications the FFT needs.",
     "animated": false,
     "phone": true
   },
@@ -67,7 +67,7 @@
   },
   "budget": {
     "title": "What each split costs",
-    "caption": "Each bar is one choice of splits. Solid bars fit under the chip’s budget, hollow ones do not; the dotted top of each bar is the butterflies.",
+    "caption": "Each bar is one choice of splits, on an ordinary axis from 0. Solid bars fit under the chip’s budget, hollow ones do not; the dotted part of each bar is the butterflies, which stay small.",
     "animated": false,
     "phone": true
   },
@@ -79,7 +79,7 @@
   },
   "goertzel-swing": {
     "title": "Goertzel’s filter, pushed in time",
-    "caption": "Left: the pole pair and their sum, 2 × cos 35.1°. Right: the filter’s output, growing like a swing pushed in time, against a tone at the wrong speed.",
+    "caption": "The pole pair and their sum, 2 × cos 35.1°, then the filter’s output, growing like a swing pushed in time, against a tone at the wrong speed.",
     "animated": true,
     "phone": true
   },

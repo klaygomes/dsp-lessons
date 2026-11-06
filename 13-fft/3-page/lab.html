@@ -1,6 +1,6 @@
 <div class="lab" id="lab">
   <h3>Lab: split eight samples</h3>
-  <p class="note">Edit the recording or pick a bin. The lab splits the samples into even and odd, computes bin k from the two parts, and asks you for its partner, bin k + 4, before it shows you.</p>
+  <p class="note">Edit the recording or pick a bin. The lab splits the samples into even and odd, computes bin k from the two parts (E, the even part, and the odd part), and asks you for its partner, bin k + 4, before it shows you.</p>
   <fieldset class="rec">
     <legend>The recording, eight whole numbers from −5 to 5</legend>
     <div class="rec-cells" id="lab-rec"></div>
@@ -8,7 +8,7 @@
   <p class="err" id="lab-err" aria-live="polite"></p>
   <div class="row" role="group" aria-label="Recording presets">
     <button type="button" data-preset="tone">Rough 1,000 Hz tone</button>
-    <button type="button" data-preset="click">A click at n = 1</button>
+    <button type="button" data-preset="click">A few clicks</button>
     <button type="button" data-preset="random">Random whole numbers</button>
   </div>
   <div class="row" role="group" aria-label="Which bin k">
@@ -21,9 +21,9 @@
   <canvas id="lab-stage" class="stage" role="img"></canvas>
   <div class="key">
     <span><i class="k-ink"></i>bin k, its arrows and its parts</span>
-    <span><i class="k-acc"></i>bin k + 4: flipped odd arrows, and the bin itself</span>
-    <span><i class="k-faint"></i>odd part before its extra turn</span>
-    <span id="lab-key-pin" hidden><i class="k-pin"></i>pinned bins</span>
+    <span><i class="k-acc"></i>bin k + 4 (dashed): its arrows, flipped on odd samples, and the bin itself</span>
+    <span><i class="k-faint"></i>odd part before its extra turn (dotted)</span>
+    <span id="lab-key-pin" hidden><i class="k-pin"></i>pinned bins (dashed teal rings)</span>
   </div>
   <div id="lab-ask"></div>
   <div class="readout" aria-live="polite">
@@ -34,8 +34,8 @@
   <div class="row" role="group" aria-label="How to compute all eight bins">
     <span class="label">All eight bins by:</span>
     <button type="button" data-splits="0" aria-pressed="true">slow DFT</button>
-    <button type="button" data-splits="1" aria-pressed="false">one split</button>
-    <button type="button" data-splits="3" aria-pressed="false">full FFT</button>
+    <button type="button" data-splits="1" aria-pressed="false">split once</button>
+    <button type="button" data-splits="3" aria-pressed="false">split all the way</button>
   </div>
   <p class="bins" id="lab-bins" aria-live="polite"></p>
   <p class="k-now" id="lab-count" aria-live="polite"></p>

@@ -7,10 +7,17 @@ import page
 ok = page.build(
     Path(__file__).resolve().parents[1],
     working=[
+        {"section": "the-dft-repeats-itself", "from": "Here's how far back each wheel has turned", "through": "The same holds for every pair of bins half a block apart", "unlock": "predict-same", "auto": True,
+         "note": "Answer the question above to see the table, the two wheels side by side, and what it means for the work."},
         {"section": "splitting-eight-samples-by-hand", "from": "The figure walks the four odd arrows", "through": "The figure draws this butterfly with our numbers on it", "unlock": "predict-bin5", "auto": True,
          "note": "Answer the question above to see the odd part carried through to both bins."},
-        {"section": "making-it-fit-on-the-chip", "from": "Now count. The chip does", "through": "about an eighth of what the chip can do", "unlock": "act2",
+        {"section": "making-it-fit-on-the-chip", "from": "Here's what splitting costs", "through": "about an eighth of what the chip can do", "unlock": "act2",
          "note": "The rest of this section counts how many splits the chip needs. It opens once you have made the detector fit in the lab under Your turn."},
+    ],
+    more=[
+        {"section": "why-the-split-works", "from": "Step one: the DFT.", "through": "Those are the two lines from the top of this section", "button": "Show the five steps from the book"},
+        {"section": "do-you-even-need-every-bin", "from": "Multiply the two pole factors out", "through": "which read as feedback is the line above", "button": "Show where the program comes from"},
+        {"section": "do-you-even-need-every-bin", "from": "The ring has both poles", "through": "id=\"figure-goertzel-final\"", "button": "Show why the last step gives the bin"},
     ],
     still_text={
         "The figure shows the grid filling, with the chip's share for one block outlined inside it":
