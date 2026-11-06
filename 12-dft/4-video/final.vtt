@@ -1,0 +1,285 @@
+WEBVTT
+
+1
+00:00:00.500 --> 00:00:01.880
+A customer calls support,
+
+2
+00:00:01.900 --> 00:00:04.120
+hears "press one for billing",
+and presses a key.
+
+3
+00:00:04.200 --> 00:00:06.360
+Your line never sees a key, only samples.
+
+4
+00:00:06.400 --> 00:00:09.480
+The beep sounds like one note, and it's
+two: a low tone for the key's row,
+
+5
+00:00:09.500 --> 00:00:10.800
+a high tone for its column.
+
+6
+00:00:10.820 --> 00:00:12.600
+Key five is seven seventy hertz plus
+
+7
+00:00:12.620 --> 00:00:14.200
+thirteen thirty-six. Which two?
+
+8
+00:00:14.620 --> 00:00:15.560
+Start smaller.
+
+9
+00:00:15.580 --> 00:00:17.360
+Eight samples
+of a two thousand hertz tone:
+
+10
+00:00:17.380 --> 00:00:18.900
+one, zero, minus one, zero.
+
+11
+00:00:18.920 --> 00:00:21.480
+Multiply them by your own copy,
+a test tone, and add up.
+
+12
+00:00:21.500 --> 00:00:23.180
+A two thousand hertz test scores four.
+
+13
+00:00:23.200 --> 00:00:25.400
+One thousand hertz scores exactly zero.
+
+14
+00:00:25.740 --> 00:00:27.140
+Now a nasty surprise.
+
+15
+00:00:27.160 --> 00:00:29.840
+The same tone,
+a quarter turn behind, scores zero.
+
+16
+00:00:29.860 --> 00:00:31.940
+So take a backward wheel,
+turning clockwise,
+
+17
+00:00:31.960 --> 00:00:34.100
+test with both its shadows,
+left-right and up-down,
+
+18
+00:00:34.120 --> 00:00:35.680
+and treat the two sums as an arrow.
+
+19
+00:00:35.700 --> 00:00:37.620
+Its length is four, whatever the phase.
+
+20
+00:00:37.640 --> 00:00:38.780
+That length is the match.
+
+21
+00:00:39.740 --> 00:00:40.280
+Why?
+
+22
+00:00:40.300 --> 00:00:43.780
+Remember lesson six: a sample
+is two half arrows laid tip to tail,
+
+23
+00:00:43.800 --> 00:00:45.860
+one turning forward,
+its mirror turning backward.
+
+24
+00:00:45.880 --> 00:00:47.720
+Now lay each sample along a test wheel,
+
+25
+00:00:47.740 --> 00:00:50.200
+turning backward, clockwise,
+at the test tone's speed.
+
+26
+00:00:50.520 --> 00:00:52.120
+The forward half stands still,
+
+27
+00:00:52.140 --> 00:00:53.360
+like a fan under a strobe,
+
+28
+00:00:53.380 --> 00:00:54.680
+and its arrows pile up:
+
+29
+00:00:54.700 --> 00:00:56.740
+N over two,
+which is four in a block of eight.
+
+30
+00:00:56.760 --> 00:01:00.540
+The mirror half turns twice as fast, steps
+back and forth, and ends where it started.
+
+31
+00:01:01.610 --> 00:01:03.350
+Against the one thousand hertz wheel,
+
+32
+00:01:03.370 --> 00:01:06.730
+the arrows close an octagon and end
+where they began: exactly zero.
+
+33
+00:01:06.750 --> 00:01:08.910
+Any whole number of turns
+of difference does the same.
+
+34
+00:01:08.930 --> 00:01:10.670
+So test only with whole-turn wheels.
+
+35
+00:01:10.730 --> 00:01:14.050
+Each one is a bin: bin k makes
+k turns in a block of N samples.
+
+36
+00:01:14.070 --> 00:01:15.870
+The list of their matches is the DFT.
+
+37
+00:01:16.780 --> 00:01:19.100
+Eight samples put the bins
+a thousand hertz apart,
+
+38
+00:01:19.120 --> 00:01:21.120
+so every row tone lands in bin one.
+
+39
+00:01:21.140 --> 00:01:22.800
+That spacing, eight thousand over N,
+
+40
+00:01:22.820 --> 00:01:24.360
+is the frequency resolution.
+
+41
+00:01:24.380 --> 00:01:26.020
+Close tones need a longer block.
+
+42
+00:01:26.060 --> 00:01:28.980
+At forty samples, seven seventy
+and eight fifty-two share a bin.
+
+43
+00:01:29.000 --> 00:01:31.180
+At two hundred and five,
+each tone gets its own bin,
+
+44
+00:01:31.200 --> 00:01:32.820
+and an empty one on each side.
+
+45
+00:01:33.080 --> 00:01:34.620
+A customer presses five.
+
+46
+00:01:34.640 --> 00:01:36.040
+Two hundred and five samples,
+
+47
+00:01:36.060 --> 00:01:37.320
+eight keypad bins.
+
+48
+00:01:37.340 --> 00:01:39.640
+Bin twenty scores ninety
+percent of a full match,
+
+49
+00:01:39.660 --> 00:01:42.840
+bin thirty-four ninety-two,
+the other six at thirteen percent or less.
+
+50
+00:01:43.280 --> 00:01:46.120
+Row seven seventy,
+column thirteen thirty-six: the key five.
+
+51
+00:01:48.720 --> 00:01:50.640
+But silence has a strongest bin too.
+
+52
+00:01:50.660 --> 00:01:53.120
+So give the detector a bar
+at twenty-five percent:
+
+53
+00:01:53.400 --> 00:01:56.420
+a key counts only when exactly
+one row and one column clear it.
+
+54
+00:01:56.460 --> 00:01:57.580
+Your turn, in the lab.
+
+55
+00:01:57.600 --> 00:02:00.260
+Start at forty samples and watch
+keys five and eight collide.
+
+56
+00:02:00.340 --> 00:02:02.280
+Then lengthen the block
+until they come apart,
+
+57
+00:02:02.300 --> 00:02:04.080
+and decode a customer's account number.
+
+58
+00:02:06.930 --> 00:02:09.370
+Then billing complains:
+some voices fake a key.
+
+59
+00:02:09.390 --> 00:02:12.130
+A real press has almost nothing
+outside its two tones,
+
+60
+00:02:12.150 --> 00:02:13.950
+so the detector must check every bin.
+
+61
+00:02:14.090 --> 00:02:15.650
+That costs one point six five million
+
+62
+00:02:15.670 --> 00:02:16.950
+multiplications a second,
+
+63
+00:02:16.970 --> 00:02:18.910
+and the cheap chip
+manages about a million.
+
+64
+00:02:18.930 --> 00:02:20.050
+That's the next bug.

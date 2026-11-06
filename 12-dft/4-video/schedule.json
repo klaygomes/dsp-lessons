@@ -1,0 +1,2009 @@
+{
+ "fps": 30,
+ "duration": 141.18,
+ "wpm": 209,
+ "lines": [
+  {
+   "line": 1,
+   "text": "A customer calls support, hears \"press one for billing\", and presses a key. Your line never sees a key, only samples. The beep sounds like one note, and it's two: a low tone for the key's row, a high tone for its column. Key five is seven seventy hertz plus thirteen thirty-six. Which two?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line01.wav",
+   "at": 0.5,
+   "start": 0.5,
+   "end": 14.22,
+   "start_frame": 15,
+   "words": [
+    {
+     "word": "A",
+     "frame": 15
+    },
+    {
+     "word": "customer",
+     "frame": 23
+    },
+    {
+     "word": "calls",
+     "frame": 33
+    },
+    {
+     "word": "support,",
+     "frame": 43
+    },
+    {
+     "word": "hears",
+     "frame": 57
+    },
+    {
+     "word": "press",
+     "frame": 64
+    },
+    {
+     "word": "1",
+     "frame": 73
+    },
+    {
+     "word": "for",
+     "frame": 78
+    },
+    {
+     "word": "billing,",
+     "frame": 83
+    },
+    {
+     "word": "and",
+     "frame": 96
+    },
+    {
+     "word": "presses",
+     "frame": 98
+    },
+    {
+     "word": "a",
+     "frame": 106
+    },
+    {
+     "word": "key.",
+     "frame": 112
+    },
+    {
+     "word": "Your",
+     "frame": 126
+    },
+    {
+     "word": "line",
+     "frame": 129
+    },
+    {
+     "word": "never",
+     "frame": 135
+    },
+    {
+     "word": "sees",
+     "frame": 142
+    },
+    {
+     "word": "a",
+     "frame": 149
+    },
+    {
+     "word": "key,",
+     "frame": 153
+    },
+    {
+     "word": "only",
+     "frame": 162
+    },
+    {
+     "word": "samples.",
+     "frame": 168
+    },
+    {
+     "word": "The",
+     "frame": 192
+    },
+    {
+     "word": "beep",
+     "frame": 195
+    },
+    {
+     "word": "sounds",
+     "frame": 200
+    },
+    {
+     "word": "like",
+     "frame": 208
+    },
+    {
+     "word": "one",
+     "frame": 214
+    },
+    {
+     "word": "note,",
+     "frame": 218
+    },
+    {
+     "word": "and",
+     "frame": 228
+    },
+    {
+     "word": "it's",
+     "frame": 230
+    },
+    {
+     "word": "2.",
+     "frame": 236
+    },
+    {
+     "word": "A",
+     "frame": 249
+    },
+    {
+     "word": "low",
+     "frame": 250
+    },
+    {
+     "word": "tone",
+     "frame": 254
+    },
+    {
+     "word": "for",
+     "frame": 261
+    },
+    {
+     "word": "the",
+     "frame": 266
+    },
+    {
+     "word": "key's",
+     "frame": 269
+    },
+    {
+     "word": "row,",
+     "frame": 277
+    },
+    {
+     "word": "a",
+     "frame": 285
+    },
+    {
+     "word": "high",
+     "frame": 288
+    },
+    {
+     "word": "tone",
+     "frame": 293
+    },
+    {
+     "word": "for",
+     "frame": 300
+    },
+    {
+     "word": "its",
+     "frame": 305
+    },
+    {
+     "word": "column.",
+     "frame": 309
+    },
+    {
+     "word": "Key",
+     "frame": 325
+    },
+    {
+     "word": "5",
+     "frame": 329
+    },
+    {
+     "word": "is",
+     "frame": 339
+    },
+    {
+     "word": "770",
+     "frame": 346
+    },
+    {
+     "word": "Hz",
+     "frame": 364
+    },
+    {
+     "word": "plus",
+     "frame": 371
+    },
+    {
+     "word": "1336,",
+     "frame": 379
+    },
+    {
+     "word": "which",
+     "frame": 408
+    },
+    {
+     "word": "2.",
+     "frame": 413
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Start smaller. Eight samples of a two thousand hertz tone: one, zero, minus one, zero. Multiply them by your own copy, a test tone, and add up. A two thousand hertz test scores four. One thousand hertz scores exactly zero.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line02.wav",
+   "at": 14.62,
+   "start": 14.62,
+   "end": 25.34,
+   "start_frame": 439,
+   "words": [
+    {
+     "word": "Start",
+     "frame": 439
+    },
+    {
+     "word": "smaller,",
+     "frame": 451
+    },
+    {
+     "word": "8",
+     "frame": 467
+    },
+    {
+     "word": "samples",
+     "frame": 471
+    },
+    {
+     "word": "of",
+     "frame": 481
+    },
+    {
+     "word": "a",
+     "frame": 485
+    },
+    {
+     "word": "2000",
+     "frame": 488
+    },
+    {
+     "word": "Hz",
+     "frame": 499
+    },
+    {
+     "word": "tone,",
+     "frame": 507
+    },
+    {
+     "word": "1",
+     "frame": 521
+    },
+    {
+     "word": "-0",
+     "frame": 528
+    },
+    {
+     "word": "-1",
+     "frame": 538
+    },
+    {
+     "word": "-0,",
+     "frame": 555
+    },
+    {
+     "word": "multiply",
+     "frame": 568
+    },
+    {
+     "word": "them",
+     "frame": 578
+    },
+    {
+     "word": "by",
+     "frame": 584
+    },
+    {
+     "word": "your",
+     "frame": 588
+    },
+    {
+     "word": "own",
+     "frame": 593
+    },
+    {
+     "word": "copy,",
+     "frame": 598
+    },
+    {
+     "word": "a",
+     "frame": 612
+    },
+    {
+     "word": "test",
+     "frame": 613
+    },
+    {
+     "word": "tone,",
+     "frame": 619
+    },
+    {
+     "word": "and",
+     "frame": 629
+    },
+    {
+     "word": "add",
+     "frame": 631
+    },
+    {
+     "word": "up.",
+     "frame": 636
+    },
+    {
+     "word": "A",
+     "frame": 645
+    },
+    {
+     "word": "2000",
+     "frame": 646
+    },
+    {
+     "word": "Hz",
+     "frame": 655
+    },
+    {
+     "word": "test",
+     "frame": 664
+    },
+    {
+     "word": "scores",
+     "frame": 671
+    },
+    {
+     "word": "4.",
+     "frame": 679
+    },
+    {
+     "word": "1000",
+     "frame": 696
+    },
+    {
+     "word": "Hz",
+     "frame": 710
+    },
+    {
+     "word": "scores",
+     "frame": 722
+    },
+    {
+     "word": "exactly",
+     "frame": 730
+    },
+    {
+     "word": "0.",
+     "frame": 744
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Now a nasty surprise. The same tone, a quarter turn behind, scores zero. So take a backward wheel, turning clockwise, test with both its shadows, left-right and up-down, and treat the two sums as an arrow. Its length is four, whatever the phase. That length is the match.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo-fix3/line01.wav",
+   "at": 25.74,
+   "start": 25.74,
+   "end": 38.74,
+   "start_frame": 772,
+   "words": [
+    {
+     "word": "Now",
+     "frame": 772
+    },
+    {
+     "word": "a",
+     "frame": 781
+    },
+    {
+     "word": "nasty",
+     "frame": 785
+    },
+    {
+     "word": "surprise.",
+     "frame": 794
+    },
+    {
+     "word": "The",
+     "frame": 815
+    },
+    {
+     "word": "same",
+     "frame": 820
+    },
+    {
+     "word": "tone,",
+     "frame": 827
+    },
+    {
+     "word": "a",
+     "frame": 839
+    },
+    {
+     "word": "quarter",
+     "frame": 842
+    },
+    {
+     "word": "turn",
+     "frame": 849
+    },
+    {
+     "word": "behind",
+     "frame": 856
+    },
+    {
+     "word": "scores",
+     "frame": 866
+    },
+    {
+     "word": "zero.",
+     "frame": 878
+    },
+    {
+     "word": "So",
+     "frame": 896
+    },
+    {
+     "word": "take",
+     "frame": 901
+    },
+    {
+     "word": "a",
+     "frame": 907
+    },
+    {
+     "word": "backward",
+     "frame": 910
+    },
+    {
+     "word": "wheel,",
+     "frame": 919
+    },
+    {
+     "word": "turning",
+     "frame": 934
+    },
+    {
+     "word": "clockwise,",
+     "frame": 938
+    },
+    {
+     "word": "test",
+     "frame": 959
+    },
+    {
+     "word": "with",
+     "frame": 964
+    },
+    {
+     "word": "both",
+     "frame": 969
+    },
+    {
+     "word": "its",
+     "frame": 975
+    },
+    {
+     "word": "shadows,",
+     "frame": 979
+    },
+    {
+     "word": "left,",
+     "frame": 995
+    },
+    {
+     "word": "right,",
+     "frame": 1003
+    },
+    {
+     "word": "and",
+     "frame": 1005
+    },
+    {
+     "word": "up,",
+     "frame": 1009
+    },
+    {
+     "word": "down,",
+     "frame": 1016
+    },
+    {
+     "word": "and",
+     "frame": 1024
+    },
+    {
+     "word": "treat",
+     "frame": 1027
+    },
+    {
+     "word": "the",
+     "frame": 1033
+    },
+    {
+     "word": "two",
+     "frame": 1037
+    },
+    {
+     "word": "sums",
+     "frame": 1047
+    },
+    {
+     "word": "as",
+     "frame": 1049
+    },
+    {
+     "word": "an",
+     "frame": 1054
+    },
+    {
+     "word": "arrow.",
+     "frame": 1058
+    },
+    {
+     "word": "Its",
+     "frame": 1071
+    },
+    {
+     "word": "length",
+     "frame": 1079
+    },
+    {
+     "word": "is",
+     "frame": 1085
+    },
+    {
+     "word": "four,",
+     "frame": 1090
+    },
+    {
+     "word": "whatever",
+     "frame": 1103
+    },
+    {
+     "word": "the",
+     "frame": 1108
+    },
+    {
+     "word": "phase.",
+     "frame": 1113
+    },
+    {
+     "word": "That",
+     "frame": 1129
+    },
+    {
+     "word": "length",
+     "frame": 1136
+    },
+    {
+     "word": "is",
+     "frame": 1142
+    },
+    {
+     "word": "the",
+     "frame": 1147
+    },
+    {
+     "word": "match.",
+     "frame": 1150
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Why? Remember lesson six: a sample is two half arrows laid tip to tail, one turning forward, its mirror turning backward. Now lay each sample along a test wheel, turning backward, clockwise, at the test tone's speed.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line04.wav",
+   "at": 39.74,
+   "start": 39.74,
+   "end": 50.22,
+   "start_frame": 1192,
+   "words": [
+    {
+     "word": "Why?",
+     "frame": 1192
+    },
+    {
+     "word": "Remember",
+     "frame": 1209
+    },
+    {
+     "word": "Lesson",
+     "frame": 1217
+    },
+    {
+     "word": "6.",
+     "frame": 1229
+    },
+    {
+     "word": "A",
+     "frame": 1244
+    },
+    {
+     "word": "sample",
+     "frame": 1251
+    },
+    {
+     "word": "is",
+     "frame": 1260
+    },
+    {
+     "word": "two",
+     "frame": 1265
+    },
+    {
+     "word": "half",
+     "frame": 1270
+    },
+    {
+     "word": "arrows",
+     "frame": 1276
+    },
+    {
+     "word": "laid",
+     "frame": 1283
+    },
+    {
+     "word": "tip",
+     "frame": 1289
+    },
+    {
+     "word": "to",
+     "frame": 1295
+    },
+    {
+     "word": "tail,",
+     "frame": 1300
+    },
+    {
+     "word": "one",
+     "frame": 1314
+    },
+    {
+     "word": "turning",
+     "frame": 1316
+    },
+    {
+     "word": "forward,",
+     "frame": 1324
+    },
+    {
+     "word": "its",
+     "frame": 1339
+    },
+    {
+     "word": "mirror",
+     "frame": 1343
+    },
+    {
+     "word": "turning",
+     "frame": 1351
+    },
+    {
+     "word": "backward.",
+     "frame": 1360
+    },
+    {
+     "word": "Now",
+     "frame": 1376
+    },
+    {
+     "word": "lay",
+     "frame": 1381
+    },
+    {
+     "word": "each",
+     "frame": 1386
+    },
+    {
+     "word": "sample",
+     "frame": 1392
+    },
+    {
+     "word": "along",
+     "frame": 1402
+    },
+    {
+     "word": "a",
+     "frame": 1409
+    },
+    {
+     "word": "test",
+     "frame": 1418
+    },
+    {
+     "word": "wheel,",
+     "frame": 1420
+    },
+    {
+     "word": "turning",
+     "frame": 1432
+    },
+    {
+     "word": "backward,",
+     "frame": 1438
+    },
+    {
+     "word": "clockwise",
+     "frame": 1461
+    },
+    {
+     "word": "at",
+     "frame": 1469
+    },
+    {
+     "word": "the",
+     "frame": 1477
+    },
+    {
+     "word": "test",
+     "frame": 1480
+    },
+    {
+     "word": "tone",
+     "frame": 1486
+    },
+    {
+     "word": "speed.",
+     "frame": 1492
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "The forward half stands still, like a fan under a strobe, and its arrows pile up: N over two, which is four in a block of eight. The mirror half turns twice as fast, steps back and forth, and ends where it started.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo-fix2/line01.wav",
+   "at": 50.52,
+   "start": 50.52,
+   "end": 60.61,
+   "start_frame": 1516,
+   "words": [
+    {
+     "word": "The",
+     "frame": 1516
+    },
+    {
+     "word": "forward",
+     "frame": 1524
+    },
+    {
+     "word": "half",
+     "frame": 1532
+    },
+    {
+     "word": "stands",
+     "frame": 1540
+    },
+    {
+     "word": "still,",
+     "frame": 1550
+    },
+    {
+     "word": "like",
+     "frame": 1564
+    },
+    {
+     "word": "a",
+     "frame": 1567
+    },
+    {
+     "word": "fan",
+     "frame": 1570
+    },
+    {
+     "word": "under",
+     "frame": 1576
+    },
+    {
+     "word": "a",
+     "frame": 1582
+    },
+    {
+     "word": "strobe,",
+     "frame": 1587
+    },
+    {
+     "word": "and",
+     "frame": 1601
+    },
+    {
+     "word": "its",
+     "frame": 1604
+    },
+    {
+     "word": "arrows",
+     "frame": 1609
+    },
+    {
+     "word": "pile",
+     "frame": 1617
+    },
+    {
+     "word": "up.",
+     "frame": 1628
+    },
+    {
+     "word": "N",
+     "frame": 1641
+    },
+    {
+     "word": "over",
+     "frame": 1645
+    },
+    {
+     "word": "two,",
+     "frame": 1651
+    },
+    {
+     "word": "which",
+     "frame": 1663
+    },
+    {
+     "word": "is",
+     "frame": 1666
+    },
+    {
+     "word": "four",
+     "frame": 1670
+    },
+    {
+     "word": "in",
+     "frame": 1676
+    },
+    {
+     "word": "a",
+     "frame": 1679
+    },
+    {
+     "word": "block",
+     "frame": 1680
+    },
+    {
+     "word": "of",
+     "frame": 1686
+    },
+    {
+     "word": "eight.",
+     "frame": 1690
+    },
+    {
+     "word": "The",
+     "frame": 1703
+    },
+    {
+     "word": "mirror",
+     "frame": 1705
+    },
+    {
+     "word": "half",
+     "frame": 1711
+    },
+    {
+     "word": "turns",
+     "frame": 1718
+    },
+    {
+     "word": "twice",
+     "frame": 1726
+    },
+    {
+     "word": "as",
+     "frame": 1734
+    },
+    {
+     "word": "fast,",
+     "frame": 1739
+    },
+    {
+     "word": "steps",
+     "frame": 1752
+    },
+    {
+     "word": "back",
+     "frame": 1758
+    },
+    {
+     "word": "and",
+     "frame": 1765
+    },
+    {
+     "word": "forth,",
+     "frame": 1769
+    },
+    {
+     "word": "and",
+     "frame": 1778
+    },
+    {
+     "word": "ends",
+     "frame": 1783
+    },
+    {
+     "word": "where",
+     "frame": 1790
+    },
+    {
+     "word": "it",
+     "frame": 1795
+    },
+    {
+     "word": "started.",
+     "frame": 1799
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Against the one thousand hertz wheel, the arrows close an octagon and end where they began: exactly zero. Any whole number of turns of difference does the same. So test only with whole-turn wheels. Each one is a bin: bin k makes k turns in a block of N samples. The list of their matches is the DFT.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo-fix4/line01.wav",
+   "at": 61.61,
+   "start": 61.61,
+   "end": 75.88,
+   "start_frame": 1848,
+   "words": [
+    {
+     "word": "Against",
+     "frame": 1848
+    },
+    {
+     "word": "the",
+     "frame": 1862
+    },
+    {
+     "word": "1000",
+     "frame": 1867
+    },
+    {
+     "word": "Hz",
+     "frame": 1880
+    },
+    {
+     "word": "wheel,",
+     "frame": 1888
+    },
+    {
+     "word": "the",
+     "frame": 1901
+    },
+    {
+     "word": "arrows",
+     "frame": 1905
+    },
+    {
+     "word": "close",
+     "frame": 1912
+    },
+    {
+     "word": "an",
+     "frame": 1922
+    },
+    {
+     "word": "octagon",
+     "frame": 1925
+    },
+    {
+     "word": "and",
+     "frame": 1938
+    },
+    {
+     "word": "end",
+     "frame": 1943
+    },
+    {
+     "word": "where",
+     "frame": 1950
+    },
+    {
+     "word": "they",
+     "frame": 1953
+    },
+    {
+     "word": "began,",
+     "frame": 1957
+    },
+    {
+     "word": "exactly",
+     "frame": 1971
+    },
+    {
+     "word": "zero.",
+     "frame": 1982
+    },
+    {
+     "word": "Any",
+     "frame": 2002
+    },
+    {
+     "word": "whole",
+     "frame": 2006
+    },
+    {
+     "word": "number",
+     "frame": 2012
+    },
+    {
+     "word": "of",
+     "frame": 2019
+    },
+    {
+     "word": "turns",
+     "frame": 2024
+    },
+    {
+     "word": "of",
+     "frame": 2029
+    },
+    {
+     "word": "difference",
+     "frame": 2034
+    },
+    {
+     "word": "does",
+     "frame": 2043
+    },
+    {
+     "word": "the",
+     "frame": 2050
+    },
+    {
+     "word": "same,",
+     "frame": 2056
+    },
+    {
+     "word": "so",
+     "frame": 2068
+    },
+    {
+     "word": "test",
+     "frame": 2073
+    },
+    {
+     "word": "only",
+     "frame": 2080
+    },
+    {
+     "word": "with",
+     "frame": 2087
+    },
+    {
+     "word": "whole",
+     "frame": 2092
+    },
+    {
+     "word": "turn",
+     "frame": 2097
+    },
+    {
+     "word": "wheels.",
+     "frame": 2104
+    },
+    {
+     "word": "Each",
+     "frame": 2122
+    },
+    {
+     "word": "one",
+     "frame": 2126
+    },
+    {
+     "word": "is",
+     "frame": 2131
+    },
+    {
+     "word": "a",
+     "frame": 2135
+    },
+    {
+     "word": "bin,",
+     "frame": 2138
+    },
+    {
+     "word": "bin",
+     "frame": 2150
+    },
+    {
+     "word": "K",
+     "frame": 2156
+    },
+    {
+     "word": "makes",
+     "frame": 2160
+    },
+    {
+     "word": "K",
+     "frame": 2168
+    },
+    {
+     "word": "turns",
+     "frame": 2174
+    },
+    {
+     "word": "in",
+     "frame": 2182
+    },
+    {
+     "word": "a",
+     "frame": 2187
+    },
+    {
+     "word": "block",
+     "frame": 2188
+    },
+    {
+     "word": "of",
+     "frame": 2194
+    },
+    {
+     "word": "N",
+     "frame": 2198
+    },
+    {
+     "word": "samples.",
+     "frame": 2202
+    },
+    {
+     "word": "The",
+     "frame": 2222
+    },
+    {
+     "word": "list",
+     "frame": 2224
+    },
+    {
+     "word": "of",
+     "frame": 2230
+    },
+    {
+     "word": "their",
+     "frame": 2233
+    },
+    {
+     "word": "matches",
+     "frame": 2236
+    },
+    {
+     "word": "is",
+     "frame": 2245
+    },
+    {
+     "word": "the",
+     "frame": 2251
+    },
+    {
+     "word": "DFT.",
+     "frame": 2254
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Eight samples put the bins a thousand hertz apart, so every row tone lands in bin one. That spacing, eight thousand over N, is the frequency resolution. Close tones need a longer block. At forty samples, seven seventy and eight fifty-two share a bin. At two hundred and five, each tone gets its own bin, and an empty one on each side.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line07.wav",
+   "at": 76.78,
+   "start": 76.78,
+   "end": 92.78,
+   "start_frame": 2303,
+   "words": [
+    {
+     "word": "Eight",
+     "frame": 2303
+    },
+    {
+     "word": "samples",
+     "frame": 2313
+    },
+    {
+     "word": "put",
+     "frame": 2324
+    },
+    {
+     "word": "the",
+     "frame": 2332
+    },
+    {
+     "word": "bins",
+     "frame": 2335
+    },
+    {
+     "word": "1",
+     "frame": 2341
+    },
+    {
+     "word": ",000",
+     "frame": 2347
+    },
+    {
+     "word": "Hz",
+     "frame": 2356
+    },
+    {
+     "word": "apart,",
+     "frame": 2360
+    },
+    {
+     "word": "so",
+     "frame": 2374
+    },
+    {
+     "word": "every",
+     "frame": 2381
+    },
+    {
+     "word": "row",
+     "frame": 2388
+    },
+    {
+     "word": "tone",
+     "frame": 2394
+    },
+    {
+     "word": "lands",
+     "frame": 2401
+    },
+    {
+     "word": "in",
+     "frame": 2410
+    },
+    {
+     "word": "bin",
+     "frame": 2414
+    },
+    {
+     "word": "1.",
+     "frame": 2420
+    },
+    {
+     "word": "That",
+     "frame": 2434
+    },
+    {
+     "word": "spacing,",
+     "frame": 2438
+    },
+    {
+     "word": "8",
+     "frame": 2454
+    },
+    {
+     "word": ",000",
+     "frame": 2458
+    },
+    {
+     "word": "over",
+     "frame": 2468
+    },
+    {
+     "word": "N,",
+     "frame": 2474
+    },
+    {
+     "word": "is",
+     "frame": 2485
+    },
+    {
+     "word": "the",
+     "frame": 2489
+    },
+    {
+     "word": "frequency",
+     "frame": 2493
+    },
+    {
+     "word": "resolution.",
+     "frame": 2505
+    },
+    {
+     "word": "Close",
+     "frame": 2531
+    },
+    {
+     "word": "tones",
+     "frame": 2537
+    },
+    {
+     "word": "need",
+     "frame": 2545
+    },
+    {
+     "word": "a",
+     "frame": 2551
+    },
+    {
+     "word": "longer",
+     "frame": 2555
+    },
+    {
+     "word": "block.",
+     "frame": 2563
+    },
+    {
+     "word": "At",
+     "frame": 2582
+    },
+    {
+     "word": "40",
+     "frame": 2584
+    },
+    {
+     "word": "samples,",
+     "frame": 2591
+    },
+    {
+     "word": "770",
+     "frame": 2610
+    },
+    {
+     "word": "and",
+     "frame": 2623
+    },
+    {
+     "word": "852",
+     "frame": 2629
+    },
+    {
+     "word": "share",
+     "frame": 2647
+    },
+    {
+     "word": "a",
+     "frame": 2656
+    },
+    {
+     "word": "bin.",
+     "frame": 2660
+    },
+    {
+     "word": "At",
+     "frame": 2670
+    },
+    {
+     "word": "205,",
+     "frame": 2672
+    },
+    {
+     "word": "each",
+     "frame": 2701
+    },
+    {
+     "word": "tone",
+     "frame": 2706
+    },
+    {
+     "word": "gets",
+     "frame": 2712
+    },
+    {
+     "word": "its",
+     "frame": 2718
+    },
+    {
+     "word": "own",
+     "frame": 2723
+    },
+    {
+     "word": "bin,",
+     "frame": 2728
+    },
+    {
+     "word": "and",
+     "frame": 2736
+    },
+    {
+     "word": "an",
+     "frame": 2744
+    },
+    {
+     "word": "empty",
+     "frame": 2747
+    },
+    {
+     "word": "one",
+     "frame": 2754
+    },
+    {
+     "word": "on",
+     "frame": 2759
+    },
+    {
+     "word": "each",
+     "frame": 2763
+    },
+    {
+     "word": "side.",
+     "frame": 2768
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "A customer presses five. Two hundred and five samples, eight keypad bins. Bin twenty scores ninety percent of a full match, bin thirty-four ninety-two, the other six at thirteen percent or less. [surprise-oh] Row seven seventy, column thirteen thirty-six: the key five.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo-fix3/line03.wav",
+   "at": 93.08,
+   "start": 93.08,
+   "end": 106.12,
+   "start_frame": 2792,
+   "words": [
+    {
+     "word": "A",
+     "frame": 2792
+    },
+    {
+     "word": "customer",
+     "frame": 2801
+    },
+    {
+     "word": "presses",
+     "frame": 2810
+    },
+    {
+     "word": "5,",
+     "frame": 2822
+    },
+    {
+     "word": "205",
+     "frame": 2839
+    },
+    {
+     "word": "samples,",
+     "frame": 2862
+    },
+    {
+     "word": "8",
+     "frame": 2882
+    },
+    {
+     "word": "keypad",
+     "frame": 2887
+    },
+    {
+     "word": "bins,",
+     "frame": 2900
+    },
+    {
+     "word": "bin",
+     "frame": 2920
+    },
+    {
+     "word": "20",
+     "frame": 2926
+    },
+    {
+     "word": "scores",
+     "frame": 2933
+    },
+    {
+     "word": "90",
+     "frame": 2943
+    },
+    {
+     "word": "%",
+     "frame": 2951
+    },
+    {
+     "word": "of",
+     "frame": 2960
+    },
+    {
+     "word": "a",
+     "frame": 2965
+    },
+    {
+     "word": "full",
+     "frame": 2968
+    },
+    {
+     "word": "match,",
+     "frame": 2973
+    },
+    {
+     "word": "bin",
+     "frame": 2990
+    },
+    {
+     "word": "3492,",
+     "frame": 2994
+    },
+    {
+     "word": "the",
+     "frame": 3023
+    },
+    {
+     "word": "other",
+     "frame": 3026
+    },
+    {
+     "word": "6",
+     "frame": 3031
+    },
+    {
+     "word": "at",
+     "frame": 3038
+    },
+    {
+     "word": "13",
+     "frame": 3043
+    },
+    {
+     "word": "%",
+     "frame": 3052
+    },
+    {
+     "word": "or",
+     "frame": 3060
+    },
+    {
+     "word": "less.",
+     "frame": 3065
+    },
+    {
+     "word": "Oh,",
+     "frame": 3092
+    },
+    {
+     "word": "row",
+     "frame": 3098
+    },
+    {
+     "word": "770,",
+     "frame": 3101
+    },
+    {
+     "word": "column",
+     "frame": 3127
+    },
+    {
+     "word": "1336,",
+     "frame": 3133
+    },
+    {
+     "word": "the",
+     "frame": 3161
+    },
+    {
+     "word": "key",
+     "frame": 3163
+    },
+    {
+     "word": "5.",
+     "frame": 3168
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "But silence has a strongest bin too. So give the detector a bar at twenty-five percent: a key counts only when exactly one row and one column clear it. Your turn, in the lab. Start at forty samples and watch keys five and eight collide. Then lengthen the block until they come apart, and decode a customer's account number.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line09.wav",
+   "at": 108.72,
+   "start": 108.72,
+   "end": 124.15,
+   "start_frame": 3262,
+   "words": [
+    {
+     "word": "But",
+     "frame": 3262
+    },
+    {
+     "word": "silence",
+     "frame": 3270
+    },
+    {
+     "word": "has",
+     "frame": 3280
+    },
+    {
+     "word": "a",
+     "frame": 3288
+    },
+    {
+     "word": "strongest",
+     "frame": 3291
+    },
+    {
+     "word": "bin",
+     "frame": 3299
+    },
+    {
+     "word": "too,",
+     "frame": 3307
+    },
+    {
+     "word": "so",
+     "frame": 3320
+    },
+    {
+     "word": "give",
+     "frame": 3328
+    },
+    {
+     "word": "the",
+     "frame": 3338
+    },
+    {
+     "word": "detector",
+     "frame": 3344
+    },
+    {
+     "word": "a",
+     "frame": 3356
+    },
+    {
+     "word": "bar",
+     "frame": 3361
+    },
+    {
+     "word": "at",
+     "frame": 3365
+    },
+    {
+     "word": "25%.",
+     "frame": 3368
+    },
+    {
+     "word": "A",
+     "frame": 3402
+    },
+    {
+     "word": "key",
+     "frame": 3405
+    },
+    {
+     "word": "counts",
+     "frame": 3409
+    },
+    {
+     "word": "only",
+     "frame": 3418
+    },
+    {
+     "word": "when",
+     "frame": 3425
+    },
+    {
+     "word": "exactly",
+     "frame": 3431
+    },
+    {
+     "word": "one",
+     "frame": 3441
+    },
+    {
+     "word": "row",
+     "frame": 3450
+    },
+    {
+     "word": "and",
+     "frame": 3455
+    },
+    {
+     "word": "one",
+     "frame": 3460
+    },
+    {
+     "word": "column",
+     "frame": 3465
+    },
+    {
+     "word": "clear",
+     "frame": 3475
+    },
+    {
+     "word": "it.",
+     "frame": 3482
+    },
+    {
+     "word": "Your",
+     "frame": 3494
+    },
+    {
+     "word": "turn",
+     "frame": 3497
+    },
+    {
+     "word": "in",
+     "frame": 3506
+    },
+    {
+     "word": "the",
+     "frame": 3513
+    },
+    {
+     "word": "lab.",
+     "frame": 3517
+    },
+    {
+     "word": "Start",
+     "frame": 3528
+    },
+    {
+     "word": "at",
+     "frame": 3534
+    },
+    {
+     "word": "40",
+     "frame": 3538
+    },
+    {
+     "word": "samples",
+     "frame": 3545
+    },
+    {
+     "word": "and",
+     "frame": 3556
+    },
+    {
+     "word": "watch",
+     "frame": 3560
+    },
+    {
+     "word": "keys",
+     "frame": 3566
+    },
+    {
+     "word": "5",
+     "frame": 3574
+    },
+    {
+     "word": "and",
+     "frame": 3580
+    },
+    {
+     "word": "8",
+     "frame": 3585
+    },
+    {
+     "word": "collide.",
+     "frame": 3589
+    },
+    {
+     "word": "Then",
+     "frame": 3610
+    },
+    {
+     "word": "lengthen",
+     "frame": 3616
+    },
+    {
+     "word": "the",
+     "frame": 3628
+    },
+    {
+     "word": "block",
+     "frame": 3634
+    },
+    {
+     "word": "until",
+     "frame": 3642
+    },
+    {
+     "word": "they",
+     "frame": 3649
+    },
+    {
+     "word": "come",
+     "frame": 3655
+    },
+    {
+     "word": "apart",
+     "frame": 3659
+    },
+    {
+     "word": "and",
+     "frame": 3669
+    },
+    {
+     "word": "decode",
+     "frame": 3676
+    },
+    {
+     "word": "a",
+     "frame": 3685
+    },
+    {
+     "word": "customer's",
+     "frame": 3689
+    },
+    {
+     "word": "account",
+     "frame": 3701
+    },
+    {
+     "word": "number.",
+     "frame": 3707
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "[sigh] Then billing complains: some voices fake a key. A real press has almost nothing outside its two tones, so the detector must check every bin. That costs one point six five million multiplications a second, and the cheap chip manages about a million. That's the next bug.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/12-dft/4-video/vo/line10.wav",
+   "at": 126.55,
+   "start": 126.55,
+   "end": 139.98,
+   "start_frame": 3796,
+   "words": [
+    {
+     "word": "Aye,",
+     "frame": 3796
+    },
+    {
+     "word": "then",
+     "frame": 3808
+    },
+    {
+     "word": "Billing",
+     "frame": 3813
+    },
+    {
+     "word": "complains,",
+     "frame": 3822
+    },
+    {
+     "word": "some",
+     "frame": 3842
+    },
+    {
+     "word": "voices",
+     "frame": 3848
+    },
+    {
+     "word": "fake",
+     "frame": 3857
+    },
+    {
+     "word": "a",
+     "frame": 3867
+    },
+    {
+     "word": "key,",
+     "frame": 3872
+    },
+    {
+     "word": "a",
+     "frame": 3882
+    },
+    {
+     "word": "real",
+     "frame": 3890
+    },
+    {
+     "word": "press",
+     "frame": 3896
+    },
+    {
+     "word": "has",
+     "frame": 3904
+    },
+    {
+     "word": "almost",
+     "frame": 3909
+    },
+    {
+     "word": "nothing",
+     "frame": 3917
+    },
+    {
+     "word": "outside",
+     "frame": 3928
+    },
+    {
+     "word": "its",
+     "frame": 3936
+    },
+    {
+     "word": "two",
+     "frame": 3945
+    },
+    {
+     "word": "tones,",
+     "frame": 3950
+    },
+    {
+     "word": "so",
+     "frame": 3964
+    },
+    {
+     "word": "the",
+     "frame": 3966
+    },
+    {
+     "word": "detector",
+     "frame": 3969
+    },
+    {
+     "word": "must",
+     "frame": 3980
+    },
+    {
+     "word": "check",
+     "frame": 3987
+    },
+    {
+     "word": "every",
+     "frame": 3994
+    },
+    {
+     "word": "bin.",
+     "frame": 4002
+    },
+    {
+     "word": "That",
+     "frame": 4023
+    },
+    {
+     "word": "costs",
+     "frame": 4026
+    },
+    {
+     "word": "1",
+     "frame": 4035
+    },
+    {
+     "word": ".65",
+     "frame": 4042
+    },
+    {
+     "word": "million",
+     "frame": 4058
+    },
+    {
+     "word": "multiplications",
+     "frame": 4070
+    },
+    {
+     "word": "a",
+     "frame": 4092
+    },
+    {
+     "word": "second,",
+     "frame": 4096
+    },
+    {
+     "word": "and",
+     "frame": 4109
+    },
+    {
+     "word": "the",
+     "frame": 4111
+    },
+    {
+     "word": "cheap",
+     "frame": 4114
+    },
+    {
+     "word": "chip",
+     "frame": 4120
+    },
+    {
+     "word": "manages",
+     "frame": 4126
+    },
+    {
+     "word": "about",
+     "frame": 4138
+    },
+    {
+     "word": "a",
+     "frame": 4147
+    },
+    {
+     "word": "million,",
+     "frame": 4155
+    },
+    {
+     "word": "that's",
+     "frame": 4168
+    },
+    {
+     "word": "the",
+     "frame": 4177
+    },
+    {
+     "word": "next",
+     "frame": 4179
+    },
+    {
+     "word": "bug.",
+     "frame": 4185
+    }
+   ]
+  }
+ ]
+}

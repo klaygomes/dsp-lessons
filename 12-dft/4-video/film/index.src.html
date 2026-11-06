@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Which Key Did They Press?</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, '').replace(/[.,]+$/, ''); return fs.some(f => t === f); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0) => { origin(sel, x, y); const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'scaleY', keys); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 36, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+  if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
+}
+
+const turnHz = f => 360 * f / 8000;
+const FS = 8000;
+const ROWS = [697, 770, 852, 941], COLS = [1209, 1336, 1477, 1633];
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+const anim = (c, a, b, draw, stepF = 2) => stepped(c, a, b, stepF, p => draw(a + p * (b - a)));
+const stemsSvg = (x0, sp, y, vals, amp, color = C.ink, hollowNeg = false) => hline(x0 - 34, x0 + (vals.length - 1) * sp + 34, y, C.rule, 2) + vals.map((v, n) => {
+  const x = x0 + n * sp;
+  if (Math.abs(v) < 1e-9) return ringSvg(x, y, 8, C.soft, 4);
+  const yy = y - amp * v;
+  return `<line x1="${x}" y1="${y}" x2="${x}" y2="${yy.toFixed(1)}" stroke="${color}" stroke-width="6"/>` + (hollowNeg && v < 0 ? ringSvg(x, yy, 13, color, 5) : dotSvg(x, yy, 13, color));
+}).join('');
+const fmt2 = v => (Math.abs(v) < 0.005 ? 0 : v).toFixed(2).replace('-', '−');
+const keyBeep = n => Math.cos(2 * Math.PI * 770 * n / FS) + Math.cos(2 * Math.PI * 1336 * n / FS);
+const matchOf = (x, k, N) => { let re = 0, im = 0; for (let n = 0; n < N; n++) { re += x(n) * Math.cos(2 * Math.PI * k * n / N); im -= x(n) * Math.sin(2 * Math.PI * k * n / N); } return Math.hypot(re, im); };
+const nearestBin = (f, N) => Math.round(f * N / FS);
+const KEYBINS = [...ROWS, ...COLS].map(f => nearestBin(f, 205));
+const KEY5 = KEYBINS.map(k => matchOf(keyBeep, k, 205) / 102.5);
+const pct = v => Math.round(v * 100) + '%';
+
+{
+  const c = cam(1), a = sub(c), b = sub(c);
+  const sa = word(1, 'samples'), no = word(1, 'note'), tw = word(1, ['two', '2'], 0), ro = word(1, 'row'), co = word(1, 'column'), fi = word(1, ['five', '5']), th = word(1, ['thirteen', '1336', '1,336', '13']), wh = word(1, 'which');
+  M.show('#' + a.id, 0, ro); M.show('#' + b.id, ro);
+  label(a, '“press 1 for billing”', 960, 75, 'note', 'center');
+  label(a, 'which key?', 150, 262, 'lbl s');
+  layer(a, range(0, 11).map(i => `<rect x="${150 + (i % 3) * 48}" y="${60 + Math.floor(i / 3) * 48}" width="38" height="38" rx="7" fill="none" stroke="${C.ink}" stroke-width="3"/>`).join(''));
+  const k1 = layer(a, `<rect x="150" y="60" width="38" height="38" rx="7" fill="${C.accent}" stroke="${C.ink}" stroke-width="3"/>`);
+  flicker(k1, 169, 79, 0, sa, 0.4, 5);
+  const X = n => 160 + n * 9.5;
+  const tr = layer(a, hline(X(0), X(168), 470, C.rule, 2) + curve(range(0, 168).map(n => [X(n), 470 - 75 * keyBeep(n)]), C.rule, 2) + range(0, 168).map(n => dotSvg(X(n), 470 - 150 * keyBeep(n) / 2, 6, C.ink)).join(''));
+  fadeIn(tr, sa - 8, 8);
+  flicker(tr, 960, 470, sa, ro, 0.75, 3);
+  M.show(label(a, 'all your line sees: samples,', 960, 680, 'lbl', 'center'), sa);
+  M.show(label(a, '8,000 a second', 960, 750, 'lbl s', 'center'), sa + 6);
+  M.show(label(a, 'one note?', 1760, 180, 'note', 'right'), no, tw);
+  M.show(label(a, 'two tones', 1760, 180, 'note acc', 'right'), tw);
+  const gx = 640, gy = 260, cw = 170, ch = 130;
+  const keys = [['1', '2', '3', 'A'], ['4', '5', '6', 'B'], ['7', '8', '9', 'C'], ['*', '0', '#', 'D']];
+  const hi = layer(b, `<rect x="${gx + cw + 6}" y="${gy + ch + 6}" width="${cw - 12}" height="${ch - 12}" rx="10" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="6"/>`);
+  M.show(hi, fi);
+  flicker(hi, gx + cw * 1.5, gy + ch * 1.5, fi, sceneEnd(1), 0.6, 7);
+  layer(b, keys.map((r, i) => r.map((_, j) => `<rect x="${gx + j * cw + 6}" y="${gy + i * ch + 6}" width="${cw - 12}" height="${ch - 12}" rx="10" fill="none" stroke="${C.ink}" stroke-width="3"/>`).join('')).join(''));
+  keys.forEach((r, i) => r.forEach((t, j) => label(b, t, gx + j * cw + cw / 2, gy + i * ch + 34, 'lbl', 'center')));
+  label(b, 'row: low tone', 600, gy + 4 * ch + 20, 'lbl s', 'right');
+  M.show(label(b, 'column: high tone', gx + 2 * cw, 80, 'lbl s', 'center'), co);
+  ROWS.forEach((f, i) => { const l = label(b, `${f} Hz`, 600, gy + i * ch + 36, i === 1 ? 'lbl' : 'lbl s', 'right'); if (i === 1) M.show(l, 0, fi); });
+  COLS.forEach((f, j) => M.show(label(b, f.toLocaleString('en-US'), gx + j * cw + cw / 2, 170, j === 1 ? 'lbl' : 'lbl s', 'center'), co, j === 1 ? th : undefined));
+  M.show(label(b, '770 Hz', 600, gy + ch + 36, 'lbl acc', 'right'), fi);
+  M.show(label(b, '1,336', gx + cw + cw / 2, 170, 'lbl acc', 'center'), th);
+  M.show(label(b, 'key 5 =', 1400, 300, 'lbl'), fi);
+  M.show(label(b, '770 Hz', 1400, 380, 'lbl acc'), fi + 4);
+  M.show(label(b, '+ 1,336 Hz', 1400, 460, 'lbl acc'), th);
+  M.show(label(b, 'which two?', 1300, 620, 'lbl big acc'), wh);
+  drift(1);
+}
+{
+  const c = cam(2);
+  const sa = word(2, 'samples'), co = word(2, 'copy'), ad = word(2, 'add'), fo = word(2, ['four', '4']), ex = word(2, 'exactly');
+  const rec = [1, 0, -1, 0, 1, 0, -1, 0], t2 = rec, t1 = range(0, 7).map(n => cosd(45 * n));
+  const p2 = rec.map((v, n) => v * t2[n]), p1 = rec.map((v, n) => Math.abs(v * t1[n]) < 1e-9 ? 0 : v * t1[n]);
+  label(c, 'recording', 660, 221, 'lbl s', 'right');
+  const r2box = sub(c);
+  grow(layer(r2box, stemsSvg(700, 80, 250, rec, 70)), 980, 250, sa, 8);
+  flicker('#' + r2box.id, 980, 250, sa + 10, sceneEnd(2), 0.7, 21);
+  const col = (x0, test, prod, head, sum, at, sumAt, cls) => {
+    M.show(label(c, head, x0 + 3.5 * 62, 380, 'lbl', 'center'), at);
+    grow(layer(c, stemsSvg(x0, 62, 520, test, 60, C.soft)), x0, 520, at, 8);
+    grow(layer(c, stemsSvg(x0, 62, 740, prod, 60, C.ink, true)), x0, 740, at + 18, 8);
+    M.show(label(c, sum, x0 + 7 * 62 + 50, 711, cls), sumAt);
+  };
+  M.show(label(c, 'test', 370, 491, 'lbl s', 'right'), co);
+  M.show(label(c, 'product', 370, 711, 'lbl s', 'right'), co + 18);
+  col(400, t2, p2, '2,000 Hz test', 'sum 4', co, fo, 'lbl ok');
+  col(1150, t1, p1, '1,000 Hz test', 'sum 0', ex - 30, ex + 6, 'lbl acc');
+  M.show(label(c, 'multiply, then add', 1760, 80, 'lbl s', 'right'), ad);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const qu = word(3, 'quarter'), ze = word(3, ['zero', '0']), sh = word(3, 'shadows'), ar = word(3, 'arrow'), le = word(3, 'length'), ph = word(3, 'phase'), ma = word(3, 'match');
+  const X0 = 470, SPn = 56, RY = 260, LY = 455, UY = 650, SX = 900;
+  const lrT = range(0, 7).map(n => cosd(90 * n)), udT = range(0, 7).map(n => -sind(90 * n));
+  const recOf = phi => range(0, 7).map(n => { const v = cosd(90 * n + phi); return Math.abs(v) < 1e-9 ? 0 : v; });
+  const phiAt = f => f < ph ? -90 : f < ph + 40 ? -90 + 90 * (f - ph) / 40 : f < ph + 70 ? 0 : -45 * Math.min(1, (f - ph - 70) / 25);
+  label(c, 'recording', 440, RY - 29, 'lbl s', 'right');
+  M.show(label(c, 'test', 440, LY - 29, 'lbl s', 'right'), 0, sh);
+  M.show(label(c, 'left-right', 440, LY - 29, 'lbl s', 'right'), sh);
+  M.show(label(c, 'up-down', 440, UY - 29, 'lbl s', 'right'), sh);
+  const qt = label(c, 'a quarter turn behind', 160, 80, 'lbl'); M.show(qt, qu, ph + 10); M.kf(qt, 'opacity', [[0, 1], [ph, 1], [ph + 10, 0]]);
+  const r0box = sub(c), r0 = layer(r0box, stemsSvg(X0, SPn, RY, recOf(-90), 70));
+  grow(r0, X0 + 3.5 * SPn, RY, qu, 8); M.hide(r0, ph);
+  flicker('#' + r0box.id, X0 + 3.5 * SPn, RY, qu + 10, ph, 0.7, 31);
+  flicker(layer(c, stemsSvg(X0, SPn, LY, lrT, 60, C.soft)), X0 + 3.5 * SPn, LY, sceneStart(3), sceneEnd(3), 0.75, 32);
+  M.show(layer(c, stemsSvg(X0, SPn, UY, udT, 60, C.soft)), sh);
+  M.show(label(c, 'sum 0', SX, LY - 29, 'lbl acc'), ze, ph);
+  M.show(label(c, 'the tone hid', SX, LY + 40, 'lbl acc'), ze, ph);
+  M.show(label(c, 'sum −4', SX, UY - 29, 'lbl'), sh, ph);
+  M.show(label(c, "the tests: a backward (clockwise) wheel's two shadows", 160, 790, 'lbl s'), sh);
+  const cx = 1530, cy = 470, U = 58, R = 4 * U;
+  M.show(layer(c, hline(cx - R - 40, cx + R + 40, cy, C.ink, 3) + vline(cx, cy - R - 40, cy + R + 5, C.ink, 3)), sh);
+  M.show(label(c, 'left-right sum', cx, cy + R + 28, 'lbl s', 'center'), sh);
+  M.show(label(c, 'up-down sum', cx - 20, cy - R - 100, 'lbl s', 'right'), sh);
+  fadeIn(layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="${DASH}"/>`), le, 10);
+  anim(c, ar, sceneEnd(3), f => {
+    const phi = phiAt(f), lr = 4 * cosd(phi), ud = 4 * sind(phi), ex = cx + U * lr, ey = cy - U * ud;
+    let s = `<line x1="${cx}" y1="${cy}" x2="${ex.toFixed(1)}" y2="${cy}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="8 6"/><line x1="${ex.toFixed(1)}" y1="${cy}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${C.soft}" stroke-width="4" stroke-dasharray="8 6"/>` + arrowSvg(cx, cy, ex, ey, C.accent, 8);
+    if (f >= ph) s += stemsSvg(X0, SPn, RY, recOf(phi), 70) + `<text x="${SX}" y="${LY + 16}" font-family="Geist Mono" font-size="52" fill="${C.ink}">sum ${fmt2(lr)}</text><text x="${SX}" y="${UY + 16}" font-family="Geist Mono" font-size="52" fill="${C.ink}">sum ${fmt2(ud)}</text>`;
+    return s;
+  });
+  M.show(label(c, 'length 4', cx - R - 40, cy + R - 10, 'lbl acc', 'right'), le);
+  M.show(label(c, 'match = the length', 160, 92, 'lbl big acc'), ma);
+  drift(3);
+}
+{
+  const c = cam(4), a = sub(c), b = sub(c);
+  const ha = word(4, 'half'), fw = word(4, 'forward'), mi = word(4, 'mirror'), ti = word(4, 'tip'), te = word(4, 'test'), cl = word(4, 'clockwise');
+  M.show('#' + a.id, 0, te); M.show('#' + b.id, te);
+  const cx = 470, cy = 450, R = 270, h = R / 2, SP = 14;
+  label(a, 'lesson 6: a sample is two half arrows', 160, 80, 'lbl s');
+  layer(a, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.soft}" stroke-width="3"/>` + hline(cx - R - 30, cx + R + 30, cy, C.ink, 3));
+  const thAt = f => f < fw ? 0 : 45 * (f - fw) / SP;
+  anim(a, sceneStart(4), te, f => {
+    const th = thAt(f), tip = [cx + h * cosd(th), cy - h * sind(th)], end = [tip[0] + h * cosd(-th), tip[1] - h * sind(-th)];
+    return arrowSvg(cx, cy, ...tip, C.ink, 8) + (f >= ha ? arrowSvg(...tip, ...end, C.soft, 8, '2 13', true) : '') + (f >= ha ? dotSvg(end[0], cy, 15, C.accent) : '');
+  });
+  const PX = n => 1000 + n * 105, PY = 450, PA = 190;
+  M.show(layer(a, hline(PX(-0.4), PX(7.4), PY, C.rule, 2)), fw);
+  range(0, 7).forEach(n => { const v = cosd(45 * n); M.show(layer(a, Math.abs(v) < 1e-9 ? ringSvg(PX(n), PY, 8, C.soft, 4) : stemSvg(PX(n), PY, PY - PA * v, C.ink, 6, 12)), fw + SP * n); });
+  label(a, 'a 1,000 Hz tone, 45° a sample', 940, 140, 'lbl s');
+  M.show(label(a, 'where they land: the sample', 940, 700, 'lbl acc'), ti);
+  label(a, 'solid: forward half', 200, 760, 'lbl s');
+  M.show(label(a, 'dotted: its mirror half', 200, 820, 'lbl s'), mi);
+  const wx = 400, wy = 460, WR = 220;
+  label(b, 'test wheel at 2,000 Hz: 90° back, clockwise, a sample', 160, 80, 'lbl s');
+  layer(b, `<circle cx="${wx}" cy="${wy}" r="${WR}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + range(0, 3).map(k => dotSvg(...pt(wx, wy, WR, -90 * k), 8, C.soft)).join(''));
+  layer(b, `<path d="${arcD(wx, wy, WR + 40, 60, 10)}" fill="none" stroke="${C.soft}" stroke-width="4"/>` + arrowSvg(...pt(wx, wy, WR + 40, 14), ...pt(wx, wy, WR + 40, -4), C.soft, 4));
+  const S = 9;
+  anim(b, te, sceneEnd(4), f => { const n = Math.max(0, Math.floor((f - te) / S)); return arrowSvg(wx, wy, ...pt(wx, wy, WR - 6, -90 * n), C.ink, 7); });
+  const TX = n => 990 + n * 110;
+  label(b, 'wheel', 920, 271, 'lbl s', 'right');
+  label(b, 'sample', 920, 441, 'lbl s', 'right');
+  label(b, 'arrow', 920, 611, 'lbl s', 'right');
+  const rec = [1, 0, -1, 0, 1, 0, -1, 0];
+  range(0, 7).forEach(n => {
+    const at = te + S * n, d = -90 * n, x = TX(n);
+    M.show(layer(b, arrowSvg(x - 32 * cosd(d), 300 + 32 * sind(d), x + 32 * cosd(d), 300 - 32 * sind(d), C.ink, 5)), at);
+    M.show(label(b, rec[n] < 0 ? '−1' : String(rec[n]), x, 441, 'lbl', 'center'), at);
+    M.show(layer(b, rec[n] ? arrowSvg(x - 36, 640, x + 36, 640, C.accent, 6) : ringSvg(x, 640, 8, C.soft, 4)), at + 4);
+  });
+  M.show(label(b, '−1 along ← flips to →', 990, 760, 'lbl s'), te + S * 2 + 4);
+  drift(4);
+}
+{
+  const c = cam(5);
+  const st = word(5, 'still'), fa = word(5, 'fan'), pi = word(5, 'pile'), ov = word(5, 'over'), mi = word(5, 'mirror'), tw = word(5, 'twice'), bk = word(5, 'back'), en = word(5, ['started', 'start']);
+  const L = 150, x0 = 200, y1 = 300, y2 = 672;
+  M.show(label(c, 'forward half, turned back: stands still', 200, 130, 'lbl'), sceneStart(5));
+  range(0, 7).forEach(n => M.show(layer(c, arrowSvg(x0 + n * L, y1, x0 + (n + 1) * L, y1, C.ink, 7)), pi + 3 * n));
+  M.show(layer(c, arrowSvg(x0, y1 + 80, x0 + 8 * L, y1 + 80, C.accent, 9)), pi + 26);
+  M.show(label(c, 'match 4 = N ÷ 2', x0 + 4 * L, y1 + 100, 'lbl acc', 'center'), ov);
+  M.show(label(c, 'N: samples in the block, here 8', x0 + 4 * L, y1 + 170, 'lbl s', 'center'), ov + 6);
+  const fan = layer(c, [90, 210, 330].map(a => `<path d="M1600 ${y1}L${(1600 + 80 * cosd(a - 16)).toFixed(1)} ${(y1 - 80 * sind(a - 16)).toFixed(1)}L${(1600 + 80 * cosd(a + 16)).toFixed(1)} ${(y1 - 80 * sind(a + 16)).toFixed(1)}Z" fill="${C.soft}"/>`).join('') + dotSvg(1600, y1, 12, C.ink));
+  M.show(fan, fa);
+  M.show(label(c, 'a fan under', 1600, y1 + 100, 'lbl s', 'center'), fa);
+  M.show(label(c, 'a strobe', 1600, y1 + 160, 'lbl s', 'center'), fa);
+  M.show(label(c, 'mirror half: turns 180° a sample against it', 200, 566, 'lbl'), mi);
+  M.show(layer(c, ringSvg(x0, y2, 20, C.accent, 6)), tw);
+  const gap = Math.max(4, Math.floor((en - tw) / 8));
+  range(0, 7).forEach(n => {
+    const r = n % 2 === 0, y = y2 + n * 24, at = tw + gap * n;
+    const sel = layer(c, arrowSvg(r ? x0 : x0 + L, y, r ? x0 + L : x0, y, C.soft, 7, '2 12', true));
+    M.show(sel, at);
+  });
+  anim(c, tw, sceneEnd(5), f => { const n = Math.min(8, Math.floor((f - tw) / gap) + 1); return `<text x="420" y="${y2 + 100}" font-family="Geist Mono" font-size="52" fill="${C.ink}">${n} of 8 arrows</text>`; }, 2);
+  M.show(label(c, 'back to the start: 0', 900, y2 + 60, 'lbl acc'), en);
+  drift(5);
+}
+{
+  const c = cam(6), a = sub(c), b = sub(c);
+  const oc = word(6, 'octagon'), ex = word(6, 'exactly'), an = word(6, 'any'), wt = word(6, 'whole', 1), bi = word(6, 'bin'), li = word(6, 'list'), df = word(6, ['dft', 'd.f.t', 'df']);
+  M.show('#' + a.id, 0, wt); M.show('#' + b.id, wt);
+  label(a, '2,000 Hz tone, 1,000 Hz test wheel', 160, 80, 'lbl s');
+  label(a, 'forward half: turns 45° a sample', 160, 142, 'lbl s');
+  const s = 190, ocx = 640, ocy = 540, ap = s / (2 * Math.tan(Math.PI / 8));
+  let p = [ocx - s / 2, ocy + ap];
+  const st0 = [...p], t0 = sceneStart(6) + 6, gap = Math.max(5, Math.floor((oc - t0) / 8));
+  range(0, 7).forEach(n => { const q = [p[0] + s * cosd(45 * n), p[1] - s * sind(45 * n)]; M.show(layer(a, arrowSvg(...p, ...q, C.ink, 7)), t0 + gap * n); p = q; });
+  M.show(layer(a, ringSvg(...st0, 18, C.accent, 6)), ex);
+  M.show(label(a, 'ends where it began:', 1060, 380, 'lbl'), ex);
+  M.show(label(a, 'exactly 0', 1060, 450, 'lbl big acc'), ex);
+  M.show(label(a, 'any other whole-turn', 1060, 620, 'lbl s'), an);
+  M.show(label(a, 'difference: also 0', 1060, 680, 'lbl s'), an);
+  M.show(label(a, 'forward half shown;', 1000, 760, 'lbl s'), ex + 10);
+  M.show(label(a, 'the mirror half closes too', 1000, 820, 'lbl s'), ex + 10);
+  const BX = k => 360 + k * 300, WY = 220, WR = 66;
+  M.show(label(b, 'bin k: k turns in a block of N samples, N = 8', 960, 80, 'lbl s', 'center'), bi);
+  range(0, 4).forEach(k => {
+    layer(b, `<circle cx="${BX(k)}" cy="${WY + 40}" r="${WR}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + range(0, 7).map(m => dotSvg(...pt(BX(k), WY + 40, WR, -45 * m), 4, C.soft)).join(''));
+    label(b, `bin ${k}`, BX(k), WY + 125, 'lbl', 'center');
+    label(b, `${(k * 1000).toLocaleString('en-US')} Hz`, BX(k), WY + 185, 'lbl s', 'center');
+  });
+  anim(b, wt, sceneEnd(6), f => { const n = Math.max(0, Math.floor((f - bi) / 8)); return range(0, 4).map(k => dotSvg(...pt(BX(k), WY + 40, WR, -45 * k * n), 13, C.accent)).join(''); }, 4);
+  const base = 800, U = 60;
+  M.show(layer(b, hline(BX(-0.5), BX(4.5), base, C.ink, 3)), li);
+  range(0, 4).forEach(k => {
+    const v = k === 2 ? 4 : 0;
+    const sel = layer(b, `<rect x="${BX(k) - 24}" y="${base - Math.max(4, v * U)}" width="48" height="${Math.max(4, v * U)}" fill="${C.ink}"/>`);
+    grow(sel, BX(k), base, li + 2 * k, 8);
+    if (v) M.show(label(b, '4', BX(k), base - v * U - 70, 'lbl', 'center'), li + 2 * k + 8);
+  });
+  M.show(label(b, 'the DFT:', BX(3.5), 580, 'lbl acc', 'center'), df);
+  M.show(label(b, 'one match per bin', BX(3.5), 650, 'lbl acc', 'center'), df);
+  drift(6);
+}
+{
+  const c = cam(7);
+  const ei = word(7, ['eight', '8']), on = word(7, ['one', '1'], 1), re = word(7, 'resolution'), lo = word(7, 'longer'), fo = word(7, ['forty', '40']), sh = word(7, 'share'), tw = word(7, ['205', 'two']), ow = word(7, 'own'), em = word(7, 'empty');
+  const X = f => 400 + (f - 550) * 2.66;
+  const line = (N, y, at, tAt, ms) => {
+    const step = FS / N, k0 = Math.ceil(550 / step), k1 = Math.floor(1050 / step);
+    M.show(label(c, `N = ${N}`, 140, y - 70, 'lbl'), at);
+    M.show(label(c, ms, 140, y - 4, 'lbl s'), at);
+    M.show(layer(c, hline(X(550), X(1050), y, C.ink, 3) + range(k0, k1).map(k => vline(X(k * step), y - 14, y + 14, C.ink, 3)).join('')), at);
+    if (N === 205) { const e205 = layer(c, [19, 21, 23].map(k => `<rect x="${X((k - 0.5) * step)}" y="${y - 64}" width="${X(step) - X(0)}" height="62" fill="${C.inputSoft}" stroke="${C.input}" stroke-width="3"/>`).join('')); M.show(e205, em); flicker(e205, X(800), y, em, sceneEnd(7), 0.5, 71); }
+    ROWS.forEach((f, i) => {
+      const k = nearestBin(f, N), bad = N === 40 && k === 4;
+      M.show(layer(c, seg(X(f), y - 40, X(k * step), y, C.soft, 3, '6 6') + dotSvg(X(f), y - 40, 13, bad ? C.accent : C.ink)), tAt + 3 * i);
+    });
+    [...new Set(ROWS.map(f => nearestBin(f, N)))].forEach(k => M.show(label(c, String(k), X(k * step), y + 22, 'lbl s', 'center'), tAt + 12));
+  };
+  const y8 = 300, y40 = 520, y205 = 740;
+  ROWS.forEach(f => label(c, String(f), X(f), y8 - 130, 'lbl s', 'center'));
+  line(8, y8, sceneStart(7), on - 10, '1 ms');
+  line(40, y40, fo, fo + 4, '5 ms');
+  line(205, y205, tw, tw + 4, '25.6 ms');
+  M.show(label(c, 'bins sit 8,000 ÷ N Hz apart: the frequency resolution', 960, 80, 'lbl', 'center'), re);
+  M.show(label(c, 'every row tone: bin 1', 1780, y8 + 84, 'lbl acc', 'right'), on);
+  M.show(label(c, '770, 852: same bin', 1780, y40 + 84, 'lbl acc', 'right'), sh);
+  M.show(label(c, 'one empty bin between', 1780, y205 + 84, 'lbl ok', 'right'), em);
+  drift(7);
+}
+const BX8 = k => 200 + (k - 15) * 50, BASE8 = 780, H8 = 360;
+const barChart = (c, vals, at, stagger = 3) => {
+  layer(c, hline(BX8(14.5), BX8(45.5), BASE8, C.ink, 3));
+  KEYBINS.forEach(k => label(c, String(k), BX8(k), BASE8 + 22, 'lbl s', 'center'));
+  return KEYBINS.map((k, i) => { const sel = layer(c, `<rect x="${BX8(k) - 18}" y="${BASE8 - Math.max(3, vals[i] * H8)}" width="36" height="${Math.max(3, vals[i] * H8)}" fill="${C.ink}"/>`); grow(sel, BX8(k), BASE8, at + stagger * i, 8); return sel; });
+};
+{
+  const c = cam(8);
+  const pr = word(8, 'presses'), sa = word(8, 'samples'), bi = word(8, 'bins'), tw = word(8, ['twenty', '20']), ni = word(8, ['ninety', '90%', '90']), th = word(8, ['thirty', '34', '3492']), n2 = th + 6, ot = word(8, 'other'), ro = word(8, 'row'), co = word(8, 'column'), ke = word(8, 'key');
+  M.show(label(c, 'key 5: 205 samples', 200, 80, 'lbl s'), pr, bi);
+  M.show(label(c, 'key 5: 205 samples; bars: % of N ÷ 2 = 102.5', 200, 80, 'lbl'), bi);
+  M.show(label(c, 'only the eight keypad bins are checked', 200, 150, 'lbl s'), bi + 10);
+  const TX = n => 200 + n * 7.4;
+  const tr = layer(c, hline(TX(0), TX(204), 268, C.rule, 2) + curve(range(0, 204).map(n => [TX(n), 268 - 26 * keyBeep(n)]), C.ink, 3) + range(0, 204).map(n => dotSvg(TX(n), 268 - 26 * keyBeep(n), 4, C.ink)).join(''), [TX(0) - 8, TX(204) + 8]);
+  reveal(tr, pr, sa + 8, 'cruise');
+  flicker(tr, 960, 268, sa + 8, sceneEnd(8), 0.75, 81);
+  const cb = sub(c);
+  barChart(cb, KEY5, bi - 4);
+  flicker('#' + cb.id, 960, BASE8, th + 12, sceneEnd(8), 0.88, 88);
+  const hiBar = (i, at) => M.show(layer(cb, `<rect x="${BX8(KEYBINS[i]) - 18}" y="${BASE8 - KEY5[i] * H8}" width="36" height="${KEY5[i] * H8}" fill="${C.accent}"/>`), at);
+  hiBar(1, tw); hiBar(5, th);
+  M.show(label(c, pct(KEY5[1]), BX8(KEYBINS[1]), BASE8 - KEY5[1] * H8 - 66, 'lbl acc', 'center'), ni);
+  M.show(label(c, pct(KEY5[5]), BX8(KEYBINS[5]), BASE8 - KEY5[5] * H8 - 66, 'lbl acc', 'center'), n2);
+  [0, 2, 3, 4, 6, 7].forEach(i => M.show(label(c, pct(KEY5[i]), BX8(KEYBINS[i]), BASE8 - KEY5[i] * H8 - 62, 'lbl s', 'center'), ot + 2 * i));
+  M.show(label(c, '780 Hz bin: row 770', BX8(KEYBINS[1]), 326, 'lbl acc', 'center'), ro);
+  M.show(label(c, '1,327 Hz bin: column 1,336', BX8(KEYBINS[5]) + 60, 326, 'lbl acc', 'center'), co);
+  M.show(label(c, 'key 5', 1720, 420, 'lbl big acc', 'right'), ke);
+  M.show(tick(c, 1390, 470), ke + 4);
+  drift(8, 1, 1.04);
+}
+{
+  const c = cam(9), a = sub(c), b = sub(c);
+  const si = word(9, 'silence'), sg = word(9, 'strongest'), ba = word(9, 'bar'), ex = word(9, 'exactly'), cl = word(9, 'clear'), yo = word(9, 'turn'), fo = word(9, ['forty', '40']), co = word(9, 'collide'), le = word(9, 'lengthen'), ap = word(9, 'apart'), ac = word(9, 'account');
+  M.show('#' + a.id, 0, yo); M.show('#' + b.id, yo);
+  const SIL = KEYBINS.map((_, i) => 0.02 + 0.05 * rnd(i * 7 + 3)), top = SIL.indexOf(Math.max(...SIL));
+  M.show(label(a, 'silence', 200, 80, 'lbl'), sceneStart(9), ex);
+  const sil = barChart(a, SIL, sceneStart(9), 1);
+  sil.forEach(s => M.hide(s, ex));
+  M.show(layer(a, ringSvg(BX8(KEYBINS[top]), BASE8 - SIL[top] * H8 - 40, 20, C.accent, 5)), sg, ex);
+  M.show(label(a, 'still a strongest bin', BX8(KEYBINS[top]), BASE8 - 260, 'lbl acc', 'center'), sg, ba);
+  const bar = layer(a, hline(BX8(14.5), BX8(45.5), BASE8 - 0.25 * H8, C.accent, 5, DASH));
+  M.show(bar, ba);
+  M.show(label(a, 'bar: 25%', BX8(45.5), BASE8 - 0.25 * H8 - 74, 'lbl acc', 'right'), ba);
+  M.show(label(a, 'nothing clears it: no key', 1720, 80, 'lbl', 'right'), word(9, 'counts'), ex);
+  KEYBINS.forEach((_, i) => { const s = layer(a, `<rect x="${BX8(KEYBINS[i]) - 18}" y="${BASE8 - Math.max(3, KEY5[i] * H8)}" width="36" height="${Math.max(3, KEY5[i] * H8)}" fill="${i === 1 || i === 5 ? C.accent : C.ink}"/>`); grow(s, BX8(KEYBINS[i]), BASE8, ex + i, 8); });
+  M.show(label(a, 'key 5', 200, 80, 'lbl'), ex);
+  M.show(label(a, 'exactly one row, one column', 1720, 80, 'lbl ok', 'right'), cl);
+  M.show(label(a, 'clear the bar', 1720, 150, 'lbl ok', 'right'), cl);
+  M.show(tick(a, 740, 120), cl + 6);
+  label(b, 'your turn, in the lab', 960, 80, 'lbl', 'center');
+  const SX = n => 320 + (n - 8) * (1280 / 392), sy = 360;
+  layer(b, `<line x1="${SX(8)}" y1="${sy}" x2="${SX(400)}" y2="${sy}" stroke="${C.rule}" stroke-width="14" stroke-linecap="round"/>`);
+  [[8, '8'], [205, '205'], [400, '400']].forEach(([n, t]) => label(b, t, SX(n), sy + 50, 'lbl s', 'center'));
+  label(b, 'N', 260, sy - 30, 'lbl', 'right');
+  const nAt = f => f < le ? 40 : f < le + 20 ? Math.round(40 + 91 * (f - le) / 20) : f < le + 54 ? 131 : f < le + 74 ? Math.round(131 + 74 * (f - le - 54) / 20) : 205;
+  const stateAt = n => { let st = 2; for (const g of [ROWS, COLS]) { const bb = g.map(f => Math.round(f * n / FS)); for (let i = 0; i < 3; i++) { const d = bb[i + 1] - bb[i]; if (d === 0) st = 0; else if (d === 1) st = Math.min(st, 1); } } return st; };
+  const STATE = [['two tones share a bin', C.accentInk], ['neighbours, no empty bin', '#9A6A12'], ['own bin, empty bin between', C.input]];
+  anim(b, yo, sceneEnd(9), f => {
+    const n = nAt(f), b7 = Math.round(770 * n / FS), b8 = Math.round(852 * n / FS), same = b7 === b8;
+    return `<circle cx="${SX(n).toFixed(1)}" cy="${sy}" r="24" fill="${C.ink}"/><text x="${SX(n).toFixed(1)}" y="${sy - 50}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.ink}">N = ${n}</text>`
+      + (f >= fo ? `<text x="960" y="560" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${same ? C.accentInk : C.ink}">770 Hz: bin ${b7}, 852 Hz: bin ${b8}</text><text x="960" y="640" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${STATE[stateAt(n)][1]}">${n === 40 ? 'keys 5 and 8 collide' : STATE[stateAt(n)][0]}</text>` : '');
+  }, 2);
+  M.show(label(b, 'account number: ? ? ? ?', 960, 700, 'lbl big', 'center'), ac);
+  drift(9);
+}
+{
+  const c = cam(10), a = sub(c), b = sub(c);
+  const bl = word(10, 'billing'), fa = word(10, 'fake'), re = word(10, 'real'), ou = word(10, 'outside'), ev = word(10, 'every'), co = word(10, 'costs'), mi = word(10, 'million'), ch = word(10, 'chip'), nx = word(10, 'next');
+  M.show('#' + a.id, 0, ev); M.show('#' + b.id, ev);
+  M.show(label(c, 'next ticket: voices fake a key', 960, 75, 'note', 'center'), sceneStart(10));
+  const mini = (x0, vals, color) => hline(x0 - 10, x0 + 40 * 16, 640, C.ink, 3) + vals.map((v, i) => `<rect x="${x0 + i * 16}" y="${640 - Math.max(3, v * 300)}" width="10" height="${Math.max(3, v * 300)}" fill="${color}"/>`).join('');
+  const keyV = range(0, 39).map(i => i === 8 || i === 22 ? 0.9 : 0.02 + 0.03 * rnd(i + 200));
+  const voiceV = range(0, 39).map(i => 0.15 + 0.45 * rnd(i + 300) * Math.exp(-(((i - 10) / 18) ** 2)) + 0.25 * (i === 8 || i === 22 ? 1 : 0));
+  M.show(layer(a, mini(220, voiceV, C.soft)), fa);
+  M.show(label(a, 'a voice: energy everywhere', 540, 680, 'lbl s', 'center'), fa);
+  M.show(layer(a, mini(1060, keyV, C.ink)), re);
+  M.show(label(a, 'a key: two spikes,', 1380, 680, 'lbl s', 'center'), ou);
+  M.show(label(a, 'little else', 1380, 740, 'lbl s', 'center'), ou);
+  M.show(label(b, '103 bins (0 to 102) × 205 samples × 2', 960, 170, 'lbl', 'center'), ev);
+  M.show(label(b, '= 42,230 multiplications a block', 960, 240, 'lbl', 'center'), ev + 8);
+  M.show(label(b, '× 39 blocks a second = 1.65 million a second', 960, 310, 'lbl', 'center'), co);
+  const BX = v => 300 + v * 700;
+  M.show(label(b, 'needed: 1.65 million a second', 300, 420, 'lbl acc'), mi);
+  const need = layer(b, `<rect x="${BX(0)}" y="500" width="${BX(1.65) - BX(0)}" height="80" fill="${C.accent}"/>`, [BX(0) - 4, BX(1.65) + 4]);
+  reveal(need, mi - 4, mi + 20, 'cruise');
+  flicker(need, BX(0), 540, mi + 20, END - 30, 0.75, 101);
+  M.show(label(b, 'the chip: about 1 million', 300, 790, 'lbl'), ch);
+  M.show(layer(b, `<rect x="${BX(0)}" y="690" width="${BX(1) - BX(0)}" height="80" fill="none" stroke="${C.ink}" stroke-width="5"/>` + vline(BX(1), 490, 780, C.ink, 4, DASH)), ch);
+  M.show(label(b, 'too slow', 1760, 600, 'lbl big acc', 'right'), nx);
+  drift(10);
+}
+
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>
