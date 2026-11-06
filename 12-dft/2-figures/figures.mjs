@@ -254,7 +254,7 @@ export default k => {
       step(2, 'the walk is 4 long: the match',
         g({ anim: { k: 'in', d: 2.8, len: 0.5 } }, vec(L.slug, A.x, A.y + 22, endX, A.y + 22, 'accent'),
           text((A.x + endX) / 2, A.y + 44, 'match 4 (N ÷ 2)', { cls: 'k-num-accent' }),
-          L.phone ? g({}, fan(300, 330), text(300, 372, 'a fan under a strobe', { cls: 'l12-small' }))
+          L.phone ? g({}, fan(262, 330), text(262, 372, 'a fan under a strobe', { cls: 'l12-small' }))
             : g({}, fan(endX + 40, A.y + 4), text(endX + 40, A.y + 40, 'a fan under a strobe', { cls: 'l12-small' })))),
       text(B.x, B.ty, L.phone ? 'mirror half: turns 180° a sample' : 'mirror half: turns 180° a sample against it', { anchor: 'start', cls: 'k-label' }),
       step(3, 'the mirror half goes right, then back, and ends where it started', zig,
@@ -264,8 +264,9 @@ export default k => {
       step(4, 'at a different speed the arrows curl back to the start', walk(L.slug, octStart[0], octStart[1], oct, s, 'ink', 6, 0.3),
         g({ anim: { k: 'in', d: 8.4 } }, circle(octStart[0], octStart[1], 5, { cls: 'l12-ring' }),
           text(C.cx, octStart[1] + 26, 'curls back to the start: match 0', { cls: 'k-num' }))),
-      text(L.phone ? 180 : 360, L.phone ? 680 : 340, 'each arrow: a half arrow of the tone, turned back by the test wheel', { cls: 'k-tick' }),
-      text(L.phone ? 180 : 360, L.phone ? 704 : 366, 'match = length of the walk', { cls: 'k-note-accent' }),
+      L.phone ? g({}, text(180, 668, 'each arrow: a half arrow of the tone,', { cls: 'k-tick' }), text(180, 686, 'turned back by the test wheel', { cls: 'k-tick' }))
+        : text(360, 340, 'each arrow: a half arrow of the tone, turned back by the test wheel', { cls: 'k-tick' }),
+      text(L.phone ? 180 : 360, L.phone ? 710 : 366, 'match = length of the walk', { cls: 'k-note-accent' }),
     ];
   };
 
@@ -286,6 +287,7 @@ export default k => {
     const panels = [0, 1, 2].map(i => panel(i, i === 1 ? 1 : 2.8));
     return [
       heads(L.slug),
+      text(L.phone ? 180 : 360, L.phone ? 12 : 16, L.phone ? 'a 1,000 Hz tone: 45° a sample' : 'a 1,000 Hz tone: each half arrow turns 45° a sample', { cls: 'k-label' }),
       step(1, 'three moments of a 1,000 Hz tone, n = 0, 1 and 2', xs.map((cx, i) => g({},
         rim(cx, cy, R, 8),
         text(cx, cy - R - 18, `n = ${i}`, { cls: 'k-name' }))), panels[0].outer),
@@ -338,9 +340,9 @@ export default k => {
     const R = L.phone ? 44 : 46;
     const pos = L.phone ? [[62, 96], [180, 96], [298, 96], [121, 262], [239, 262]] : range(0, 4).map(i => [80 + i * 140, 112]);
     return [
-      step(1, 'five test wheels for N = 8, making 0 to 4 turns in the block', pos.map(([cx, cy], kk) => {
+      step(1, 'five test wheels for N = 8, making 0 to 4 turns backward, clockwise, in the block', pos.map(([cx, cy], kk) => {
         const groups = {};
-        range(0, 7).forEach(n => { const a = ((45 * kk * n) % 360 + 360) % 360; (groups[a] = groups[a] || []).push(n); });
+        range(0, 7).forEach(n => { const a = ((-45 * kk * n) % 360 + 360) % 360; (groups[a] = groups[a] || []).push(n); });
         const labels = Object.entries(groups).map(([a, ns]) => {
           const s = ns.length === 8 ? '0 to 7' : ns.join(',');
           const flat = Math.abs(sind(+a)) < 0.3, r = R - (flat ? 8 : 12), x = cx + r * cosd(+a), y = cy - r * sind(+a) + (flat ? (cosd(+a) > 0 ? -6 : 14) : 4);
@@ -353,7 +355,7 @@ export default k => {
           circle(cx, cy, R, { cls: 'l12-rim' }), labels);
       })),
       step(2, 'the dots step together, one stop per sample, and every wheel is back at the start at sample 8', pos.map(([cx, cy], kk) =>
-        g(kk ? { anim: { k: 'turn', r0: `${kk * 360}deg`, steps: 9, d: 1, len: 6 }, style: `transform-origin:${cx}px ${cy}px` } : {},
+        g(kk ? { anim: { k: 'turn', r0: `${-kk * 360}deg`, steps: 9, d: 1, len: 6 }, style: `transform-origin:${cx}px ${cy}px` } : {},
           circle(cx + R, cy, 6, { cls: 'l12-dot-accent' })))),
       text(L.phone ? 180 : 360, L.phone ? 358 : 202, L.phone ? 'numbers: the sample at each stop' : 'numbers: the sample that lands on each stop. The dot: sample 8, back at the start', { cls: 'k-tick' }),
       L.phone ? text(180, 378, 'the dot: sample 8, back at the start', { cls: 'k-tick' }) : '',
@@ -369,7 +371,7 @@ export default k => {
       heads(L.slug),
       axes(P, { yTicks: [[0, '0'], [2, '2'], [4, '4']], xTicks: [], zero: false }),
       text(P.x0, P.y0 - 14, 'match', { anchor: 'start', cls: 'k-tick' }),
-      line(P.X(4), P.y0 - (L.phone ? 24 : 6), P.X(4), P.y1, { cls: 'l12-ref' }),
+      line(P.X(4), P.y0 - (L.phone ? 24 : 6), P.X(4), P.y1 - 22, { cls: 'l12-ref' }),
       text(P.X(4), P.y0 - (L.phone ? 30 : 12), 'the limit', { cls: 'k-tick' }),
       vals.map((v, kk) => g({},
         v ? rect(P.X(kk) - bw / 2, P.Y(v), bw, P.Y(0) - P.Y(v), kk > 4 ? { fill: `url(#${L.slug}-ink-hatch)`, cls: 'l12-hatch-bar' } : { cls: 'k-bar' }) : line(P.X(kk) - bw / 2, P.y1, P.X(kk) + bw / 2, P.y1, { cls: 'l12-vec' }),
@@ -473,12 +475,12 @@ export default k => {
       L.phone ? '' : g({},
         path(`M${sideX} ${P.Y(0.162)}h6V${P.Y(0.859)}h-6`, { cls: 'l12-vec-thin' }),
         text(sideX + 12, P.Y(0.859) + 4, 'weakest own bin 86%', { anchor: 'start', cls: 'k-tick' }),
-        text(sideX + 12, P.Y(0.162) + 12, 'worst rival about 16%', { anchor: 'start', cls: 'k-tick' }),
+        text(sideX + 12, P.Y(0.162) + 12, 'worst keypad rival 16%', { anchor: 'start', cls: 'k-tick' }),
         text(sideX + 12, P.Y(0.5) - 4, 'the bar sits', { anchor: 'start', cls: 'k-label' }),
         text(sideX + 12, P.Y(0.5) + 12, 'in this band', { anchor: 'start', cls: 'k-label' })),
       L.phone ? g({},
         text(40, P.y1 + 76, 'every key, every phase: own bins at least 86%,', { anchor: 'start', cls: 'k-tick' }),
-        text(40, P.y1 + 94, 'rival bins about 16% at most', { anchor: 'start', cls: 'k-tick' })) : '',
+        text(40, P.y1 + 94, 'other keypad bins about 16% at most', { anchor: 'start', cls: 'k-tick' })) : '',
       g({}, (L.phone
         ? [[40, P.y1 + 124], [40, P.y1 + 146], [40, P.y1 + 168]]
         : [[60, 500], [270, 500], [500, 500]]).map(([lx, ly], i) => [
@@ -552,8 +554,8 @@ export default k => {
       body: (k, L) => unspin(L) },
     { name: 'mirror-arrows', w: 720, h: 450, phone: { w: 360, h: 444 }, steps: 4, css: CSS,
       title: 'A real tone is two half arrows',
-      desc: 'Three moments of a 1,000 Hz tone, n = 0, 1 and 2. A forward half arrow turns 45 degrees counter-clockwise a sample, and its mirror half arrow, laid at its tip, turns 45 degrees clockwise. Together they always land on the horizontal line, at 1.00, 0.71 and 0.00, which are the samples of the cosine plotted below.',
-      caption: 'Each moment shows the forward half arrow (solid) and its mirror half (dotted) laid tip to tail. They always land on the horizontal line, and the spot where they land is the sample: 1.00, 0.71, 0.00, tracing the cosine below.',
+      desc: 'Three moments of a 1,000 Hz tone, n = 0, 1 and 2, slower than the 2,000 Hz tone around it so the turns are easy to follow. A forward half arrow turns 45 degrees counter-clockwise a sample, and its mirror half arrow, laid at its tip, turns 45 degrees clockwise. Together they always land on the horizontal line, at 1.00, 0.71 and 0.00, which are the samples of the cosine plotted below.',
+      caption: 'A 1,000 Hz tone, 45° a sample. Each moment shows the forward half arrow (solid) and its mirror half (dotted) laid tip to tail. They always land on the horizontal line, and the spot where they land is the sample: 1.00, 0.71, 0.00, tracing the cosine below.',
       body: (k, L) => mirrorArrows(L) },
     { name: 'polygon', w: 720, h: 360, phone: { w: 360, h: 640 }, css: CSS,
       title: 'Whole turns cancel exactly',
@@ -562,8 +564,8 @@ export default k => {
       body: (k, L) => polygon(L) },
     { name: 'bin-wheels', w: 720, h: 220, phone: { w: 360, h: 392 }, steps: 2, css: CSS,
       title: 'Test wheels that make whole turns',
-      desc: 'Five test wheels for a block of 8 samples, making 0, 1, 2, 3 and 4 turns: 0, 1,000, 2,000, 3,000 and 4,000 Hz. Each wheel marks where its dot lands at samples 0 to 7. The dots step together, and at sample 8 every wheel is back at the start.',
-      caption: 'For N = 8, the wheels that make 0 to 4 whole turns in the block. The numbers say which samples land on each stop. At sample 8 every dot is back where it began.',
+      desc: 'Five test wheels for a block of 8 samples, turning backward, clockwise, and making 0, 1, 2, 3 and 4 turns: 0, 1,000, 2,000, 3,000 and 4,000 Hz. Each wheel marks where its dot lands at samples 0 to 7. The dots step together, and at sample 8 every wheel is back at the start.',
+      caption: 'For N = 8, the wheels that make 0 to 4 whole turns in the block, each turning backward, clockwise, like every test wheel. The numbers say which samples land on each stop. At sample 8 every dot is back where it began.',
       body: (k, L) => binWheels(L) },
     { name: 'dft-bars', w: 720, h: 330, phone: { w: 360, h: 600 }, css: CSS,
       title: 'The DFT of the 2,000 Hz recording',
@@ -583,7 +585,7 @@ export default k => {
     { name: 'key5-bars', w: 720, h: 540, phone: { w: 360, h: 640 }, css: CSS,
       title: 'Decoding the key 5',
       desc: 'Top: the 205 samples of the key 5 beep. Bottom: the matches of bins 15 to 45 as a share of 102.5. Bin 20 reaches 90% and bin 34 reaches 92%; bins 19 and 21 pick up 32% and 20% of spill. A dashed line marks the 25% bar. Of the eight keypad bins, only 20 and 34 clear it. Bins the detector does not check are drawn faint.',
-      caption: 'The key 5 as samples and as bins. Of the eight keypad bins (solid), only 20 and 34 clear the 25% bar. Faint bars are bins the detector never checks.',
+      caption: 'The key 5 as samples and as bins. Of the eight keypad bins (solid), only 20 and 34 clear the 25% bar. Faint bars, like the spill in bins 19 and 35, are bins the detector never checks, so a rival means another keypad bin.',
       body: (k, L) => key5Bars(L) },
     { name: 'circle-bins', w: 720, h: 370, phone: { w: 360, h: 630 }, css: CSS,
       title: 'The bins sit on the unit circle',

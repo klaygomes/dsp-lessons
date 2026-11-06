@@ -11,7 +11,7 @@
 <!--KIT:page.css-->
 .key i { display: inline-block; vertical-align: middle; margin-right: 6px; }
 .key .l12-k-walk { width: 22px; border-top: 2px solid var(--ink); }
-.key .l12-k-match { width: 22px; border-top: 3px solid var(--accent); }
+.key .l12-k-match { width: 22px; border-top: 3px dashed var(--accent); }
 .key .l12-k-pin { width: 22px; border-top: 2px dashed var(--input); }
 .key .l12-k-start { width: 10px; height: 10px; border-radius: 50%; background: var(--input); }
 .key .l12-k-bar { width: 10px; height: 14px; background: var(--ink); }
@@ -31,6 +31,8 @@
 .lab .l12-feedback { min-height: 1.6em; }
 .lab .l12-timeline button { font-size: 15px; padding: 9px 12px; }
 .lab .l12-timeline button.l12-done::after { content: "\00a0\2713"; color: var(--input); }
+table.worked:has(thead th:nth-child(9)) :is(th, td):not(:first-child) { width: 9%; }
+.table { background: linear-gradient(to right, var(--paper) 40%, transparent) left center / 28px 100% no-repeat local, linear-gradient(to left, var(--paper) 40%, transparent) right center / 28px 100% no-repeat local, linear-gradient(to right, var(--ink-soft), transparent) left center / 8px 100% no-repeat scroll, linear-gradient(to left, var(--ink-soft), transparent) right center / 8px 100% no-repeat scroll; }
 .act2 { display: grid; }
 .k-inline-ask { border-left: 3px solid var(--input); padding-left: 16px; }
 @media (max-width: 520px) { .lab .l12-picks .row button { font-size: 13px; padding: 9px 9px; } }

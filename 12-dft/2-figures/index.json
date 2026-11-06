@@ -37,7 +37,7 @@
   },
   "mirror-arrows": {
     "title": "A real tone is two half arrows",
-    "caption": "Each moment shows the forward half arrow (solid) and its mirror half (dotted) laid tip to tail. They always land on the horizontal line, and the spot where they land is the sample: 1.00, 0.71, 0.00, tracing the cosine below.",
+    "caption": "A 1,000 Hz tone, 45° a sample. Each moment shows the forward half arrow (solid) and its mirror half (dotted) laid tip to tail. They always land on the horizontal line, and the spot where they land is the sample: 1.00, 0.71, 0.00, tracing the cosine below.",
     "animated": true,
     "phone": true
   },
@@ -49,7 +49,7 @@
   },
   "bin-wheels": {
     "title": "Test wheels that make whole turns",
-    "caption": "For N = 8, the wheels that make 0 to 4 whole turns in the block. The numbers say which samples land on each stop. At sample 8 every dot is back where it began.",
+    "caption": "For N = 8, the wheels that make 0 to 4 whole turns in the block, each turning backward, clockwise, like every test wheel. The numbers say which samples land on each stop. At sample 8 every dot is back where it began.",
     "animated": true,
     "phone": true
   },
@@ -73,7 +73,7 @@
   },
   "key5-bars": {
     "title": "Decoding the key 5",
-    "caption": "The key 5 as samples and as bins. Of the eight keypad bins (solid), only 20 and 34 clear the 25% bar. Faint bars are bins the detector never checks.",
+    "caption": "The key 5 as samples and as bins. Of the eight keypad bins (solid), only 20 and 34 clear the 25% bar. Faint bars, like the spill in bins 19 and 35, are bins the detector never checks, so a rival means another keypad bin.",
     "animated": false,
     "phone": true
   },

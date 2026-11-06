@@ -13,10 +13,10 @@ ok = page.build(
     still_text={
         "In the figure, the dot's starting point slides from the right to the bottom, and the arrow swings with it, its length fixed at 4.":
             "The figure shows the dot starting at the right, 45° below it and at the bottom, and the arrow for each start points the same way, its length fixed at 4.",
-        "The figure shows the two arrows turning opposite ways while the spot where they land slides along the horizontal line.":
-            "The figure shows three moments of the two arrows, turned opposite ways, and the spot where they land on the horizontal line.",
-        "The figure steps these five wheels through the eight samples.":
-            "The figure marks where each of these five wheels stops at each of the eight samples.",
+        "The figure slows down to a 1,000 Hz tone, 45° a sample, and the spot where the two arrows land slides along the horizontal line. That sliding spot is the cosine.":
+            "The figure slows down to a 1,000 Hz tone, 45° a sample, and shows three moments: each time the two arrows land on the horizontal line. Those spots, sample after sample, trace the cosine.",
+        "The figure steps these five wheels backward, clockwise, through the eight samples.":
+            "The figure marks where each of these five wheels, turning backward, clockwise, stops at each of the eight samples.",
     },
 )
 sys.exit(0 if ok else 1)

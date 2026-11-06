@@ -35,7 +35,7 @@ Remember the wheel? A tone is a dot on the rim of a wheel of radius 1, and we wa
 
 But your line can't recognize numbers by eye. It needs a procedure, and here's the simplest that could work. Make your own copy of the tone you're looking for, a **test tone**. Multiply it with the recording sample by sample, and add up the products.
 
-Why would that work? When the two agree, positive meets positive and negative meets negative, so every product is positive and the sum grows. When they disagree, the products are positive about as often as negative, and they cancel. Before you look at the table, guess: what will the sum be for a 1,000 Hz test tone?
+Why would that work? When the two agree, positive meets positive and negative meets negative, so every product is positive and the sum grows. When they disagree, some products come out negative and pull the sum back down. How far down? Before you look at the table, guess: what will the sum be for a 1,000 Hz test tone?
 
 [[predict-sum]]
 
@@ -93,9 +93,9 @@ Why do the two sums work, and why did the second wheel turn backward? One pictur
 
 [[diagram:mirror-arrows]]
 
-The figure shows the two arrows turning opposite ways while the spot where they land slides along the horizontal line. That sliding spot is the cosine.
+The figure slows down to a 1,000 Hz tone, 45° a sample, and the spot where the two arrows land slides along the horizontal line. That sliding spot is the cosine.
 
-Now meet the **test wheel**: a wheel turning backward, clockwise, at the test tone's speed. Its two shadows were our two test tones. Use it to give every sample a little arrow. The arrow points where the test wheel points at that sample. Its length is the sample's value. A negative value flips it to the opposite side. The figure builds one such arrow in three steps: the wheel's direction, the sample's length, and the flip.
+Now meet the **test wheel**: a wheel turning backward, clockwise, at the test tone's speed. Its two shadows were our two test tones. Use it to give every sample a little arrow: it points where the test wheel points, its length is the sample's value, and a negative value flips it to the opposite side.
 
 [[diagram:sample-arrow]]
 
@@ -103,19 +103,19 @@ Let's walk the eight arrows of a block of N = 8 samples, our first recording, ag
 
 | n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|---|
-| test wheel points | right | down | left | up | right | down | left | up |
+| test wheel | → | ↓ | ← | ↑ | → | ↓ | ← | ↑ |
 | sample | 1 | 0 | −1 | 0 | 1 | 0 | −1 | 0 |
-| arrow | 1 right | none | left, flipped: 1 right | none | 1 right | none | 1 right | none |
+| arrow | 1 → | 0 | 1 → | 0 | 1 → | 0 | 1 → | 0 |
 
-Lay them tip to tail and you walk 4 to the right. That's the left-right sum, 4, and the up-down sum, 0. Now take the recording that hid, 0, 1, 0, −1, and so on. Sample 1 is a 1 along "down", and sample 3 is a −1 along "up", flipped to point down. Four steps down: (0, −4), the second row of the table. The two sums were this walk all along.
+At samples 2 and 6 the −1 along "left" flips to point right. Lay the arrows tip to tail and you walk 4 to the right: the left-right sum, 4, and the up-down sum, 0. Now take the recording that hid, 0, 1, 0, −1, and so on. Sample 1 is a 1 along "down", and sample 3 is a −1 along "up", flipped to point down. Four steps down: (0, −4), the second row of the table. The two sums were this walk all along.
 
-Now, why backward? Think about the two arrows inside the tone. Laying a sample along the test wheel's direction turns each of its two half arrows by the test wheel's angle, because multiplying arrows adds their angles (lesson 6). The forward arrow turns 90° counter-clockwise per sample, and the test wheel turns 90° clockwise. The two cancel. The forward half's arrows all point the same way, sample after sample, and pile up. It's like a fan that seems to stand still under a strobe light flashing once per turn. Each of them is half the tone's height, so N samples pile up to N ÷ 2. The mirror half was already turning clockwise. Against the test wheel it turns clockwise twice as fast, and its walk curls around back to the start.
+Now, why backward? Remember from lesson 6 that every sample is the sum of two half arrows, the forward one and its mirror. Laying a sample along the test wheel turns both halves by the test wheel's angle, because multiplying arrows adds their angles. The forward half turns 90° counter-clockwise a sample and the test wheel turns it back 90°, so it stands still, like a fan under a strobe light that flashes once per turn. Its N arrows, each half the tone's height, pile up to N ÷ 2. The mirror half already turns clockwise, so the test wheel makes it turn twice as fast, and its walk curls back to the start.
 
 So a tone of height 1 (its samples swing between +1 and −1) scores N ÷ 2 in a block of N samples. That's our 4 in eight samples. The two exceptions are 0 Hz and 4,000 Hz. They sit on the horizontal line, each is its own mirror, and both halves pile up: they score N.
 
 [[diagram:unspin]]
 
-The figure shows both cases: at the tone's speed the arrows line up into one long walk; at any other speed they curl back near the start. Either way, the length of the walk is the match.
+The figure keeps the two halves apart. On the left, the forward halves line up into a walk of 4 and the mirror halves go back and forth to nothing. It's the same walk as the table's: at sample 0 both halves point right, 0.5 each, and make the table's arrow of 1; at sample 1 they point opposite ways and make 0. On the right, at another speed, the arrows curl back to the start. Either way, the length of the walk is the match.
 
 Now go and play. Pick a tone, pick a test wheel, and watch the arrows pile up or curl away.
 
@@ -131,15 +131,15 @@ Look again at why the 1,000 Hz test scored exactly zero, not just small. In eigh
 
 The figure shows the octagon. Beside it, a 2,500 Hz tone meets the 2,000 Hz wheel, and its walk doesn't close.
 
-So pick the test wheels that make a whole number of turns in the block. With a block of N samples, the wheel that makes k turns turns k × 360° ÷ N per sample, and that's the tone k × 8,000 ÷ N Hz. For our eight samples: 0 turns is 0 Hz, 1 turn is 1,000 Hz, 2 turns is 2,000 Hz, up to 4 turns, which is 4,000 Hz, the limit. The figure steps these five wheels through the eight samples.
+So pick the test wheels that make a whole number of turns in the block. With a block of N samples, the wheel that makes k turns turns k × 360° ÷ N per sample, and that's the tone k × 8,000 ÷ N Hz. For our eight samples: 0 turns is 0 Hz, 1 turn is 1,000 Hz, 2 turns is 2,000 Hz, up to 4 turns, which is 4,000 Hz, the limit. The figure steps these five wheels backward, clockwise, through the eight samples.
 
 [[diagram:bin-wheels]]
 
-Each of these test wheels is a numbered slot called a **bin**. Bin k holds two things. One is the wheel that makes k turns in N samples, at the tone k × 8,000 ÷ N Hz. The other is the match the recording gets against it. Line up the matches of all N bins, k from 0 to N − 1. That list is the **DFT**, the discrete Fourier transform: one match per bin. The figure draws it as bars for our recording.
+Each of these test wheels is a numbered slot called a **bin**. Bin k holds two things. One is the wheel that makes k turns in N samples, at the tone k × 8,000 ÷ N Hz. The other is the match the recording gets against it. Line up the matches of all N bins, k from 0 to N − 1. That list is the **DFT**, the discrete Fourier transform: one match per bin.
+
+What about k from 5 to 7? Bin 6 would be 6,000 Hz, beyond the limit. Its test wheel turns back 6 × 45° = 270° per sample. But turning back 270° lands exactly where turning forward 90° does. So bin 6's test wheel really turns forward at the 2,000 Hz speed, and it freezes the mirror arrow. Remember lesson 4's alias, a lower tone that gives the same samples as a higher one? This is the same thing seen from the other side: 6,000 Hz backward and 2,000 Hz forward land on the same spots. For a real recording, bin N − k always matches exactly as strongly as bin k, so you only need to read bins 0 to N ÷ 2. The figure draws all eight matches for our recording, bin 6 included.
 
 [[diagram:dft-bars]]
-
-What about k from 5 to 7? Bin 6 would be 6,000 Hz, beyond the limit. Its test wheel turns back 6 × 45° = 270° per sample. But turning back 270° lands exactly where turning forward 90° does. So bin 6's test wheel really turns forward at the 2,000 Hz speed, and it freezes the mirror arrow: lesson 4's alias, seen from the other side. For a real recording, bin N − k always matches exactly as strongly as bin k, so you only need to read bins 0 to N ÷ 2.
 
 ## Tones that fall in the same bin
 
@@ -195,7 +195,7 @@ The strongest row bin is 20 and the strongest column bin is 34: row 770, column 
 
 The decoder needs one more rule. Most of the time nobody is pressing anything, and the line carries silence. "Strongest row, strongest column" would name a key even in silence, because some bin is always the strongest. So give the detector a **bar**: a tone counts only when its bin's match clears it. The bar, like every match from here on, is read as a share of the full pile of 102.5, the table's last column. A key counts only when exactly one row tone and exactly one column tone clear the bar. Silence clears nothing, so no key.
 
-Where should the bar sit? Try every key at every phase. A key's own bins always score at least 86%, and the worst spill into a rival bin is about 16%. The bar must sit between them, and 25% leaves room on both sides. A rival never gets near it, and a key can arrive at a third of its usual strength and still clear it, because a third of 86% is about 29%.
+Where should the bar sit? Try every key at every phase, at full strength. A key's own bins always score at least 86%, and the worst spill into a rival bin is about 16%. A rival here means one of the other keypad bins: the bins between them, like the 32% in bin 19 below, are never checked, so their spill can't fool the detector. The bar must sit between them, and 25% leaves room on both sides. A rival never gets near it, and a key can arrive at a third of its usual strength and still clear it, because a third of 86% is about 29%.
 
 [[diagram:key5-bars]]
 
@@ -208,9 +208,9 @@ Notice that the winners score 90% and 92%, not 100%. A 770 Hz tone turns about 1
 Now you build the detector. In the lab, the support line is receiving a customer's four-digit account number, one key press at a time. You don't know the digits. Your job:
 
 1. Choose the block length N. Watch the eight keypad tones land on bins, and make sure no two of them share one.
-2. For each key press, find the row bin and the column bin that clear the 25% bar, and look the pair up in the grid.
+2. For each key press, pick the row bin and the column bin that clear the 25% bar. The detector looks the pair up in the grid and reads the digit.
 
-You're done when the detector reads all four digits correctly. Start at N = 40 and see the keys 5 and 8 collide, then lengthen the block until they come apart.
+One more thing about real calls: the presses arrive at different loudness, because phones and lines differ. A quiet press scores lower in its own bins than the key 5 did here, but the bar sits low enough that every press still clears it. You're done when the detector reads all four digits correctly. Start at N = 40 and see the keys 5 and 8 collide, then lengthen the block until they come apart.
 
 [[lab-act2]]
 
