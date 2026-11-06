@@ -1,0 +1,3 @@
+Try a rough one thousand hertz tone: one, one, zero, minus one, minus one, minus one, zero, one. The even part is two, pointing right. The odd samples walk two right and two up, but each sits one sample later, so turn the walk back one more step: two point eight three, pointing right.
+Your turn: pick the block, add splits until the meter fits, and decode a caller's digits live. The FFT is not a rougher DFT: it gives exactly the same bins, still thirty-one point two five hertz apart, just fast enough.
+Need only a few bins? Goertzel is a filter ringing at one bin's point. For bin twenty of key five, its last two outputs give ninety-one point eight, the DFT's match, at one multiplication a sample. Under about sixteen bins, it beats the FFT.

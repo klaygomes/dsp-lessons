@@ -1,0 +1,300 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.760
+The keypad detector
+from the last lesson works,
+
+2
+00:00:02.780 --> 00:00:04.840
+and to reject voices that fake a key,
+
+3
+00:00:04.860 --> 00:00:06.680
+it computes every bin of every block.
+
+4
+00:00:06.700 --> 00:00:08.460
+Then you put it on the cheap chip.
+
+5
+00:00:08.500 --> 00:00:10.260
+Forty-two thousand
+multiplications a block,
+
+6
+00:00:10.280 --> 00:00:12.040
+one point six five million a second,
+
+7
+00:00:12.100 --> 00:00:13.760
+and the chip manages about a million.
+
+8
+00:00:13.780 --> 00:00:14.840
+It falls behind.
+
+9
+00:00:15.510 --> 00:00:18.430
+Is the DFT really doing
+forty-two thousand different things?
+
+10
+00:00:18.530 --> 00:00:19.530
+Take a block of eight.
+
+11
+00:00:19.650 --> 00:00:22.330
+Bin one's test wheel turns back
+forty-five degrees a sample,
+
+12
+00:00:22.350 --> 00:00:24.010
+bin five's two hundred and twenty-five.
+
+13
+00:00:24.150 --> 00:00:25.910
+On the even samples
+they point the same way.
+
+14
+00:00:25.930 --> 00:00:27.910
+On the odd ones, exactly opposite.
+
+15
+00:00:28.430 --> 00:00:30.910
+So add up the turned even samples once:
+the even part.
+
+16
+00:00:31.260 --> 00:00:33.000
+Then the odd ones: the odd part.
+
+17
+00:00:33.480 --> 00:00:34.660
+Bin one is even plus odd,
+
+18
+00:00:34.680 --> 00:00:36.000
+bin five is even minus odd.
+
+19
+00:00:36.020 --> 00:00:37.360
+Two bins for the price of one.
+
+20
+00:00:37.950 --> 00:00:40.250
+Try a rough one thousand hertz tone: one,
+
+21
+00:00:40.270 --> 00:00:42.890
+one, zero, minus one,
+minus one, minus one, zero, one.
+
+22
+00:00:43.030 --> 00:00:44.700
+The even part is two, pointing right.
+
+23
+00:00:44.720 --> 00:00:46.360
+The odd samples walk two right and two up,
+
+24
+00:00:46.380 --> 00:00:48.020
+but each sits one sample later,
+
+25
+00:00:48.120 --> 00:00:51.640
+so turn the walk back one more step:
+two point eight three, pointing right.
+
+26
+00:00:52.150 --> 00:00:55.290
+Bin one is two plus two point eight three:
+four point eight three.
+
+27
+00:00:55.310 --> 00:00:57.390
+Bin five is two minus
+two point eight three:
+
+28
+00:00:57.410 --> 00:00:58.430
+minus point eight three.
+
+29
+00:00:58.830 --> 00:01:00.930
+Turn, add, subtract:
+that step is a butterfly,
+
+30
+00:01:00.950 --> 00:01:02.350
+four multiplications.
+
+31
+00:01:03.000 --> 00:01:04.160
+Now the dramatic move.
+
+32
+00:01:04.180 --> 00:01:05.900
+A four-sample DFT is a DFT,
+
+33
+00:01:05.920 --> 00:01:09.320
+so split it too, and again, down to single
+samples, which cost nothing.
+
+34
+00:01:09.340 --> 00:01:11.780
+Only butterflies are left,
+three layers of four:
+
+35
+00:01:11.900 --> 00:01:13.900
+forty-eight multiplications
+instead of a hundred and twenty-eight.
+
+36
+00:01:13.920 --> 00:01:16.440
+That's the FFT,
+the fast Fourier transform.
+
+37
+00:01:17.440 --> 00:01:18.480
+Back to the line.
+
+38
+00:01:18.500 --> 00:01:20.480
+The FFT halves the block again and again,
+
+39
+00:01:20.500 --> 00:01:22.380
+so its length must be a power of two,
+
+40
+00:01:22.400 --> 00:01:24.680
+and two hundred and five
+is five times forty-one.
+
+41
+00:01:24.700 --> 00:01:26.240
+Take two hundred and fifty-six:
+
+42
+00:01:26.260 --> 00:01:28.160
+every keypad tone still gets its own bin,
+
+43
+00:01:28.180 --> 00:01:30.360
+and the chip can spend
+thirty-two thousand a block.
+
+44
+00:01:31.410 --> 00:01:33.130
+Now split, and watch the bill.
+
+45
+00:01:33.150 --> 00:01:35.726
+No splits:
+a hundred and thirty-one thousand.
+
+46
+00:01:35.746 --> 00:01:36.768
+One: sixty-six thousand.
+
+47
+00:01:36.788 --> 00:01:38.610
+Two: thirty-four thousand, still over.
+
+48
+00:01:38.910 --> 00:01:39.830
+Three, and it fits.
+
+49
+00:01:39.850 --> 00:01:42.730
+All the way down, the FFT needs
+four thousand and ninety-six,
+
+50
+00:01:42.750 --> 00:01:43.710
+an eighth of the chip.
+
+51
+00:01:45.440 --> 00:01:46.760
+Your turn: pick the block,
+
+52
+00:01:46.780 --> 00:01:48.240
+add splits until the meter fits,
+
+53
+00:01:48.260 --> 00:01:49.820
+and decode a caller's digits live.
+
+54
+00:01:49.940 --> 00:01:51.680
+The FFT is not a rougher DFT:
+
+55
+00:01:51.700 --> 00:01:53.040
+it gives exactly the same bins,
+
+56
+00:01:53.060 --> 00:01:55.880
+still thirty-one point two five
+hertz apart, just fast enough.
+
+57
+00:01:56.490 --> 00:01:57.810
+Need only a few bins?
+
+58
+00:01:57.830 --> 00:01:59.930
+Goertzel is a filter
+ringing at one bin's point.
+
+59
+00:01:59.950 --> 00:02:01.070
+For bin twenty of key five,
+
+60
+00:02:01.090 --> 00:02:03.130
+its last two outputs give
+ninety-one point eight,
+
+61
+00:02:03.150 --> 00:02:05.670
+the DFT's match,
+at one multiplication a sample.
+
+62
+00:02:05.910 --> 00:02:08.110
+Under about sixteen bins,
+it beats the FFT.
+
+63
+00:02:09.650 --> 00:02:12.090
+The live line sets
+its bar at twelve percent.
+
+64
+00:02:12.410 --> 00:02:13.710
+For a week, everything is fine.
+
+65
+00:02:13.750 --> 00:02:15.970
+Then loud fours get thrown out
+as two keys at once,
+
+66
+00:02:15.990 --> 00:02:17.790
+and faint rural keys go missing.
+
+67
+00:02:17.830 --> 00:02:19.950
+Remember the spill
+from the last lesson? It's back.
+
+68
+00:02:19.990 --> 00:02:21.010
+That's the next bug.

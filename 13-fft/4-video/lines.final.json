@@ -1,0 +1,2428 @@
+[
+ {
+  "i": 1,
+  "text": "The keypad detector from the last lesson works, and to reject voices that fake a key, it computes every bin of every block. Then you put it on the cheap chip. Forty-two thousand multiplications a block, one point six five million a second, and the chip manages about a million. It falls behind.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line01.wav",
+  "dur": 14.21,
+  "coverage": 0.96,
+  "start": 0.0,
+  "end": 14.21,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.26
+   },
+   {
+    "word": "keypad",
+    "start": 0.26,
+    "end": 0.6
+   },
+   {
+    "word": "detector",
+    "start": 0.6,
+    "end": 0.94
+   },
+   {
+    "word": "from",
+    "start": 0.94,
+    "end": 1.18
+   },
+   {
+    "word": "the",
+    "start": 1.18,
+    "end": 1.28
+   },
+   {
+    "word": "last",
+    "start": 1.28,
+    "end": 1.5
+   },
+   {
+    "word": "lesson",
+    "start": 1.5,
+    "end": 1.8
+   },
+   {
+    "word": "works,",
+    "start": 1.8,
+    "end": 2.18
+   },
+   {
+    "word": "and",
+    "start": 2.18,
+    "end": 2.42
+   },
+   {
+    "word": "to",
+    "start": 2.42,
+    "end": 2.54
+   },
+   {
+    "word": "reject",
+    "start": 2.54,
+    "end": 2.84
+   },
+   {
+    "word": "voices",
+    "start": 2.84,
+    "end": 3.2
+   },
+   {
+    "word": "that",
+    "start": 3.2,
+    "end": 3.46
+   },
+   {
+    "word": "fake",
+    "start": 3.46,
+    "end": 3.68
+   },
+   {
+    "word": "a",
+    "start": 3.68,
+    "end": 3.82
+   },
+   {
+    "word": "key,",
+    "start": 3.82,
+    "end": 4.14
+   },
+   {
+    "word": "it",
+    "start": 4.26,
+    "end": 4.38
+   },
+   {
+    "word": "computes",
+    "start": 4.38,
+    "end": 4.72
+   },
+   {
+    "word": "every",
+    "start": 4.72,
+    "end": 4.98
+   },
+   {
+    "word": "bin",
+    "start": 4.98,
+    "end": 5.2
+   },
+   {
+    "word": "of",
+    "start": 5.2,
+    "end": 5.36
+   },
+   {
+    "word": "every",
+    "start": 5.36,
+    "end": 5.6
+   },
+   {
+    "word": "block.",
+    "start": 5.6,
+    "end": 6.1
+   },
+   {
+    "word": "Then",
+    "start": 6.1,
+    "end": 6.48
+   },
+   {
+    "word": "you",
+    "start": 6.48,
+    "end": 6.6
+   },
+   {
+    "word": "put",
+    "start": 6.6,
+    "end": 6.78
+   },
+   {
+    "word": "it",
+    "start": 6.78,
+    "end": 6.88
+   },
+   {
+    "word": "on",
+    "start": 6.88,
+    "end": 7.02
+   },
+   {
+    "word": "the",
+    "start": 7.02,
+    "end": 7.14
+   },
+   {
+    "word": "cheap",
+    "start": 7.14,
+    "end": 7.34
+   },
+   {
+    "word": "chip.",
+    "start": 7.34,
+    "end": 7.76
+   },
+   {
+    "word": "42",
+    "start": 7.9,
+    "end": 8.1
+   },
+   {
+    "word": ",000",
+    "start": 8.1,
+    "end": 8.58
+   },
+   {
+    "word": "multiplications",
+    "start": 8.58,
+    "end": 9.26
+   },
+   {
+    "word": "a",
+    "start": 9.26,
+    "end": 9.38
+   },
+   {
+    "word": "block,",
+    "start": 9.38,
+    "end": 9.68
+   },
+   {
+    "word": "1",
+    "start": 9.68,
+    "end": 9.96
+   },
+   {
+    "word": ".65",
+    "start": 9.96,
+    "end": 10.52
+   },
+   {
+    "word": "million",
+    "start": 10.52,
+    "end": 10.86
+   },
+   {
+    "word": "a",
+    "start": 10.86,
+    "end": 11.04
+   },
+   {
+    "word": "second,",
+    "start": 11.04,
+    "end": 11.34
+   },
+   {
+    "word": "and",
+    "start": 11.5,
+    "end": 11.64
+   },
+   {
+    "word": "the",
+    "start": 11.64,
+    "end": 11.74
+   },
+   {
+    "word": "chip",
+    "start": 11.74,
+    "end": 11.92
+   },
+   {
+    "word": "manages",
+    "start": 11.92,
+    "end": 12.32
+   },
+   {
+    "word": "about",
+    "start": 12.32,
+    "end": 12.58
+   },
+   {
+    "word": "a",
+    "start": 12.58,
+    "end": 12.72
+   },
+   {
+    "word": "million.",
+    "start": 12.72,
+    "end": 13.18
+   },
+   {
+    "word": "It",
+    "start": 13.18,
+    "end": 13.4
+   },
+   {
+    "word": "falls",
+    "start": 13.4,
+    "end": 13.66
+   },
+   {
+    "word": "behind.",
+    "start": 13.66,
+    "end": 14.14
+   }
+  ]
+ },
+ {
+  "i": 2,
+  "text": "Is the DFT really doing forty-two thousand different things? Take a block of eight. Bin one's test wheel turns back forty-five degrees a sample, bin five's two hundred and twenty-five. On the even samples they point the same way. On the odd ones, exactly opposite.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line02.wav",
+  "dur": 12.42,
+  "coverage": 0.85,
+  "start": 14.21,
+  "end": 26.63,
+  "words": [
+   {
+    "word": "Is",
+    "start": 0.0,
+    "end": 0.3
+   },
+   {
+    "word": "the",
+    "start": 0.3,
+    "end": 0.4
+   },
+   {
+    "word": "DFT",
+    "start": 0.4,
+    "end": 0.74
+   },
+   {
+    "word": "really",
+    "start": 0.74,
+    "end": 1.04
+   },
+   {
+    "word": "doing",
+    "start": 1.04,
+    "end": 1.26
+   },
+   {
+    "word": "42",
+    "start": 1.26,
+    "end": 1.6
+   },
+   {
+    "word": ",000",
+    "start": 1.6,
+    "end": 2.06
+   },
+   {
+    "word": "different",
+    "start": 2.06,
+    "end": 2.24
+   },
+   {
+    "word": "things?",
+    "start": 2.24,
+    "end": 2.82
+   },
+   {
+    "word": "Take",
+    "start": 3.02,
+    "end": 3.08
+   },
+   {
+    "word": "a",
+    "start": 3.08,
+    "end": 3.16
+   },
+   {
+    "word": "block",
+    "start": 3.16,
+    "end": 3.34
+   },
+   {
+    "word": "of",
+    "start": 3.34,
+    "end": 3.5
+   },
+   {
+    "word": "eight.",
+    "start": 3.5,
+    "end": 3.92
+   },
+   {
+    "word": "Bin",
+    "start": 4.14,
+    "end": 4.28
+   },
+   {
+    "word": "1's",
+    "start": 4.28,
+    "end": 4.54
+   },
+   {
+    "word": "test",
+    "start": 4.54,
+    "end": 4.7
+   },
+   {
+    "word": "wheel",
+    "start": 4.7,
+    "end": 4.94
+   },
+   {
+    "word": "turns",
+    "start": 4.94,
+    "end": 5.2
+   },
+   {
+    "word": "back",
+    "start": 5.2,
+    "end": 5.42
+   },
+   {
+    "word": "45",
+    "start": 5.42,
+    "end": 5.84
+   },
+   {
+    "word": "degrees",
+    "start": 5.84,
+    "end": 6.24
+   },
+   {
+    "word": "a",
+    "start": 6.24,
+    "end": 6.4
+   },
+   {
+    "word": "sample,",
+    "start": 6.4,
+    "end": 6.84
+   },
+   {
+    "word": "bin",
+    "start": 6.84,
+    "end": 6.98
+   },
+   {
+    "word": "5's",
+    "start": 6.98,
+    "end": 7.3
+   },
+   {
+    "word": "225.",
+    "start": 7.3,
+    "end": 8.4
+   },
+   {
+    "word": "On",
+    "start": 8.64,
+    "end": 8.78
+   },
+   {
+    "word": "the",
+    "start": 8.78,
+    "end": 8.86
+   },
+   {
+    "word": "even",
+    "start": 8.86,
+    "end": 9.06
+   },
+   {
+    "word": "samples",
+    "start": 9.06,
+    "end": 9.42
+   },
+   {
+    "word": "they",
+    "start": 9.42,
+    "end": 9.58
+   },
+   {
+    "word": "point",
+    "start": 9.58,
+    "end": 9.8
+   },
+   {
+    "word": "the",
+    "start": 9.8,
+    "end": 9.94
+   },
+   {
+    "word": "same",
+    "start": 9.94,
+    "end": 10.12
+   },
+   {
+    "word": "way,",
+    "start": 10.12,
+    "end": 10.42
+   },
+   {
+    "word": "on",
+    "start": 10.42,
+    "end": 10.54
+   },
+   {
+    "word": "the",
+    "start": 10.54,
+    "end": 10.64
+   },
+   {
+    "word": "odd",
+    "start": 10.64,
+    "end": 10.84
+   },
+   {
+    "word": "ones,",
+    "start": 10.84,
+    "end": 11.24
+   },
+   {
+    "word": "exactly",
+    "start": 11.24,
+    "end": 11.7
+   },
+   {
+    "word": "opposite.",
+    "start": 11.7,
+    "end": 12.3
+   }
+  ]
+ },
+ {
+  "i": 3,
+  "text": "So add up the turned even samples once: the even part. Then the odd ones: the odd part. Bin one is even plus odd, bin five is even minus odd. Two bins for the price of one.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo-breath/line03.wav",
+  "dur": 8.92,
+  "coverage": 1.0,
+  "start": 26.63,
+  "end": 34.7,
+  "words": [
+   {
+    "word": "So",
+    "start": 0.0,
+    "end": 0.3
+   },
+   {
+    "word": "add",
+    "start": 0.3,
+    "end": 0.52
+   },
+   {
+    "word": "up",
+    "start": 0.52,
+    "end": 0.62
+   },
+   {
+    "word": "the",
+    "start": 0.62,
+    "end": 0.74
+   },
+   {
+    "word": "turned",
+    "start": 0.74,
+    "end": 0.92
+   },
+   {
+    "word": "even",
+    "start": 0.92,
+    "end": 1.08
+   },
+   {
+    "word": "samples",
+    "start": 1.08,
+    "end": 1.46
+   },
+   {
+    "word": "once,",
+    "start": 1.46,
+    "end": 1.72
+   },
+   {
+    "word": "the",
+    "start": 1.72,
+    "end": 1.88
+   },
+   {
+    "word": "even",
+    "start": 1.88,
+    "end": 2.06
+   },
+   {
+    "word": "part,",
+    "start": 2.06,
+    "end": 2.38
+   },
+   {
+    "word": "then",
+    "start": 2.83,
+    "end": 2.95
+   },
+   {
+    "word": "the",
+    "start": 2.95,
+    "end": 3.05
+   },
+   {
+    "word": "odd",
+    "start": 3.05,
+    "end": 3.23
+   },
+   {
+    "word": "ones,",
+    "start": 3.23,
+    "end": 3.61
+   },
+   {
+    "word": "the",
+    "start": 3.61,
+    "end": 3.81
+   },
+   {
+    "word": "odd",
+    "start": 3.81,
+    "end": 4.01
+   },
+   {
+    "word": "part.",
+    "start": 4.01,
+    "end": 4.47
+   },
+   {
+    "word": "Bin",
+    "start": 5.05,
+    "end": 5.15
+   },
+   {
+    "word": "1",
+    "start": 5.15,
+    "end": 5.33
+   },
+   {
+    "word": "is",
+    "start": 5.33,
+    "end": 5.51
+   },
+   {
+    "word": "even",
+    "start": 5.51,
+    "end": 5.67
+   },
+   {
+    "word": "plus",
+    "start": 5.67,
+    "end": 5.91
+   },
+   {
+    "word": "odd,",
+    "start": 5.91,
+    "end": 6.25
+   },
+   {
+    "word": "bin",
+    "start": 6.25,
+    "end": 6.33
+   },
+   {
+    "word": "5",
+    "start": 6.33,
+    "end": 6.53
+   },
+   {
+    "word": "is",
+    "start": 6.53,
+    "end": 6.71
+   },
+   {
+    "word": "even",
+    "start": 6.71,
+    "end": 6.91
+   },
+   {
+    "word": "minus",
+    "start": 6.91,
+    "end": 7.17
+   },
+   {
+    "word": "odd,",
+    "start": 7.17,
+    "end": 7.59
+   },
+   {
+    "word": "two",
+    "start": 7.59,
+    "end": 7.71
+   },
+   {
+    "word": "bins",
+    "start": 7.71,
+    "end": 7.95
+   },
+   {
+    "word": "for",
+    "start": 7.95,
+    "end": 8.11
+   },
+   {
+    "word": "the",
+    "start": 8.11,
+    "end": 8.21
+   },
+   {
+    "word": "price",
+    "start": 8.21,
+    "end": 8.41
+   },
+   {
+    "word": "of",
+    "start": 8.41,
+    "end": 8.51
+   },
+   {
+    "word": "one.",
+    "start": 8.51,
+    "end": 8.83
+   }
+  ]
+ },
+ {
+  "i": 4,
+  "text": "Try a rough one thousand hertz tone: one, one, zero, minus one, minus one, minus one, zero, one. The even part is two, pointing right. The odd samples walk two right and two up, but each sits one sample later, so turn the walk back one more step: two point eight three, pointing right.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo-splice/line04.wav",
+  "dur": 13.7,
+  "coverage": 0.93,
+  "start": 34.7,
+  "end": 47.05,
+  "words": [
+   {
+    "word": "Try",
+    "start": 0.0,
+    "end": 0.36
+   },
+   {
+    "word": "a",
+    "start": 0.36,
+    "end": 0.5
+   },
+   {
+    "word": "rough",
+    "start": 0.5,
+    "end": 0.7
+   },
+   {
+    "word": "1",
+    "start": 0.7,
+    "end": 0.9
+   },
+   {
+    "word": ",000",
+    "start": 0.9,
+    "end": 1.18
+   },
+   {
+    "word": "Hz",
+    "start": 1.18,
+    "end": 1.44
+   },
+   {
+    "word": "tone,",
+    "start": 1.44,
+    "end": 1.98
+   },
+   {
+    "word": "1,",
+    "start": 1.98,
+    "end": 2.32
+   },
+   {
+    "word": "1,",
+    "start": 2.32,
+    "end": 2.54
+   },
+   {
+    "word": "0,",
+    "start": 2.54,
+    "end": 2.9
+   },
+   {
+    "word": "minus",
+    "start": 2.9,
+    "end": 3.02
+   },
+   {
+    "word": "1,",
+    "start": 3.02,
+    "end": 3.38
+   },
+   {
+    "word": "minus",
+    "start": 3.38,
+    "end": 3.58
+   },
+   {
+    "word": "1,",
+    "start": 3.58,
+    "end": 3.82
+   },
+   {
+    "word": "minus",
+    "start": 3.82,
+    "end": 4.0
+   },
+   {
+    "word": "1,",
+    "start": 4.0,
+    "end": 4.34
+   },
+   {
+    "word": "0,",
+    "start": 4.34,
+    "end": 4.58
+   },
+   {
+    "word": "1.",
+    "start": 4.58,
+    "end": 4.84
+   },
+   {
+    "word": "The",
+    "start": 5.08,
+    "end": 5.14
+   },
+   {
+    "word": "even",
+    "start": 5.14,
+    "end": 5.36
+   },
+   {
+    "word": "part",
+    "start": 5.36,
+    "end": 5.58
+   },
+   {
+    "word": "is",
+    "start": 5.58,
+    "end": 5.72
+   },
+   {
+    "word": "2,",
+    "start": 5.72,
+    "end": 6.06
+   },
+   {
+    "word": "pointing",
+    "start": 6.06,
+    "end": 6.24
+   },
+   {
+    "word": "right.",
+    "start": 6.24,
+    "end": 6.66
+   },
+   {
+    "word": "The",
+    "start": 6.77,
+    "end": 6.83
+   },
+   {
+    "word": "odd",
+    "start": 6.83,
+    "end": 6.95
+   },
+   {
+    "word": "samples",
+    "start": 6.95,
+    "end": 7.27
+   },
+   {
+    "word": "walk",
+    "start": 7.27,
+    "end": 7.51
+   },
+   {
+    "word": "2",
+    "start": 7.51,
+    "end": 7.67
+   },
+   {
+    "word": "right",
+    "start": 7.67,
+    "end": 7.87
+   },
+   {
+    "word": "and",
+    "start": 7.87,
+    "end": 8.03
+   },
+   {
+    "word": "2",
+    "start": 8.03,
+    "end": 8.17
+   },
+   {
+    "word": "up,",
+    "start": 8.17,
+    "end": 8.43
+   },
+   {
+    "word": "but",
+    "start": 8.43,
+    "end": 8.57
+   },
+   {
+    "word": "each",
+    "start": 8.57,
+    "end": 8.77
+   },
+   {
+    "word": "sits",
+    "start": 8.77,
+    "end": 9.03
+   },
+   {
+    "word": "one",
+    "start": 9.03,
+    "end": 9.23
+   },
+   {
+    "word": "sample",
+    "start": 9.23,
+    "end": 9.55
+   },
+   {
+    "word": "later,",
+    "start": 9.55,
+    "end": 9.97
+   },
+   {
+    "word": "so",
+    "start": 10.17,
+    "end": 10.25
+   },
+   {
+    "word": "turn",
+    "start": 10.25,
+    "end": 10.53
+   },
+   {
+    "word": "the",
+    "start": 10.53,
+    "end": 10.67
+   },
+   {
+    "word": "walk",
+    "start": 10.67,
+    "end": 10.87
+   },
+   {
+    "word": "back",
+    "start": 10.87,
+    "end": 11.13
+   },
+   {
+    "word": "one",
+    "start": 11.13,
+    "end": 11.39
+   },
+   {
+    "word": "more",
+    "start": 11.39,
+    "end": 11.59
+   },
+   {
+    "word": "step",
+    "start": 11.59,
+    "end": 11.89
+   },
+   {
+    "word": "2",
+    "start": 11.87,
+    "end": 12.23
+   },
+   {
+    "word": ".83,",
+    "start": 12.23,
+    "end": 13.05
+   },
+   {
+    "word": "pointing",
+    "start": 13.05,
+    "end": 13.21
+   },
+   {
+    "word": "right.",
+    "start": 13.21,
+    "end": 13.59
+   }
+  ]
+ },
+ {
+  "i": 5,
+  "text": "Bin one is two plus two point eight three: four point eight three. Bin five is two minus two point eight three: minus point eight three. Turn, add, subtract: that step is a butterfly, four multiplications.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo-breath/line05.wav",
+  "dur": 10.25,
+  "coverage": 0.8,
+  "start": 47.05,
+  "end": 57.0,
+  "words": [
+   {
+    "word": "Bin",
+    "start": 0.0,
+    "end": 0.32
+   },
+   {
+    "word": "1",
+    "start": 0.32,
+    "end": 0.56
+   },
+   {
+    "word": "is",
+    "start": 0.56,
+    "end": 0.74
+   },
+   {
+    "word": "2",
+    "start": 0.74,
+    "end": 0.94
+   },
+   {
+    "word": "plus",
+    "start": 0.94,
+    "end": 1.2
+   },
+   {
+    "word": "2",
+    "start": 1.2,
+    "end": 1.4
+   },
+   {
+    "word": ".83,",
+    "start": 1.4,
+    "end": 2.14
+   },
+   {
+    "word": "4",
+    "start": 2.14,
+    "end": 2.38
+   },
+   {
+    "word": ".83.",
+    "start": 2.38,
+    "end": 3.16
+   },
+   {
+    "word": "Bin",
+    "start": 3.16,
+    "end": 3.34
+   },
+   {
+    "word": "5",
+    "start": 3.34,
+    "end": 3.56
+   },
+   {
+    "word": "is",
+    "start": 3.56,
+    "end": 3.78
+   },
+   {
+    "word": "2",
+    "start": 3.78,
+    "end": 3.96
+   },
+   {
+    "word": "minus",
+    "start": 3.96,
+    "end": 4.24
+   },
+   {
+    "word": "2",
+    "start": 4.24,
+    "end": 4.48
+   },
+   {
+    "word": ".83,",
+    "start": 4.48,
+    "end": 5.26
+   },
+   {
+    "word": "minus",
+    "start": 5.26,
+    "end": 5.36
+   },
+   {
+    "word": "0",
+    "start": 5.36,
+    "end": 5.6
+   },
+   {
+    "word": ".83.",
+    "start": 5.6,
+    "end": 6.18
+   },
+   {
+    "word": "Turn,",
+    "start": 6.68,
+    "end": 6.94
+   },
+   {
+    "word": "add,",
+    "start": 6.94,
+    "end": 7.22
+   },
+   {
+    "word": "subtract.",
+    "start": 7.22,
+    "end": 7.72
+   },
+   {
+    "word": "That",
+    "start": 7.72,
+    "end": 7.94
+   },
+   {
+    "word": "step",
+    "start": 7.94,
+    "end": 8.16
+   },
+   {
+    "word": "is",
+    "start": 8.16,
+    "end": 8.32
+   },
+   {
+    "word": "a",
+    "start": 8.32,
+    "end": 8.4
+   },
+   {
+    "word": "butterfly",
+    "start": 8.4,
+    "end": 8.8
+   },
+   {
+    "word": "for",
+    "start": 8.8,
+    "end": 9.08
+   },
+   {
+    "word": "multiplications.",
+    "start": 9.08,
+    "end": 10.1
+   }
+  ]
+ },
+ {
+  "i": 6,
+  "text": "Now the dramatic move. A four-sample DFT is a DFT, so split it too, and again, down to single samples, which cost nothing. Only butterflies are left, three layers of four: forty-eight multiplications instead of a hundred and twenty-eight. That's the FFT, the fast Fourier transform.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line06.wav",
+  "dur": 13.64,
+  "coverage": 0.86,
+  "start": 57.0,
+  "end": 70.64,
+  "words": [
+   {
+    "word": "now",
+    "start": 0.0,
+    "end": 0.3
+   },
+   {
+    "word": "the",
+    "start": 0.3,
+    "end": 0.44
+   },
+   {
+    "word": "dramatic",
+    "start": 0.44,
+    "end": 0.74
+   },
+   {
+    "word": "move",
+    "start": 0.74,
+    "end": 1.18
+   },
+   {
+    "word": "a",
+    "start": 1.18,
+    "end": 1.42
+   },
+   {
+    "word": "four",
+    "start": 1.42,
+    "end": 1.6
+   },
+   {
+    "word": "sample",
+    "start": 1.6,
+    "end": 1.94
+   },
+   {
+    "word": "dft",
+    "start": 1.94,
+    "end": 2.3
+   },
+   {
+    "word": "is",
+    "start": 2.3,
+    "end": 2.5
+   },
+   {
+    "word": "a",
+    "start": 2.5,
+    "end": 2.6
+   },
+   {
+    "word": "dft",
+    "start": 2.6,
+    "end": 2.92
+   },
+   {
+    "word": "so",
+    "start": 2.92,
+    "end": 3.24
+   },
+   {
+    "word": "split",
+    "start": 3.24,
+    "end": 3.5
+   },
+   {
+    "word": "it",
+    "start": 3.5,
+    "end": 3.62
+   },
+   {
+    "word": "two",
+    "start": 3.62,
+    "end": 3.86
+   },
+   {
+    "word": "and",
+    "start": 3.86,
+    "end": 4.18
+   },
+   {
+    "word": "again",
+    "start": 4.18,
+    "end": 4.4
+   },
+   {
+    "word": "down",
+    "start": 4.4,
+    "end": 4.7
+   },
+   {
+    "word": "to",
+    "start": 4.8,
+    "end": 4.86
+   },
+   {
+    "word": "single",
+    "start": 4.86,
+    "end": 5.08
+   },
+   {
+    "word": "samples",
+    "start": 5.08,
+    "end": 5.48
+   },
+   {
+    "word": "which",
+    "start": 5.48,
+    "end": 5.74
+   },
+   {
+    "word": "cost",
+    "start": 5.74,
+    "end": 6.02
+   },
+   {
+    "word": "nothing",
+    "start": 6.02,
+    "end": 6.34
+   },
+   {
+    "word": "only",
+    "start": 6.34,
+    "end": 6.78
+   },
+   {
+    "word": "butterflies",
+    "start": 6.78,
+    "end": 7.16
+   },
+   {
+    "word": "are",
+    "start": 7.16,
+    "end": 7.4
+   },
+   {
+    "word": "left",
+    "start": 7.4,
+    "end": 7.64
+   },
+   {
+    "word": "three",
+    "start": 7.64,
+    "end": 7.94
+   },
+   {
+    "word": "layers",
+    "start": 7.94,
+    "end": 8.2
+   },
+   {
+    "word": "of",
+    "start": 8.2,
+    "end": 8.38
+   },
+   {
+    "word": "four",
+    "start": 8.38,
+    "end": 8.68
+   },
+   {
+    "word": "48",
+    "start": 8.9,
+    "end": 9.18
+   },
+   {
+    "word": "multiplications",
+    "start": 9.18,
+    "end": 9.96
+   },
+   {
+    "word": "instead",
+    "start": 9.96,
+    "end": 10.22
+   },
+   {
+    "word": "of",
+    "start": 10.22,
+    "end": 10.34
+   },
+   {
+    "word": "128",
+    "start": 10.34,
+    "end": 10.92
+   },
+   {
+    "word": "that's",
+    "start": 10.92,
+    "end": 11.42
+   },
+   {
+    "word": "the",
+    "start": 11.42,
+    "end": 11.52
+   },
+   {
+    "word": "fft",
+    "start": 11.52,
+    "end": 11.96
+   },
+   {
+    "word": "the",
+    "start": 11.96,
+    "end": 12.28
+   },
+   {
+    "word": "fast",
+    "start": 12.28,
+    "end": 12.56
+   },
+   {
+    "word": "fourier",
+    "start": 12.56,
+    "end": 12.92
+   },
+   {
+    "word": "transform",
+    "start": 12.92,
+    "end": 13.34
+   }
+  ]
+ },
+ {
+  "i": 7,
+  "text": "Back to the line. The FFT halves the block again and again, so its length must be a power of two, and two hundred and five is five times forty-one. Take two hundred and fifty-six: every keypad tone still gets its own bin, and the chip can spend thirty-two thousand a block.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line07.wav",
+  "dur": 12.97,
+  "coverage": 0.89,
+  "start": 70.64,
+  "end": 83.61,
+  "words": [
+   {
+    "word": "Back",
+    "start": 0.0,
+    "end": 0.36
+   },
+   {
+    "word": "to",
+    "start": 0.36,
+    "end": 0.5
+   },
+   {
+    "word": "the",
+    "start": 0.5,
+    "end": 0.62
+   },
+   {
+    "word": "line.",
+    "start": 0.62,
+    "end": 1.06
+   },
+   {
+    "word": "The",
+    "start": 1.06,
+    "end": 1.28
+   },
+   {
+    "word": "FFT",
+    "start": 1.28,
+    "end": 1.72
+   },
+   {
+    "word": "halves",
+    "start": 1.72,
+    "end": 2.06
+   },
+   {
+    "word": "the",
+    "start": 2.06,
+    "end": 2.2
+   },
+   {
+    "word": "block",
+    "start": 2.2,
+    "end": 2.42
+   },
+   {
+    "word": "again",
+    "start": 2.42,
+    "end": 2.66
+   },
+   {
+    "word": "and",
+    "start": 2.66,
+    "end": 2.82
+   },
+   {
+    "word": "again",
+    "start": 2.82,
+    "end": 3.06
+   },
+   {
+    "word": "so",
+    "start": 3.06,
+    "end": 3.3
+   },
+   {
+    "word": "its",
+    "start": 3.3,
+    "end": 3.46
+   },
+   {
+    "word": "length",
+    "start": 3.46,
+    "end": 3.66
+   },
+   {
+    "word": "must",
+    "start": 3.66,
+    "end": 3.88
+   },
+   {
+    "word": "be",
+    "start": 3.88,
+    "end": 4.02
+   },
+   {
+    "word": "a",
+    "start": 4.02,
+    "end": 4.12
+   },
+   {
+    "word": "power",
+    "start": 4.12,
+    "end": 4.36
+   },
+   {
+    "word": "of",
+    "start": 4.36,
+    "end": 4.58
+   },
+   {
+    "word": "2,",
+    "start": 4.58,
+    "end": 4.96
+   },
+   {
+    "word": "and",
+    "start": 4.96,
+    "end": 5.14
+   },
+   {
+    "word": "205",
+    "start": 5.14,
+    "end": 5.8
+   },
+   {
+    "word": "is",
+    "start": 5.8,
+    "end": 6.02
+   },
+   {
+    "word": "5",
+    "start": 6.02,
+    "end": 6.26
+   },
+   {
+    "word": "times",
+    "start": 6.26,
+    "end": 6.5
+   },
+   {
+    "word": "41.",
+    "start": 6.5,
+    "end": 7.26
+   },
+   {
+    "word": "Take",
+    "start": 7.26,
+    "end": 7.64
+   },
+   {
+    "word": "256.",
+    "start": 7.64,
+    "end": 8.82
+   },
+   {
+    "word": "Every",
+    "start": 8.82,
+    "end": 9.14
+   },
+   {
+    "word": "keypad",
+    "start": 9.14,
+    "end": 9.56
+   },
+   {
+    "word": "tone",
+    "start": 9.56,
+    "end": 9.76
+   },
+   {
+    "word": "still",
+    "start": 9.76,
+    "end": 10.02
+   },
+   {
+    "word": "gets",
+    "start": 10.02,
+    "end": 10.24
+   },
+   {
+    "word": "its",
+    "start": 10.24,
+    "end": 10.38
+   },
+   {
+    "word": "own",
+    "start": 10.38,
+    "end": 10.54
+   },
+   {
+    "word": "bin",
+    "start": 10.54,
+    "end": 10.74
+   },
+   {
+    "word": "and",
+    "start": 10.74,
+    "end": 10.92
+   },
+   {
+    "word": "the",
+    "start": 10.92,
+    "end": 11.02
+   },
+   {
+    "word": "chip",
+    "start": 11.02,
+    "end": 11.18
+   },
+   {
+    "word": "can",
+    "start": 11.18,
+    "end": 11.32
+   },
+   {
+    "word": "spend",
+    "start": 11.32,
+    "end": 11.58
+   },
+   {
+    "word": "32",
+    "start": 11.58,
+    "end": 11.88
+   },
+   {
+    "word": ",000",
+    "start": 11.88,
+    "end": 12.34
+   },
+   {
+    "word": "a",
+    "start": 12.34,
+    "end": 12.46
+   },
+   {
+    "word": "block.",
+    "start": 12.46,
+    "end": 12.82
+   }
+  ]
+ },
+ {
+  "i": 8,
+  "text": "Now split, and watch the bill. No splits: a hundred and thirty-one thousand. One: sixty-six thousand. Two: thirty-four thousand, still over. [surprise-oh] Three, and it fits. All the way down, the FFT needs four thousand and ninety-six, an eighth of the chip.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line08.wav",
+  "dur": 12.33,
+  "coverage": 0.78,
+  "start": 83.61,
+  "end": 95.94,
+  "words": [
+   {
+    "word": "Now",
+    "start": 0.0,
+    "end": 0.4
+   },
+   {
+    "word": "split,",
+    "start": 0.4,
+    "end": 0.86
+   },
+   {
+    "word": "and",
+    "start": 0.86,
+    "end": 0.92
+   },
+   {
+    "word": "watch",
+    "start": 0.92,
+    "end": 1.16
+   },
+   {
+    "word": "the",
+    "start": 1.16,
+    "end": 1.3
+   },
+   {
+    "word": "bill.",
+    "start": 1.3,
+    "end": 1.74
+   },
+   {
+    "word": "No",
+    "start": 1.74,
+    "end": 2.1
+   },
+   {
+    "word": "splits,",
+    "start": 2.1,
+    "end": 2.6
+   },
+   {
+    "word": "$131",
+    "start": 2.6,
+    "end": 3.42
+   },
+   {
+    "word": ",000,",
+    "start": 3.42,
+    "end": 4.0
+   },
+   {
+    "word": "$166",
+    "start": 4.0,
+    "end": 4.92
+   },
+   {
+    "word": ",000,",
+    "start": 4.92,
+    "end": 5.54
+   },
+   {
+    "word": "$234",
+    "start": 5.54,
+    "end": 6.14
+   },
+   {
+    "word": ",000",
+    "start": 6.14,
+    "end": 6.42
+   },
+   {
+    "word": "still",
+    "start": 6.42,
+    "end": 6.66
+   },
+   {
+    "word": "over.",
+    "start": 6.66,
+    "end": 7.1
+   },
+   {
+    "word": "Oh,",
+    "start": 7.1,
+    "end": 7.5
+   },
+   {
+    "word": "three,",
+    "start": 7.5,
+    "end": 7.76
+   },
+   {
+    "word": "and",
+    "start": 7.76,
+    "end": 7.84
+   },
+   {
+    "word": "it",
+    "start": 7.84,
+    "end": 7.92
+   },
+   {
+    "word": "fits.",
+    "start": 7.92,
+    "end": 8.44
+   },
+   {
+    "word": "All",
+    "start": 8.44,
+    "end": 8.8
+   },
+   {
+    "word": "the",
+    "start": 8.8,
+    "end": 8.94
+   },
+   {
+    "word": "way",
+    "start": 8.94,
+    "end": 9.02
+   },
+   {
+    "word": "down,",
+    "start": 9.02,
+    "end": 9.32
+   },
+   {
+    "word": "the",
+    "start": 9.32,
+    "end": 9.38
+   },
+   {
+    "word": "FFT",
+    "start": 9.38,
+    "end": 9.74
+   },
+   {
+    "word": "needs",
+    "start": 9.74,
+    "end": 10.04
+   },
+   {
+    "word": "$4",
+    "start": 10.04,
+    "end": 10.34
+   },
+   {
+    "word": ",096,",
+    "start": 10.34,
+    "end": 11.34
+   },
+   {
+    "word": "an",
+    "start": 11.34,
+    "end": 11.54
+   },
+   {
+    "word": "eighth",
+    "start": 11.54,
+    "end": 11.72
+   },
+   {
+    "word": "of",
+    "start": 11.72,
+    "end": 11.84
+   },
+   {
+    "word": "the",
+    "start": 11.84,
+    "end": 11.94
+   },
+   {
+    "word": "chip.",
+    "start": 11.94,
+    "end": 12.2
+   }
+  ]
+ },
+ {
+  "i": 9,
+  "text": "Your turn: pick the block, add splits until the meter fits, and decode a caller's digits live. The FFT is not a rougher DFT: it gives exactly the same bins, still thirty-one point two five hertz apart, just fast enough.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo-fix/line02.wav",
+  "dur": 10.45,
+  "coverage": 0.95,
+  "start": 13.47,
+  "end": 23.92,
+  "words": [
+   {
+    "word": "Your",
+    "start": 0.0,
+    "end": 0.32
+   },
+   {
+    "word": "turn,",
+    "start": 0.32,
+    "end": 0.68
+   },
+   {
+    "word": "pick",
+    "start": 0.68,
+    "end": 0.82
+   },
+   {
+    "word": "the",
+    "start": 0.82,
+    "end": 0.94
+   },
+   {
+    "word": "block,",
+    "start": 0.94,
+    "end": 1.34
+   },
+   {
+    "word": "add",
+    "start": 1.34,
+    "end": 1.54
+   },
+   {
+    "word": "splits",
+    "start": 1.54,
+    "end": 1.82
+   },
+   {
+    "word": "until",
+    "start": 1.82,
+    "end": 2.04
+   },
+   {
+    "word": "the",
+    "start": 2.04,
+    "end": 2.18
+   },
+   {
+    "word": "meter",
+    "start": 2.18,
+    "end": 2.38
+   },
+   {
+    "word": "fits,",
+    "start": 2.38,
+    "end": 2.82
+   },
+   {
+    "word": "and",
+    "start": 2.82,
+    "end": 2.88
+   },
+   {
+    "word": "decode",
+    "start": 2.88,
+    "end": 3.16
+   },
+   {
+    "word": "a",
+    "start": 3.16,
+    "end": 3.26
+   },
+   {
+    "word": "caller's",
+    "start": 3.26,
+    "end": 3.54
+   },
+   {
+    "word": "digits",
+    "start": 3.54,
+    "end": 3.74
+   },
+   {
+    "word": "live.",
+    "start": 3.74,
+    "end": 4.28
+   },
+   {
+    "word": "The",
+    "start": 4.5,
+    "end": 4.6
+   },
+   {
+    "word": "FFT",
+    "start": 4.6,
+    "end": 4.96
+   },
+   {
+    "word": "is",
+    "start": 4.96,
+    "end": 5.16
+   },
+   {
+    "word": "not",
+    "start": 5.16,
+    "end": 5.28
+   },
+   {
+    "word": "a",
+    "start": 5.28,
+    "end": 5.38
+   },
+   {
+    "word": "rougher",
+    "start": 5.38,
+    "end": 5.62
+   },
+   {
+    "word": "DFT,",
+    "start": 5.62,
+    "end": 6.26
+   },
+   {
+    "word": "it",
+    "start": 6.26,
+    "end": 6.34
+   },
+   {
+    "word": "gives",
+    "start": 6.34,
+    "end": 6.5
+   },
+   {
+    "word": "exactly",
+    "start": 6.5,
+    "end": 6.88
+   },
+   {
+    "word": "the",
+    "start": 6.88,
+    "end": 7.06
+   },
+   {
+    "word": "same",
+    "start": 7.06,
+    "end": 7.26
+   },
+   {
+    "word": "bins,",
+    "start": 7.26,
+    "end": 7.62
+   },
+   {
+    "word": "still",
+    "start": 7.62,
+    "end": 7.92
+   },
+   {
+    "word": "31",
+    "start": 7.92,
+    "end": 8.24
+   },
+   {
+    "word": ".25",
+    "start": 8.24,
+    "end": 8.9
+   },
+   {
+    "word": "Hz",
+    "start": 8.9,
+    "end": 9.12
+   },
+   {
+    "word": "apart,",
+    "start": 9.12,
+    "end": 9.58
+   },
+   {
+    "word": "just",
+    "start": 9.58,
+    "end": 9.74
+   },
+   {
+    "word": "fast",
+    "start": 9.74,
+    "end": 10.02
+   },
+   {
+    "word": "enough.",
+    "start": 10.02,
+    "end": 10.34
+   }
+  ]
+ },
+ {
+  "i": 10,
+  "text": "Need only a few bins? Goertzel is a filter ringing at one bin's point. For bin twenty of key five, its last two outputs give ninety-one point eight, the DFT's match, at one multiplication a sample. Under about sixteen bins, it beats the FFT.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo-fix/line03.wav",
+  "dur": 11.56,
+  "coverage": 0.79,
+  "start": 23.92,
+  "end": 35.48,
+  "words": [
+   {
+    "word": "Need",
+    "start": 0.0,
+    "end": 0.34
+   },
+   {
+    "word": "only",
+    "start": 0.34,
+    "end": 0.54
+   },
+   {
+    "word": "a",
+    "start": 0.54,
+    "end": 0.68
+   },
+   {
+    "word": "few",
+    "start": 0.68,
+    "end": 0.8
+   },
+   {
+    "word": "bins?",
+    "start": 0.8,
+    "end": 1.34
+   },
+   {
+    "word": "Gortzel",
+    "start": 1.34,
+    "end": 1.78
+   },
+   {
+    "word": "has",
+    "start": 1.78,
+    "end": 1.9
+   },
+   {
+    "word": "a",
+    "start": 1.9,
+    "end": 1.98
+   },
+   {
+    "word": "filter",
+    "start": 1.98,
+    "end": 2.2
+   },
+   {
+    "word": "ringing",
+    "start": 2.2,
+    "end": 2.44
+   },
+   {
+    "word": "at",
+    "start": 2.44,
+    "end": 2.62
+   },
+   {
+    "word": "one",
+    "start": 2.62,
+    "end": 2.78
+   },
+   {
+    "word": "bins",
+    "start": 2.78,
+    "end": 3.04
+   },
+   {
+    "word": "point.",
+    "start": 3.04,
+    "end": 3.46
+   },
+   {
+    "word": "For",
+    "start": 3.46,
+    "end": 3.62
+   },
+   {
+    "word": "bin",
+    "start": 3.62,
+    "end": 3.76
+   },
+   {
+    "word": "20",
+    "start": 3.76,
+    "end": 4.02
+   },
+   {
+    "word": "of",
+    "start": 4.02,
+    "end": 4.16
+   },
+   {
+    "word": "key",
+    "start": 4.16,
+    "end": 4.3
+   },
+   {
+    "word": "5,",
+    "start": 4.3,
+    "end": 4.6
+   },
+   {
+    "word": "its",
+    "start": 4.6,
+    "end": 4.8
+   },
+   {
+    "word": "last",
+    "start": 4.8,
+    "end": 5.0
+   },
+   {
+    "word": "two",
+    "start": 5.0,
+    "end": 5.18
+   },
+   {
+    "word": "outputs",
+    "start": 5.18,
+    "end": 5.5
+   },
+   {
+    "word": "give",
+    "start": 5.5,
+    "end": 5.68
+   },
+   {
+    "word": "91",
+    "start": 5.68,
+    "end": 6.04
+   },
+   {
+    "word": ".8.",
+    "start": 6.04,
+    "end": 6.66
+   },
+   {
+    "word": "The",
+    "start": 6.66,
+    "end": 6.74
+   },
+   {
+    "word": "DFTs",
+    "start": 6.74,
+    "end": 7.24
+   },
+   {
+    "word": "match",
+    "start": 7.24,
+    "end": 7.4
+   },
+   {
+    "word": "at",
+    "start": 7.4,
+    "end": 7.6
+   },
+   {
+    "word": "one",
+    "start": 7.6,
+    "end": 7.74
+   },
+   {
+    "word": "multiplication",
+    "start": 7.74,
+    "end": 8.26
+   },
+   {
+    "word": "a",
+    "start": 8.26,
+    "end": 8.5
+   },
+   {
+    "word": "sample.",
+    "start": 8.5,
+    "end": 9.08
+   },
+   {
+    "word": "Under",
+    "start": 9.42,
+    "end": 9.52
+   },
+   {
+    "word": "about",
+    "start": 9.52,
+    "end": 9.74
+   },
+   {
+    "word": "16",
+    "start": 9.74,
+    "end": 10.1
+   },
+   {
+    "word": "bins,",
+    "start": 10.1,
+    "end": 10.52
+   },
+   {
+    "word": "it",
+    "start": 10.52,
+    "end": 10.56
+   },
+   {
+    "word": "beats",
+    "start": 10.56,
+    "end": 10.74
+   },
+   {
+    "word": "the",
+    "start": 10.74,
+    "end": 10.88
+   },
+   {
+    "word": "FFT.",
+    "start": 10.88,
+    "end": 11.52
+   }
+  ]
+ },
+ {
+  "i": 11,
+  "text": "[sigh] The live line sets its bar at twelve percent. For a week, everything is fine. Then loud fours get thrown out as two keys at once, and faint rural keys go missing. Remember the spill from the last lesson? It's back. That's the next bug.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/13-fft/4-video/vo/line11.wav",
+  "dur": 11.33,
+  "coverage": 0.95,
+  "start": 114.92,
+  "end": 126.25,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.28
+   },
+   {
+    "word": "live",
+    "start": 0.28,
+    "end": 0.58
+   },
+   {
+    "word": "line",
+    "start": 0.58,
+    "end": 0.88
+   },
+   {
+    "word": "sets",
+    "start": 0.88,
+    "end": 1.16
+   },
+   {
+    "word": "its",
+    "start": 1.16,
+    "end": 1.32
+   },
+   {
+    "word": "bar",
+    "start": 1.32,
+    "end": 1.58
+   },
+   {
+    "word": "at",
+    "start": 1.58,
+    "end": 1.74
+   },
+   {
+    "word": "12%.",
+    "start": 1.74,
+    "end": 2.34
+   },
+   {
+    "word": "For",
+    "start": 2.76,
+    "end": 2.82
+   },
+   {
+    "word": "a",
+    "start": 2.82,
+    "end": 2.92
+   },
+   {
+    "word": "week,",
+    "start": 2.92,
+    "end": 3.2
+   },
+   {
+    "word": "everything",
+    "start": 3.2,
+    "end": 3.44
+   },
+   {
+    "word": "is",
+    "start": 3.44,
+    "end": 3.64
+   },
+   {
+    "word": "fine.",
+    "start": 3.64,
+    "end": 3.96
+   },
+   {
+    "word": "Then",
+    "start": 4.1,
+    "end": 4.24
+   },
+   {
+    "word": "loud",
+    "start": 4.24,
+    "end": 4.5
+   },
+   {
+    "word": "fours",
+    "start": 4.5,
+    "end": 4.86
+   },
+   {
+    "word": "get",
+    "start": 4.86,
+    "end": 4.98
+   },
+   {
+    "word": "thrown",
+    "start": 4.98,
+    "end": 5.2
+   },
+   {
+    "word": "out",
+    "start": 5.2,
+    "end": 5.4
+   },
+   {
+    "word": "as",
+    "start": 5.4,
+    "end": 5.58
+   },
+   {
+    "word": "two",
+    "start": 5.58,
+    "end": 5.74
+   },
+   {
+    "word": "keys",
+    "start": 5.74,
+    "end": 5.96
+   },
+   {
+    "word": "at",
+    "start": 5.96,
+    "end": 6.08
+   },
+   {
+    "word": "once",
+    "start": 6.08,
+    "end": 6.34
+   },
+   {
+    "word": "and",
+    "start": 6.34,
+    "end": 6.6
+   },
+   {
+    "word": "faint",
+    "start": 6.6,
+    "end": 6.9
+   },
+   {
+    "word": "rural",
+    "start": 6.9,
+    "end": 7.12
+   },
+   {
+    "word": "keys",
+    "start": 7.12,
+    "end": 7.4
+   },
+   {
+    "word": "go",
+    "start": 7.4,
+    "end": 7.58
+   },
+   {
+    "word": "missing.",
+    "start": 7.58,
+    "end": 8.04
+   },
+   {
+    "word": "Remember",
+    "start": 8.18,
+    "end": 8.44
+   },
+   {
+    "word": "the",
+    "start": 8.44,
+    "end": 8.58
+   },
+   {
+    "word": "spill",
+    "start": 8.58,
+    "end": 8.84
+   },
+   {
+    "word": "from",
+    "start": 8.84,
+    "end": 9.06
+   },
+   {
+    "word": "the",
+    "start": 9.06,
+    "end": 9.16
+   },
+   {
+    "word": "last",
+    "start": 9.16,
+    "end": 9.36
+   },
+   {
+    "word": "lesson?",
+    "start": 9.36,
+    "end": 9.74
+   },
+   {
+    "word": "It's",
+    "start": 9.74,
+    "end": 9.88
+   },
+   {
+    "word": "back.",
+    "start": 9.88,
+    "end": 10.2
+   },
+   {
+    "word": "That's",
+    "start": 10.34,
+    "end": 10.52
+   },
+   {
+    "word": "the",
+    "start": 10.52,
+    "end": 10.62
+   },
+   {
+    "word": "next",
+    "start": 10.62,
+    "end": 10.78
+   },
+   {
+    "word": "bug.",
+    "start": 10.78,
+    "end": 11.26
+   }
+  ]
+ }
+]
