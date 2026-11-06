@@ -23,10 +23,13 @@
     }
     return y;
   };
-  const SCRIPT = design(3400);
+  const SCRIPT = design(3400), PREWARPED = unwarp(3400);
 
   const RULER_MAX = 100000, LOG = Math.log(RULER_MAX + 1);
   const posOfF = F => Math.log(F + 1) / LOG, FofPos = p => Math.exp(p * LOG) - 1;
+  const STOPS = [[0, 100, 1], [100, 1000, 5], [1000, 10000, 50], [10000, RULER_MAX, 500]]
+    .flatMap(([a, b, d], i) => Array.from({ length: (b - a) / d + (i === 3 ? 1 : 0) }, (_, k) => a + k * d));
+  const stopOf = F => STOPS.reduce((best, v, i) => (Math.abs(v - F) < Math.abs(STOPS[best] - F) ? i : best), 0);
   const C_MIN = 1000, C_MAX = 20000, CLOG = Math.log(C_MAX / C_MIN);
   const posOfC = C => Math.log(C / C_MIN) / CLOG, CofPos = p => C_MIN * Math.exp(p * CLOG);
 
@@ -122,7 +125,7 @@
       [1000, 2000, 3000].forEach(t => {
         const [x1, y1] = onCircle(G, t, -5), [x2, y2] = onCircle(G, t, 5), [lx, ly] = onCircle(G, t, -20);
         pen.line([[x1, y1], [x2, y2]], c.soft, 1);
-        pen.text(hz(t), lx, ly + 4, { color: c.soft, size: 10 });
+        if (explore || Math.abs(t - X()) > 450) pen.text(hz(t), lx, ly + 4, { color: c.soft, size: 10 });
       });
       pen.text('0 Hz', G.cx + G.R, G.cy + 16, { color: c.soft, size: 10 });
       pen.text('4,000 Hz', G.cx - G.R, G.cy + 16, { color: c.soft, size: 10 });
@@ -131,20 +134,18 @@
       const x4k = xOnRuler(G, 4000);
       pen.rect(x4k, G.rulerY - 9, G.rx1 - x4k, 9, c.paper2);
       pen.line([[G.rx0, G.rulerY], [G.rx1, G.rulerY]], c.ink, 1.5);
-      const ticks = G.phone ? [[0, '0'], [100, '100'], [1000, '1,000'], [10000, '10,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
+      const ticks = G.phone ? [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000']] : [[0, '0'], [10, '10'], [100, '100'], [1000, '1,000'], [10000, '10,000'], [100000, '100,000 Hz']];
       ticks.forEach(([t, lab]) => {
         const x = xOnRuler(G, t);
         pen.line([[x, G.rulerY], [x, G.rulerY + 5]], c.soft, 1);
         pen.text(lab, x, G.rulerY + 18, { color: c.soft, size: 10, align: t === 0 ? 'left' : t === RULER_MAX ? 'right' : 'center' });
       });
       pen.line([[x4k, G.rulerY - 9], [x4k, G.rulerY + 5]], c.soft, 2);
-      pen.text(G.phone ? 'the analog ruler F, log scale, to 100,000 Hz' : 'the analog ruler: frequency F, log scale', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
+      pen.text(G.phone ? 'analog ruler F, log scale: each tick ×10' : 'the analog ruler: frequency F, log scale, each tick ×10, 0 at the far left', G.rx0, G.rulerY + 36, { color: c.ink, size: 11, align: 'left' });
 
       if (!explore) {
         const [tx, ty] = onCircle(G, X());
         pen.ring(tx, ty, 7, c.ink, 2);
-        pen.ring(G.rx0 + 6, 34, 5, c.ink, 2);
-        pen.text(`the exchange's 71% point: ${hz(X())} Hz`, G.rx0 + 16, 38, { color: c.ink, size: 11, align: 'left' });
       }
       if (explore && state.pinned !== null) {
         const xp = xOnRuler(G, state.pinned), [px, py] = onCircle(G, warp(state.pinned));
@@ -157,9 +158,12 @@
       s.ctx.fillStyle = c.input; s.ctx.beginPath(); s.ctx.moveTo(xm, G.rulerY - 2); s.ctx.lineTo(xm + 7, G.rulerY - 15); s.ctx.lineTo(xm - 7, G.rulerY - 15); s.ctx.closePath(); s.ctx.fill();
       s.ctx.globalAlpha = 1;
       pen.dot(lx, ly, 6, c.accent);
-      const [tx, ty] = onCircle(G, f, 18), right = f < 2000;
-      pen.text(`f = ${hz(f)}`, tx + (right ? 2 : -2), ty + (f > 3900 ? -6 : 4), { color: c.accentInk, size: 12, align: right ? 'left' : 'right', weight: 500 });
-      const fLab = `F = ${hz(F)}`, fx = Math.max(G.rx0 + 30, Math.min(G.rx1 - 30, xm));
+      const width = (t, size, weight = 400) => { s.ctx.font = `${weight} ${size}px "Geist Mono", ui-monospace, monospace`; return s.ctx.measureText(t).width; };
+      const [tx, ty] = onCircle(G, f, 18), right = f < 2000, landLab = `f = ${hz(f)}`, landW = width(landLab, 12, 500);
+      const tight = !right && tx - 2 < 10 + landW;
+      if (tight) pen.text(landLab, 4, ly - 12, { color: c.accentInk, size: 12, align: 'left', weight: 500 });
+      else pen.text(landLab, right ? Math.min(tx + 2, w - 4 - landW) : tx - 2, ty + (f > 3900 ? -6 : 4), { color: c.accentInk, size: 12, align: right ? 'left' : 'right', weight: 500 });
+      const fLab = `F = ${hz(F)}`, fHalf = width(fLab, 11, 500) / 2, fx = Math.max(4 + fHalf, Math.min(w - 4 - fHalf, xm));
       pen.text(fLab, fx, G.rulerY - 20, { color: c.input, size: 11, weight: 500 });
 
       pen.line([[P.x0, P.y1], [P.x1, P.y1]], c.soft, 1);
@@ -189,7 +193,25 @@
         } else {
           pen.line([[P.x1 + 2, yv], [xc + 9, yv]], c.soft, 1.2);
           pen.line([[xc + 15, yv - 4], [xc + 9, yv], [xc + 15, yv + 4]], c.soft, 1.2);
-          pen.text(G.phone ? `from ${hz(F)}` : `same gain as the exchange at ${hz(F)} Hz`, Math.min(P.x1 - 4, xc + 20), yv - 7, { color: c.soft, size: 10, align: G.phone ? 'left' : 'left' });
+          const one = G.phone ? `from ${hz(F)} Hz` : `same gain as the exchange at ${hz(F)} Hz`;
+          const two = ['same gain as the exchange', `at ${hz(F)} Hz`], short = ['same gain', `as ${hz(F)} Hz`];
+          const clear = (lines, align, x, base) => {
+            const lw = Math.max(...lines.map(t => width(t, 10))), left = align === 'left' ? x : x - lw, top = base - 13 * (lines.length - 1) - 9;
+            if (left < 4 || left + lw > w - 4 || top < P.y0) return false;
+            const y71 = P.Y(Math.SQRT1_2);
+            if (y71 > top - 3 && y71 < base + 5) return false;
+            for (let px = left; px <= Math.min(left + lw, P.x1); px += 2) {
+              const t = (px - P.x0) / (P.x1 - P.x0) * 4000;
+              if (t < 0) continue;
+              if ([exg(t, 3400), dgain(SCRIPT, t)].some(g => { const y = P.Y(g); return y > top - 3 && y < base + 5; })) return false;
+            }
+            return true;
+          };
+          const tries = [[[one], 'left', xc + 20, yv - 7], [two, 'left', xc + 20, yv - 7], [short, 'left', xc + 20, yv - 7]];
+          for (let b = yv - 10; b > P.y0 + 20; b -= 4) tries.push([two, 'right', w - 4, b], [short, 'right', w - 4, b]);
+          const [lines, align, x, base] = tries.find(t => clear(...t)) || [short, 'right', w - 4, yv - 7];
+          lines.forEach((t, i) => pen.text(t, x, base - (lines.length - 1 - i) * 13, { color: c.soft, size: 10, align }));
+          if (base < yv - 12) pen.line([[P.x1 + 2, base + 5], [P.x1 + 2, yv]], c.soft, 1.2);
         }
         pen.dot(xc, yv, 5.5, c.accent);
       } else {
@@ -206,7 +228,7 @@
       if (F < 0.5) return '0 Hz on the ruler lands on 0 Hz on the half circle: the two start together.';
       if (F < 700) return `Low frequencies barely move: ${hz(F)} Hz lands ${Math.round(-d) === 0 ? 'on itself, to the nearest hertz' : `only ${hz(-d)} Hz lower`}. Down here the copy is almost exact.`;
       if (F < 2600) return `The squeeze starts to show: ${hz(F)} Hz lands ${hz(-d)} Hz lower, at ${hz(f)} Hz.`;
-      if (Math.abs(F - 3400) < 0.5) return 'The exchange’s cutoff, 3,400 Hz, lands on 2,363 Hz. That’s the bug: your copy passes 71% at 2,363 Hz, where the exchange still passes far more.';
+      if (Math.abs(F - 3400) < 0.5) return `The exchange’s cutoff, 3,400 Hz, lands on 2,363 Hz. That’s the bug: your copy passes the exchange’s 70.7% at 2,363 Hz, where the exchange itself still passes ${pc(exg(f, 3400))}.`;
       if (F <= 4000) return `Deep in the squeeze: ${hz(F)} Hz lands ${hz(-d)} Hz lower. This is where the exchange’s cutoff lives, so this is where the copy goes wrong.`;
       if (F < 20000) return `Beyond the wall: your line could never carry ${hz(F)} Hz, but the squeeze still finds it a spot, at ${hz(f)} Hz. Everything from here up crowds into the last few hundred hertz.`;
       if (F >= RULER_MAX - 0.5) return 'The end of this ruler, 100,000 Hz, lands at 3,935 Hz. A million would land at 3,994 Hz, and infinity exactly on 4,000 Hz.';
@@ -225,14 +247,15 @@
       if (state.solved) return `Fixed. At ${hz(x)} Hz your copy passes ${pc(gx)}, and its 71% point sits on the exchange’s. The prototype’s cutoff is ${hz(C)} Hz, ${(C / x).toFixed(1)} times the exchange’s own. ${state.caseIx === 0 ? 'The technician plays her tones through both, and the line sounds bright again.' : 'Another exchange copied.'}`;
       if (Math.abs(C - x) / x < 0.005) return `That is the script’s setting: the prototype at the exchange’s own ${hz(x)} Hz. The squeeze drags that cutoff down to ${hz(fc)} Hz, and at ${hz(x)} Hz your copy passes only ${pc(gx)}.`;
       if (Math.abs(C - warp(x)) / warp(x) < 0.02) return `${hz(C)} Hz is where ${hz(x)} Hz lands: the squeeze run forward, with arctan. Prewarping runs it backward, with tan, from the tone you want.`;
+      if (Math.abs(C - PREWARPED) / PREWARPED < 0.01) return `${hz(C)} Hz is the lesson’s answer for the manual’s 3,400 Hz. This exchange’s 71% point sits at ${hz(x)} Hz, so it needs the same backward calculation, run from ${hz(x)} Hz. With ${hz(C)} Hz your copy’s 71% point lands at ${hz(fc)} Hz, and at ${hz(x)} Hz it passes ${pc(gx)}.`;
       if (C < x) return `Below the exchange’s own cutoff. The squeeze only ever moves frequencies down, so a lower prototype lands lower still, at ${hz(fc)} Hz. Go up, not down.`;
       if (Math.abs(C - (x + drop)) / (x + drop) < 0.03) return `You added back the drop: ${hz(x)} Hz landed ${hz(drop)} Hz low, so you asked for ${hz(C)} Hz. But up here the squeeze is stronger, so ${hz(C)} Hz itself lands at ${hz(fc)} Hz, still short. Keep going up.`;
-      if (C < T) return `Up, but not enough: your copy’s 71% point lands at ${hz(fc)} Hz, ${hz(x - fc)} Hz below the exchange’s. At ${hz(x)} Hz it passes ${pc(gx)}. Near the top of the line the squeeze is strong, so the prototype has to go much higher.`;
+      if (C < T) return `Up, but not enough: your copy’s 71% point lands at ${hz(fc)} Hz, ${hz(x - fc)} Hz below the exchange’s. At ${hz(x)} Hz it passes ${pc(gx)}. Near the top of the line the squeeze is strong, so the prototype has to go ${T / C > 1.25 ? 'much higher' : 'higher still'}.`;
       return `Too high: your copy’s 71% point lands at ${hz(fc)} Hz, ${hz(fc - x)} Hz above the exchange’s, so at ${hz(x)} Hz it passes ${pc(gx)} instead of 70.7%. Come back down.`;
     }
 
     function nowText() {
-      if (!audio.playing) return explore && !state.revealed ? 'Answer the questions above to play.' : 'Not playing.';
+      if (!audio.playing) return explore && !state.revealed ? 'Not playing.' : 'Not playing.';
       const through = { ex: explore ? 'the exchange' : `the exchange (${hz(X())} Hz)`, cp: 'your copy', off: 'no filter' }[state.through];
       if (state.source === 'tone') {
         const f = Math.round(warp(markF())), g = state.through === 'off' ? 1 : state.through === 'ex' ? exg(f, exCut()) : dgain(copyFilter(), f);
@@ -264,7 +287,7 @@
       host.querySelectorAll('[data-through]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.through === state.through)));
       $('play').disabled = !markLive(); $('pin').disabled = !explore || !state.revealed;
       if (explore) {
-        $('F').value = String(Math.round(posOfF(state.F) * 1000));
+        $('F').value = String(stopOf(state.F));
         $('F-out').textContent = `${hz(state.F)} Hz`;
         $('F').setAttribute('aria-valuetext', `${hz(state.F)} Hz, lands on ${hz(f)} Hz`);
         $('F').disabled = !state.revealed;
@@ -273,12 +296,13 @@
           $('result').textContent = `F = ${hz(F)} Hz on the ruler → `;
           const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = `f = ${hz(f)} Hz`;
           $('result').append(sp, ` · moved ${signed(f - F)} Hz`);
-          $('why').textContent = regions(F, f) + (F < 0.5 ? '' : gainLine(F, f));
+          $('why').textContent = regions(F, f) + (F < 0.5 || Math.abs(F - 3400) < 0.5 ? '' : gainLine(F, f));
         } else {
           $('result').textContent = `F = ${hz(F)} Hz on the ruler → f = ${hz(f)} Hz`;
-          $('why').textContent = 'Answer the questions above, then the mark is yours to drag.';
+          $('why').textContent = 'Answer the question above, then the mark is yours to drag.';
         }
         $('compare').hidden = state.pinned === null;
+        if (state.pinned === null) $('compare').textContent = '';
         if (state.pinned !== null) {
           const p = state.pinned, pf = warp(p);
           $('compare').textContent = Math.abs(p - F) < 0.5 ? `Pinned ${hz(p)} Hz → ${hz(pf)} Hz. Move the mark to compare.`
@@ -318,7 +342,7 @@
         const second = () => {
           K.ask($('ask2'), {
             question: 'So how much of a 3,800 Hz tone does your copy pass?',
-            options: [['62', '62.5%, what the exchange passes at 3,800 Hz'], ['11', 'About 11%'], ['1', 'About 1%']], right: '1',
+            options: [['62', 'About 62%'], ['11', 'About 11%'], ['1', 'About 1%']], right: '1',
             hints: { 62: 'That is the exchange’s gain at analog 3,800 Hz. Your copy at 3,800 Hz copies the exchange at a different frequency: which one?', 11: 'That is the exchange at 10,000 Hz, which lands at 3,365 Hz. 3,800 Hz comes from much further out.' },
             explain: 'Your copy at 3,800 Hz passes exactly what the exchange passes at 32,356 Hz: 1.1%. The ruler and the presets are yours now.',
             reveal: 'Skip: show me', solved: state.revealed ? 'right' : null,
@@ -327,8 +351,8 @@
         };
         K.ask($('ask'), {
           question: 'Which analog frequency lands on the digital tone 3,800 Hz?',
-          options: [['4300', 'About 4,300 Hz'], ['10000', 'About 10,000 Hz'], ['32000', 'About 32,000 Hz']], right: '32000',
-          hints: { 4300: 'Down low the squeeze is gentle, but up here it is strong: 3,400 Hz already landed a thousand hertz low.', 10000: 'The table says 10,000 Hz lands on 3,365 Hz. 3,800 Hz is higher still, so it comes from further out.' },
+          options: [['4300', 'About 4,300 Hz'], ['25000', 'About 25,000 Hz'], ['32000', 'About 32,000 Hz'], ['60000', 'About 60,000 Hz']], right: '32000',
+          hints: { 4300: 'Down low the squeeze is gentle, but up here it is strong: 3,400 Hz already landed a thousand hertz low.', 25000: 'Check it forward: 25,000 Hz lands at about 3,742 Hz, not 3,800. Near the top a guess is hopeless; run the formula backward, with tan.', 60000: 'Check it forward: 60,000 Hz lands at about 3,892 Hz, not 3,800. Near the top a guess is hopeless; run the formula backward, with tan.' },
           explain: 'Run it backward: 2546.5 × tan(π × 3,800 ÷ 8,000) = 2546.5 × 12.71 = 32,356 Hz, between the table’s 20,000 (3,678) and 100,000 (3,935).',
           reveal: 'Skip: show me', solved: state.revealed ? 'right' : null,
           onSolved: () => second(), focusAfter: () => $('ask2').querySelector('button'),
@@ -358,14 +382,15 @@
 
     const setF = F => { state.F = Math.max(0, Math.min(RULER_MAX, Math.round(F))); render(); };
     const setC = C => { state.C = Math.max(C_MIN, Math.min(C_MAX, Math.round(C))); $('C-msg').textContent = ''; $('C-msg').classList.remove('bad'); render(); };
-    $('F').addEventListener('input', () => setF(FofPos(Number($('F').value) / 1000)));
+    $('F').max = String(STOPS.length - 1);
+    $('F').addEventListener('input', () => setF(STOPS[Number($('F').value)]));
     $('C').addEventListener('input', () => setC(CofPos(Number($('C').value) / 1000)));
     host.querySelectorAll('[data-hz]').forEach(b => b.addEventListener('click', () => setF(Number(b.dataset.hz))));
     const typed = () => {
       const raw = $('C-typed').value.trim().replace(/,/g, ''), msg = $('C-msg');
       const bad = t => { msg.textContent = t; msg.classList.add('bad'); $('C-typed').focus(); };
       if (!raw) return bad('Type a cutoff in hertz first, for example 5,000.');
-      if (!/^\d+$/.test(raw)) return bad('Type a whole number of hertz, digits only, for example 5,000.');
+      if (!/^\d+$/.test(raw)) return bad('Type a whole number of hertz, such as 5000 or 5,000.');
       const v = Number(raw);
       if (v < C_MIN || v > C_MAX) return bad(`The knob runs from 1,000 to 20,000 Hz; ${hz(v)} Hz is outside it.`);
       setC(v);

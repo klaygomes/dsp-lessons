@@ -105,7 +105,7 @@ export default k => {
       text(P.X(2363), row, ph ? '2,363' : '2,363 Hz', { cls: 'k-num' }), text(P.X(3400), row, ph ? '3,400' : '3,400 Hz', { cls: 'k-num' }),
       ph ? '' : g({}, text(P.X(3400) + 10, P.Y(ex(3400)) - 8, pc(ex(3400)), { anchor: 'start', cls: 'k-num' }),
         text(P.X(3400) + 10, P.Y(cp(3400)) - 8, pc(cp(3400)), { anchor: 'start', cls: 'k-num' })),
-      text(P.x1, row + 20, 'digital tone f, in Hz, from 0', { anchor: 'end', cls: 'k-tick' }),
+      text(P.x1, row + 20, 'tone, in Hz, from 0', { anchor: 'end', cls: 'k-tick' }),
       ph ? g({}, key(28, row + 50, [['ex', 'the old exchange'], ['cp', 'your copy, from the script']], { cols: 1 }),
         text(28, row + 104, `at 3,400 Hz: exchange ${pc(ex(3400))}, copy ${pc(cp(3400))}`, { anchor: 'start', cls: 'k-num' }))
         : key(P.x0, row + 52, [['ex', 'the old exchange'], ['cp', 'your copy, from the script']], { dx: 250 }),
@@ -179,7 +179,7 @@ export default k => {
   };
   const wrapSqueeze = L => {
     const ph = L.phone, R = ph ? 104 : 120, gap = 11;
-    const [cl, cr] = ph ? [[180, 188], [180, 470]] : [[184, 236], [540, 236]];
+    const [cl, cr] = ph ? [[180, 188], [180, 504]] : [[184, 236], [540, 236]];
     const total = 12000, len = 4.5, T = F => len * F / total;
     const wrapAngle = F => { const lap = Math.floor(F / 4000), r = (F % 4000) / 4000 * 180; return lap % 2 ? 180 - r : r; };
     const wrapR = F => R + gap * Math.floor(Math.min(F, 11999) / 4000);
@@ -215,7 +215,7 @@ export default k => {
       text(c[0] + R, c[1] + 18, '0 Hz', { cls: 'k-tick' }), text(c[0] - R, c[1] + 18, '4,000 Hz', { cls: 'k-tick' }));
     const [aliasX, aliasY] = at(cl, R, 135);
     return [
-      text(cl[0], cl[1] - R - 48, 'wrap: sample the analog response', { cls: 'k-name' }),
+      text(cl[0], cl[1] - R - 48, ph ? 'wrap: sample its click echo' : 'wrap: sample the exchange’s echo to a click', { cls: 'k-name' }),
       text(cr[0], cr[1] - R - 48, 'squeeze: bend the ruler once', { cls: 'k-name' }),
       base(cl, gap * 2), base(cr),
       step(1, 'the ruler wraps around the half circle again and again, and 5,000 Hz lands on 3,000 Hz', laps, wrapTicks, five),
@@ -223,9 +223,11 @@ export default k => {
       g({ anim: { k: 'in', d: len + 0.5, len: 0.6 } },
         circle(aliasX, aliasY, 9, { cls: 'b11-zero', style: 'fill:none' }),
         text(cl[0], cl[1] + 46, '5,000 Hz lands on 3,000 Hz: an alias', { cls: 'k-note' }),
+        ['each ring is one 4,000 Hz lap:', 'inner ring: 0 to 4,000 Hz', 'middle ring: 4,000 to 8,000 Hz', 'outer ring: 8,000 to 12,000 Hz']
+          .map((t, i) => text(cl[0], cl[1] + 68 + 14 * i, t, { cls: 'k-tick' })),
         text(cr[0] - R - 6, cr[1] + 36, '∞', { cls: 'k-num-accent', style: 'font-size:16px' }),
         text(cr[0], cr[1] + 62, 'infinity lands on 4,000 Hz: nothing wraps', { cls: 'k-note-accent' })),
-      text(L.W / 2, ph ? cr[1] + 84 : cr[1] + 90, ph ? 'numbers on the ticks: analog F in Hz' : 'numbers on the ticks: analog F in Hz; under the line: the digital tones', { cls: 'k-tick' }),
+      text(L.W / 2, ph ? cr[1] + 84 : cr[1] + 128, ph ? 'numbers on the ticks: analog F in Hz' : 'numbers on the ticks: analog F in Hz; under the line: the digital tones', { cls: 'k-tick' }),
     ];
   };
 
@@ -569,15 +571,15 @@ export default k => {
   return [
     fig('overlay-bug', [380, 440], 'The copy falls apart up high',
       'Gain from 0 to 4,000 Hz: the old exchange, solid with circles, crosses 71% at 3,400 Hz; your copy, dashed with squares, crosses it at 2,363 Hz; at 3,400 Hz they pass 70.7% and 10.2%.',
-      'The technician’s two rows as curves. Low tones match; the higher the tone, the further the copy falls below the exchange.', overlayBug),
+      'The technician’s two columns as curves. Low tones match; the higher the tone, the further the copy falls below the exchange.', overlayBug),
     fig('analog', [420, 440], 'Analog and digital filters',
       'Top: a smooth voltage flows through an analog filter of capacitors and coils, and its frequency axis runs on forever. Bottom: samples, 8,000 a second, tick through a digital filter, and its frequency axis stops at 4,000 Hz.',
       'An analog filter works on the voltage itself, every instant, and has a response at every frequency. A digital filter works on samples and stops at 4,000 Hz.', analog, 2),
     fig('prototype', [370, 380], 'The exchange’s gain, past the wall',
       'The exchange’s gain from 0 to 10,000 Hz: 70.7% at 3,400 Hz, 42.0% at 5,000 Hz and 11.5% at 10,000 Hz; a wall at 4,000 Hz marks where your line stops, and the curve runs straight past it.',
       'The analog prototype: the exchange’s filter. It has a response far beyond 4,000 Hz, where your line cannot follow.', prototype),
-    fig('wrap-vs-squeeze', [400, 640], 'Wrap it, or squeeze it',
-      'Left: the analog ruler wrapped around the half circle again and again, so 5,000 Hz lands on 3,000 Hz. Right: the same ruler bent once onto the half circle, its ticks 0, 1,000, 2,000, 3,400, 5,000, 10,000 and 100,000 even near 0 Hz and bunching toward 4,000 Hz, where infinity lands.',
+    fig('wrap-vs-squeeze', [400, 674], 'Wrap it, or squeeze it',
+      'Left: the exchange’s echo to a click, sampled: the analog ruler wraps around the half circle in 4,000 Hz laps, inner ring 0 to 4,000 Hz, middle 4,000 to 8,000, outer 8,000 to 12,000, so 5,000 Hz lands on 3,000 Hz. Right: the same ruler bent once onto the half circle, its ticks 0, 1,000, 2,000, 3,400, 5,000, 10,000 and 100,000 even near 0 Hz and bunching toward 4,000 Hz, where infinity lands.',
       'Wrapping lays the ruler round and round, so different frequencies share a spot. Squeezing bends it on once, so every frequency gets its own spot.', wrapSqueeze, 2),
     fig('arctan', [340, 380], 'The shape of arctan',
       'y = arctan x for x from 0 to 20: it starts along the diagonal y = x, bends, and flattens under a ceiling at π/2, which is 90 degrees.',
@@ -604,8 +606,8 @@ export default k => {
       'The warping curve read backward: from 3,400 Hz on the digital axis across to the curve, then down to 10,607 Hz on the analog axis.',
       'Start where you want the cutoff to land, and read back to the analog frequency that lands there.', prewarp, 2),
     fig('echo', [360, 640], 'The prewarped copy’s echo',
-      'One click into the prewarped copy: the output 0.7157, 0.4660, −0.2807, 0.1392 and on, flipping sign and dying. Its poles sit at radius 0.72 near 3,560 Hz, beside the script’s copy’s poles at radius 0.44.',
-      'The echo flips sign every sample because the new poles sit near the far left of the circle. Both pairs are inside it: stable.', echo),
+      'One click into the prewarped copy: the output 0.7157, 0.4660, −0.2807, 0.1392 and on, flipping sign at almost every sample from n = 1 and dying. Its poles sit at radius 0.72 near 3,560 Hz, beside the script’s copy’s poles at radius 0.44.',
+      'From n = 1 on, the echo flips sign at almost every sample: the new poles sit near the far left of the circle, where a tone turns almost half a turn per sample. Both pairs are inside it: stable.', echo),
     fig('squeezed-prototype', [480, 520], 'The prototype, squeezed onto the line',
       'The 10,607 Hz prototype on the analog ruler from 0 to 20,000 Hz, its stretch from 0 to 10,607 Hz highlighted; squeezed onto the line, that stretch fills 0 to 3,400 Hz, where the prewarped copy stays nearly flat.',
       'The whole nearly flat stretch of the prototype lands below 3,400 Hz. That is why the prewarped copy is flatter than the exchange.', squeezed, 3),

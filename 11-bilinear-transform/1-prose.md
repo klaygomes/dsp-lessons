@@ -8,14 +8,16 @@ The part that shapes the sound is the exchange's line filter, a low-pass. Its ma
 
 The next morning a technician runs the standard test. She plays pure tones through the old exchange, which is still connected for one more week, and through your new filter. Then she writes down how much of each gets out.
 
-| tone | 1,000 Hz | 2,000 Hz | 3,000 Hz | 3,400 Hz |
-|---|---|---|---|---|
-| old exchange | 99.6% | 94.5% | 78.9% | 70.7% |
-| your copy | 99.5% | 87.2% | 29.2% | 10.2% |
+| tone | old exchange | your copy |
+|---|---|---|
+| 1,000 Hz | 99.6% | 99.5% |
+| 2,000 Hz | 94.5% | 87.2% |
+| 3,000 Hz | 78.9% | 29.2% |
+| 3,400 Hz | 70.7% | 10.2% |
 
 At 1,000 Hz the copy is perfect. Higher up it falls apart: at 3,400 Hz, the exchange passes 71% and your copy passes 10%. Callers on the new line sound dull, as if the top of every voice had been shaved off.
 
-She sweeps a tone slowly upward to find where your copy passes 71%, the point the manual calls the cutoff. It's 2,363 Hz. Not 3,400. And the damage isn't even. The low tones are nearly right, the high tones are dragged down, and the higher a tone, the further it's dragged. The picture below draws her two rows as curves, with a line at 71% that the exchange crosses at 3,400 Hz and the copy at 2,363 Hz.
+She sweeps a tone slowly upward to find where your copy passes 71%, the point the manual calls the cutoff. It's 2,363 Hz. Not 3,400. And the damage isn't even. The low tones are nearly right, the high tones are dragged down, and the higher a tone, the further it's dragged. The picture below draws her two columns as curves, with a line at 71% that the exchange crosses at 3,400 Hz and the copy at 2,363 Hz.
 
 [[diagram:overlay-bug]]
 
@@ -25,25 +27,31 @@ The script did exactly what the recipe says. So what does the recipe do to frequ
 
 To answer that, we need a new kind of filter. Every filter so far has worked on samples: lists of numbers, 8,000 of them per second. The exchange never sampled anything. Its sound is a voltage in a wire, changing smoothly, every instant. Its filter is a circuit of capacitors and coils that this voltage flows through. A filter like that, which works on the smooth voltage itself with no samples at all, is an **analog filter**.
 
-The next picture puts the two side by side: a smooth voltage through a box of capacitors and coils, and lesson 4's dots through a digital filter. The digital frequency axis stops at 4,000 Hz; the analog one runs off the page.
+From here on we'll write analog frequencies with a capital F, to keep them apart from the digital tones, which we'll keep writing as lowercase f. The next picture puts the two side by side: a smooth voltage through a box of capacitors and coils, and lesson 4's dots through a digital filter. The digital frequency axis stops at 4,000 Hz; the analog one runs off the page.
 
 [[diagram:analog]]
 
 Without samples, there's no wheel, because there is no "per sample". And so there's no limit either. An analog filter has a response to 1,000 Hz, to 4,000 Hz, to 10,000 Hz, to a million hertz: every frequency from 0 all the way up exists for it.
 
-For this lesson you need only one fact about analog filters. It's the same fact lesson 3 taught you about our line: an analog filter is completely described by its response at each frequency in Hz. We'll write analog frequencies with a capital F, to keep them apart from the digital tones, which we'll keep writing as lowercase f.
+For this lesson you need only one fact about analog filters. It's the same fact lesson 3 taught you about our line: an analog filter is completely described by its response at each frequency in Hz.
 
 The exchange's manual gives the gain of its filter as a formula:
 
 \[ \text{gain}(F) = \frac{1}{\sqrt{1 + (F / 3400)^4}} \]
 
-Let's read it at a few frequencies. At F = 0 the fraction is 1: the filter passes 0 Hz whole. At F = 3,400 Hz the bottom is \(\sqrt{2}\), so the gain is 0.707, 71%. That's where the manual puts the cutoff. Lesson 4 called the cutoff the tone where a filter switches from keeping to removing, and for the exchange's kind of filter, the cutoff is where it passes 71%. (In lesson 10's units, 71% is −3 dB.) Above the cutoff the fourth power takes over and the gain falls fast. That fourth power is what "second-order" buys. A filter's order counts the capacitors and coils that store energy in its circuit, here two, and a Butterworth's gain has the frequency raised to twice its order.
+Let's read it at a few frequencies. At F = 0 the fraction is 1: the filter passes 0 Hz whole. At F = 3,400 Hz the bottom is \(\sqrt{2}\), so it passes \(1/\sqrt{2}\) of the tone: 70.7%, or 71% rounded. That's where the manual puts the cutoff. Lesson 4 called the cutoff the tone where a filter switches from keeping to removing, and for the exchange's kind of filter, the cutoff is where it passes 71%. (In lesson 10's units, 71% is −3 dB.) Above the cutoff the fourth power takes over and the gain falls fast. That fourth power is what "second-order" buys. A filter's order counts the capacitors and coils that store energy in its circuit, here two, and a Butterworth's gain has the frequency raised to twice its order.
 
-| F (Hz) | 0 | 1,000 | 2,000 | 3,000 | 3,400 | 5,000 | 10,000 |
-|---|---|---|---|---|---|---|---|
-| exchange gain | 1.000 | 0.996 | 0.945 | 0.789 | 0.707 | 0.420 | 0.115 |
+| F (Hz) | exchange passes |
+|---|---|
+| 0 | 100.0% |
+| 1,000 | 99.6% |
+| 2,000 | 94.5% |
+| 3,000 | 78.9% |
+| 3,400 | 70.7% |
+| 5,000 | 42.0% |
+| 10,000 | 11.5% |
 
-There's the first row of the technician's table. The analog filter you start from, the one whose response you want to copy into a digital filter, is the **analog prototype**. Here it's the exchange's filter. The next picture is its gain curve from 0 to 10,000 Hz, with a wall at 4,000 Hz where your line stops. The curve sails straight past the wall.
+There's the old exchange's column of the technician's table. The analog filter you start from, the one whose response you want to copy into a digital filter, is the **analog prototype**. Here it's the exchange's filter. The next picture is its gain curve from 0 to 10,000 Hz, with a wall at 4,000 Hz where your line stops. The curve sails straight past the wall.
 
 [[diagram:prototype]]
 
@@ -57,7 +65,7 @@ Digital tones live on half a circle. It's the wheel from lesson 3, where a tone 
 
 So copying an analog filter means deciding where on the half circle each mark of the infinite ruler goes.
 
-One way fails, and you know it from lesson 4. If you simply sample the analog filter's response at the line's sample moments, the ruler gets wrapped around the circle again and again. 5,000 Hz lands where 3,000 Hz is. That's aliasing.
+One way fails, and you know it from lesson 4. If you take the exchange's echo to a click (its response over time) and simply sample it at the line's sample moments, the ruler gets wrapped around the circle again and again. 5,000 Hz lands where 3,000 Hz is. That's aliasing.
 
 The other way is to squeeze. Near 0 Hz, lay the ruler on the circle almost one for one: 500 Hz on the ruler lands very close to the circle's 500 Hz point. Further along, compress the ruler more and more. The whole infinite rest of it crowds into the last stretch before 4,000 Hz, and infinity itself lands exactly on 4,000 Hz. Nothing wraps, so nothing aliases. That's what the textbook recipe does.
 
@@ -79,7 +87,7 @@ It falls out of the derivation later. For now you need only the shape of arctan.
 
 So: a straight start, then a squeeze, then 4,000 Hz at infinity. Let's run it.
 
-| analog F (Hz) | lands on digital f (Hz) | moved by |
+| analog F (Hz) | lands on f (Hz) | moved by (Hz) |
 |---|---|---|
 | 0 | 0 | 0 |
 | 500 | 494 | −6 |
@@ -107,9 +115,9 @@ You can also read the curve the other way: start at a digital tone, go across to
 
 \[ F = \frac{8000}{\pi}\tan\!\left(\frac{\pi f}{8000}\right) \]
 
-Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives \(F = 2546.5 \times \tan(1.1781)\) \(= 2546.5 \times 2.4142 = 6{,}148\) Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's the second row of her table.
+Let's use it to check one more of the technician's numbers. Her 3,000 Hz digital tone gives \(F = 2546.5 \times \tan(1.1781)\) \(= 2546.5 \times 2.4142 = 6{,}148\) Hz. The exchange's formula at 6,148 Hz gives 29.2%. That's your copy's number in her table.
 
-Now drag a mark along the analog ruler yourself and watch where it lands on the circle.
+Now drag a mark along the analog ruler yourself and watch where it lands on the circle. The lab draws the ruler on a log scale, so it can hold 10 Hz and 100,000 Hz on one line: each tick is ten times the one before, with 0 squeezed in at the far left.
 
 [[lab]]
 
@@ -187,27 +195,36 @@ The picture for it is the warping curve again, read the other way. Start at 3,40
 
 [[diagram:prewarp]]
 
-\[ F = \frac{8000}{\pi}\tan\!\left(\frac{\pi \cdot 3400}{8000}\right) = 2546.5 \times \tan(1.3352) = 2546.5 \times 4.1653 = 10{,}607 \text{ Hz} \]
+\[ \begin{aligned} F &= \frac{8000}{\pi}\tan\!\left(\frac{\pi \cdot 3400}{8000}\right) \\ &= 2546.5 \times \tan(1.3352) \\ &= 2546.5 \times 4.1653 \\ &= 10{,}607 \text{ Hz} \end{aligned} \]
 
 Over ten thousand. To land a digital cutoff at 3,400 Hz, you design an analog filter with its cutoff at 10,607 Hz. That's more than three times higher, far above anything the line can carry. It sounds absurd until you recall that 3,400 Hz sits deep in the squeezed part of the table.
 
-Now build it. Put \(s = 16000\,(1 - z^{-1})/(1 + z^{-1})\) into the manual's formula, multiply top and bottom by \((1 + z^{-1})^2\), and collect the powers of \(z^{-1}\). With \(K = 16{,}000\):
+Now build it. Put \(s = 16000\,(1 - z^{-1})/(1 + z^{-1})\) into the manual's formula, multiply top and bottom by \((1 + z^{-1})^2\), and collect the powers of \(z^{-1}\). With \(K = 16{,}000\), the top is
 
-\[ H(z) = \frac{\Omega_c^2\,(1 + 2z^{-1} + z^{-2})}{(K^2 + \sqrt{2}\,\Omega_c K + \Omega_c^2) + (2\Omega_c^2 - 2K^2)\,z^{-1} + (K^2 - \sqrt{2}\,\Omega_c K + \Omega_c^2)\,z^{-2}} \]
+\[ \Omega_c^2\,(1 + 2z^{-1} + z^{-2}) \]
+
+and the bottom is
+
+\[ \begin{aligned} & (K^2 + \sqrt{2}\,\Omega_c K + \Omega_c^2) \\ & {} + (2\Omega_c^2 - 2K^2)\,z^{-1} \\ & {} + (K^2 - \sqrt{2}\,\Omega_c K + \Omega_c^2)\,z^{-2} \end{aligned} \]
 
 With the prewarped \(\Omega_c = 2\pi \cdot 10{,}607\), in units of a billion, the top is 4.4415 and the bottom terms are 6.2055, 8.3711 and 3.1895. Divide everything by 6.2055 and read it as a program:
 
-\[ y[n] = 0.7157\,x[n] + 1.4315\,x[n-1] + 0.7157\,x[n-2] - 1.3490\,y[n-1] - 0.5140\,y[n-2] \]
+\[ \begin{aligned} y[n] = {} & 0.7157\,x[n] + 1.4315\,x[n-1] \\ & {} + 0.7157\,x[n-2] \\ & {} - 1.3490\,y[n-1] - 0.5140\,y[n-2] \end{aligned} \]
 
 Check 0 Hz with a pencil. Feed in a constant 1 and the output settles where \(y = 0.7157 + 1.4315 + 0.7157 - 1.3490\,y - 0.5140\,y\), so \(y = 2.8629 / 2.8630 = 1.000\). It passes 0 Hz whole. Its poles sit at radius 0.72, near the 3,560 Hz point: stable. The next picture shows a click going in and the echo coming out as stems, flipping sign and dying, with the new poles on the circle beside the old ones.
 
 [[diagram:echo]]
 
-And the tones:
+And the tones, on the manual's own 3,400 Hz exchange:
 
-| tone | 1,000 Hz | 2,000 Hz | 3,000 Hz | 3,400 Hz | 3,800 Hz | 4,000 Hz |
-|---|---|---|---|---|---|---|
-| prewarped copy | 100.0% | 99.8% | 94.8% | 70.7% | 10.7% | 0% |
+| tone | prewarped copy passes |
+|---|---|
+| 1,000 Hz | 100.0% |
+| 2,000 Hz | 99.8% |
+| 3,000 Hz | 94.8% |
+| 3,400 Hz | 70.7% |
+| 3,800 Hz | 10.7% |
+| 4,000 Hz | 0% |
 
 70.7% at 3,400 Hz. The cutoff is back where the manual says. You changed one number: 10,607 instead of 3,400. That's the whole fix, and it works for any prototype and any tone. Compute where that tone must come from on the ruler, and put the prototype's cutoff there.
 
@@ -217,7 +234,7 @@ Why does the prewarped copy look the way it does? The picture below shows the 10
 
 ## Your turn
 
-The technician is waiting with her test tones. In the lab you have the exchange's filter formula, the bilinear transform, and one knob: the analog prototype's cutoff, from 1,000 Hz up to 20,000 Hz. The lab marks the exchange's 71% point, as she measured it on the real rack. A second marker shows the copy's 71% point and moves with the knob. Your job:
+The technician is waiting with her test tones. In the lab you have the exchange's filter formula, the bilinear transform, and one knob: the analog prototype's cutoff, from 1,000 Hz up to 20,000 Hz. One catch: the exchange is an aged rack whose old capacitors drift, so its real 71% point wanders off the manual's 3,400 Hz from day to day. The lab marks the exchange's 71% point, as she measured it on the real rack this morning. A second marker shows the copy's 71% point and moves with the knob. Your job:
 
 1. Predict what the fix will cost, then set the knob.
 2. Make the digital copy pass 71% at the exchange's cutoff, within one percentage point.
@@ -228,15 +245,7 @@ You're done when the technician's meter reads 71% at the exchange's cutoff and t
 
 ## What people get wrong
 
-After prewarping, it's tempting to believe the copy now matches the exchange everywhere. It doesn't. Prewarping pins one frequency, the one you aimed at, and every other frequency still gets squeezed.
-
-Look at 3,000 Hz. The exchange passes 78.9%, and the prewarped copy passes 94.8%. Why? Digital 3,000 Hz is where analog 6,148 Hz lands. The 10,607 Hz prototype barely touches 6,148 Hz, so almost all of it passes. Below the cutoff the copy is flatter. Above it the copy is steeper: it reaches 0% at 4,000 Hz, where the exchange still passed 58.6%. The bilinear transform copies the response along the ruler, and the ruler is squeezed. You choose which point lines up; you don't get them all.
-
-The picture below overlays all three curves: the exchange, the script's copy, and the prewarped copy. All three cross the 71% line: the exchange and the prewarped copy together at 3,400 Hz, the script's copy at 2,363 Hz. The gaps at 3,000 Hz and at 4,000 Hz are marked.
-
-[[diagram:overlay]]
-
-So your boss's "exactly the same" was never on offer. Why is pinning the cutoff the right compromise? Because the cutoff is the one number that defines this filter. It's in the manual, it's what the technician measures, and it's where a voice stops sounding bright. Below it, the prewarped copy never differs from the exchange by more than 1.6 dB; the largest gap is near 3,030 Hz. Above it sit only the top 600 Hz of the line, where a voice has little left to say.
+It's tempting to believe a prewarped copy matches the exchange everywhere, and the lab's last check showed it doesn't: prewarping pins one tone and every other tone is still squeezed. So your boss's "exactly the same" was never on offer. Why is pinning the cutoff the right compromise? Because the cutoff is the one number that defines this filter. It's in the manual, it's what the technician measures, and it's where a voice stops sounding bright. On the manual's own 3,400 Hz exchange, prewarped to 10,607 Hz, the copy never differs from the exchange by more than 1.6 dB below the cutoff; the largest gap is near 3,030 Hz. Above the cutoff sit only the top 600 Hz of the line, where a voice has little left to say.
 
 Pin some other tone and you pay where it matters most. Pin 3,000 Hz instead, so the copy passes 78.9% there like the exchange. Digital 3,000 Hz comes from analog 6,148 Hz, and the exchange's gain depends only on F ÷ cutoff. So the prototype needs 6,148 ÷ cutoff = 3,000 ÷ 3,400, which gives a cutoff of 6,148 × 3,400 ÷ 3,000 = 6,967 Hz. That prototype's cutoff lands at 3,108 Hz, letting through only 40% at 3,400 Hz. One knob pins one point.
 

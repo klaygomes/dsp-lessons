@@ -1,7 +1,7 @@
 {
   "overlay-bug": {
     "title": "The copy falls apart up high",
-    "caption": "The technician’s two rows as curves. Low tones match; the higher the tone, the further the copy falls below the exchange.",
+    "caption": "The technician’s two columns as curves. Low tones match; the higher the tone, the further the copy falls below the exchange.",
     "animated": false,
     "phone": true
   },
@@ -73,7 +73,7 @@
   },
   "echo": {
     "title": "The prewarped copy’s echo",
-    "caption": "The echo flips sign every sample because the new poles sit near the far left of the circle. Both pairs are inside it: stable.",
+    "caption": "From n = 1 on, the echo flips sign at almost every sample: the new poles sit near the far left of the circle, where a tone turns almost half a turn per sample. Both pairs are inside it: stable.",
     "animated": false,
     "phone": true
   },

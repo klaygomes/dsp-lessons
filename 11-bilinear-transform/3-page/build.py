@@ -7,7 +7,7 @@ import page
 ok = page.build(
     Path(__file__).resolve().parents[1],
     working=[
-        {"section": "aim-before-you-squeeze", "from": "And the tones:", "through": 'id="figure-squeezed-prototype"', "unlock": "act2",
+        {"section": "aim-before-you-squeeze", "from": "And the tones, on the manual", "through": 'id="figure-squeezed-prototype"', "unlock": "act2",
          "note": "The next table and picture show what the prewarped copy does to every other tone, which is the last question in the lab below. They open once you have fixed the copy there."},
     ],
     still_text={
