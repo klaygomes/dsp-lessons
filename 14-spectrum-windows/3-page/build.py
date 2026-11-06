@@ -1,4 +1,3 @@
-import re
 import sys
 from pathlib import Path
 
@@ -19,8 +18,4 @@ ok = page.build(
          "note": "Answer the question above to see the 1,500 Hz tone's matches."},
     ],
 )
-out = Path(__file__).resolve().parent / "3-page.html"
-text = out.read_text(encoding="utf-8")
-text = re.sub(r"(<math>(?:(?!</math>).)*</math>)([,.:;)])", r'<span class="nowrap">\1\2</span>', text, flags=re.S)
-out.write_text(text, encoding="utf-8")
 sys.exit(0 if ok else 1)

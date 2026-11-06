@@ -36,5 +36,4 @@ table.worked td, table.worked th { white-space: normal; }
 .l13-meter[data-fits="true"] .fill { background: var(--input); }
 .l13-meter[data-fits="true"] .bar { border-color: var(--input); border-width: 2px; }
 .l13-meter[data-fits="true"] output { color: var(--input); font-weight: 600; }
-.table { background: linear-gradient(to right, var(--paper) 30%, transparent) left / 28px 100% no-repeat local, linear-gradient(to left, var(--paper) 30%, transparent) right / 28px 100% no-repeat local, linear-gradient(to right, rgba(0, 0, 0, 0.18), transparent) left / 12px 100% no-repeat scroll, linear-gradient(to left, rgba(0, 0, 0, 0.18), transparent) right / 12px 100% no-repeat scroll; }
 @media (max-width: 520px) { table.worked td:first-child, table.worked th:first-child { min-width: 0; } table.worked td, table.worked th { padding-right: 6px; } table.worked { font-size: 13.5px; } }

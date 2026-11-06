@@ -28,10 +28,3 @@ canvas.spec-stage { cursor: zoom-in; }
   table.worked td, table.worked th { white-space: normal; }
   table.worked td:first-child, table.worked th:first-child { min-width: 6em; }
 }
-.table {
-  background:
-    linear-gradient(to right, var(--paper) 40%, transparent) left center / 36px 100% no-repeat local,
-    linear-gradient(to left, var(--paper) 40%, transparent) right center / 36px 100% no-repeat local,
-    linear-gradient(to right, color-mix(in srgb, var(--ink) 28%, transparent), transparent) left center / 14px 100% no-repeat scroll,
-    linear-gradient(to left, color-mix(in srgb, var(--ink) 28%, transparent), transparent) right center / 14px 100% no-repeat scroll;
-}

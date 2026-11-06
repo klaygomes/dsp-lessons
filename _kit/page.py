@@ -146,6 +146,12 @@ def motion_text(body, still):
     return body
 
 
+def keep_punctuation(html):
+    parts = re.split(r"(<script\b.*?</script>|<style\b.*?</style>)", html, flags=re.S)
+    tie = lambda part: re.sub(r"(<math>(?:(?!</math>).)*</math>)([,.:;!?)])", r'<span class="k-nowrap">\1\2</span>', part, flags=re.S)
+    return "".join(part if i % 2 else tie(part) for i, part in enumerate(parts))
+
+
 def build(lesson, figures=True, drop_heading=None, append=None, working=None, still_text=None, more=None):
     lesson = Path(lesson).resolve()
     here = lesson / "3-page"
@@ -171,10 +177,10 @@ def build(lesson, figures=True, drop_heading=None, append=None, working=None, st
     (here / "3-page.src.html").write_text(page, encoding="utf-8")
     subprocess.run(["node", str(LADDER / "scripts/math.mjs"), str(here / "3-page.src.html"), str(here / "3-page.html")], check=True)
     shutil.copyfile(LADDER / "assets/lesson.css", here / "lesson.css")
-    html = (here / "3-page.html").read_text(encoding="utf-8")
+    html = keep_punctuation((here / "3-page.html").read_text(encoding="utf-8"))
     if not html.lstrip().lower().startswith("<!doctype"):
         html = '<!doctype html>\n<html lang="en">\n' + html.lstrip() + "\n</html>\n"
-        (here / "3-page.html").write_text(html, encoding="utf-8")
+    (here / "3-page.html").write_text(html, encoding="utf-8")
     problems = check(html) + [f"missing slot {m}" for m in missing]
     print(f"{here / '3-page.html'}: {len(html) // 1024} KB, {len(slots)} slots filled")
     for p in problems:

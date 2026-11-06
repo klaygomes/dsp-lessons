@@ -37,17 +37,42 @@
     requestAnimationFrame(() => focusable.focus({ preventScroll: true }));
   });
 
+  const ties = new Map();
+  document.querySelectorAll('.k-nowrap').forEach(tie => {
+    let box = tie.parentElement;
+    while (box.parentElement && getComputedStyle(box).display.startsWith('inline')) box = box.parentElement;
+    ties.set(box, [...(ties.get(box) || []), tie]);
+  });
+  const loosen = box => {
+    const cs = getComputedStyle(box), room = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    ties.get(box).forEach(tie => { tie.classList.remove('k-loose'); if (tie.offsetWidth > room) tie.classList.add('k-loose'); });
+  };
+  if ('ResizeObserver' in window) {
+    const watch = new ResizeObserver(entries => entries.forEach(e => loosen(e.target)));
+    ties.forEach((_, box) => watch.observe(box));
+  }
+
   document.querySelectorAll('.k-working').forEach(box => {
-    const button = box.querySelector('.k-working-open'), body = box.querySelector('.k-working-body');
-    const reveal = () => { body.hidden = false; if (button) button.hidden = true; box.querySelector('.k-working-note').hidden = true; };
-    if (button) button.addEventListener('click', () => { reveal(); body.focus(); });
+    const button = box.querySelector('.k-working-open'), body = box.querySelector('.k-working-body'), note = box.querySelector('.k-working-note');
+    let shut = '';
+    const reveal = () => { body.hidden = false; note.hidden = true; };
+    if (button) {
+      button.setAttribute('aria-expanded', 'false');
+      button.addEventListener('click', () => {
+        const open = body.hidden;
+        if (open) { shut = button.textContent; reveal(); button.textContent = 'Hide the working'; }
+        else { body.hidden = true; note.hidden = false; button.textContent = shut; }
+        button.setAttribute('aria-expanded', String(open));
+        if (open) body.focus();
+      });
+    }
     document.addEventListener('k:solved', e => {
       if (e.detail !== box.dataset.unlock) return;
       if (!button) { reveal(); return; }
       if (!button.disabled) return;
       button.disabled = false;
       button.textContent = 'Show the working';
-      box.querySelector('.k-working-note').textContent = box.dataset.opened || 'You have fixed it, so this part is open to read.';
+      note.textContent = box.dataset.opened || 'You have fixed it, so this part is open to read.';
     });
   });
 })();
