@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Echo With No Address</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, ''); return fs.some(f => t.startsWith(f)); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0) => { origin(sel, x, y); const keys = [[0, 1], [a, 1]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, lo + (1 - lo) * rnd(f + seed)]); keys.push([b, 1]); M.kf(sel, 'scaleY', keys); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 36, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+  if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
+}
+
+const turnHz = f => 360 * f / 8000;
+const FS = 8000;
+const gainAt = (f, D, a = 0.5) => { const w = 2 * Math.PI * f / FS; return Math.hypot(1 + a * Math.cos(w * D), a * Math.sin(w * D)); };
+const logGain = (f, D, a = 0.5) => Math.log(gainAt(f, D, a));
+function fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) { let b = n >> 1; for (; j & b; b >>= 1) j ^= b; j ^= b; if (i < j) { [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]]; } }
+  for (let len = 2; len <= n; len <<= 1) {
+    const a = -2 * Math.PI / len, wr = Math.cos(a), wi = Math.sin(a);
+    for (let i = 0; i < n; i += len) {
+      let cr = 1, ci = 0;
+      for (let j = 0; j < len / 2; j++) {
+        const p = i + j, q = p + len / 2, tr = re[q] * cr - im[q] * ci, ti = re[q] * ci + im[q] * cr;
+        re[q] = re[p] - tr; im[q] = im[p] - ti; re[p] += tr; im[p] += ti;
+        const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t;
+      }
+    }
+  }
+}
+const cepstrumOfLog = logs => { const re = Float64Array.from(logs), im = new Float64Array(logs.length); fft(re, im); return Array.from(re, v => v / logs.length); };
+const SIM = (() => {
+  let seed = 1;
+  const rand = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648 - 0.5; };
+  const N = 8192, D = 1200, L = N + 4000, r = 0.95;
+  const src = Float64Array.from({ length: L }, (_, n) => (n % 64 === 0 ? 1 : 0) + 0.15 * rand());
+  const reson = (x, f) => { const th = 2 * Math.PI * f / FS, y = new Float64Array(x.length); for (let n = 0; n < x.length; n++) y[n] = x[n] + 2 * r * Math.cos(th) * (n > 0 ? y[n - 1] : 0) - r * r * (n > 1 ? y[n - 2] : 0); return y; };
+  const voice = reson(reson(src, 700), 1200);
+  const heard = voice.map((s, n) => s + (n >= D ? 0.5 * voice[n - D] : 0));
+  const cep = sig => {
+    const re = new Float64Array(N), im = new Float64Array(N), st = L - N;
+    for (let n = 0; n < N; n++) re[n] = sig[st + n] * (0.5 - 0.5 * Math.cos(2 * Math.PI * n / N));
+    fft(re, im);
+    const size = re.map((_, k) => Math.hypot(re[k], im[k]));
+    const top = size.reduce((m, v) => Math.max(m, v), 0);
+    return cepstrumOfLog(Array.from(size, v => Math.log(Math.max(v, top * 1e-6))));
+  };
+  const cancel = s => { const y = new Float64Array(L); for (let n = 0; n < L; n++) y[n] = heard[n] - (n >= D ? s * y[n - D] : 0); return y; };
+  return { voice, heard, cep, cancel, N, D, L };
+})();
+const CEP0 = SIM.cep(SIM.heard), CEP4 = SIM.cep(SIM.cancel(0.4)), CEP5 = SIM.cep(SIM.cancel(0.5));
+const LIST = range(0, 15).map(k => logGain(k * 500, 4));
+const LIST_C = cepstrumOfLog(LIST);
+const VMAX = SIM.voice.slice(200, 900).reduce((m, v) => Math.max(m, Math.abs(v)), 0);
+const wordAt = n => (n >= 0 && n < 700 ? SIM.voice[200 + n] * (0.5 - 0.5 * Math.cos(2 * Math.PI * n / 700)) / VMAX : 0);
+const wavePts = (X, y0, amp, f, n0, n1, step = 2) => range(n0, n1, step).map(n => [X(n), y0 - amp * f(n)]);
+const f2 = v => v.toFixed(2).replace('-', '−');
+const cepPeak = c => { let b = 101; for (let q = 101; q < 4096; q++) if (c[q] > c[b]) b = q; return b; };
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+
+{
+  const c = cam(1), a = sub(c), b = sub(c);
+  const ec = word(1, 'echo'), he = word(1, 'held'), de = word(1, 'delay'), su = word(1, 'subtract'), go = word(1, 'gone'), pa = word(1, 'partner'), tw = word(1, 'twice');
+  M.show('#' + a.id, 0, pa); M.show('#' + b.id, pa);
+  label(a, 'lesson 2: the echo', 960, 20, 'lbl s', 'center');
+  const X = n => 200 + n * 0.5;
+  label(a, 'heard', 200, 150, 'lbl s');
+  layer(a, hline(X(0), X(3000), 330, C.rule, 2));
+  const w1 = layer(a, curve(wavePts(X, 330, 110, wordAt, 0, 700), C.ink, 3));
+  flicker(w1, X(350), 330, 0, pa, 0.75, 1);
+  const e1 = layer(a, curve(wavePts(X, 330, 55, n => wordAt(n - 2000), 2000, 2700), C.ink, 3));
+  flicker(e1, X(2350), 330, 0, su, 0.75, 2);
+  M.kf(e1, 'opacity', [[0, 1], [su, 1], [su + 18, 0]]);
+  M.show(layer(a, bracket(X(350), X(2350), 500, C.soft, 16, 4)), de);
+  M.show(label(a, 'echo: 2,000 samples late', X(1350), 520, 'lbl', 'center'), de);
+  label(a, 'clean voice you held', 200, 620, 'lbl s');
+  layer(a, hline(X(0), X(3000), 780, C.rule, 2));
+  fadeIn(layer(a, curve(wavePts(X, 780, 110, wordAt, 0, 700), C.input, 3)), he, 8);
+  const cp = layer(a, curve(wavePts(X, 780, 55, n => wordAt(n - 2000), 2000, 2700), C.input, 3, DASH));
+  fadeIn(cp, su - 6, 8);
+  M.show(label(a, 'minus a shifted copy', X(2000), 620, 'lbl ok'), su);
+  M.show(label(a, 'gone', X(2350), 160, 'lbl ok', 'center'), go);
+  M.show(tick(a, X(2350) + 90, 200), go + 4);
+
+  label(b, 'next ticket: a partner network across the sea', 960, 20, 'lbl s', 'center');
+  const XB = n => 160 + n * 0.3;
+  layer(b, hline(XB(0), XB(5400), 420, C.rule, 2));
+  const call = n => wordAt(n) + wordAt(n - 1800) * 0.9 + wordAt(n - 3600) * 1.1 + 0.5 * (wordAt(n - 900) + wordAt(n - 2700) * 0.9 + wordAt(n - 4500) * 1.1);
+  const cw = layer(b, curve(wavePts(XB, 420, 150, call, 0, 5400), C.ink, 3), [XB(0) - 4, XB(5400) + 4]);
+  reveal(cw, pa, pa + 30, 'cruise');
+  flicker(cw, 960, 420, pa + 30, END, 0.72, 4);
+  [0, 1800, 3600].forEach(s => M.show(label(b, 'word', XB(s + 350), 190, 'lbl s', 'center'), pa + 10 + s / 120));
+  [900, 2700, 4500].forEach(s => M.show(label(b, 'ghost', XB(s + 350), 600, 'lbl acc', 'center'), tw - 20 + s / 300));
+  M.show(label(b, 'every word twice', 960, 740, 'lbl big acc', 'center'), tw);
+  drift(1);
+}
+{
+  const c = cam(2), a = sub(c);
+  const mi = word(2, 'mixed'), cl = word(2, 'clean'), ro = word(2, ['route', 'root']), ca = word(2, 'canceller'), gh = word(2, 'ghost'), re = word(2, 'recording');
+  const X = n => 200 + n * 0.45;
+  label(c, 'heard: voice and echo, already mixed', 200, 40, 'lbl s');
+  layer(c, hline(X(0), X(3400), 270, C.rule, 2));
+  const hw = layer(c, curve(wavePts(X, 270, 110, n => wordAt(n) + 0.5 * wordAt(n - 1200), 0, 3400), C.ink, 3), [X(0) - 4, X(3400) + 4]);
+  reveal(hw, sceneStart(2), mi + 10, 'cruise');
+  flicker(hw, 960, 270, mi + 10, sceneEnd(2), 0.75, 6);
+  M.show(label(c, 'no clean copy', 1720, 130, 'lbl acc', 'right'), cl);
+  M.show('#' + a.id, ro, ca);
+  M.show(label(a, 'route 1: 800 samples', 200, 470, 'lbl'), ro);
+  M.show(label(a, 'route 2: 1,200', 200, 560, 'lbl'), ro + 8);
+  M.show(label(a, 'route 3: ?', 200, 650, 'lbl acc'), ro + 16);
+  M.show(label(c, 'canceller set to 2,000', 200, 440, 'lbl s'), ca);
+  layer(c, hline(X(0), X(3400), 660, C.rule, 2));
+  const outW = n => wordAt(n) + 0.5 * wordAt(n - 1200);
+  M.show(layer(c, curve(wavePts(X, 660, 110, outW, 0, 3400), C.ink, 3)), ca);
+  const gw = layer(c, curve(wavePts(X, 660, 110, n => -0.5 * wordAt(n - 2000), 1990, 2710), C.accent, 4));
+  M.show(gw, ca + 14);
+  flicker(gw, X(2350), 660, ca + 14, sceneEnd(2), 0.7, 8);
+  M.show(label(c, 'echo, still there', X(1550), 520, 'lbl s', 'center'), ca + 10);
+  M.show(label(c, 'a second ghost', X(2350) + 40, 790, 'lbl acc'), gh);
+  M.show(label(c, 'delay = ?', 1720, 440, 'lbl big', 'right'), re);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const ti = word(3, 'tiny'), tl = word(3, 'tall'), he = word(3, 'height'), lo = word(3, 'louder'), qu = word(3, 'quieter');
+  M.show(label(c, 'heard[n] = call[n] + 0.5 × call[n − 4]', 960, 20, 'lbl', 'center'), sceneStart(3));
+  const rows = [300, 500, 700], A = 70, sp = 46;
+  ['in', 'copy', 'heard'].forEach((t, i) => label(c, t, 250, rows[i] - 29, 'lbl s', 'right'));
+  const col = (x0, f, gainTxt, at, cls, off) => {
+    const X = n => x0 + n * sp, s = n => Math.cos(2 * Math.PI * f * n / FS);
+    layer(c, `<rect x="${X(3.5)}" y="${rows[0] - A - 20}" width="${X(11.5) - X(3.5)}" height="${rows[2] + A + 20 - rows[0] + A + 20}" fill="${C.paper2}"/>`);
+    rows.forEach(y => layer(c, hline(X(-0.5), X(11.5), y, C.rule, 2)));
+    label(c, f === 2000 ? '2,000 Hz' : '1,000 Hz', X(5.5), 120, 'lbl', 'center');
+    const ins = layer(c, range(0, 11).map(n => stemSvg(X(n), rows[0], rows[0] - A * s(n), C.ink, 5, 9)).join(''));
+    flicker(ins, X(5), rows[0], sceneStart(3), sceneEnd(3), 0.72, x0);
+    fadeIn(layer(c, range(4, 11).map(n => `<line x1="${X(n)}" y1="${rows[1]}" x2="${X(n)}" y2="${(rows[1] - A * 0.5 * s(n - 4)).toFixed(1)}" stroke="${C.soft}" stroke-width="5" stroke-dasharray="8 6"/>` + ringSvg(X(n), rows[1] - A * 0.5 * s(n - 4), 9, C.soft, 4)).join('')), at - 30, 10);
+    const hs = layer(c, range(0, 11).map(n => stemSvg(X(n), rows[2], rows[2] - A * (s(n) + (n >= 4 ? 0.5 * s(n - 4) : 0)), n >= 4 ? C.accent : C.ink, 5, 9)).join(''));
+    grow(hs, X(5), rows[2], at - 12, 10);
+    M.show(label(c, gainTxt, X(5.5), 820, cls, 'center'), at, off);
+  };
+  col(320, 2000, '× 1.5 from n = 4', tl, 'lbl acc', lo);
+  col(1170, 1000, '× 0.5 from n = 4', he, 'lbl acc', qu);
+  M.show(label(c, 'louder here', 320 + 5.5 * sp, 640 + 170, 'lbl ok', 'center'), lo, sceneEnd(3));
+  M.show(label(c, 'quieter there', 1170 + 5.5 * sp, 640 + 170, 'lbl ok', 'center'), qu, sceneEnd(3));
+  drift(3);
+}
+{
+  const c = cam(4);
+  const wh = word(4, 'wheel'), ft = word(4, ['forty', '45']), ha = word(4, 'half'), tw = word(4, ['two', '2000', '2,000']), fu = word(4, 'full'), wa = word(4, 'walk'), ri = word(4, 'ripple');
+  const cx = 470, cy = 420, R = 250;
+  layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.rule}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  const toneAt = f => {
+    if (f < ft) return 1000;
+    if (f < tw) return 1000;
+    if (f < fu) return 1000 + 1000 * Math.min(1, (f - tw) / Math.max(1, fu - tw));
+    if (f < wa) return 2000;
+    return 4000 * Math.min(1, (f - wa) / Math.max(1, ri - wa));
+  };
+  const drawAt = tone => {
+    const back = 4 * turnHz(tone), tip = [cx + R * 0.8, cy], E = [tip[0] + R * 0.4 * cosd(-back), tip[1] - R * 0.4 * sind(-back)];
+    return arrowSvg(cx, cy, ...tip, C.ink, 7) + arrowSvg(...tip, ...E, C.ink, 5, '12 8', true) + arrowSvg(cx, cy, ...E, C.accent, 7);
+  };
+  const GX = f => 1060 + f * 0.17, GY = g => 780 - g * 180;
+  axes(c, GX, GY, [[0, '0'], [2000, '2,000'], [4000, '4,000 Hz']], [[0.5, '0.5'], [1.5, '1.5']], 0, 4000, 0, 1.6, '');
+  M.show(label(c, 'gain', GX(0) - 22, GY(1.6) - 80, 'lbl s'), sceneStart(4));
+  const segs = [[sceneStart(4), tw], [tw, fu], [fu, wa], [wa, sceneEnd(4)]];
+  segs.forEach(([a0, b0]) => stepped(c, a0, b0, 2, p => { const fr = a0 + p * (b0 - a0); const t = toneAt(fr); return drawAt(t); }));
+  const lapTxt = d => { const l = Math.floor((d + 0.5) / 360), r = d - 360 * l; return l === 0 ? `${r}°` : r === 0 ? `${l} lap${l > 1 ? 's' : ''}` : `${l} lap + ${r}°`; };
+  const readout = (a0, b0, stepF) => stepped(c, a0, b0, stepF, p => {
+    const t = toneAt(a0 + p * (b0 - a0)), back = Math.round(4 * turnHz(t)), g = gainAt(t, 4);
+    return `<text x="1060" y="130" font-family="Geist Mono" font-size="52" fill="${C.ink}">tone: ${Math.round(t).toLocaleString('en-US')} Hz</text><text x="1060" y="210" font-family="Geist Mono" font-size="52" fill="${C.ink}">echo: ${lapTxt(back)} behind</text><text x="1060" y="290" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">gain: ${g.toFixed(2)}</text>`;
+  });
+  segs.forEach(([a0, b0]) => readout(a0, b0, 4));
+  M.show(layer(c, dotSvg(GX(1000), GY(0.5), 13, C.accent)), ha);
+  M.show(layer(c, dotSvg(GX(2000), GY(1.5), 13, C.accent)), fu);
+  M.show(label(c, 'half lap: pulls against', cx - R, 700, 'lbl s'), ha, tw);
+  M.show(label(c, 'full lap: right on top', cx - R, 700, 'lbl s'), fu, wa);
+  const gc = layer(c, curve(range(0, 4000, 5).map(f => [GX(f), GY(gainAt(f, 4))]), C.accent, 6), [GX(0) - 6, GX(4000) + 6]);
+  reveal(gc, wa, ri, 'cruise');
+  M.show(label(c, 'a ripple', 1060 + 380, GY(1.6) - 80, 'lbl big acc'), ri);
+  label(c, 'solid: tone, dashed: echo', cx - R, 790, 'lbl s');
+  drift(4, 1, 1.02);
+}
+{
+  const c = cam(5);
+  const ei = word(5, ['eight', '8']), fo = word(5, ['four', '4']), fy = word(5, ['forty', '40']), lo = word(5, 'longer');
+  M.show(label(c, 'ripple every 8,000 ÷ D Hz', 960, 20, 'lbl big', 'center'), ei);
+  M.show(label(c, 'D = delay, in samples', 260, 120, 'lbl s'), ei);
+  const X = f => 260 + f * 0.36, Y = g => 760 - g * 280;
+  axes(c, X, Y, [[0, '0'], [2000, '2,000'], [4000, '4,000 Hz']], [[0.5, '0.5'], [1.5, '1.5']], 0, 4000, 0, 1.6, '');
+  const c4 = layer(c, curve(range(0, 4000, 5).map(f => [X(f), Y(gainAt(f, 4))]), C.ink, 6), [X(0) - 6, X(4000) + 6]);
+  reveal(c4, fo, fo + 24, 'cruise');
+  M.show(layer(c, bracket(X(0), X(2000), Y(1.5) - 40, C.ink, -16, 4)), fo + 20);
+  M.show(label(c, 'D = 4: every 2,000 Hz', 260, 190, 'lbl'), fo + 20);
+  const c40 = layer(c, curve(range(0, 4000, 1).map(f => [X(f), Y(gainAt(f, 40))]), C.accent, 4, '14 9'), [X(0) - 6, X(4000) + 6]);
+  reveal(c40, fy, fy + 30, 'cruise');
+  flicker(c40, 960, Y(0), fy + 30, sceneEnd(5), 0.85, 21);
+  flicker(c4, 960, Y(0), sceneStart(5), fy, 0.85, 22);
+  M.show(layer(c, bracket(X(2000), X(2200), Y(0.5) + 60, C.accent, 16, 5)), fy + 24);
+  M.show(label(c, 'D = 40: every 200 Hz, dashed', X(2100), Y(0.5) + 80, 'lbl acc', 'center'), fy + 24);
+  M.show(label(c, 'longer delay, finer ripple', 1720, 120, 'lbl acc', 'right'), lo);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const vo = word(6, 'voice'), lo3 = word(6, 'quiet'), mu = word(6, 'multiplies'), hu = word(6, 'hump'), va = word(6, 'valley'), lg = word(6, 'log'), pl = word(6, 'plus'), ev = word(6, 'everywhere'), sp = word(6, 'spectrum');
+  const lv = f => 4.605 * Math.exp(-(((f - 700) / 900) ** 2)), V = f => Math.exp(lv(f)), G = f => gainAt(f, 80);
+  const X = f => 300 + f * 0.36;
+  const TY = s => 420 - s * 1.75, BY = l => 770 - l * 48;
+  layer(c, hline(X(0), X(4000), TY(0), C.ink, 3) + hline(X(0), X(4000), BY(0), C.ink, 3));
+  [[0, '0'], [700, '700'], [3000, '3,000'], [4000, '4,000 Hz']].forEach(([f, t]) => label(c, t, X(f), BY(0) + 50, 'lbl s', 'center'));
+  label(c, 'spectrum: size', 300, 20, 'lbl s');
+  const vd = layer(c, curve(range(0, 4000, 10).map(f => [X(f), TY(V(f))]), C.soft, 4, DASH), [X(0) - 6, X(4000) + 6]);
+  reveal(vd, vo, lo3 + 10, 'cruise');
+  const vt = layer(c, curve(range(0, 4000, 1).map(f => [X(f), TY(V(f) * G(f))]), C.ink, 3), [X(0) - 6, X(4000) + 6]);
+  reveal(vt, mu, mu + 30, 'cruise');
+  flicker(vt, 960, TY(0), mu + 30, sceneEnd(6), 0.8, 31);
+  M.show(label(c, 'dashed: the voice alone', 1720, 250, 'lbl s', 'right'), vo);
+  M.show(layer(c, `<rect x="${X(650)}" y="${TY(150)}" width="${X(750) - X(650)}" height="${TY(50) - TY(150)}" fill="none" stroke="${C.accent}" stroke-width="4"/>`), hu);
+  M.show(label(c, 'swing 100', X(1150), 150, 'lbl acc'), hu);
+  M.show(layer(c, `<rect x="${X(2950)}" y="${TY(1.5) - 14}" width="${X(3050) - X(2950)}" height="${TY(0.5) - TY(1.5) + 14}" fill="none" stroke="${C.accent}" stroke-width="4"/>`), va);
+  M.show(label(c, 'swing 1', X(3000), TY(1.5) - 90, 'lbl acc', 'center'), va);
+  M.show(label(c, 'log(a × b) = log a + log b', 1720, 470, 'lbl', 'right'), pl, ev);
+  const lc = layer(c, curve(range(0, 4000, 1).map(f => [X(f), BY(lv(f) + Math.log(G(f)))]), C.ink, 3), [X(0) - 6, X(4000) + 6]);
+  reveal(lc, lg, lg + 30, 'cruise');
+  flicker(lc, 960, BY(0), lg + 30, sceneEnd(6), 0.9, 32);
+  M.show(layer(c, `<rect x="${X(650)}" y="${BY(lv(700) + 0.41) - 6}" width="${X(750) - X(650)}" height="${BY(lv(700) - 0.69) - BY(lv(700) + 0.41) + 12}" fill="none" stroke="${C.accent}" stroke-width="4"/>` + `<rect x="${X(2950)}" y="${BY(lv(3000) + 0.41) - 6}" width="${X(3050) - X(2950)}" height="${BY(lv(3000) - 0.69) - BY(lv(3000) + 0.41) + 12}" fill="none" stroke="${C.accent}" stroke-width="4"/>`), ev);
+  M.show(label(c, 'swing 1.10', X(1300), 520, 'lbl acc'), ev);
+  M.show(label(c, 'swing 1.10', X(3000), BY(lv(3000)) - 130, 'lbl acc', 'center'), ev);
+  M.show(label(c, 'log spectrum', 300, 470, 'lbl'), sp);
+  drift(6, 1, 1.02);
+}
+{
+  const c = cam(7);
+  const ti = word(7, 'tiny'), rp = word(7, 'repeats'), of = word(7, 'often'), tw = word(7, ['twelve', '12']), ff = word(7, ['fft', 'f']), li = word(7, 'lights'), de = word(7, 'delay');
+  const v1 = word(7, ['point', '0.41', '.41']), v2 = word(7, ['point', '0.11', '.11'], 1), v3 = word(7, ['minus', '-0.69', '−0.69']), v4 = word(7, ['point', '0.11', '.11'], 3);
+  const LX = k => 140 + k * 46, LY = v => 450 - v * 260;
+  label(c, 'log of gain at 16 tones,', 140, 20, 'lbl s');
+  label(c, '0 to 7,500 Hz, delay 4', 140, 82, 'lbl s');
+  layer(c, hline(LX(-0.5), LX(15.5), LY(0), C.ink, 3));
+  LIST.forEach((v, k) => { const sel = layer(c, `<rect x="${LX(k) - 16}" y="${Math.min(LY(v), LY(0))}" width="32" height="${Math.abs(LY(v) - LY(0))}" fill="${C.ink}"/>`); grow(sel, LX(k), LY(0), ti + k, 8); });
+  const vals = ['0.41', '0.41, 0.11', '0.41, 0.11, −0.69', '0.41, 0.11, −0.69, 0.11, ...'], vt = [v1, v2, v3, v4, sceneEnd(7)];
+  vals.forEach((t, i) => M.show(label(c, t, 140, 730, 'lbl'), vt[i], vt[i + 1]));
+  [0, 4, 8, 12].forEach((k0, i) => M.show(layer(c, `<rect x="${LX(k0) - 22}" y="${LY(0.41) - 82}" width="${LX(k0 + 3) - LX(k0) + 44}" height="${LY(-0.69) - LY(0.41) + 170}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="${DASH}"/>`), rp + 4 + i * 6));
+  M.show(label(c, 'how often?', 140, 800, 'note'), of, tw);
+  M.show(label(c, 'lesson 12: compare with N wheels', 140, 810, 'lbl s'), tw);
+  const RX = k => 1080 + k * 46, RY = v => 450 - v * 900;
+  M.show(label(c, 'FFT ÷ 16', 1080, 20, 'lbl s'), ff);
+  M.show(layer(c, arrowSvg(LX(15.5) + 30, LY(0), RX(-0.5) - 20, LY(0), C.soft, 5)), ff);
+  M.show(layer(c, hline(RX(-0.5), RX(15.5), RY(0), C.ink, 3)), ff);
+  LIST_C.forEach((v, k) => { const col = k === 4 ? C.accent : C.ink; const sel = layer(c, `<rect x="${RX(k) - 16}" y="${Math.min(RY(v), RY(0))}" width="32" height="${Math.max(2, Math.abs(RY(v) - RY(0)))}" fill="${k === 12 ? C.paper : col}" stroke="${col}" stroke-width="${k === 12 ? 4 : 0}"${k === 12 ? ` stroke-dasharray="8 5"` : ''}/>`); grow(sel, RX(k), RY(0), ff + 6 + k, 8); });
+  M.show(label(c, 'bin 4', RX(4), RY(LIST_C[4]) - 72, 'lbl acc', 'center'), li);
+  M.show(label(c, 'mirror', RX(12), RY(LIST_C[12]) - 72, 'lbl s', 'center'), li + 8);
+  [[0, '0'], [4, '4'], [8, '8'], [12, '12']].forEach(([k, t]) => M.show(label(c, t, RX(k), RY(0) + 150, 'lbl s', 'center'), ff + 6));
+  M.show(label(c, '4 = the delay', RX(7.5), 700, 'lbl big acc', 'center'), de);
+  drift(7, 1, 1.04);
+}
+{
+  const c = cam(8), a = sub(c), b = sub(c);
+  const ci = word(8, 'circle'), ze = word(8, ['zero', '0']), lp = word(8, 'lap'), bo = word(8, 'bottom'), mi = word(8, 'mirrors'), wa = word(8, 'walk'), la = word(8, 'laps'), li = word(8, 'bin'), ff = word(8, ['fft', 'f']), ce = word(8, ['cep', 'sep', 'kep', 'cap']), sp = word(8, ['spec', 'speck']), po = word(8, 'positions');
+  const z = sub(c);
+  M.show('#' + z.id, sceneStart(8), wa); M.show('#' + a.id, wa, ff); M.show('#' + b.id, ff);
+  const cx = 400, cy = 440, R = 230;
+  layer(z, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  fadeIn(layer(z, range(1, 7).map(k => seg(...pt(cx, cy, R, k * 22.5), ...pt(cx, cy, R, -k * 22.5), C.soft, 3, DASH)).join('')), mi, 10);
+  range(0, 15).forEach(k => M.show(layer(z, (k <= 8 ? dotSvg : ringSvg)(...pt(cx, cy, R, k * 22.5), 13, k <= 8 ? C.ink : C.soft, 4)), (k <= 8 ? ci : bo) + 2 * (k % 9)));
+  [[0, '0 Hz', 'left', 34, -29], [4, '2,000', 'center', 0, -100], [8, '4,000', 'right', -2, 18], [12, '6,000', 'center', 0, 40], [15, '7,500', 'left', 30, 0]].forEach(([k, txt, an, dx, dy]) => { const q = pt(cx, cy, R, k * 22.5); M.show(label(z, txt, q[0] + dx, q[1] + dy, 'lbl s', an), k <= 8 ? ze : bo); });
+  M.show(label(z, '16 tones, 500 Hz apart', 820, 160, 'lbl'), ci);
+  M.show(label(z, 'one lap: 0 to 8,000 Hz', 820, 260, 'lbl'), lp);
+  M.show(label(z, 'top half: 0 to 4,000 Hz', 820, 400, 'lbl s'), bo);
+  M.show(label(z, 'bottom half: its mirror,', 820, 470, 'lbl s'), bo);
+  M.show(label(z, 'same gain (dashed pairs)', 820, 540, 'lbl s'), mi);
+  layer(a, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  label(a, 'once round: 0 to 8,000 Hz', cx, 20, 'lbl s', 'center');
+  const PX = f => 820 + f * 0.115, PY = v => 440 - v * 230;
+  layer(a, hline(PX(0), PX(8000), PY(0), C.rule, 2));
+  [[0, '0'], [4000, '4,000'], [8000, '8,000 Hz']].forEach(([f, t]) => label(a, t, PX(f), 680, 'lbl s', 'center'));
+  label(a, 'log of gain, delay 4', PX(0), 100, 'lbl s');
+  const a0 = wa, a1 = Math.max(wa + 90, li);
+  M.show(layer(a, dotSvg(cx + R, cy, 18, C.ink) + ringSvg(cx + R, cy, 30, C.soft, 5)), sceneStart(8), a0);
+  stepped(a, a0, sceneEnd(8), 2, p => {
+    const fr = a0 + p * (sceneEnd(8) - a0), q = Math.min(1, (fr - a0) / (a1 - a0)), f = 8000 * q, th = turnHz(f), eth = th - 4 * th;
+    const laps = Math.min(4, Math.floor(4 * q + 1e-9));
+    return dotSvg(...pt(cx, cy, R, th), 18, C.ink) + ringSvg(...pt(cx, cy, R, eth), 30, C.accent, 6) + `<text x="${cx}" y="${cy + R + 110}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">laps: ${laps}</text>`;
+  });
+  const rc = layer(a, curve(range(0, 8000, 10).map(f => [PX(f), PY(logGain(f, 4))]), C.accent, 6), [PX(0) - 6, PX(8000) + 6]);
+  reveal(rc, a0, a1, 'cruise');
+  M.show(label(a, '● the tone   ○ the echo', cx, 820, 'lbl s', 'center'), la);
+  M.show(label(a, 'D laps, D bumps: bin D', PX(4000), 760, 'lbl acc', 'center'), li);
+
+  label(b, 'log spectrum', 260, 120, 'lbl');
+  layer(b, arrowSvg(720, 151, 960, 151, C.soft, 5));
+  label(b, 'FFT', 840, 60, 'lbl s', 'center');
+  M.show(label(b, 'cepstrum', 1000, 100, 'lbl big acc'), ce);
+  M.show(label(b, 'spec → ceps', 960, 330, 'note big', 'center'), sp);
+  M.show(label(b, 'quefrency: a position in the cepstrum,', 960, 560, 'lbl', 'center'), po + 8);
+  M.show(label(b, 'counted in samples or seconds', 960, 640, 'lbl', 'center'), po + 8);
+  drift(8);
+}
+{
+  const c = cam(9);
+  const ca = word(9, 'call'), ei = word(9, 'about'), se = word(9, 'second'), ff = word(9, ['fft', 'f']), lg = word(9, 'log'), ff2 = word(9, ['fft', 'f'], 1), sk = word(9, 'skip'), ta = word(9, 'tallest'), tw = word(9, ['twelve', '1'], 1), pt5 = word(9, ['point', '0.15', '.15']);
+  label(c, 'the ticket’s call: voice + echo', 200, 20, 'lbl s');
+  const SX = n => 200 + n * (1520 / 8192), sy = 200;
+  const st = SIM.L - SIM.N, VH = SIM.heard.slice(st).reduce((m, v) => Math.max(m, Math.abs(v)), 0);
+  const wg = n => [0, 2400, 4800, 7200].reduce((s, o, i) => s + (1 - 0.1 * i) * (wordAt(n - o) + 0.5 * wordAt(n - o - 1200)), 0);
+  const sw = layer(c, curve(range(0, 8191, 3).map(n => [SX(n), sy - 75 * wg(n)]), C.ink, 2), [SX(0) - 4, SX(8192) + 4]);
+  reveal(sw, sceneStart(9), ei, 'cruise');
+  flicker(sw, 960, sy, ei, sceneEnd(9), 0.75, 11);
+  M.show(layer(c, bracket(SX(0), SX(8192), sy + 100, C.soft, 16, 4)), ei);
+  M.show(label(c, '8,192 samples, about 1 s', 960, sy + 110, 'lbl', 'center'), se);
+  M.show(label(c, 'FFT', 1720, 390, 'lbl', 'right'), ff, lg);
+  M.show(label(c, 'FFT, log', 1720, 390, 'lbl', 'right'), lg, ff2);
+  M.show(label(c, 'FFT, log, FFT: the cepstrum', 1720, 390, 'lbl', 'right'), ff2);
+  const X = q => 260 + q * 0.58, Y = v => 730 - v * 1000;
+  const shade = layer(c, `<rect x="${X(0)}" y="${Y(0.25)}" width="${X(100) - X(0)}" height="${Y(-0.06) - Y(0.25)}" fill="${C.paper2}"/>` + vline(X(100), Y(0.25), Y(-0.06), C.soft, 4, DASH));
+  fadeIn(shade, sk, 8);
+  M.show(label(c, '< 100: the voice', X(110), Y(0.25) - 20, 'lbl s'), sk);
+  axes(c, X, Y, [[0, '0'], [1200, '1,200']], [[0, '0'], [0.2, '0.2']], 0, 2500, -0.06, 0.25, '');
+  M.show(label(c, 'quefrency (samples)', X(2500), Y(-0.06) + 36, 'lbl s', 'right'), ff2);
+  const cc = layer(c, curve(range(0, 2500).map(q => [X(q), Y(Math.max(-0.06, Math.min(0.25, CEP0[q])))]), C.ink, 2), [X(0) - 4, X(2500) + 4]);
+  reveal(cc, ff2, ff2 + 24, 'cruise');
+  const pk = cepPeak(CEP0);
+  M.show(layer(c, dotSvg(X(pk), Y(CEP0[pk]), 14, C.accent)), ta);
+  M.show(label(c, `peak: ${pk.toLocaleString('en-US')} samples`, X(pk) + 30, Y(CEP0[pk]) - 40, 'lbl acc'), tw);
+  M.show(label(c, '= 0.15 s', X(pk) + 30, Y(CEP0[pk]) + 34, 'lbl acc'), pt5);
+  drift(9, 1, 1.02);
+}
+{
+  const c = cam(10);
+  const ch = word(10, 'change'), su = word(10, 'subtracts'), ow = word(10, 'own'), de = word(10, 'delay'), st = word(10, 'strength'), tw = word(10, 'twice'), ra = word(10, 'raise'), go = word(10, 'gone'), ad = word(10, 'address');
+  M.show(label(c, 'clean[n] = heard[n] − strength × clean[n − D]', 960, 20, 'lbl', 'center'), su);
+  const y0 = 220;
+  label(c, 'heard', 200, y0 - 29, 'lbl s');
+  layer(c, arrowSvg(370, y0, 700, y0, C.ink, 5) + `<circle cx="740" cy="${y0}" r="40" fill="${C.paper}" stroke="${C.ink}" stroke-width="5"/>` + seg(722, y0, 758, y0, C.ink, 6) + arrowSvg(780, y0, 1180, y0, C.ink, 5));
+  label(c, 'clean', 1200, y0 - 29, 'lbl');
+  const loop = layer(c, `<path d="M1060 ${y0} V${y0 + 150} H1010" fill="none" stroke="${C.accent}" stroke-width="5"/>` + `<rect x="850" y="${y0 + 110}" width="160" height="80" fill="${C.paper}" stroke="${C.accent}" stroke-width="5" rx="8"/>` + seg(850, y0 + 150, 780, y0 + 150, C.accent, 5) + `<rect x="420" y="${y0 + 110}" width="360" height="80" fill="${C.paper}" stroke="${C.accent}" stroke-width="5" rx="8"/>` + `<path d="M420 ${y0 + 150} H380 V${y0 + 70}" fill="none" stroke="${C.accent}" stroke-width="5"/>` + arrowSvg(380, y0 + 70, 708, y0 + 24, C.accent, 5));
+  fadeIn(loop, ow - 6, 10);
+  M.show(label(c, 'D', 930, y0 + 121, 'lbl acc', 'center'), ow, de);
+  M.show(label(c, '1,200', 930, y0 + 121, 'lbl acc', 'center'), de);
+  M.show(label(c, '× strength', 600, y0 + 121, 'lbl acc', 'center'), ow, tw);
+  M.show(label(c, '× 0.40', 600, y0 + 121, 'lbl acc', 'center'), tw, ra + 20);
+  M.show(label(c, '× 0.50', 600, y0 + 121, 'lbl acc', 'center'), ra + 20);
+  M.show(label(c, 'its own output, fed back', 1200, y0 + 121, 'lbl s'), ow);
+  const X = q => 260 + q * 0.58, Y = v => 750 - v * 850;
+  axes(c, X, Y, [[0, '0'], [1200, '1,200'], [2400, '2,400']], [[0, '0'], [0.2, '0.2']], 0, 2500, -0.05, 0.22, '');
+  M.show(label(c, 'cepstrum of clean', 1720, 480, 'lbl s', 'right'), sceneStart(10));
+  const plot = (C0, a, b) => { const sel = layer(c, curve(range(101, 2500).map(q => [X(q), Y(Math.max(-0.05, Math.min(0.22, C0[q])))]), C.ink, 3)); M.show(sel, a, b); flicker(sel, 960, Y(0), a, b || sceneEnd(10), 0.7, a); };
+  plot(CEP0, sceneStart(10), tw);
+  plot(CEP4, tw, ra + 20);
+  plot(CEP5, ra + 20);
+  const hd = (C0, a, b, txt, cls) => M.show(label(c, txt, 1720, 560, cls, 'right'), a, b);
+  hd(CEP0, st, tw, `at 1,200: ${f2(CEP0[1200])}`, 'lbl acc');
+  hd(CEP4, tw, ra + 20, `at 1,200: ${f2(CEP4[1200])}`, 'lbl acc');
+  hd(CEP5, ra + 20, null, `at 1,200: ${f2(CEP5[1200])}`, 'lbl ok');
+  M.show(label(c, 'the peak is gone', 1720, 640, 'lbl ok', 'right'), go);
+  M.show(tick(c, 1100, 680), go + 4);
+  drift(10, 1, 1.02);
+}
+{
+  const c = cam(11);
+  const la = word(11, 'last'), cl = word(11, 'click'), wh = word(11, 'wheel'), ke = word(11, 'keypad'), sp = word(11, 'spectrum'), lo = word(11, 'look');
+  M.show(label(c, 'the last bug: fixed', 960, 20, 'lbl ok', 'center'), sceneStart(11));
+  const xs = [300, 740, 1180, 1620], y = 420;
+  const ic1 = layer(c, hline(xs[0] - 150, xs[0] + 150, y + 80, C.rule, 3) + stemSvg(xs[0] - 120, y + 80, y - 100, C.ink, 7, 14) + range(1, 7).map(k => stemSvg(xs[0] - 120 + k * 40, y + 80, y + 80 - 150 * Math.pow(0.7, k) * Math.cos(k * 1.6), C.soft, 5, 9)).join(''));
+  fadeIn(ic1, cl, 8);
+  flicker(ic1, xs[0], y + 80, sceneStart(11), END - 32, 0.75, 42);
+  M.show(label(c, 'one click', xs[0], 640, 'lbl', 'center'), cl);
+  M.show(label(c, 'lesson 2', xs[0], 720, 'lbl s', 'center'), cl);
+  const wr = layer(c, `<circle cx="${xs[1]}" cy="${y}" r="140" fill="none" stroke="${C.ink}" stroke-width="5"/>` + seg(xs[1], y, xs[1] + 140, y, C.ink, 5) + dotSvg(xs[1] + 140, y, 18, C.accent));
+  fadeIn(wr, wh, 8);
+  origin(wr, xs[1], y);
+  M.kf(wr, 'rotation', [[0, 0], [wh, 0], [END, -(END - wh) * 3]]);
+  M.show(label(c, 'the wheel', xs[1], 640, 'lbl', 'center'), wh);
+  M.show(label(c, 'lesson 3', xs[1], 720, 'lbl s', 'center'), wh);
+  const kp = layer(c, [[-90, -90], [0, -90], [90, -90], [-90, 0], [0, 0], [90, 0], [-90, 90], [0, 90], [90, 90]].map(([dx, dy], i) => `<circle cx="${xs[2] + dx}" cy="${y + dy}" r="36" fill="${i === 4 ? C.accentSoft : 'none'}" stroke="${C.ink}" stroke-width="4"/>`).join(''));
+  fadeIn(kp, ke, 8);
+  M.show(label(c, 'test wheels', xs[2], 640, 'lbl', 'center'), ke);
+  M.show(label(c, 'lesson 12', xs[2], 720, 'lbl s', 'center'), ke);
+  const PX = q => xs[3] - 150 + q * 0.12, PY = v => y + 80 - v * 700;
+  const cp = layer(c, hline(xs[3] - 150, xs[3] + 150, y + 80, C.rule, 3) + curve(range(101, 2500).map(q => [PX(q), PY(Math.max(-0.05, Math.min(0.22, CEP0[q])))]), C.ink, 2) + dotSvg(PX(1200), PY(CEP0[1200]), 12, C.accent));
+  fadeIn(cp, sp, 8);
+  flicker(cp, xs[3], y + 80, sp + 8, END - 32, 0.7, 41);
+  M.show(label(c, 'the cepstrum', xs[3], 640, 'lbl', 'center'), sp);
+  M.show(label(c, 'lesson 16', xs[3], 720, 'lbl s', 'center'), sp);
+  M.show(label(c, 'the line you built', 960, 790, 'note acc', 'center'), lo);
+  drift(11);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

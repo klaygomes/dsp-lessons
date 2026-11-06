@@ -1,0 +1,1988 @@
+{
+ "fps": 30,
+ "duration": 137.92,
+ "wpm": 209,
+ "lines": [
+  {
+   "line": 1,
+   "text": "Remember the echo from lesson two? You held the caller's clean voice and knew the delay, two thousand samples, so you subtracted a copy. Gone. Then your line joins a partner network across the sea, and callers hear every word twice.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 11.84,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "Remember",
+     "frame": 18
+    },
+    {
+     "word": "the",
+     "frame": 32
+    },
+    {
+     "word": "echo",
+     "frame": 37
+    },
+    {
+     "word": "from",
+     "frame": 44
+    },
+    {
+     "word": "lesson",
+     "frame": 50
+    },
+    {
+     "word": "two.",
+     "frame": 57
+    },
+    {
+     "word": "You",
+     "frame": 70
+    },
+    {
+     "word": "held",
+     "frame": 75
+    },
+    {
+     "word": "the",
+     "frame": 80
+    },
+    {
+     "word": "caller's",
+     "frame": 84
+    },
+    {
+     "word": "clean",
+     "frame": 94
+    },
+    {
+     "word": "voice",
+     "frame": 100
+    },
+    {
+     "word": "and",
+     "frame": 109
+    },
+    {
+     "word": "knew",
+     "frame": 115
+    },
+    {
+     "word": "the",
+     "frame": 119
+    },
+    {
+     "word": "delay",
+     "frame": 122
+    },
+    {
+     "word": "2000",
+     "frame": 133
+    },
+    {
+     "word": "samples,",
+     "frame": 142
+    },
+    {
+     "word": "so",
+     "frame": 164
+    },
+    {
+     "word": "you",
+     "frame": 171
+    },
+    {
+     "word": "subtracted",
+     "frame": 175
+    },
+    {
+     "word": "a",
+     "frame": 190
+    },
+    {
+     "word": "copy.",
+     "frame": 193
+    },
+    {
+     "word": "Gone.",
+     "frame": 209
+    },
+    {
+     "word": "Then",
+     "frame": 222
+    },
+    {
+     "word": "your",
+     "frame": 231
+    },
+    {
+     "word": "line",
+     "frame": 235
+    },
+    {
+     "word": "joins",
+     "frame": 242
+    },
+    {
+     "word": "a",
+     "frame": 251
+    },
+    {
+     "word": "partner",
+     "frame": 257
+    },
+    {
+     "word": "network",
+     "frame": 266
+    },
+    {
+     "word": "across",
+     "frame": 273
+    },
+    {
+     "word": "the",
+     "frame": 283
+    },
+    {
+     "word": "sea",
+     "frame": 289
+    },
+    {
+     "word": "and",
+     "frame": 296
+    },
+    {
+     "word": "callers",
+     "frame": 302
+    },
+    {
+     "word": "hear",
+     "frame": 313
+    },
+    {
+     "word": "every",
+     "frame": 317
+    },
+    {
+     "word": "word",
+     "frame": 325
+    },
+    {
+     "word": "twice.",
+     "frame": 332
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "This time the echo arrives already mixed in, with no clean copy. And every route has its own delay. Your canceller has two thousand samples baked in, so on a twelve hundred sample echo it adds a second ghost. Can the recording itself tell you the delay?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line02.wav",
+   "at": 12.44,
+   "start": 12.44,
+   "end": 24.71,
+   "start_frame": 373,
+   "words": [
+    {
+     "word": "This",
+     "frame": 373
+    },
+    {
+     "word": "time",
+     "frame": 383
+    },
+    {
+     "word": "the",
+     "frame": 389
+    },
+    {
+     "word": "echo",
+     "frame": 393
+    },
+    {
+     "word": "arrives",
+     "frame": 399
+    },
+    {
+     "word": "already",
+     "frame": 410
+    },
+    {
+     "word": "mixed",
+     "frame": 419
+    },
+    {
+     "word": "in",
+     "frame": 427
+    },
+    {
+     "word": "with",
+     "frame": 433
+    },
+    {
+     "word": "no",
+     "frame": 437
+    },
+    {
+     "word": "clean",
+     "frame": 443
+    },
+    {
+     "word": "copy,",
+     "frame": 451
+    },
+    {
+     "word": "and",
+     "frame": 468
+    },
+    {
+     "word": "every",
+     "frame": 473
+    },
+    {
+     "word": "root",
+     "frame": 481
+    },
+    {
+     "word": "has",
+     "frame": 487
+    },
+    {
+     "word": "its",
+     "frame": 493
+    },
+    {
+     "word": "own",
+     "frame": 497
+    },
+    {
+     "word": "delay.",
+     "frame": 502
+    },
+    {
+     "word": "Your",
+     "frame": 523
+    },
+    {
+     "word": "canceller",
+     "frame": 526
+    },
+    {
+     "word": "has",
+     "frame": 540
+    },
+    {
+     "word": "2000",
+     "frame": 545
+    },
+    {
+     "word": "samples",
+     "frame": 555
+    },
+    {
+     "word": "baked",
+     "frame": 574
+    },
+    {
+     "word": "in,",
+     "frame": 581
+    },
+    {
+     "word": "so",
+     "frame": 592
+    },
+    {
+     "word": "on",
+     "frame": 599
+    },
+    {
+     "word": "a",
+     "frame": 603
+    },
+    {
+     "word": "1200",
+     "frame": 605
+    },
+    {
+     "word": "sample",
+     "frame": 614
+    },
+    {
+     "word": "echo",
+     "frame": 629
+    },
+    {
+     "word": "it",
+     "frame": 640
+    },
+    {
+     "word": "adds",
+     "frame": 648
+    },
+    {
+     "word": "a",
+     "frame": 654
+    },
+    {
+     "word": "second",
+     "frame": 657
+    },
+    {
+     "word": "ghost.",
+     "frame": 665
+    },
+    {
+     "word": "Can",
+     "frame": 689
+    },
+    {
+     "word": "the",
+     "frame": 692
+    },
+    {
+     "word": "recording",
+     "frame": 694
+    },
+    {
+     "word": "itself",
+     "frame": 704
+    },
+    {
+     "word": "tell",
+     "frame": 715
+    },
+    {
+     "word": "you",
+     "frame": 722
+    },
+    {
+     "word": "the",
+     "frame": 725
+    },
+    {
+     "word": "delay?",
+     "frame": 729
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Make the echo tiny: four samples late, half as strong. Two thousand hertz comes out one and a half times as tall. One thousand hertz comes out at half height. Same echo, louder here, quieter there.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line03.wav",
+   "at": 25.91,
+   "start": 25.91,
+   "end": 35.3,
+   "start_frame": 777,
+   "words": [
+    {
+     "word": "make",
+     "frame": 777
+    },
+    {
+     "word": "the",
+     "frame": 787
+    },
+    {
+     "word": "echo",
+     "frame": 791
+    },
+    {
+     "word": "tiny",
+     "frame": 798
+    },
+    {
+     "word": "four",
+     "frame": 807
+    },
+    {
+     "word": "samples",
+     "frame": 824
+    },
+    {
+     "word": "late",
+     "frame": 835
+    },
+    {
+     "word": "half",
+     "frame": 843
+    },
+    {
+     "word": "as",
+     "frame": 853
+    },
+    {
+     "word": "strong",
+     "frame": 859
+    },
+    {
+     "word": "two",
+     "frame": 868
+    },
+    {
+     "word": "thousand",
+     "frame": 880
+    },
+    {
+     "word": "hertz",
+     "frame": 888
+    },
+    {
+     "word": "comes",
+     "frame": 894
+    },
+    {
+     "word": "out",
+     "frame": 901
+    },
+    {
+     "word": "one",
+     "frame": 907
+    },
+    {
+     "word": "and",
+     "frame": 915
+    },
+    {
+     "word": "a",
+     "frame": 916
+    },
+    {
+     "word": "half",
+     "frame": 918
+    },
+    {
+     "word": "times",
+     "frame": 922
+    },
+    {
+     "word": "as",
+     "frame": 931
+    },
+    {
+     "word": "tall",
+     "frame": 935
+    },
+    {
+     "word": "one",
+     "frame": 942
+    },
+    {
+     "word": "thousand",
+     "frame": 951
+    },
+    {
+     "word": "hertz",
+     "frame": 959
+    },
+    {
+     "word": "comes",
+     "frame": 966
+    },
+    {
+     "word": "out",
+     "frame": 973
+    },
+    {
+     "word": "at",
+     "frame": 978
+    },
+    {
+     "word": "half",
+     "frame": 981
+    },
+    {
+     "word": "height",
+     "frame": 986
+    },
+    {
+     "word": "same",
+     "frame": 994
+    },
+    {
+     "word": "echo",
+     "frame": 1003
+    },
+    {
+     "word": "louder",
+     "frame": 1012
+    },
+    {
+     "word": "here",
+     "frame": 1023
+    },
+    {
+     "word": "quieter",
+     "frame": 1030
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "On the wheel, one thousand hertz turns forty-five degrees per sample. The echo sits four steps behind, a half lap, and pulls against the tone. At two thousand hertz it sits a full lap behind, right on top. Walk up through the tones, and the gain rises and falls. That's a ripple.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line04.wav",
+   "at": 35.9,
+   "start": 35.9,
+   "end": 49.27,
+   "start_frame": 1077,
+   "words": [
+    {
+     "word": "on",
+     "frame": 1077
+    },
+    {
+     "word": "the",
+     "frame": 1086
+    },
+    {
+     "word": "wheel",
+     "frame": 1088
+    },
+    {
+     "word": "1000",
+     "frame": 1094
+    },
+    {
+     "word": "hertz",
+     "frame": 1111
+    },
+    {
+     "word": "turns",
+     "frame": 1120
+    },
+    {
+     "word": "45",
+     "frame": 1130
+    },
+    {
+     "word": "degrees",
+     "frame": 1142
+    },
+    {
+     "word": "per",
+     "frame": 1154
+    },
+    {
+     "word": "sample",
+     "frame": 1162
+    },
+    {
+     "word": "the",
+     "frame": 1174
+    },
+    {
+     "word": "echo",
+     "frame": 1183
+    },
+    {
+     "word": "sits",
+     "frame": 1190
+    },
+    {
+     "word": "four",
+     "frame": 1199
+    },
+    {
+     "word": "steps",
+     "frame": 1206
+    },
+    {
+     "word": "behind",
+     "frame": 1214
+    },
+    {
+     "word": "a",
+     "frame": 1227
+    },
+    {
+     "word": "half",
+     "frame": 1235
+    },
+    {
+     "word": "lap",
+     "frame": 1242
+    },
+    {
+     "word": "and",
+     "frame": 1249
+    },
+    {
+     "word": "pulls",
+     "frame": 1255
+    },
+    {
+     "word": "against",
+     "frame": 1262
+    },
+    {
+     "word": "the",
+     "frame": 1269
+    },
+    {
+     "word": "tone",
+     "frame": 1275
+    },
+    {
+     "word": "at",
+     "frame": 1283
+    },
+    {
+     "word": "2000",
+     "frame": 1295
+    },
+    {
+     "word": "hertz",
+     "frame": 1306
+    },
+    {
+     "word": "it",
+     "frame": 1315
+    },
+    {
+     "word": "sits",
+     "frame": 1321
+    },
+    {
+     "word": "a",
+     "frame": 1327
+    },
+    {
+     "word": "full",
+     "frame": 1330
+    },
+    {
+     "word": "lap",
+     "frame": 1335
+    },
+    {
+     "word": "behind",
+     "frame": 1342
+    },
+    {
+     "word": "right",
+     "frame": 1352
+    },
+    {
+     "word": "on",
+     "frame": 1361
+    },
+    {
+     "word": "top",
+     "frame": 1367
+    },
+    {
+     "word": "walk",
+     "frame": 1376
+    },
+    {
+     "word": "up",
+     "frame": 1390
+    },
+    {
+     "word": "through",
+     "frame": 1392
+    },
+    {
+     "word": "the",
+     "frame": 1397
+    },
+    {
+     "word": "tones",
+     "frame": 1400
+    },
+    {
+     "word": "and",
+     "frame": 1409
+    },
+    {
+     "word": "the",
+     "frame": 1415
+    },
+    {
+     "word": "gain",
+     "frame": 1418
+    },
+    {
+     "word": "rises",
+     "frame": 1423
+    },
+    {
+     "word": "and",
+     "frame": 1433
+    },
+    {
+     "word": "falls",
+     "frame": 1439
+    },
+    {
+     "word": "that's",
+     "frame": 1448
+    },
+    {
+     "word": "a",
+     "frame": 1460
+    },
+    {
+     "word": "ripple",
+     "frame": 1463
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "An echo D samples late ripples every eight thousand over D hertz. Four samples, it repeats every two thousand hertz. Forty samples, every two hundred. A longer delay makes a finer ripple.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo-fix/line01.wav",
+   "at": 49.87,
+   "start": 49.87,
+   "end": 59.07,
+   "start_frame": 1496,
+   "words": [
+    {
+     "word": "An",
+     "frame": 1496
+    },
+    {
+     "word": "echo",
+     "frame": 1505
+    },
+    {
+     "word": "d",
+     "frame": 1512
+    },
+    {
+     "word": "-samples",
+     "frame": 1518
+    },
+    {
+     "word": "late",
+     "frame": 1529
+    },
+    {
+     "word": "ripples",
+     "frame": 1535
+    },
+    {
+     "word": "every",
+     "frame": 1545
+    },
+    {
+     "word": "8000",
+     "frame": 1553
+    },
+    {
+     "word": "over",
+     "frame": 1572
+    },
+    {
+     "word": "d",
+     "frame": 1580
+    },
+    {
+     "word": "hertz,",
+     "frame": 1587
+    },
+    {
+     "word": "4",
+     "frame": 1601
+    },
+    {
+     "word": "samples",
+     "frame": 1605
+    },
+    {
+     "word": "it",
+     "frame": 1616
+    },
+    {
+     "word": "repeats",
+     "frame": 1620
+    },
+    {
+     "word": "every",
+     "frame": 1629
+    },
+    {
+     "word": "2000",
+     "frame": 1638
+    },
+    {
+     "word": "hertz,",
+     "frame": 1650
+    },
+    {
+     "word": "40",
+     "frame": 1668
+    },
+    {
+     "word": "samples",
+     "frame": 1672
+    },
+    {
+     "word": "every",
+     "frame": 1686
+    },
+    {
+     "word": "200.",
+     "frame": 1695
+    },
+    {
+     "word": "A",
+     "frame": 1714
+    },
+    {
+     "word": "longer",
+     "frame": 1722
+    },
+    {
+     "word": "delay",
+     "frame": 1729
+    },
+    {
+     "word": "makes",
+     "frame": 1737
+    },
+    {
+     "word": "a",
+     "frame": 1746
+    },
+    {
+     "word": "finer",
+     "frame": 1749
+    },
+    {
+     "word": "ripple.",
+     "frame": 1758
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "You never see the echo alone, though. The voice is loud near seven hundred hertz, quiet near three thousand, and the echo multiplies it. So the ripple swings by a hundred on the hump, and by one in the valley. Take the log, and multiplied turns into plus. Now it swings one point one everywhere. That's the log spectrum.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line06.wav",
+   "at": 59.87,
+   "start": 59.87,
+   "end": 75.17,
+   "start_frame": 1796,
+   "words": [
+    {
+     "word": "you",
+     "frame": 1796
+    },
+    {
+     "word": "never",
+     "frame": 1805
+    },
+    {
+     "word": "see",
+     "frame": 1812
+    },
+    {
+     "word": "the",
+     "frame": 1819
+    },
+    {
+     "word": "echo",
+     "frame": 1822
+    },
+    {
+     "word": "alone",
+     "frame": 1830
+    },
+    {
+     "word": "though",
+     "frame": 1840
+    },
+    {
+     "word": "the",
+     "frame": 1846
+    },
+    {
+     "word": "voice",
+     "frame": 1858
+    },
+    {
+     "word": "is",
+     "frame": 1866
+    },
+    {
+     "word": "loud",
+     "frame": 1870
+    },
+    {
+     "word": "near",
+     "frame": 1876
+    },
+    {
+     "word": "700",
+     "frame": 1881
+    },
+    {
+     "word": "hertz",
+     "frame": 1894
+    },
+    {
+     "word": "quiet",
+     "frame": 1905
+    },
+    {
+     "word": "near",
+     "frame": 1920
+    },
+    {
+     "word": "3000",
+     "frame": 1926
+    },
+    {
+     "word": "and",
+     "frame": 1939
+    },
+    {
+     "word": "the",
+     "frame": 1956
+    },
+    {
+     "word": "echo",
+     "frame": 1959
+    },
+    {
+     "word": "multiplies",
+     "frame": 1969
+    },
+    {
+     "word": "it",
+     "frame": 1982
+    },
+    {
+     "word": "so",
+     "frame": 1986
+    },
+    {
+     "word": "the",
+     "frame": 2002
+    },
+    {
+     "word": "ripple",
+     "frame": 2006
+    },
+    {
+     "word": "swings",
+     "frame": 2012
+    },
+    {
+     "word": "by",
+     "frame": 2021
+    },
+    {
+     "word": "a",
+     "frame": 2026
+    },
+    {
+     "word": "hundred",
+     "frame": 2030
+    },
+    {
+     "word": "on",
+     "frame": 2034
+    },
+    {
+     "word": "the",
+     "frame": 2040
+    },
+    {
+     "word": "hump",
+     "frame": 2042
+    },
+    {
+     "word": "and",
+     "frame": 2048
+    },
+    {
+     "word": "by",
+     "frame": 2056
+    },
+    {
+     "word": "one",
+     "frame": 2059
+    },
+    {
+     "word": "in",
+     "frame": 2065
+    },
+    {
+     "word": "the",
+     "frame": 2068
+    },
+    {
+     "word": "valley",
+     "frame": 2071
+    },
+    {
+     "word": "take",
+     "frame": 2079
+    },
+    {
+     "word": "the",
+     "frame": 2096
+    },
+    {
+     "word": "log",
+     "frame": 2100
+    },
+    {
+     "word": "and",
+     "frame": 2108
+    },
+    {
+     "word": "multiplied",
+     "frame": 2112
+    },
+    {
+     "word": "turns",
+     "frame": 2126
+    },
+    {
+     "word": "into",
+     "frame": 2139
+    },
+    {
+     "word": "plus",
+     "frame": 2145
+    },
+    {
+     "word": "now",
+     "frame": 2154
+    },
+    {
+     "word": "it",
+     "frame": 2171
+    },
+    {
+     "word": "swings",
+     "frame": 2175
+    },
+    {
+     "word": "1",
+     "frame": 2182
+    },
+    {
+     "word": ".1",
+     "frame": 2190
+    },
+    {
+     "word": "everywhere",
+     "frame": 2200
+    },
+    {
+     "word": "that's",
+     "frame": 2213
+    },
+    {
+     "word": "the",
+     "frame": 2228
+    },
+    {
+     "word": "log",
+     "frame": 2230
+    },
+    {
+     "word": "spectrum",
+     "frame": 2237
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Back to the tiny echo. Its log gain repeats: point four one, point one one, minus point six nine, point one one. How often? That's lesson twelve's question. Run the list through the FFT, and bin four lights up. Oh, and four is the delay.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo-breath/line07.wav",
+   "at": 75.97,
+   "start": 75.97,
+   "end": 87.93,
+   "start_frame": 2279,
+   "words": [
+    {
+     "word": "back",
+     "frame": 2279
+    },
+    {
+     "word": "to",
+     "frame": 2289
+    },
+    {
+     "word": "the",
+     "frame": 2293
+    },
+    {
+     "word": "tiny",
+     "frame": 2296
+    },
+    {
+     "word": "echo",
+     "frame": 2304
+    },
+    {
+     "word": "its",
+     "frame": 2314
+    },
+    {
+     "word": "log",
+     "frame": 2337
+    },
+    {
+     "word": "gain",
+     "frame": 2344
+    },
+    {
+     "word": "repeats",
+     "frame": 2350
+    },
+    {
+     "word": "point",
+     "frame": 2365
+    },
+    {
+     "word": "four",
+     "frame": 2373
+    },
+    {
+     "word": "one",
+     "frame": 2380
+    },
+    {
+     "word": "point",
+     "frame": 2388
+    },
+    {
+     "word": "one",
+     "frame": 2396
+    },
+    {
+     "word": "one",
+     "frame": 2402
+    },
+    {
+     "word": "minus",
+     "frame": 2408
+    },
+    {
+     "word": "point",
+     "frame": 2418
+    },
+    {
+     "word": "six",
+     "frame": 2424
+    },
+    {
+     "word": "nine",
+     "frame": 2432
+    },
+    {
+     "word": "point",
+     "frame": 2439
+    },
+    {
+     "word": "one",
+     "frame": 2452
+    },
+    {
+     "word": "one",
+     "frame": 2452
+    },
+    {
+     "word": "how",
+     "frame": 2457
+    },
+    {
+     "word": "often",
+     "frame": 2470
+    },
+    {
+     "word": "that's",
+     "frame": 2491
+    },
+    {
+     "word": "lesson",
+     "frame": 2500
+    },
+    {
+     "word": "12's",
+     "frame": 2507
+    },
+    {
+     "word": "question",
+     "frame": 2517
+    },
+    {
+     "word": "run",
+     "frame": 2526
+    },
+    {
+     "word": "the",
+     "frame": 2535
+    },
+    {
+     "word": "list",
+     "frame": 2539
+    },
+    {
+     "word": "through",
+     "frame": 2544
+    },
+    {
+     "word": "the",
+     "frame": 2548
+    },
+    {
+     "word": "fft",
+     "frame": 2552
+    },
+    {
+     "word": "and",
+     "frame": 2564
+    },
+    {
+     "word": "bin",
+     "frame": 2574
+    },
+    {
+     "word": "four",
+     "frame": 2580
+    },
+    {
+     "word": "lights",
+     "frame": 2587
+    },
+    {
+     "word": "up",
+     "frame": 2594
+    },
+    {
+     "word": "oh",
+     "frame": 2604
+    },
+    {
+     "word": "and",
+     "frame": 2604
+    },
+    {
+     "word": "four",
+     "frame": 2608
+    },
+    {
+     "word": "is",
+     "frame": 2614
+    },
+    {
+     "word": "the",
+     "frame": 2618
+    },
+    {
+     "word": "delay",
+     "frame": 2621
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "On a circle, zero to eight thousand hertz is one lap, and the bottom half mirrors the top. Walk once round, and an echo D samples late laps the tone D times: bin D. The FFT of the log spectrum is the cepstrum. Spec, backwards. Its positions are quefrencies, measured in time.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo-fix/line02.wav",
+   "at": 88.93,
+   "start": 88.93,
+   "end": 103.5,
+   "start_frame": 2668,
+   "words": [
+    {
+     "word": "On",
+     "frame": 2668
+    },
+    {
+     "word": "a",
+     "frame": 2678
+    },
+    {
+     "word": "circle,",
+     "frame": 2681
+    },
+    {
+     "word": "0",
+     "frame": 2694
+    },
+    {
+     "word": "to",
+     "frame": 2698
+    },
+    {
+     "word": "8",
+     "frame": 2702
+    },
+    {
+     "word": ",000",
+     "frame": 2708
+    },
+    {
+     "word": "Hz",
+     "frame": 2717
+    },
+    {
+     "word": "is",
+     "frame": 2722
+    },
+    {
+     "word": "one",
+     "frame": 2729
+    },
+    {
+     "word": "lap,",
+     "frame": 2734
+    },
+    {
+     "word": "and",
+     "frame": 2745
+    },
+    {
+     "word": "the",
+     "frame": 2747
+    },
+    {
+     "word": "bottom",
+     "frame": 2750
+    },
+    {
+     "word": "half",
+     "frame": 2757
+    },
+    {
+     "word": "mirrors",
+     "frame": 2764
+    },
+    {
+     "word": "the",
+     "frame": 2774
+    },
+    {
+     "word": "top.",
+     "frame": 2779
+    },
+    {
+     "word": "Walk",
+     "frame": 2804
+    },
+    {
+     "word": "once",
+     "frame": 2809
+    },
+    {
+     "word": "round,",
+     "frame": 2816
+    },
+    {
+     "word": "and",
+     "frame": 2826
+    },
+    {
+     "word": "an",
+     "frame": 2832
+    },
+    {
+     "word": "echo",
+     "frame": 2835
+    },
+    {
+     "word": "D",
+     "frame": 2843
+    },
+    {
+     "word": "samples",
+     "frame": 2848
+    },
+    {
+     "word": "late",
+     "frame": 2861
+    },
+    {
+     "word": "laps",
+     "frame": 2870
+    },
+    {
+     "word": "the",
+     "frame": 2877
+    },
+    {
+     "word": "tone",
+     "frame": 2882
+    },
+    {
+     "word": "D",
+     "frame": 2888
+    },
+    {
+     "word": "times.",
+     "frame": 2895
+    },
+    {
+     "word": "Bin",
+     "frame": 2919
+    },
+    {
+     "word": "D.",
+     "frame": 2923
+    },
+    {
+     "word": "The",
+     "frame": 2934
+    },
+    {
+     "word": "FFT",
+     "frame": 2940
+    },
+    {
+     "word": "of",
+     "frame": 2951
+    },
+    {
+     "word": "the",
+     "frame": 2956
+    },
+    {
+     "word": "log",
+     "frame": 2959
+    },
+    {
+     "word": "spectrum",
+     "frame": 2964
+    },
+    {
+     "word": "is",
+     "frame": 2976
+    },
+    {
+     "word": "the",
+     "frame": 2987
+    },
+    {
+     "word": "Kepstrom,",
+     "frame": 2990
+    },
+    {
+     "word": "spec",
+     "frame": 3007
+    },
+    {
+     "word": "backwards.",
+     "frame": 3012
+    },
+    {
+     "word": "Its",
+     "frame": 3038
+    },
+    {
+     "word": "positions",
+     "frame": 3041
+    },
+    {
+     "word": "are",
+     "frame": 3051
+    },
+    {
+     "word": "Kephrensees,",
+     "frame": 3057
+    },
+    {
+     "word": "measured",
+     "frame": 3077
+    },
+    {
+     "word": "in",
+     "frame": 3084
+    },
+    {
+     "word": "time.",
+     "frame": 3090
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "The ticket's call. Take about one second of it. FFT, log, FFT. Skip below quefrency one hundred, where the voice lives. The tallest peak: twelve hundred samples. Point one five seconds.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo-breath/line09.wav",
+   "at": 104.3,
+   "start": 104.3,
+   "end": 114.38,
+   "start_frame": 3129,
+   "words": [
+    {
+     "word": "the",
+     "frame": 3129
+    },
+    {
+     "word": "tickets",
+     "frame": 3137
+    },
+    {
+     "word": "call",
+     "frame": 3145
+    },
+    {
+     "word": "take",
+     "frame": 3156
+    },
+    {
+     "word": "about",
+     "frame": 3166
+    },
+    {
+     "word": "one",
+     "frame": 3172
+    },
+    {
+     "word": "second",
+     "frame": 3178
+    },
+    {
+     "word": "of",
+     "frame": 3185
+    },
+    {
+     "word": "it",
+     "frame": 3191
+    },
+    {
+     "word": "fft",
+     "frame": 3195
+    },
+    {
+     "word": "log",
+     "frame": 3211
+    },
+    {
+     "word": "fft",
+     "frame": 3224
+    },
+    {
+     "word": "skip",
+     "frame": 3250
+    },
+    {
+     "word": "below",
+     "frame": 3266
+    },
+    {
+     "word": "keferency",
+     "frame": 3275
+    },
+    {
+     "word": "100",
+     "frame": 3289
+    },
+    {
+     "word": "where",
+     "frame": 3309
+    },
+    {
+     "word": "the",
+     "frame": 3311
+    },
+    {
+     "word": "voice",
+     "frame": 3314
+    },
+    {
+     "word": "lives",
+     "frame": 3322
+    },
+    {
+     "word": "the",
+     "frame": 3331
+    },
+    {
+     "word": "tallest",
+     "frame": 3340
+    },
+    {
+     "word": "peak",
+     "frame": 3349
+    },
+    {
+     "word": "1200",
+     "frame": 3359
+    },
+    {
+     "word": "samples",
+     "frame": 3369
+    },
+    {
+     "word": "0",
+     "frame": 3391
+    },
+    {
+     "word": ".15",
+     "frame": 3398
+    },
+    {
+     "word": "seconds",
+     "frame": 3407
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "One change from lesson two. There's no clean voice, so the canceller subtracts a shifted copy of its own output. Set the delay to twelve hundred. Start the strength at twice the peak, point four, and raise it until the peak is gone. The echo told you its own address.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo/line10.wav",
+   "at": 114.98,
+   "start": 114.98,
+   "end": 127.77,
+   "start_frame": 3449,
+   "words": [
+    {
+     "word": "One",
+     "frame": 3449
+    },
+    {
+     "word": "change",
+     "frame": 3460
+    },
+    {
+     "word": "from",
+     "frame": 3468
+    },
+    {
+     "word": "lesson",
+     "frame": 3474
+    },
+    {
+     "word": "two,",
+     "frame": 3481
+    },
+    {
+     "word": "there's",
+     "frame": 3496
+    },
+    {
+     "word": "no",
+     "frame": 3503
+    },
+    {
+     "word": "clean",
+     "frame": 3508
+    },
+    {
+     "word": "voice,",
+     "frame": 3515
+    },
+    {
+     "word": "so",
+     "frame": 3529
+    },
+    {
+     "word": "the",
+     "frame": 3530
+    },
+    {
+     "word": "canceller",
+     "frame": 3536
+    },
+    {
+     "word": "subtracts",
+     "frame": 3547
+    },
+    {
+     "word": "a",
+     "frame": 3563
+    },
+    {
+     "word": "shifted",
+     "frame": 3565
+    },
+    {
+     "word": "copy",
+     "frame": 3573
+    },
+    {
+     "word": "of",
+     "frame": 3584
+    },
+    {
+     "word": "its",
+     "frame": 3590
+    },
+    {
+     "word": "own",
+     "frame": 3593
+    },
+    {
+     "word": "output.",
+     "frame": 3598
+    },
+    {
+     "word": "Set",
+     "frame": 3619
+    },
+    {
+     "word": "the",
+     "frame": 3623
+    },
+    {
+     "word": "delay",
+     "frame": 3626
+    },
+    {
+     "word": "to",
+     "frame": 3634
+    },
+    {
+     "word": "1200,",
+     "frame": 3639
+    },
+    {
+     "word": "start",
+     "frame": 3664
+    },
+    {
+     "word": "the",
+     "frame": 3670
+    },
+    {
+     "word": "strength",
+     "frame": 3675
+    },
+    {
+     "word": "at",
+     "frame": 3682
+    },
+    {
+     "word": "twice",
+     "frame": 3688
+    },
+    {
+     "word": "the",
+     "frame": 3694
+    },
+    {
+     "word": "peak,",
+     "frame": 3699
+    },
+    {
+     "word": "0",
+     "frame": 3710
+    },
+    {
+     "word": ".4,",
+     "frame": 3715
+    },
+    {
+     "word": "and",
+     "frame": 3730
+    },
+    {
+     "word": "raise",
+     "frame": 3733
+    },
+    {
+     "word": "it",
+     "frame": 3740
+    },
+    {
+     "word": "until",
+     "frame": 3744
+    },
+    {
+     "word": "the",
+     "frame": 3750
+    },
+    {
+     "word": "peak",
+     "frame": 3754
+    },
+    {
+     "word": "is",
+     "frame": 3760
+    },
+    {
+     "word": "gone.",
+     "frame": 3763
+    },
+    {
+     "word": "The",
+     "frame": 3781
+    },
+    {
+     "word": "echo",
+     "frame": 3783
+    },
+    {
+     "word": "told",
+     "frame": 3790
+    },
+    {
+     "word": "you",
+     "frame": 3799
+    },
+    {
+     "word": "its",
+     "frame": 3802
+    },
+    {
+     "word": "own",
+     "frame": 3807
+    },
+    {
+     "word": "address.",
+     "frame": 3811
+    }
+   ]
+  },
+  {
+   "line": 11,
+   "text": "That's the last bug. One click, a wheel that never left, a row of test wheels on a keypad, and today, a spectrum of a spectrum. Next time a line echoes, you'll know where to look.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/16-cepstrum/4-video/vo-fix/line04.wav",
+   "at": 128.77,
+   "start": 128.77,
+   "end": 137.22,
+   "start_frame": 3863,
+   "words": [
+    {
+     "word": "That's",
+     "frame": 3863
+    },
+    {
+     "word": "the",
+     "frame": 3874
+    },
+    {
+     "word": "last",
+     "frame": 3878
+    },
+    {
+     "word": "bug.",
+     "frame": 3885
+    },
+    {
+     "word": "One",
+     "frame": 3899
+    },
+    {
+     "word": "click,",
+     "frame": 3907
+    },
+    {
+     "word": "a",
+     "frame": 3918
+    },
+    {
+     "word": "wheel",
+     "frame": 3920
+    },
+    {
+     "word": "that",
+     "frame": 3926
+    },
+    {
+     "word": "never",
+     "frame": 3930
+    },
+    {
+     "word": "left,",
+     "frame": 3936
+    },
+    {
+     "word": "a",
+     "frame": 3948
+    },
+    {
+     "word": "row",
+     "frame": 3950
+    },
+    {
+     "word": "of",
+     "frame": 3954
+    },
+    {
+     "word": "test",
+     "frame": 3957
+    },
+    {
+     "word": "wheels",
+     "frame": 3963
+    },
+    {
+     "word": "on",
+     "frame": 3970
+    },
+    {
+     "word": "a",
+     "frame": 3975
+    },
+    {
+     "word": "keypad,",
+     "frame": 3978
+    },
+    {
+     "word": "and",
+     "frame": 3997
+    },
+    {
+     "word": "today,",
+     "frame": 3999
+    },
+    {
+     "word": "a",
+     "frame": 4012
+    },
+    {
+     "word": "spectrum",
+     "frame": 4014
+    },
+    {
+     "word": "of",
+     "frame": 4024
+    },
+    {
+     "word": "a",
+     "frame": 4031
+    },
+    {
+     "word": "spectrum.",
+     "frame": 4034
+    },
+    {
+     "word": "Next",
+     "frame": 4052
+    },
+    {
+     "word": "time",
+     "frame": 4062
+    },
+    {
+     "word": "a",
+     "frame": 4068
+    },
+    {
+     "word": "line",
+     "frame": 4073
+    },
+    {
+     "word": "echoes,",
+     "frame": 4078
+    },
+    {
+     "word": "you'll",
+     "frame": 4092
+    },
+    {
+     "word": "know",
+     "frame": 4094
+    },
+    {
+     "word": "where",
+     "frame": 4098
+    },
+    {
+     "word": "to",
+     "frame": 4102
+    },
+    {
+     "word": "look.",
+     "frame": 4105
+    }
+   ]
+  }
+ ]
+}

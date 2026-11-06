@@ -1,0 +1,279 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.320
+Remember the echo from lesson two?
+
+2
+00:00:02.340 --> 00:00:05.460
+You held the caller's clean voice
+and knew the delay, two thousand samples,
+
+3
+00:00:05.480 --> 00:00:07.380
+so you subtracted a copy. Gone.
+
+4
+00:00:07.400 --> 00:00:09.840
+Then your line joins a partner
+network across the sea,
+
+5
+00:00:09.860 --> 00:00:11.780
+and callers hear every word twice.
+
+6
+00:00:12.440 --> 00:00:15.580
+This time the echo arrives already
+mixed in, with no clean copy.
+
+7
+00:00:15.600 --> 00:00:17.340
+And every route has its own delay.
+
+8
+00:00:17.420 --> 00:00:19.720
+Your canceller has
+two thousand samples baked in,
+
+9
+00:00:19.740 --> 00:00:22.860
+so on a twelve hundred sample
+echo it adds a second ghost.
+
+10
+00:00:22.960 --> 00:00:24.740
+Can the recording itself
+tell you the delay?
+
+11
+00:00:25.910 --> 00:00:28.910
+Make the echo tiny:
+four samples late, half as strong.
+
+12
+00:00:28.930 --> 00:00:31.390
+Two thousand hertz comes out
+one and a half times as tall.
+
+13
+00:00:31.410 --> 00:00:33.110
+One thousand hertz
+comes out at half height.
+
+14
+00:00:33.130 --> 00:00:34.870
+Same echo, louder here, quieter there.
+
+15
+00:00:35.900 --> 00:00:37.640
+On the wheel, one thousand hertz turns
+
+16
+00:00:37.660 --> 00:00:39.100
+forty-five degrees per sample.
+
+17
+00:00:39.120 --> 00:00:40.880
+The echo sits four steps behind,
+
+18
+00:00:40.900 --> 00:00:42.760
+a half lap, and pulls against the tone.
+
+19
+00:00:42.780 --> 00:00:45.840
+At two thousand hertz it sits
+a full lap behind, right on top.
+
+20
+00:00:45.860 --> 00:00:48.260
+Walk up through the tones,
+and the gain rises and falls.
+
+21
+00:00:48.280 --> 00:00:49.080
+That's a ripple.
+
+22
+00:00:49.870 --> 00:00:53.350
+An echo D samples late ripples
+every eight thousand over D hertz.
+
+23
+00:00:53.370 --> 00:00:55.570
+Four samples,
+it repeats every two thousand hertz.
+
+24
+00:00:55.590 --> 00:00:57.110
+Forty samples, every two hundred.
+
+25
+00:00:57.130 --> 00:00:59.110
+A longer delay makes a finer ripple.
+
+26
+00:00:59.870 --> 00:01:01.510
+You never see the echo alone, though.
+
+27
+00:01:01.530 --> 00:01:03.490
+The voice is loud near
+seven hundred hertz,
+
+28
+00:01:03.510 --> 00:01:06.190
+quiet near three thousand,
+and the echo multiplies it.
+
+29
+00:01:06.210 --> 00:01:09.290
+So the ripple swings by a hundred on
+the hump, and by one in the valley.
+
+30
+00:01:09.310 --> 00:01:11.790
+Take the log,
+and multiplied turns into plus.
+
+31
+00:01:11.810 --> 00:01:13.750
+Now it swings one point one everywhere.
+
+32
+00:01:13.770 --> 00:01:15.050
+That's the log spectrum.
+
+33
+00:01:15.970 --> 00:01:17.130
+Back to the tiny echo.
+
+34
+00:01:17.150 --> 00:01:18.810
+Its log gain repeats:
+
+35
+00:01:18.830 --> 00:01:22.730
+point four one, point one one, minus
+point six nine, point one one. How often?
+
+36
+00:01:23.030 --> 00:01:24.190
+That's lesson twelve's question.
+
+37
+00:01:24.210 --> 00:01:25.430
+Run the list through the FFT,
+
+38
+00:01:25.450 --> 00:01:26.750
+and bin four lights up.
+
+39
+00:01:26.790 --> 00:01:27.730
+Oh, and four is the delay.
+
+40
+00:01:28.930 --> 00:01:31.470
+On a circle,
+zero to eight thousand hertz is one lap,
+
+41
+00:01:31.490 --> 00:01:33.210
+and the bottom half mirrors the top.
+
+42
+00:01:33.450 --> 00:01:37.790
+Walk once round, and an echo D samples
+late laps the tone D times: bin D.
+
+43
+00:01:37.810 --> 00:01:40.210
+The FFT of the log
+spectrum is the cepstrum.
+
+44
+00:01:40.230 --> 00:01:41.210
+Spec, backwards.
+
+45
+00:01:41.250 --> 00:01:43.490
+Its positions are quefrencies,
+measured in time.
+
+46
+00:01:44.300 --> 00:01:45.180
+The ticket's call.
+
+47
+00:01:45.200 --> 00:01:46.480
+Take about one second of it.
+
+48
+00:01:46.500 --> 00:01:48.020
+FFT, log, FFT.
+
+49
+00:01:48.320 --> 00:01:51.020
+Skip below quefrency one hundred,
+where the voice lives.
+
+50
+00:01:51.040 --> 00:01:53.120
+The tallest peak: twelve hundred samples.
+
+51
+00:01:53.260 --> 00:01:54.160
+Point one five seconds.
+
+52
+00:01:54.980 --> 00:01:56.520
+One change from lesson two.
+
+53
+00:01:56.540 --> 00:01:57.600
+There's no clean voice,
+
+54
+00:01:57.620 --> 00:02:00.560
+so the canceller subtracts
+a shifted copy of its own output.
+
+55
+00:02:00.620 --> 00:02:02.120
+Set the delay to twelve hundred.
+
+56
+00:02:02.140 --> 00:02:03.780
+Start the strength at twice the peak,
+
+57
+00:02:03.840 --> 00:02:05.940
+point four,
+and raise it until the peak is gone.
+
+58
+00:02:06.020 --> 00:02:07.720
+The echo told you its own address.
+
+59
+00:02:08.770 --> 00:02:09.950
+That's the last bug.
+
+60
+00:02:09.970 --> 00:02:11.570
+One click, a wheel that never left,
+
+61
+00:02:11.590 --> 00:02:13.190
+a row of test wheels on a keypad,
+
+62
+00:02:13.230 --> 00:02:15.050
+and today, a spectrum of a spectrum.
+
+63
+00:02:15.070 --> 00:02:17.190
+Next time a line echoes,
+you'll know where to look.
