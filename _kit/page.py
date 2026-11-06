@@ -190,7 +190,8 @@ def chrome(page, lesson):
     else:
         cards.append(card("next", "The course", f"All {len(rows)} lessons", f"{up}index.html"))
     pager = f'<nav class="k-pager" aria-label="Lessons">{"".join(cards)}</nav>\n\n  '
-    return re.sub(r"<footer>", lambda _: pager + "<footer>", page, count=1)
+    blog = '\n    <span>More writing on the blog, <a href="https://www.estacouveflor.com/">Esta couve flor</a>.</span>'
+    return re.sub(r"<footer>", lambda _: pager + "<footer>" + blog, page, count=1)
 
 
 def build(lesson, figures=True, drop_heading=None, append=None, working=None, still_text=None, more=None):

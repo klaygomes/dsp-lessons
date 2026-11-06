@@ -102,6 +102,7 @@ footer a {{ color: inherit; }}
 {items}
 </ol>
 <footer>
+<span>More writing on the blog, <a href="https://www.estacouveflor.com/">Esta couve flor</a>.</span>
 <span>Based on Alan V. Oppenheim and Ronald W. Schafer, <cite>Discrete-Time Signal Processing</cite>, Prentice Hall, 1989.</span>
 <span>Lesson text, figures, pages and videos: CC BY-NC 4.0. Code: MIT. See <a href="NOTICE">NOTICE</a>. Source on <a href="https://github.com/klaygomes/dsp-lessons">GitHub</a>.</span>
 </footer>
