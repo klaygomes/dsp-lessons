@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Chip That Hums</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 48px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 48px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = /*SCHEDULE*/null;
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, '').replace(/[.,]+$/, ''); return fs.some(f => t === f); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0, top = 1) => { const keys = [[0, top], [a, top]]; for (let f = a + 2; f < b - 2; f += 2) keys.push([f, top * (lo + (1 - lo) * rnd(f + seed))]); keys.push([b, top]); M.kf(sel, 'opacity', keys); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 36, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+  if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
+}
+
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const FS = 8000;
+const ang = f => 360 * f / FS;
+const polymul = (a, b) => { const o = Array(a.length + b.length - 1).fill(0); a.forEach((x, i) => b.forEach((y, j) => { o[i + j] += x * y; })); return o; };
+const notch = (f, r) => { const c = cosd(ang(f)), A = [1, -2 * r * c, r * r], B = [1, -2 * c, 1], k = (A[0] + A[1] + A[2]) / (B[0] + B[1] + B[2]); return [B.map(v => k * v), A]; };
+const multiplied = (fs, r) => fs.reduce(([B, A], f) => { const [b, a] = notch(f, r); return [polymul(B, b), polymul(A, a)]; }, [[1], [1]]);
+const quant = (v, s) => Math.round(v / s) * s;
+const gainAt = (B, A, f) => {
+  const w = 2 * Math.PI * f / FS, ev = P => P.reduce(([re, im], c, k) => [re + c * Math.cos(w * k), im - c * Math.sin(w * k)], [0, 0]);
+  const [br, bi] = ev(B), [ar, ai] = ev(A);
+  return Math.hypot(br, bi) / Math.hypot(ar, ai);
+};
+const run = (B, A, x, clip) => {
+  const y = new Float64Array(x.length);
+  for (let n = 0; n < x.length; n++) {
+    let s = 0;
+    for (let k = 0; k < B.length; k++) if (n >= k) s += B[k] * x[n - k];
+    for (let k = 1; k < A.length; k++) if (n >= k) s -= A[k] * y[n - k];
+    y[n] = clip ? Math.max(-1, Math.min(1, s)) : s;
+  }
+  return y;
+};
+const roots = A => {
+  const n = A.length - 1, mul = (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+  const div = (a, b) => { const d = b[0] * b[0] + b[1] * b[1]; return [(a[0] * b[0] + a[1] * b[1]) / d, (a[1] * b[0] - a[0] * b[1]) / d]; };
+  let z = Array.from({ length: n }, (_, i) => { const r = 0.9, t = 2 * Math.PI * i / n + 0.4; return [r * Math.cos(t), r * Math.sin(t)]; });
+  const P = x => A.reduce((acc, c) => { const m = mul(acc, x); return [m[0] + c, m[1]]; }, [0, 0]);
+  for (let it = 0; it < 2000; it++) z = z.map((zi, i) => { let d = [1, 0]; z.forEach((zj, j) => { if (j !== i) d = mul(d, [zi[0] - zj[0], zi[1] - zj[1]]); }); const q = div(P(zi), d); return [zi[0] - q[0], zi[1] - q[1]]; });
+  return z.map(([re, im]) => ({ r: Math.hypot(re, im), f: Math.atan2(im, re) * FS / (2 * Math.PI) })).filter(p => p.f > 0).sort((a, b) => a.f - b.f);
+};
+const [LB, LA] = multiplied([1900, 2000, 2100], 0.98);
+const CB = LB.map(v => quant(v, 1 / 32)), CA = LA.map((v, i) => (i ? quant(v, 1 / 32) : 1));
+const LP = roots(LA), CP = roots(CA);
+const CLICK = Float64Array.from({ length: 260 }, (_, n) => (n === 0 ? 0.1 : 0));
+const YL = run(LB, LA, CLICK, false), YC = run(CB, CA, CLICK, true);
+const FIRST_CLIP = YC.findIndex(v => Math.abs(v) >= 1);
+const SECS = [1900, 2000, 2100].map(f => { const [b, a] = notch(f, 0.98); return [b.map(v => quant(v / b[0], 1 / 64)), a.map((v, i) => (i ? quant(v, 1 / 64) : 1))]; });
+const SB = SECS.reduce((P, [b]) => polymul(P, b), [1]), SA = SECS.reduce((P, [, a]) => polymul(P, a), [1]);
+const SK = quant(SA.reduce((s, v) => s + v, 0) / SB.reduce((s, v) => s + v, 0), 1 / 128);
+const SBK = SB.map(v => v * SK);
+const SECP = Math.sqrt(SECS[0][1][2]);
+const pct = v => (100 * v).toFixed(1).replace(/\.0$/, '') + '%';
+const fmt = (v, d) => v.toFixed(d);
+const thou = v => Math.round(v).toLocaleString('en-US');
+const travel = (c, a, b, y, x0, x1, boxes) => stepped(c, a, b, 2, p => { const fr = a + p * (b - a), q = ((fr - a) % 60) / 60, x = x0 + (x1 - x0) * q; return boxes.some(([u, v]) => x > u - 14 && x < v + 14) ? '' : `<circle cx="${x.toFixed(1)}" cy="${y}" r="12" fill="${C.ink}"/>`; });
+const swell = (c, a, b, pts) => stepped(c, a, b, 2, p => { const fr = a + p * (b - a), q = ((fr - a) % 36) / 36; return pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(24 + 30 * q).toFixed(1)}" fill="none" stroke="${C.accent}" stroke-width="6" opacity="${(1 - q).toFixed(2)}"/>`).join(''); });
+const laptopPole = (x, y, s = 11) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${s + 9}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="6 5"/>` + seg(x - s, y - s, x + s, y + s, C.soft, 4) + seg(x - s, y + s, x + s, y - s, C.soft, 4);
+
+{
+  const c = cam(1);
+  const ni = word(1, ['nineteen', '1900', '1,900', '19']), tw = word(1, ['two', '2000', '2,000', '2']), te = word(1, ['twenty', '2100', '2,100', '21']), no = word(1, 'notches'), mu = word(1, 'multiplies'), ru = word(1, 'rule');
+  label(c, 'next ticket: the whine hops', 960, 76, 'lbl s', 'center');
+  const X = f => 300 + (f - 1500) * 1.3, Y = g => 600 - g * 300;
+  axes(c, X, Y, [[1500, '1,500'], [2000, '2,000'], [2500, '2,500 Hz']], [[0, '0%'], [1, '100%']], 1500, 2500, 0, 1.05, '');
+  label(c, 'gain', X(1500) - 22, Y(1.05) - 90, 'lbl s');
+  const flat = layer(c, hline(X(1500), X(2500), Y(1), C.soft, 4, DASH));
+  M.show(flat, 0, no);
+  const gc = layer(c, curve(range(1500, 2500, 1).map(f => [X(f), Y(gainAt(LB, LA, f))]), C.ink, 5), [X(1500) - 6, X(2500) + 6]);
+  reveal(gc, no, no + 30, 'cruise');
+  flicker(gc, X(2000), Y(0), no + 30, sceneEnd(1), 0.88, 3);
+  const whines = [[1900, ni], [2000, tw], [2100, te]];
+  whines.forEach(([f, at]) => { M.show(layer(c, vline(X(f), Y(1.05), Y(0), C.accent, 3, '6 8')), at + 15); M.show(label(c, thou(f), X(f), Y(1.05) - (f === 2000 ? 130 : 75), 'lbl s acc', 'center'), at + 15); });
+  stepped(c, ni + 15, sceneEnd(1), 3, p => { const fr = ni + 15 + p * (sceneEnd(1) - ni - 15); const k = fr < tw + 15 ? 0 : fr < te + 15 ? 1 : fr < te + 45 ? 2 : Math.floor(rnd(Math.floor(fr / 9) + 3) * 3); const x = X([1900, 2000, 2100][k]); return `<rect x="${x - 22}" y="${Y(1.05)}" width="44" height="${Y(0) - Y(1.05)}" fill="${C.accent}" opacity="0.22"/><path d="M${x - 18} ${Y(1.05) - 10}L${x + 18} ${Y(1.05) - 10}L${x} ${Y(1.05) + 10}Z" fill="${C.accent}"/>`; });
+  M.show(label(c, 'three notches, multiplied into one rule:', 200, 696, 'lbl s'), mu);
+  M.show(label(c, `input side (× inputs): ${LB.filter((_, i) => i % 2 === 0).map(v => fmt(v, 4)).join(', ')}`, 200, 762, 'lbl m'), ru);
+  M.show(label(c, `feedback side (× outputs): ${LA.filter((_, i) => i % 2 === 0 && i).map(v => fmt(v, 4)).join(', ')}`, 200, 822, 'lbl m'), ru + 4);
+  drift(1);
+}
+{
+  const c = cam(2);
+  const la = word(2, 'laptop'), pe = word(2, 'perfect'), cl = word(2, 'click'), gr = word(2, 'grows'), sl = word(2, 'slams'), li = word(2, 'limits'), fo = word(2, 'forever'), sa = word(2, 'same'), th = word(2, 'they');
+  const X = n => 230 + n * 5.8;
+  const ly = 250, cy = 610, CH = 150;
+  label(c, 'on the laptop: one click, drawn 10× taller', 230, 70, 'lbl s');
+  layer(c, hline(X(0), X(250), ly, C.rule, 2));
+  const lw = layer(c, curve(range(0, 250).map(n => [X(n), ly - YL[n] * 1300]), C.ink, 3), [X(0) - 4, X(250) + 4]);
+  reveal(lw, la, pe + 16, 'cruise');
+  flicker(lw, X(125), ly, pe + 16, sceneEnd(2), 0.6, 9);
+  M.show(label(c, 'it dies away', X(250), ly + 14, 'lbl ok', 'right'), pe);
+  M.show(label(c, 'on the cheap 8-bit chip', 230, 360, 'lbl s'), word(2, 'cheap'));
+  layer(c, hline(X(0), X(250), cy, C.rule, 2));
+  const lim = layer(c, hline(X(0), X(250), cy - CH, C.accent, 3, '10 8') + hline(X(0), X(250), cy + CH, C.accent, 3, '10 8'));
+  fadeIn(lim, li, 8);
+  M.show(label(c, '+1', X(0) - 20, cy - CH - 29, 'lbl s', 'right'), li);
+  M.show(label(c, '−1', X(0) - 20, cy + CH - 29, 'lbl s', 'right'), li);
+  const cw = layer(c, curve(range(0, 250).map(n => [X(n), cy - YC[n] * CH]), C.accent, 5), [X(0) - 4, X(250) + 4]);
+  reveal(cw, cl, fo + 10, 'softInOut');
+  flicker(cw, X(125), cy, fo + 10, sceneEnd(2), 0.8, 5);
+  const loud = layer(c, `<rect x="${X(FIRST_CLIP)}" y="${cy - CH}" width="${X(250) - X(FIRST_CLIP)}" height="${2 * CH}" fill="${C.accentSoft}"/>`);
+  c.insertBefore(document.querySelector(loud), c.firstChild);
+  M.show(loud, sl);
+  flicker(loud, 0, 0, sl, sceneEnd(2), 0.4, 65, 0.7);
+  M.show(label(c, 'grows', X(30), 790, 'lbl acc', 'center'), gr);
+  M.show(label(c, `the chip’s limits from sample ${FIRST_CLIP}`, X(FIRST_CLIP), 790, 'lbl acc'), sl);
+  M.show(label(c, 'same numbers?', 1720, 350, 'lbl big', 'right'), th);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const co = word(3, 'coefficient'), mu = word(3, 'multiplied'), ei = word(3, ['eight', '8']), wh = word(3, 'whole'), fi = word(3, ['fifty', '256', 'choices']), ne = word(3, 'nearest'), qu = word(3, ['quantization', 'quant']);
+  label(c, 'the rule’s coefficients', 190, 76, 'lbl s');
+  const vals = [...LB.filter((_, i) => i % 2 === 0), ...LA.filter((_, i) => i % 2 === 0 && i)];
+  vals.forEach((v, i) => { const x = 190 + i * 222 + (i >= 4 ? 30 : 0); fadeIn(layer(c, `<rect x="${x}" y="152" width="196" height="84" rx="10" fill="${C.inputSoft}" stroke="${C.input}" stroke-width="4"/>`), co + i * 3, 6); M.show(label(c, fmt(v, 4), x + 98, 162, 'lbl', 'center'), co + i * 3); });
+  M.show(label(c, 'input side: × inputs', 190, 250, 'lbl s'), mu);
+  M.show(label(c, 'feedback side: × outputs', 1074, 250, 'lbl s'), mu);
+  const bits = [0, 1, 1, 0, 1, 0, 0, 0];
+  bits.forEach((b, i) => { const x = 190 + i * 96; M.show(layer(c, `<rect x="${x}" y="430" width="84" height="84" rx="6" fill="${C.paper2}" stroke="${C.ink}" stroke-width="4"/>`), ei + i); M.show(label(c, String(b), x + 42, 441, 'lbl', 'center'), ei + i); });
+  M.show(label(c, '8 bits', 190, 340, 'lbl'), ei);
+  M.show(label(c, '= 104 steps', 980, 441, 'lbl'), wh);
+  M.show(label(c, '−128 to 127: 256 choices', 980, 344, 'lbl s'), fi);
+  const X = k => 260 + k * 200, by = 704;
+  M.show(layer(c, hline(X(-0.6), X(6.6), by, C.ink, 3) + range(0, 6).map(k => vline(X(k), by - 22, by + 22, C.ink, 4)).join('')), wh);
+  range(0, 6).forEach(k => M.show(label(c, String(100 + k), X(k), by + 30, k === 4 ? 'lbl' : 'lbl s', 'center'), wh + k));
+  M.show(label(c, 'lesson 6’s 0.81, in steps of 1 ÷ 128: 103.68', 260, by - 150, 'lbl s'), wh + 8, ne);
+  M.show(label(c, 'lesson 6’s 0.81, in steps of 1 ÷ 128: stored 104', 260, by - 150, 'lbl s'), ne);
+  const v = 3.68;
+  stepped(c, wh + 8, sceneEnd(3), 2, p => {
+    const fr = wh + 8 + p * (sceneEnd(3) - wh - 8), t = Math.max(0, Math.min(1, (fr - ne) / 14)), e = t * t * (3 - 2 * t), x = X(v + (4 - v) * e);
+    return fr < ne ? ringSvg(X(v), by - 60, 16, C.ink, 5) + vline(X(v), by - 44, by, C.soft, 3, '5 5') : dotSvg(x, by - 60 * (1 - e), 18, C.ink);
+  });
+  M.show(label(c, 'quantization: round to the nearest step', 960, 806, 'lbl', 'center'), qu);
+  drift(3);
+}
+{
+  const c = cam(4);
+  const no = word(4, 'notch'), un = word(4, 'under'), fi = word(4, 'fine'), be = word(4, 'becomes'), fv = word(4, ['five', '0.8125', '.8125']), po = word(4, 'poles'), fo = word(4, ['four', '0.0014', '.0014']), al = word(4, 'all');
+  label(c, 'lesson 6’s notch', 160, 76, 'lbl s');
+  M.show(label(c, 'output[n] = 0.905 × (input[n] + input[n − 2])', 160, 140, 'lbl'), no);
+  M.show(label(c, '          − 0.81 × output[n − 2]', 160, 200, 'lbl'), no + 6);
+  M.show(label(c, 'all under 1: a 1 ÷ 128 step', 160, 282, 'lbl ok'), un);
+  const X = k => 200 + (k - 100) * 120, by = 580;
+  M.show(layer(c, hline(X(99.6), X(107.4), by, C.ink, 3) + range(100, 107).map(k => vline(X(k), by - 20, by + 20, C.ink, 4)).join('')), fi);
+  range(100, 107).forEach(k => M.show(label(c, String(k), X(k), by + 36, k === 104 ? 'lbl' : 'lbl s', 'center'), fi + (k - 100)));
+  M.show(label(c, 'stored whole numbers', X(107.4), by + 110, 'lbl s', 'right'), fi + 8);
+  const v = 103.68;
+  M.show(label(c, '0.81 × 128 = 103.68', X(100), 400, 'lbl s'), fi + 6, be);
+  stepped(c, fi, sceneEnd(4), 2, p => {
+    const fr = fi + p * (sceneEnd(4) - fi), t = Math.max(0, Math.min(1, (fr - be) / 14)), e = t * t * (3 - 2 * t);
+    return fr < be ? ringSvg(X(v), by - 70, 15, C.ink, 5) + vline(X(v), by - 55, by, C.soft, 3, '5 5') : ringSvg(X(v), by - 70, 15, C.soft, 4) + dotSvg(X(v + (104 - v) * e), by - 70 * (1 - e), 17, C.ink);
+  });
+  M.show(label(c, '104/128 = 0.8125', X(104), 400, 'lbl', 'center'), fv);
+  M.show(label(c, 'error +0.0025', X(104), 780, 'lbl acc', 'center'), fv + 6);
+  const cx = 1520, cy = 570, R = 220;
+  M.show(layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2) + vline(cx, cy - R - 20, cy + R + 20, C.rule, 2) + zeroSvg(cx, cy - R, 17) + zeroSvg(cx, cy + R, 17)), fi);
+  M.show(layer(c, laptopPole(cx, cy - 0.9 * R) + laptopPole(cx, cy + 0.9 * R)), fi);
+  M.show(layer(c, poleSvg(cx, cy - Math.sqrt(0.8125) * R, 14) + poleSvg(cx, cy + Math.sqrt(0.8125) * R, 14)), po);
+  M.show(label(c, `poles: 0.9 → ${fmt(Math.sqrt(0.8125), 4)}`, cx - 30, 260, 'lbl m', 'center'), po);
+  M.show(label(c, '× pole   ○ zero', 160, 342, 'lbl s'), fi);
+  M.show(label(c, `moved +${fmt(Math.sqrt(0.8125) - 0.9, 4)}`, cx - 30, 816, 'lbl ok', 'center'), fo);
+  M.show(tick(c, cx + 196, 846), al);
+  drift(4);
+}
+{
+  const c = cam(5);
+  const bi = word(5, 'biggest'), st = word(5, 'step'), re = word(5, 'reaches'), fo = word(5, 'forced'), ev = word(5, 'every'), hu = word(5, 'hundredth'), sm = word(5, ['small', 'think']);
+  label(c, 'the three-notch rule', 160, 76, 'lbl s');
+  M.show(label(c, 'biggest coefficient: 2.8576', 160, 140, 'lbl'), bi);
+  const BX = v => 600 + v * 280, rows = [[1 / 128, 270, st], [1 / 64, 355, re], [1 / 32, 440, fo]];
+  M.show(label(c, '127 steps of each size reach:', 160, 206, 'lbl s'), st);
+  rows.forEach(([s, y, at], i) => {
+    const top = 127 * s, col = i === 2 ? C.accent : C.paper2;
+    const g = layer(c, `<rect x="${BX(0)}" y="${y}" width="${BX(top) - BX(0)}" height="56" fill="${col}" stroke="${C.ink}" stroke-width="3"/>`);
+    origin(g, BX(0), y + 28); M.show(g, at); M.kf(g, 'scaleX', [[0, 0], [at, 0], [at + 10, 1, 'softLand']]);
+    M.show(label(c, `1 ÷ ${Math.round(1 / s)}: ${fmt(top, 2)}`, 160, y - 3, i === 2 ? 'lbl acc' : 'lbl'), at);
+  });
+  M.show(layer(c, vline(BX(2.8576), 250, 520, C.ink, 4, '10 8')), bi);
+  M.show(label(c, '2.8576', BX(2.8576), 530, 'lbl s', 'center'), bi);
+  M.show(label(c, 'for every coefficient', 1720, 620, 'lbl acc', 'right'), ev);
+  const errs = [[LA[2], CA[2]], [LA[4], CA[4]], [LA[6], CA[6]]];
+  M.show(label(c, 'laptop    stored    error', 160, 620, 'lbl s'), hu);
+  errs.forEach(([a, b], i) => M.show(label(c, `${fmt(a, 4)}    ${String(+b.toFixed(5)).padEnd(7)}    ${(b - a >= 0 ? '+' : '−') + fmt(Math.abs(b - a), 4)}`, 160, 682 + i * 62, 'lbl'), hu + i * 5));
+  M.show(label(c, 'small?', 1720, 770, 'note', 'right'), sm);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const fi = word(6, 'poles'), mi = word(6, 'middle'), ou = word(6, 'outer'), ju = word(6, ['.057', '1.057']), ec = word(6, 'echo'), ne = word(6, 'neighbor'), st = word(6, 'stable');
+  const CX = 960, CY = 2000, U = 1700, P = (r, f) => [CX + U * r * cosd(ang(f)), CY - U * r * sind(ang(f))];
+  const outside = layer(c, `<path d="${arcD(CX, CY, U, 74, 106)}L${pt(CX, CY, U, 106)[0].toFixed(1)} 0H${pt(CX, CY, U, 74)[0].toFixed(1)}Z" fill="${C.accentSoft}"/>`);
+  M.show(outside, ec);
+  flicker(outside, 0, 0, ec, sceneEnd(6), 0.45, 61);
+  layer(c, `<path d="${arcD(CX, CY, U, 74, 106)}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  label(c, 'unit circle', P(1, 1680)[0] + 10, P(1, 1680)[1] + 10, 'lbl s');
+  label(c, 'the top of the circle, radius 0.83 to 1.1', 960, 76, 'lbl s', 'center');
+  const lap = [1900, 2000, 2100];
+  M.show(layer(c, lap.map(f => laptopPole(...P(0.98, f))).join('')), fi);
+  [[1900, '1,900'], [2100, '2,100']].forEach(([f, t]) => M.show(label(c, t, P(0.98, f)[0], P(0.98, f)[1] + 40, 'lbl s', 'center'), fi));
+  M.show(label(c, '2,000', P(0.98, 2000)[0], P(0.98, 2000)[1] - 96, 'lbl s', 'center'), fi);
+  const mid = CP.find(p => Math.abs(p.f - 2000) < 1), out1 = CP[0], out2 = CP[CP.length - 1];
+  const slide = (a, b, from, to, at, color) => stepped(c, at, sceneEnd(6), 2, p => {
+    const fr = at + p * (sceneEnd(6) - at), t = Math.min(1, (fr - at) / 20), e = t * t * (3 - 2 * t);
+    const r = from.r + (to.r - from.r) * e, f = from.f + (to.f - from.f) * e, [x, y] = P(r, f);
+    return poleSvg(x, y, 16, e > 0.5 && r > 1 ? C.accent : color);
+  });
+  M.show(layer(c, poleSvg(...P(0.98, 2000), 16) + poleSvg(...P(0.98, 1900), 16) + poleSvg(...P(0.98, 2100), 16)), fi, mi);
+  M.show(layer(c, poleSvg(...P(0.98, 1900), 16) + poleSvg(...P(0.98, 2100), 16)), mi, ou);
+  slide(0, 0, { r: 0.98, f: 2000 }, mid, mi, C.ink);
+  slide(0, 0, { r: 0.98, f: 1900 }, out1, ou, C.ink);
+  slide(0, 0, { r: 0.98, f: 2100 }, out2, ou, C.ink);
+  M.show(label(c, `${fmt(mid.r, 4)}: in`, P(mid.r, 2000)[0] + 40, P(mid.r, 2000)[1] - 29, 'lbl'), mi + 20);
+  M.show(label(c, `${fmt(out1.r, 4)}, ${thou(out1.f)} Hz`, P(out1.r, out1.f)[0] + 70, P(out1.r, out1.f)[1] - 50, 'lbl m acc'), ju);
+  M.show(label(c, `${fmt(out2.r, 4)}, ${thou(out2.f)} Hz`, P(out2.r, out2.f)[0] - 70, P(out2.r, out2.f)[1] - 50, 'lbl m acc', 'right'), ju);
+  M.show(label(c, `outside: an echo grows ×${fmt(out1.r, 3)} per sample`, 960, 700, 'lbl acc', 'center'), ec);
+  swell(c, ec, sceneEnd(6), [P(out1.r, out1.f), P(out2.r, out2.f)]);
+  M.show(label(c, 'the chip’s rule: a neighbor, not stable', 960, 790, 'lbl', 'center'), ne);
+  label(c, '◌ laptop   × chip', 140, 600, 'lbl s');
+  drift(6, 1, 1.02);
+}
+{
+  const c = cam(7);
+  const er = word(7, 'errors'), fh = word(7, 'half'), mo = word(7, ['moved', 'move']), an = word(7, 'answer'), di = word(7, 'distances'), mu = word(7, 'multiplier');
+  label(c, 'why?', 960, 80, 'note big', 'center');
+  const x0 = 260, x1 = 900, x2 = 1340;
+  label(c, 'error', x1, 210, 'lbl s');
+  label(c, 'pole move', x2, 210, 'lbl s');
+  M.show(label(c, 'lesson 6', x0, 290, 'lbl'), er);
+  M.show(label(c, '0.0025', x1, 290, 'lbl'), er);
+  M.show(label(c, 'three notches', x0, 370, 'lbl'), er + 6);
+  M.show(label(c, '0.0138', x1, 370, 'lbl'), er + 6);
+  M.show(label(c, '× 5.5', x1, 450, 'lbl acc'), fh);
+  M.show(label(c, '0.0014', x2, 290, 'lbl'), mo);
+  M.show(label(c, '0.10 to 0.14', x2, 370, 'lbl'), mo + 4);
+  M.show(label(c, '× 70 to 100', x2, 450, 'lbl acc'), mo + 10);
+  layer(c, hline(x0, 1760, 548, C.rule, 3));
+  M.show(label(c, 'move ≈ error ÷ (d₁ × d₂ × d₃ × d₄ × d₅)', 960, 584, 'lbl', 'center'), an);
+  M.show(label(c, 'd: distance to each other pole', 960, 662, 'lbl s', 'center'), di);
+  M.show(label(c, 'multiplier = 1 ÷ that product', 960, 750, 'lbl big acc', 'center'), mu);
+  drift(7);
+}
+{
+  const c = cam(8);
+  const he = word(8, 'here'), cr = word(8, 'crammed'), ne = word(8, 'neighbors'), aw = word(8, 'away'), oh = word(8, ['oh', 'its']), tt = word(8, ['twenty', '22']), lo = word(8, 'lone'), ap = word(8, 'apart'), fs = word(8, ['five', '0.56', '.56']), sh = word(8, 'shrinks');
+  const cx = 420, cy = 520, R = 300, P = (r, f) => pt(cx, cy, R * r, ang(f));
+  layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  const fsT = [1900, 2000, 2100], all = [...fsT, ...fsT.map(f => -f)];
+  layer(c, all.map(f => poleSvg(...P(0.98, f), 9)).join(''));
+  label(c, 'three crowded pairs', cx, 120, 'lbl s', 'center');
+  const top = P(0.98, 2000);
+  fadeIn(layer(c, fsT.map(f => -f).map(f => { const q = P(0.98, f); return arrowSvg(q[0], q[1], top[0] + (q[0] - top[0]) * 0.06, top[1] + 30, C.soft, 4); }).join('')), aw + 6, 10);
+  M.show(label(c, '1.96', cx - 26, cy + 20, 'lbl s', 'right'), aw + 10);
+  M.show(label(c, 'each', cx - 26, cy + 76, 'lbl s', 'right'), aw + 10);
+  const bx = 760, by = 110, bw = 540, bh = 300, Z = 2600, zc = [bx + bw / 2, by + 120 + 0.98 * Z], ZP = f => pt(zc[0], zc[1], 0.98 * Z, ang(f));
+  layer(c, `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="${C.paper}" stroke="${C.soft}" stroke-width="3" rx="8"/>` + seg(top[0] + 24, top[1] - 6, bx, by + 40, C.soft, 3, '6 6') + `<circle cx="${top[0]}" cy="${top[1]}" r="26" fill="none" stroke="${C.soft}" stroke-width="3"/>`);
+  layer(c, `<clipPath id="zc"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}"/></clipPath><g clip-path="url(#zc)"><path d="${arcD(zc[0], zc[1], Z, 80, 100)}" fill="none" stroke="${C.ink}" stroke-width="4"/></g>`);
+  fadeIn(layer(c, fsT.map(f => poleSvg(...ZP(f), 16, f === 2000 ? C.accent : C.ink)).join('')), cr, 8);
+  M.show(label(c, 'zoomed', bx + 16, by + bh - 66, 'lbl s'), cr);
+  const zt = ZP(2000);
+  M.show(layer(c, arrowSvg(...ZP(1900).map((v, i) => v + (i ? 0 : -24)), zt[0] + 26, zt[1], C.ink, 5) + arrowSvg(...ZP(2100).map((v, i) => v + (i ? 0 : 24)), zt[0] - 26, zt[1], C.ink, 5)), ne);
+  M.show(label(c, '0.077', (ZP(2100)[0] + zt[0]) / 2, zt[1] + 34, 'lbl', 'center'), aw);
+  M.show(label(c, '0.077', (ZP(1900)[0] + zt[0]) / 2, zt[1] + 34, 'lbl', 'center'), aw);
+  M.show(label(c, '0.077 × 0.077 × 1.96 × 1.96 × 1.96', 740, 470, 'lbl s'), aw + 10);
+  M.show(label(c, '= 0.045, the product', 740, 540, 'lbl'), aw + 18);
+  M.show(label(c, 'multiplier: 1 ÷ 0.045 =', 740, 620, 'lbl'), oh);
+  const lap = [1900, 2000, 2100, -1900, -2000, -2100].map(f => [0.98 * cosd(ang(f)), 0.98 * sind(ang(f))]);
+  const prodOf = k => lap.reduce((m, q, j) => (j === k ? m : m * Math.hypot(lap[k][0] - q[0], lap[k][1] - q[1])), 1);
+  const outerM = Math.round(1 / prodOf(0));
+  M.show(label(c, `outer pairs: 1 ÷ ${fmt(prodOf(0), 3)} = ${outerM}`, 740, 690, 'lbl m acc'), tt + 20);
+  [1900, 2100].forEach(f => M.show(label(c, `× ${outerM}`, ZP(f)[0], ZP(f)[1] - 114, 'lbl s acc', 'center'), tt + 20));
+  M.show(label(c, `× ${Math.round(1 / prodOf(1))}`, zt[0], zt[1] - 114, 'lbl s acc', 'center'), tt);
+  M.show(label(c, '22', 1500, 580, 'lbl big acc'), tt);
+  const lx = 1580, ly = 260, lr = 120;
+  M.show(layer(c, `<circle cx="${lx}" cy="${ly}" r="${lr}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(lx - lr - 14, lx + lr + 14, ly, C.rule, 2) + poleSvg(lx, ly - 0.9 * lr, 9) + poleSvg(lx, ly + 0.9 * lr, 9) + arrowSvg(lx, ly + 0.9 * lr - 14, lx, ly - 0.9 * lr + 16, C.soft, 4)), lo);
+  M.show(label(c, 'lone pair', lx, 82, 'lbl s', 'center'), lo);
+  M.show(label(c, '1.8', lx - lr - 24, ly - 29, 'lbl s', 'right'), ap);
+  M.show(label(c, 'lesson 6’s lone pair: 1 ÷ 1.8 = 0.56', 740, 756, 'lbl m ok'), fs);
+  M.show(label(c, 'the error shrinks', 740, 820, 'lbl s'), sh);
+  drift(8, 1, 1.04);
+}
+{
+  const c = cam(9), a = sub(c), b = sub(c), d = sub(c);
+  const mu = word(9, 'multiplying'), bl = word(9, 'blend'), dn = word(9, ["don't", 'dont']), se = word(9, 'section'), ze = word(9, 'zero'), po = word(9, 'pole'), se2 = word(9, 'see'), rn = word(9, 'run'), ca = word(9, 'cascade');
+  M.show('#' + a.id, sceneStart(9), dn); M.show('#' + b.id, dn, rn); M.show('#' + d.id, rn);
+  const cx = 560, cy = 470, R = 300;
+  label(a, 'multiplied out: one rule', 960, 76, 'lbl s', 'center');
+  layer(a, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  const pp = [1900, 2000, 2100, -1900, -2000, -2100].map(f => pt(cx, cy, 0.98 * R, ang(f)));
+  pp.forEach((q, i) => M.show(layer(a, poleSvg(...q, 10)), sceneStart(9) + 6 * i));
+  const kx = 1100, ky = 470;
+  M.show(label(a, '2.8576', kx, ky - 40, 'lbl ok'), mu);
+  const bls = layer(a, pp.map(q => seg(kx - 10, ky, q[0] + 16, q[1], C.input, 3, '8 6')).join(''));
+  fadeIn(bls, mu + 10, 10);
+  flicker(bls, 0, 0, mu + 20, dn, 0.3, 91);
+  M.show(label(a, 'a blend of all six poles', kx, ky + 60, 'lbl s'), bl);
+  const sx = 1380, sy = 500, sR = 280, zq = pt(sx, sy, sR, 85.5), pq = pt(sx, sy, 0.98 * sR, 85.5);
+  label(b, 'one notch at a time', 160, 76, 'lbl s');
+  M.show(label(b, 'second-order section', 160, 140, 'lbl big'), se);
+  layer(b, hline(sx - sR - 20, sx + sR + 20, sy, C.rule, 2));
+  stepped(b, dn, se, 2, p => `<path d="${arcD(sx, sy, sR, -90, -90 + 360 * Math.max(0.001, p))}" fill="none" stroke="${C.ink}" stroke-width="4"/>`);
+  M.show(layer(b, `<circle cx="${sx}" cy="${sy}" r="${sR}" fill="none" stroke="${C.ink}" stroke-width="4"/>`), se);
+  fadeIn(layer(b, zeroSvg(...zq, 16) + zeroSvg(...pt(sx, sy, sR, -85.5), 16)), ze, 6);
+  fadeIn(layer(b, poleSvg(...pt(sx, sy, 0.98 * sR, 85.5), 13) + poleSvg(...pt(sx, sy, 0.98 * sR, -85.5), 13)), po, 6);
+  M.show(layer(b, seg(sx, sy, ...pt(sx, sy, sR + 30, 85.5), C.soft, 3, '6 6') + `<path d="${arcD(sx, sy, 90, 0, 85.5)}" fill="none" stroke="${C.soft}" stroke-width="3"/>`), se2 - 10);
+  M.show(label(b, '85.5°', sx + 80, sy - 150, 'lbl s'), se2 - 10);
+  M.show(label(b, '85.5° = 360° × 1,900 ÷ 8,000', 160, 720, 'lbl s'), se2 - 10);
+  const rows = [['0.1569', 'zeros’ angle'], ['1 and 1', 'zeros on the circle'], ['0.1538', 'poles’ angle'], ['0.9604', 'radius² = 0.98²']];
+  rows.forEach(([n, t], i) => { M.show(label(b, n, 160, 300 + i * 100, 'lbl ok'), se2 - 30 + i * 8); M.show(layer(b, arrowSvg(400, 331 + i * 100, 470, 331 + i * 100, C.soft, 4)), se2 - 30 + i * 8); M.show(label(b, t, 490, 300 + i * 100, 'lbl'), se2 - 30 + i * 8); });
+  label(d, 'cascade: each output feeds the next input', 960, 76, 'lbl s', 'center');
+  const boxes = [1900, 2000, 2100].map((f, i) => [360 + i * 480, f]);
+  boxes.forEach(([x, f], i) => {
+    const s = layer(d, `<rect x="${x - 180}" y="260" width="360" height="380" rx="12" fill="${C.paper}" stroke="${C.ink}" stroke-width="4"/>` + `<circle cx="${x}" cy="470" r="110" fill="none" stroke="${C.ink}" stroke-width="3"/>` + zeroSvg(...pt(x, 470, 110, ang(f)), 11) + zeroSvg(...pt(x, 470, 110, -ang(f)), 11) + poleSvg(...pt(x, 470, 0.98 * 110, ang(f)), 9) + poleSvg(...pt(x, 470, 0.98 * 110, -ang(f)), 9));
+    fadeIn(s, rn + i * 8, 8);
+    M.show(label(d, thou(f) + ' Hz', x, 280, 'lbl', 'center'), rn + i * 8);
+    if (i < 2) M.show(layer(d, arrowSvg(x + 186, 450, x + 294, 450, C.ink, 5)), rn + i * 8 + 6);
+  });
+  M.show(layer(d, arrowSvg(60, 450, 174, 450, C.ink, 5) + arrowSvg(1506, 450, 1640, 450, C.ink, 5)), rn);
+  M.show(label(d, 'in', 140, 370, 'lbl s'), rn);
+  M.show(label(d, 'out', 1560, 370, 'lbl s'), rn + 16);
+  M.show(label(d, 'a cascade', 960, 720, 'lbl big ok', 'center'), ca);
+  travel(d, rn + 24, sceneEnd(9), 450, 60, 1640, boxes.map(([x]) => [x - 180, x + 180]));
+  drift(9);
+}
+{
+  const c = cam(10), a = sub(c), b = sub(c);
+  const ro = word(10, 'rounded'), al = word(10, 'alone'), ev = word(10, 'every'), sa = word(10, 'safely'), wh = word(10, ['whine', 'wine']), vo = word(10, 'voice'), ti = word(10, 'tiny'), li = word(10, 'line'), cr = word(10, 'crowded'), ac = word(10, 'across');
+  M.show('#' + a.id, sceneStart(10), ti); M.show('#' + b.id, ti);
+  const boxes = [1900, 2000, 2100].map((f, i) => [360 + i * 480, f]);
+  boxes.forEach(([x, f], i) => {
+    layer(a, `<rect x="${x - 180}" y="130" width="360" height="320" rx="12" fill="${C.paper}" stroke="${C.ink}" stroke-width="4"/>` + `<circle cx="${x}" cy="320" r="90" fill="none" stroke="${C.ink}" stroke-width="3"/>` + zeroSvg(...pt(x, 320, 90, ang(f)), 10) + zeroSvg(...pt(x, 320, 90, -ang(f)), 10));
+    M.show(layer(a, poleSvg(...pt(x, 320, SECP * 90, ang(f)), 8, C.ink) + poleSvg(...pt(x, 320, SECP * 90, -ang(f)), 8, C.ink)), 0, ev);
+    M.show(layer(a, poleSvg(...pt(x, 320, SECP * 90, ang(f)), 8, C.input) + poleSvg(...pt(x, 320, SECP * 90, -ang(f)), 8, C.input)), ev);
+    label(a, thou(f) + ' Hz', x, 150, 'lbl', 'center');
+    if (i < 2) layer(a, arrowSvg(x + 186, 320, x + 294, 320, C.ink, 5));
+  });
+  travel(a, sceneStart(10), ti, 320, 120, 1600, boxes.map(([x]) => [x - 180, x + 180]));
+  const SX = n => 1040 + n * 2.9, sy0 = 730, ring = SECS.reduce((y, [bb, aa]) => run(bb, aa, y, true), CLICK).map(v => v * SK);
+  M.show(label(a, 'out, drawn 10× taller', 1040, 556, 'lbl s'), al);
+  layer(a, hline(SX(0), SX(250), sy0, C.rule, 2));
+  const rw = layer(a, curve(range(0, 250).map(n => [SX(n), sy0 - Math.max(-0.11, Math.min(0.11, ring[n])) * 1100]), C.ink, 3), [SX(0) - 4, SX(250) + 4]);
+  reveal(rw, al, ev, 'cruise');
+  flicker(rw, 0, 0, ev, ti, 0.6, 93);
+  M.show(label(a, 'it dies away', SX(250), 630, 'lbl ok', 'right'), ev);
+  M.show(label(a, 'each rounded alone: 1 ÷ 64', 160, 500, 'lbl'), al);
+  M.show(label(a, `poles: ${fmt(SECP, 4)}, inside`, 160, 580, 'lbl ok'), ev);
+  M.show(tick(a, 900, 610), sa);
+  const wg = [1900, 2000, 2100].map(f => pct(gainAt(SBK, SA, f)));
+  M.show(label(a, `whine: ${wg.join(', ')}`, 160, 660, 'lbl'), wh);
+  M.show(label(a, `voice at 1,500 Hz: ${pct(gainAt(SBK, SA, 1500))}`, 160, 740, 'lbl'), vo);
+  const X = r => 260 + (r - 0.9) * 8000, y = 520;
+  layer(b, hline(X(0.9), X(1.08), y, C.ink, 4));
+  [[0.9, '0.90'], [0.98, '0.98'], [1, '1'], [1.06, '1.06']].forEach(([r, t]) => { layer(b, vline(X(r), y, y + 16, C.ink, 3)); label(b, t, X(r), y + 40, 'lbl s', 'center'); });
+  label(b, 'pole radius', 260, y + 120, 'lbl s');
+  const unst = layer(b, `<rect x="${X(1)}" y="${y - 380}" width="${X(1.08) - X(1)}" height="380" fill="${C.accentSoft}"/>`);
+  flicker(unst, 0, 0, ac, sceneEnd(10), 0.45, 63);
+  M.show(layer(b, vline(X(1), y - 400, y, C.accent, 6)), li);
+  M.show(label(b, 'stable', X(1) - 30, y - 440, 'lbl ok', 'right'), li);
+  M.show(label(b, 'unstable', X(1) + 30, y - 440, 'lbl acc'), li);
+  label(b, 'tiny errors?', 260, 70, 'note');
+  M.show(layer(b, poleSvg(X(SECP), y - 80, 16, C.input)), ti);
+  M.show(label(b, 'cascade', X(SECP) - 40, y - 109, 'lbl ok', 'right'), ti);
+  stepped(b, cr, sceneEnd(10), 2, p => {
+    const fr = cr + p * (sceneEnd(10) - cr), t = Math.min(1, (fr - cr) / Math.max(10, ac - cr)), e = t * t * (3 - 2 * t), r = 0.98 + (1.0567 - 0.98) * e;
+    return poleSvg(X(r), y - 230, 16, r > 1 ? C.accent : C.ink);
+  });
+  M.show(layer(b, laptopPole(X(0.98), y - 230)), cr);
+  M.show(label(b, 'crowded pole', X(0.98), y - 340, 'lbl s', 'center'), cr, ac);
+  M.show(label(b, '1.0567: hums', X(1.0567), y - 370, 'lbl acc', 'center'), ac);
+  swell(b, ac + 10, sceneEnd(10), [[X(1.0567), y - 230]]);
+  drift(10);
+}
+{
+  const c = cam(11), a = sub(c), b = sub(c);
+  const ch = word(11, 'chips'), go = word(11, 'gone'), wi = word(11, 'wideband'), ri = word(11, 'ripple'), hi = word(11, 'high'), id = word(11, 'ideal'), pa = word(11, 'paper');
+  M.show('#' + a.id, sceneStart(11), wi); M.show('#' + b.id, wi);
+  label(a, 'every exchange: the cascade', 960, 300, 'lbl', 'center');
+  M.show(label(a, 'the whine: gone', 960, 420, 'lbl big ok', 'center'), go);
+  M.show(tick(a, 1360, 470, 1.4), go + 4);
+  label(b, 'next ticket: the wideband line', 960, 76, 'lbl s', 'center');
+  const X = t => 380 + t * 1240, Y = f => 750 - f * 0.1;
+  axes(b, X, Y, [[0, '0'], [1, '1 s']], [[0, '0'], [4000, '4,000'], [6000, '6,000 Hz']], 0, 1, 0, 6500, '');
+  layer(b, hline(X(0), X(1), Y(4000), C.soft, 3, '10 8'));
+  label(b, 'the limit', X(1), Y(4000) + 8, 'lbl s', 'right');
+  const sw = layer(b, seg(X(0), Y(4500), X(1), Y(6000), C.ink, 8, '14 9'), [X(0) - 6, X(1) + 6]);
+  reveal(sw, wi, ri, 'cruise');
+  M.show(label(b, 'test sweep in', X(0.82), 200, 'lbl s', 'center'), wi + 10);
+  const halo = layer(b, `<path d="M${X(0) + 4} ${Y(3500) - 70}L${X(1)} ${Y(2000) - 70}V${Y(2000) + 70}L${X(0) + 4} ${Y(3500) + 70}Z" fill="${C.accentSoft}"/>`, [X(0), X(1) + 4]);
+  reveal(halo, ri, hi + 20, 'cruise');
+  flicker(halo, 0, 0, hi + 20, END - 26, 0, 79);
+  const gh = layer(b, seg(X(0), Y(3500), X(1), Y(2000), C.accent, 10), [X(0) - 6, X(1) + 6]);
+  reveal(gh, ri, hi + 20, 'cruise');
+  flicker(gh, X(0.5), Y(2750), hi + 20, END - 24, 0.4, 77, 0.6);
+  flicker(sw, X(0.5), Y(5250), ri, END - 24, 0.6, 78);
+  M.show(label(b, 'a faint ghost gliding down', X(0.5), Y(2200) + 60, 'lbl acc', 'center'), hi);
+  M.show(label(b, 'ideal on paper?', X(1), 668, 'note acc', 'right'), id);
+  drift(11);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

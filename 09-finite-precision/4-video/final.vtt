@@ -1,0 +1,296 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:03.440
+The clock chip's whine has learned to hop,
+between nineteen hundred,
+
+2
+00:00:03.460 --> 00:00:05.340
+two thousand and twenty-one hundred hertz.
+
+3
+00:00:05.660 --> 00:00:07.540
+So the team builds three narrow notches,
+
+4
+00:00:07.560 --> 00:00:10.240
+one per whine,
+and multiplies them into one rule.
+
+5
+00:00:11.040 --> 00:00:12.600
+On the laptop it's perfect.
+
+6
+00:00:12.620 --> 00:00:13.900
+On a cheap eight-bit chip,
+
+7
+00:00:13.920 --> 00:00:16.100
+one click starts a hum
+that grows every sample,
+
+8
+00:00:16.120 --> 00:00:18.680
+slams into the chip's limits,
+and swings between them forever.
+
+9
+00:00:18.700 --> 00:00:20.800
+Same rule, same numbers. Or are they?
+
+10
+00:00:21.990 --> 00:00:23.830
+Every number in that rule
+is a coefficient,
+
+11
+00:00:23.850 --> 00:00:26.290
+a fixed number a sample
+gets multiplied by.
+
+12
+00:00:26.470 --> 00:00:28.130
+The chip stores each one in eight bits:
+
+13
+00:00:28.150 --> 00:00:29.350
+a whole number of steps,
+
+14
+00:00:29.370 --> 00:00:31.090
+two hundred fifty-six choices.
+
+15
+00:00:31.210 --> 00:00:33.530
+Rounding to the nearest step
+is called quantization.
+
+16
+00:00:34.120 --> 00:00:36.040
+Try lesson six's notch first.
+
+17
+00:00:36.060 --> 00:00:37.620
+Its coefficients are under one,
+
+18
+00:00:37.640 --> 00:00:40.520
+so the chip can use a fine step,
+one over a hundred twenty-eight.
+
+19
+00:00:40.580 --> 00:00:42.400
+Point eight one becomes
+a hundred and four steps,
+
+20
+00:00:42.460 --> 00:00:43.560
+point eight one two five.
+
+21
+00:00:43.860 --> 00:00:47.160
+The poles move out
+by point zero zero one four. That's all.
+
+22
+00:00:47.930 --> 00:00:49.350
+Now the three-notch rule.
+
+23
+00:00:49.370 --> 00:00:51.590
+Its biggest coefficient
+is two point eight six.
+
+24
+00:00:51.610 --> 00:00:54.450
+A step of one over sixty-four
+only reaches just under two,
+
+25
+00:00:54.470 --> 00:00:56.350
+so the chip is forced
+to one over thirty-two,
+
+26
+00:00:56.370 --> 00:00:57.730
+for every coefficient.
+
+27
+00:00:57.750 --> 00:00:59.310
+Each lands about a hundredth off.
+
+28
+00:00:59.330 --> 00:01:00.310
+Small, you'd think.
+
+29
+00:01:01.080 --> 00:01:02.660
+Find the rounded rule's poles.
+
+30
+00:01:02.680 --> 00:01:03.840
+The middle pair moves in.
+
+31
+00:01:03.860 --> 00:01:05.860
+The outer pairs jump
+outside the unit circle,
+
+32
+00:01:05.880 --> 00:01:07.280
+to one point oh five seven,
+
+33
+00:01:07.300 --> 00:01:09.900
+so an echo grows
+almost six percent per sample.
+
+34
+00:01:09.960 --> 00:01:11.360
+The chip's rule isn't your rule.
+
+35
+00:01:11.380 --> 00:01:13.400
+It's a neighbor,
+and that neighbor isn't stable.
+
+36
+00:01:14.440 --> 00:01:14.960
+But why?
+
+37
+00:01:14.980 --> 00:01:16.320
+Next to lesson six,
+
+38
+00:01:16.340 --> 00:01:18.220
+these errors
+are five and a half times bigger,
+
+39
+00:01:18.240 --> 00:01:20.640
+yet the poles moved
+seventy to a hundred times as far.
+
+40
+00:01:20.660 --> 00:01:21.640
+The book's answer:
+
+41
+00:01:21.660 --> 00:01:25.080
+a pole moves by the error over the product
+of its distances to the other poles.
+
+42
+00:01:25.100 --> 00:01:27.100
+One over that product is its multiplier.
+
+43
+00:01:28.380 --> 00:01:30.740
+Here, three poles are crammed
+together near the top.
+
+44
+00:01:30.760 --> 00:01:34.000
+The middle one's neighbors are just
+point zero seven seven away.
+
+45
+00:01:34.020 --> 00:01:35.700
+Oh, its multiplier is twenty-two.
+
+46
+00:01:35.720 --> 00:01:38.080
+Lesson six's lone pair
+sits one point eight apart,
+
+47
+00:01:38.100 --> 00:01:39.840
+a multiplier of point five six.
+
+48
+00:01:39.860 --> 00:01:41.120
+Its error shrinks.
+
+49
+00:01:42.140 --> 00:01:45.020
+Multiplying out crowds
+all six poles into one rule,
+
+50
+00:01:45.040 --> 00:01:46.840
+each coefficient a blend of all of them.
+
+51
+00:01:46.920 --> 00:01:47.820
+So don't multiply.
+
+52
+00:01:47.840 --> 00:01:50.200
+Build one notch at a time:
+a second-order section,
+
+53
+00:01:50.220 --> 00:01:51.500
+one zero pair and one pole pair,
+
+54
+00:01:51.520 --> 00:01:53.460
+where each number
+is something you can see.
+
+55
+00:01:53.480 --> 00:01:54.480
+Run three in a row.
+
+56
+00:01:54.540 --> 00:01:55.420
+That's a cascade.
+
+57
+00:01:56.180 --> 00:01:57.820
+Each section is rounded alone,
+
+58
+00:01:57.840 --> 00:01:59.600
+at a step of one over sixty-four.
+
+59
+00:01:59.970 --> 00:02:02.890
+Every pole lands at point nine seven six,
+safely inside.
+
+60
+00:02:03.320 --> 00:02:05.320
+The whine
+keeps one point three percent at most,
+
+61
+00:02:05.340 --> 00:02:06.680
+the voice ninety-nine and a half.
+
+62
+00:02:06.700 --> 00:02:08.700
+Tiny errors aren't always tiny trouble.
+
+63
+00:02:08.720 --> 00:02:11.640
+Stability is a line,
+and crowded poles get pushed across it.
+
+64
+00:02:13.520 --> 00:02:15.970
+The chips go out,
+and the whine is gone for good.
+
+65
+00:02:16.010 --> 00:02:19.030
+Then the wideband line starts leaking
+a faint ripple of high tones,
+
+66
+00:02:19.110 --> 00:02:21.210
+through a filter
+that's already ideal on paper.

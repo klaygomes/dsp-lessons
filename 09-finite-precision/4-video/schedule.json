@@ -1,0 +1,1936 @@
+{
+ "fps": 30,
+ "duration": 141.91,
+ "wpm": 204,
+ "lines": [
+  {
+   "line": 1,
+   "text": "The clock chip's whine has learned to hop, between nineteen hundred, two thousand and twenty-one hundred hertz. So the team builds three narrow notches, one per whine, and multiplies them into one rule.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 10.44,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "the",
+     "frame": 18
+    },
+    {
+     "word": "clock",
+     "frame": 26
+    },
+    {
+     "word": "chips",
+     "frame": 33
+    },
+    {
+     "word": "wine",
+     "frame": 42
+    },
+    {
+     "word": "has",
+     "frame": 50
+    },
+    {
+     "word": "learned",
+     "frame": 57
+    },
+    {
+     "word": "to",
+     "frame": 62
+    },
+    {
+     "word": "hop",
+     "frame": 67
+    },
+    {
+     "word": "between",
+     "frame": 74
+    },
+    {
+     "word": "1900",
+     "frame": 86
+    },
+    {
+     "word": "2000",
+     "frame": 104
+    },
+    {
+     "word": "and",
+     "frame": 119
+    },
+    {
+     "word": "2100",
+     "frame": 130
+    },
+    {
+     "word": "hertz",
+     "frame": 149
+    },
+    {
+     "word": "so",
+     "frame": 170
+    },
+    {
+     "word": "the",
+     "frame": 177
+    },
+    {
+     "word": "team",
+     "frame": 181
+    },
+    {
+     "word": "builds",
+     "frame": 188
+    },
+    {
+     "word": "three",
+     "frame": 197
+    },
+    {
+     "word": "narrow",
+     "frame": 203
+    },
+    {
+     "word": "notches",
+     "frame": 211
+    },
+    {
+     "word": "one",
+     "frame": 227
+    },
+    {
+     "word": "per",
+     "frame": 241
+    },
+    {
+     "word": "wine",
+     "frame": 246
+    },
+    {
+     "word": "and",
+     "frame": 255
+    },
+    {
+     "word": "multiplies",
+     "frame": 262
+    },
+    {
+     "word": "them",
+     "frame": 279
+    },
+    {
+     "word": "into",
+     "frame": 283
+    },
+    {
+     "word": "one",
+     "frame": 289
+    },
+    {
+     "word": "rule",
+     "frame": 296
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "On the laptop it's perfect. On a cheap eight-bit chip, one click starts a hum that grows every sample, slams into the chip's limits, and swings between them forever. Same rule, same numbers. Or are they?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line02.wav",
+   "at": 11.04,
+   "start": 11.04,
+   "end": 20.79,
+   "start_frame": 331,
+   "words": [
+    {
+     "word": "On",
+     "frame": 331
+    },
+    {
+     "word": "the",
+     "frame": 340
+    },
+    {
+     "word": "laptop,",
+     "frame": 343
+    },
+    {
+     "word": "it's",
+     "frame": 352
+    },
+    {
+     "word": "perfect.",
+     "frame": 360
+    },
+    {
+     "word": "On",
+     "frame": 379
+    },
+    {
+     "word": "a",
+     "frame": 386
+    },
+    {
+     "word": "cheap",
+     "frame": 389
+    },
+    {
+     "word": "8",
+     "frame": 395
+    },
+    {
+     "word": "-bit",
+     "frame": 401
+    },
+    {
+     "word": "chip,",
+     "frame": 406
+    },
+    {
+     "word": "one",
+     "frame": 418
+    },
+    {
+     "word": "click",
+     "frame": 421
+    },
+    {
+     "word": "starts",
+     "frame": 428
+    },
+    {
+     "word": "a",
+     "frame": 437
+    },
+    {
+     "word": "hum",
+     "frame": 443
+    },
+    {
+     "word": "that",
+     "frame": 448
+    },
+    {
+     "word": "grows",
+     "frame": 454
+    },
+    {
+     "word": "every",
+     "frame": 461
+    },
+    {
+     "word": "sample,",
+     "frame": 466
+    },
+    {
+     "word": "slams",
+     "frame": 484
+    },
+    {
+     "word": "into",
+     "frame": 490
+    },
+    {
+     "word": "the",
+     "frame": 496
+    },
+    {
+     "word": "chip's",
+     "frame": 500
+    },
+    {
+     "word": "limits,",
+     "frame": 508
+    },
+    {
+     "word": "and",
+     "frame": 518
+    },
+    {
+     "word": "swings",
+     "frame": 519
+    },
+    {
+     "word": "between",
+     "frame": 529
+    },
+    {
+     "word": "them",
+     "frame": 537
+    },
+    {
+     "word": "forever.",
+     "frame": 544
+    },
+    {
+     "word": "Same",
+     "frame": 561
+    },
+    {
+     "word": "rules,",
+     "frame": 573
+    },
+    {
+     "word": "same",
+     "frame": 586
+    },
+    {
+     "word": "numbers,",
+     "frame": 589
+    },
+    {
+     "word": "or",
+     "frame": 602
+    },
+    {
+     "word": "are",
+     "frame": 607
+    },
+    {
+     "word": "they?",
+     "frame": 613
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Every number in that rule is a coefficient, a fixed number a sample gets multiplied by. The chip stores each one in eight bits: a whole number of steps, two hundred fifty-six choices. Rounding to the nearest step is called quantization.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line03.wav",
+   "at": 21.99,
+   "start": 21.99,
+   "end": 33.52,
+   "start_frame": 660,
+   "words": [
+    {
+     "word": "Every",
+     "frame": 660
+    },
+    {
+     "word": "number",
+     "frame": 672
+    },
+    {
+     "word": "in",
+     "frame": 680
+    },
+    {
+     "word": "that",
+     "frame": 684
+    },
+    {
+     "word": "rule",
+     "frame": 688
+    },
+    {
+     "word": "is",
+     "frame": 694
+    },
+    {
+     "word": "a",
+     "frame": 699
+    },
+    {
+     "word": "coefficient,",
+     "frame": 702
+    },
+    {
+     "word": "a",
+     "frame": 715
+    },
+    {
+     "word": "fixed",
+     "frame": 725
+    },
+    {
+     "word": "number",
+     "frame": 732
+    },
+    {
+     "word": "a",
+     "frame": 740
+    },
+    {
+     "word": "sample",
+     "frame": 744
+    },
+    {
+     "word": "gets",
+     "frame": 751
+    },
+    {
+     "word": "multiplied",
+     "frame": 758
+    },
+    {
+     "word": "by.",
+     "frame": 771
+    },
+    {
+     "word": "The",
+     "frame": 794
+    },
+    {
+     "word": "chip",
+     "frame": 797
+    },
+    {
+     "word": "stores",
+     "frame": 803
+    },
+    {
+     "word": "each",
+     "frame": 811
+    },
+    {
+     "word": "one",
+     "frame": 819
+    },
+    {
+     "word": "in",
+     "frame": 825
+    },
+    {
+     "word": "8",
+     "frame": 829
+    },
+    {
+     "word": "bits,",
+     "frame": 834
+    },
+    {
+     "word": "a",
+     "frame": 844
+    },
+    {
+     "word": "whole",
+     "frame": 849
+    },
+    {
+     "word": "number",
+     "frame": 855
+    },
+    {
+     "word": "of",
+     "frame": 861
+    },
+    {
+     "word": "steps,",
+     "frame": 866
+    },
+    {
+     "word": "256",
+     "frame": 881
+    },
+    {
+     "word": "choices.",
+     "frame": 898
+    },
+    {
+     "word": "Rounding",
+     "frame": 936
+    },
+    {
+     "word": "to",
+     "frame": 945
+    },
+    {
+     "word": "the",
+     "frame": 948
+    },
+    {
+     "word": "nearest",
+     "frame": 951
+    },
+    {
+     "word": "step",
+     "frame": 958
+    },
+    {
+     "word": "is",
+     "frame": 968
+    },
+    {
+     "word": "called",
+     "frame": 972
+    },
+    {
+     "word": "quantization.",
+     "frame": 978
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "Try lesson six's notch first. Its coefficients are under one, so the chip can use a fine step, one over a hundred twenty-eight. Point eight one becomes a hundred and four steps, point eight one two five. The poles move out by point zero zero one four. That's all.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-breath/line04.wav",
+   "at": 34.12,
+   "start": 34.12,
+   "end": 47.13,
+   "start_frame": 1024,
+   "words": [
+    {
+     "word": "Try",
+     "frame": 1024
+    },
+    {
+     "word": "Lesson",
+     "frame": 1034
+    },
+    {
+     "word": "6's",
+     "frame": 1044
+    },
+    {
+     "word": "notch",
+     "frame": 1057
+    },
+    {
+     "word": "first.",
+     "frame": 1064
+    },
+    {
+     "word": "Its",
+     "frame": 1082
+    },
+    {
+     "word": "coefficients",
+     "frame": 1090
+    },
+    {
+     "word": "are",
+     "frame": 1103
+    },
+    {
+     "word": "under",
+     "frame": 1111
+    },
+    {
+     "word": "1,",
+     "frame": 1116
+    },
+    {
+     "word": "so",
+     "frame": 1129
+    },
+    {
+     "word": "the",
+     "frame": 1135
+    },
+    {
+     "word": "chip",
+     "frame": 1138
+    },
+    {
+     "word": "can",
+     "frame": 1144
+    },
+    {
+     "word": "use",
+     "frame": 1148
+    },
+    {
+     "word": "a",
+     "frame": 1152
+    },
+    {
+     "word": "fine",
+     "frame": 1155
+    },
+    {
+     "word": "step,",
+     "frame": 1162
+    },
+    {
+     "word": "1",
+     "frame": 1178
+    },
+    {
+     "word": "over",
+     "frame": 1180
+    },
+    {
+     "word": "128.",
+     "frame": 1186
+    },
+    {
+     "word": "0",
+     "frame": 1213
+    },
+    {
+     "word": ".81",
+     "frame": 1217
+    },
+    {
+     "word": "becomes",
+     "frame": 1225
+    },
+    {
+     "word": "104",
+     "frame": 1235
+    },
+    {
+     "word": "steps,",
+     "frame": 1250
+    },
+    {
+     "word": "0",
+     "frame": 1269
+    },
+    {
+     "word": ".8125.",
+     "frame": 1274
+    },
+    {
+     "word": "The",
+     "frame": 1316
+    },
+    {
+     "word": "poles",
+     "frame": 1322
+    },
+    {
+     "word": "move",
+     "frame": 1331
+    },
+    {
+     "word": "out",
+     "frame": 1338
+    },
+    {
+     "word": "by",
+     "frame": 1343
+    },
+    {
+     "word": "0",
+     "frame": 1348
+    },
+    {
+     "word": ".0014.",
+     "frame": 1356
+    },
+    {
+     "word": "That's",
+     "frame": 1397
+    },
+    {
+     "word": "all.",
+     "frame": 1405
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Now the three-notch rule. Its biggest coefficient is two point eight six. A step of one over sixty-four only reaches just under two, so the chip is forced to one over thirty-two, for every coefficient. Each lands about a hundredth off. Small, you'd think.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-fix/line01.wav",
+   "at": 47.93,
+   "start": 47.93,
+   "end": 60.28,
+   "start_frame": 1438,
+   "words": [
+    {
+     "word": "Now",
+     "frame": 1438
+    },
+    {
+     "word": "the",
+     "frame": 1449
+    },
+    {
+     "word": "three",
+     "frame": 1454
+    },
+    {
+     "word": "-notch",
+     "frame": 1460
+    },
+    {
+     "word": "rule.",
+     "frame": 1469
+    },
+    {
+     "word": "Its",
+     "frame": 1481
+    },
+    {
+     "word": "biggest",
+     "frame": 1490
+    },
+    {
+     "word": "coefficient",
+     "frame": 1497
+    },
+    {
+     "word": "is",
+     "frame": 1509
+    },
+    {
+     "word": "2",
+     "frame": 1517
+    },
+    {
+     "word": ".86.",
+     "frame": 1522
+    },
+    {
+     "word": "A",
+     "frame": 1548
+    },
+    {
+     "word": "step",
+     "frame": 1552
+    },
+    {
+     "word": "of",
+     "frame": 1558
+    },
+    {
+     "word": "1",
+     "frame": 1563
+    },
+    {
+     "word": "over",
+     "frame": 1568
+    },
+    {
+     "word": "64",
+     "frame": 1572
+    },
+    {
+     "word": "only",
+     "frame": 1585
+    },
+    {
+     "word": "reaches",
+     "frame": 1598
+    },
+    {
+     "word": "just",
+     "frame": 1608
+    },
+    {
+     "word": "under",
+     "frame": 1621
+    },
+    {
+     "word": "2,",
+     "frame": 1623
+    },
+    {
+     "word": "so",
+     "frame": 1634
+    },
+    {
+     "word": "the",
+     "frame": 1643
+    },
+    {
+     "word": "chip",
+     "frame": 1647
+    },
+    {
+     "word": "is",
+     "frame": 1652
+    },
+    {
+     "word": "forced",
+     "frame": 1656
+    },
+    {
+     "word": "to",
+     "frame": 1665
+    },
+    {
+     "word": "1",
+     "frame": 1669
+    },
+    {
+     "word": "over",
+     "frame": 1674
+    },
+    {
+     "word": "32",
+     "frame": 1680
+    },
+    {
+     "word": "for",
+     "frame": 1691
+    },
+    {
+     "word": "every",
+     "frame": 1702
+    },
+    {
+     "word": "coefficient.",
+     "frame": 1710
+    },
+    {
+     "word": "Each",
+     "frame": 1732
+    },
+    {
+     "word": "lands",
+     "frame": 1741
+    },
+    {
+     "word": "about",
+     "frame": 1748
+    },
+    {
+     "word": "a",
+     "frame": 1754
+    },
+    {
+     "word": "hundredth",
+     "frame": 1759
+    },
+    {
+     "word": "off.",
+     "frame": 1775
+    },
+    {
+     "word": "Small,",
+     "frame": 1780
+    },
+    {
+     "word": "you'd",
+     "frame": 1793
+    },
+    {
+     "word": "think.",
+     "frame": 1797
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "Find the rounded rule's poles. The middle pair moves in. The outer pairs jump outside the unit circle, to one point oh five seven, so an echo grows almost six percent per sample. The chip's rule isn't your rule. It's a neighbor, and that neighbor isn't stable.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line06.wav",
+   "at": 61.08,
+   "start": 61.08,
+   "end": 73.44,
+   "start_frame": 1832,
+   "words": [
+    {
+     "word": "Find",
+     "frame": 1832
+    },
+    {
+     "word": "the",
+     "frame": 1843
+    },
+    {
+     "word": "rounded",
+     "frame": 1846
+    },
+    {
+     "word": "rule's",
+     "frame": 1853
+    },
+    {
+     "word": "poles.",
+     "frame": 1865
+    },
+    {
+     "word": "The",
+     "frame": 1880
+    },
+    {
+     "word": "middle",
+     "frame": 1883
+    },
+    {
+     "word": "pair",
+     "frame": 1888
+    },
+    {
+     "word": "moves",
+     "frame": 1895
+    },
+    {
+     "word": "in.",
+     "frame": 1904
+    },
+    {
+     "word": "The",
+     "frame": 1916
+    },
+    {
+     "word": "outer",
+     "frame": 1920
+    },
+    {
+     "word": "pairs",
+     "frame": 1927
+    },
+    {
+     "word": "jump",
+     "frame": 1936
+    },
+    {
+     "word": "outside",
+     "frame": 1944
+    },
+    {
+     "word": "the",
+     "frame": 1954
+    },
+    {
+     "word": "unit's",
+     "frame": 1958
+    },
+    {
+     "word": "circle",
+     "frame": 1969
+    },
+    {
+     "word": "to",
+     "frame": 1976
+    },
+    {
+     "word": "1",
+     "frame": 1982
+    },
+    {
+     "word": ".057,",
+     "frame": 1988
+    },
+    {
+     "word": "so",
+     "frame": 2019
+    },
+    {
+     "word": "an",
+     "frame": 2026
+    },
+    {
+     "word": "echo",
+     "frame": 2030
+    },
+    {
+     "word": "grows",
+     "frame": 2036
+    },
+    {
+     "word": "almost",
+     "frame": 2045
+    },
+    {
+     "word": "6",
+     "frame": 2053
+    },
+    {
+     "word": "%",
+     "frame": 2062
+    },
+    {
+     "word": "per",
+     "frame": 2071
+    },
+    {
+     "word": "sample.",
+     "frame": 2078
+    },
+    {
+     "word": "The",
+     "frame": 2099
+    },
+    {
+     "word": "chip's",
+     "frame": 2101
+    },
+    {
+     "word": "rule",
+     "frame": 2110
+    },
+    {
+     "word": "isn't",
+     "frame": 2116
+    },
+    {
+     "word": "your",
+     "frame": 2124
+    },
+    {
+     "word": "rule.",
+     "frame": 2129
+    },
+    {
+     "word": "It's",
+     "frame": 2141
+    },
+    {
+     "word": "a",
+     "frame": 2147
+    },
+    {
+     "word": "neighbor,",
+     "frame": 2149
+    },
+    {
+     "word": "and",
+     "frame": 2160
+    },
+    {
+     "word": "that",
+     "frame": 2163
+    },
+    {
+     "word": "neighbor",
+     "frame": 2167
+    },
+    {
+     "word": "isn't",
+     "frame": 2174
+    },
+    {
+     "word": "stable.",
+     "frame": 2183
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "But why? Next to lesson six, these errors are five and a half times bigger, yet the poles moved seventy to a hundred times as far. The book's answer: a pole moves by the error over the product of its distances to the other poles. One over that product is its multiplier.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-fix3/line01.wav",
+   "at": 74.44,
+   "start": 74.44,
+   "end": 87.38,
+   "start_frame": 2233,
+   "words": [
+    {
+     "word": "but",
+     "frame": 2233
+    },
+    {
+     "word": "why",
+     "frame": 2242
+    },
+    {
+     "word": "next",
+     "frame": 2249
+    },
+    {
+     "word": "to",
+     "frame": 2267
+    },
+    {
+     "word": "lesson",
+     "frame": 2273
+    },
+    {
+     "word": "six",
+     "frame": 2280
+    },
+    {
+     "word": "these",
+     "frame": 2290
+    },
+    {
+     "word": "errors",
+     "frame": 2299
+    },
+    {
+     "word": "are",
+     "frame": 2306
+    },
+    {
+     "word": "five",
+     "frame": 2312
+    },
+    {
+     "word": "and",
+     "frame": 2320
+    },
+    {
+     "word": "a",
+     "frame": 2324
+    },
+    {
+     "word": "half",
+     "frame": 2326
+    },
+    {
+     "word": "times",
+     "frame": 2330
+    },
+    {
+     "word": "bigger",
+     "frame": 2338
+    },
+    {
+     "word": "yet",
+     "frame": 2347
+    },
+    {
+     "word": "the",
+     "frame": 2356
+    },
+    {
+     "word": "poles",
+     "frame": 2359
+    },
+    {
+     "word": "move",
+     "frame": 2366
+    },
+    {
+     "word": "70",
+     "frame": 2374
+    },
+    {
+     "word": "to",
+     "frame": 2384
+    },
+    {
+     "word": "100",
+     "frame": 2392
+    },
+    {
+     "word": "times",
+     "frame": 2397
+    },
+    {
+     "word": "as",
+     "frame": 2407
+    },
+    {
+     "word": "far",
+     "frame": 2413
+    },
+    {
+     "word": "the",
+     "frame": 2420
+    },
+    {
+     "word": "book's",
+     "frame": 2432
+    },
+    {
+     "word": "answer",
+     "frame": 2440
+    },
+    {
+     "word": "a",
+     "frame": 2450
+    },
+    {
+     "word": "pole",
+     "frame": 2461
+    },
+    {
+     "word": "moves",
+     "frame": 2467
+    },
+    {
+     "word": "by",
+     "frame": 2474
+    },
+    {
+     "word": "the",
+     "frame": 2479
+    },
+    {
+     "word": "error",
+     "frame": 2482
+    },
+    {
+     "word": "over",
+     "frame": 2488
+    },
+    {
+     "word": "the",
+     "frame": 2495
+    },
+    {
+     "word": "product",
+     "frame": 2498
+    },
+    {
+     "word": "of",
+     "frame": 2507
+    },
+    {
+     "word": "its",
+     "frame": 2512
+    },
+    {
+     "word": "distances",
+     "frame": 2516
+    },
+    {
+     "word": "to",
+     "frame": 2533
+    },
+    {
+     "word": "the",
+     "frame": 2534
+    },
+    {
+     "word": "other",
+     "frame": 2537
+    },
+    {
+     "word": "poles",
+     "frame": 2542
+    },
+    {
+     "word": "one",
+     "frame": 2553
+    },
+    {
+     "word": "over",
+     "frame": 2566
+    },
+    {
+     "word": "that",
+     "frame": 2570
+    },
+    {
+     "word": "product",
+     "frame": 2576
+    },
+    {
+     "word": "is",
+     "frame": 2584
+    },
+    {
+     "word": "its",
+     "frame": 2591
+    },
+    {
+     "word": "multiplier",
+     "frame": 2596
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "Here, three poles are crammed together near the top. The middle one's neighbors are just point zero seven seven away. Oh, its multiplier is twenty-two. Lesson six's lone pair sits one point eight apart, a multiplier of point five six. Its error shrinks.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line08.wav",
+   "at": 88.38,
+   "start": 88.38,
+   "end": 101.14,
+   "start_frame": 2651,
+   "words": [
+    {
+     "word": "Here",
+     "frame": 2651
+    },
+    {
+     "word": "three",
+     "frame": 2661
+    },
+    {
+     "word": "poles",
+     "frame": 2668
+    },
+    {
+     "word": "are",
+     "frame": 2675
+    },
+    {
+     "word": "crammed",
+     "frame": 2680
+    },
+    {
+     "word": "together",
+     "frame": 2687
+    },
+    {
+     "word": "near",
+     "frame": 2698
+    },
+    {
+     "word": "the",
+     "frame": 2703
+    },
+    {
+     "word": "top.",
+     "frame": 2708
+    },
+    {
+     "word": "The",
+     "frame": 2723
+    },
+    {
+     "word": "middle",
+     "frame": 2731
+    },
+    {
+     "word": "one's",
+     "frame": 2737
+    },
+    {
+     "word": "neighbors",
+     "frame": 2746
+    },
+    {
+     "word": "are",
+     "frame": 2755
+    },
+    {
+     "word": "just",
+     "frame": 2762
+    },
+    {
+     "word": "0",
+     "frame": 2769
+    },
+    {
+     "word": ".077",
+     "frame": 2774
+    },
+    {
+     "word": "away.",
+     "frame": 2803
+    },
+    {
+     "word": "Oh,",
+     "frame": 2821
+    },
+    {
+     "word": "its",
+     "frame": 2827
+    },
+    {
+     "word": "multiplier",
+     "frame": 2830
+    },
+    {
+     "word": "is",
+     "frame": 2843
+    },
+    {
+     "word": "22.",
+     "frame": 2849
+    },
+    {
+     "word": "Lesson",
+     "frame": 2872
+    },
+    {
+     "word": "6's",
+     "frame": 2883
+    },
+    {
+     "word": "lone",
+     "frame": 2894
+    },
+    {
+     "word": "pair",
+     "frame": 2900
+    },
+    {
+     "word": "sits",
+     "frame": 2908
+    },
+    {
+     "word": "1",
+     "frame": 2915
+    },
+    {
+     "word": ".8",
+     "frame": 2921
+    },
+    {
+     "word": "apart,",
+     "frame": 2933
+    },
+    {
+     "word": "a",
+     "frame": 2943
+    },
+    {
+     "word": "multiplier",
+     "frame": 2949
+    },
+    {
+     "word": "of",
+     "frame": 2961
+    },
+    {
+     "word": "0",
+     "frame": 2967
+    },
+    {
+     "word": ".56.",
+     "frame": 2971
+    },
+    {
+     "word": "Its",
+     "frame": 2996
+    },
+    {
+     "word": "error",
+     "frame": 3002
+    },
+    {
+     "word": "shrinks.",
+     "frame": 3010
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "Multiplying out crowds all six poles into one rule, each coefficient a blend of all of them. So don't multiply. Build one notch at a time: a second-order section, one zero pair and one pole pair, where each number is something you can see. Run three in a row. That's a cascade.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line09.wav",
+   "at": 102.14,
+   "start": 102.14,
+   "end": 115.38,
+   "start_frame": 3064,
+   "words": [
+    {
+     "word": "Multiplying",
+     "frame": 3064
+    },
+    {
+     "word": "out",
+     "frame": 3084
+    },
+    {
+     "word": "crowds",
+     "frame": 3090
+    },
+    {
+     "word": "all",
+     "frame": 3098
+    },
+    {
+     "word": "six",
+     "frame": 3104
+    },
+    {
+     "word": "poles",
+     "frame": 3112
+    },
+    {
+     "word": "into",
+     "frame": 3121
+    },
+    {
+     "word": "one",
+     "frame": 3129
+    },
+    {
+     "word": "rule,",
+     "frame": 3137
+    },
+    {
+     "word": "each",
+     "frame": 3151
+    },
+    {
+     "word": "coefficient",
+     "frame": 3157
+    },
+    {
+     "word": "a",
+     "frame": 3172
+    },
+    {
+     "word": "blend",
+     "frame": 3178
+    },
+    {
+     "word": "of",
+     "frame": 3183
+    },
+    {
+     "word": "all",
+     "frame": 3187
+    },
+    {
+     "word": "of",
+     "frame": 3191
+    },
+    {
+     "word": "them.",
+     "frame": 3195
+    },
+    {
+     "word": "So",
+     "frame": 3208
+    },
+    {
+     "word": "don't",
+     "frame": 3209
+    },
+    {
+     "word": "multiply.",
+     "frame": 3215
+    },
+    {
+     "word": "Build",
+     "frame": 3235
+    },
+    {
+     "word": "one",
+     "frame": 3238
+    },
+    {
+     "word": "notch",
+     "frame": 3244
+    },
+    {
+     "word": "at",
+     "frame": 3251
+    },
+    {
+     "word": "a",
+     "frame": 3256
+    },
+    {
+     "word": "time,",
+     "frame": 3258
+    },
+    {
+     "word": "a",
+     "frame": 3270
+    },
+    {
+     "word": "second",
+     "frame": 3275
+    },
+    {
+     "word": "order",
+     "frame": 3283
+    },
+    {
+     "word": "section,",
+     "frame": 3289
+    },
+    {
+     "word": "one",
+     "frame": 3307
+    },
+    {
+     "word": "zero",
+     "frame": 3311
+    },
+    {
+     "word": "pair",
+     "frame": 3318
+    },
+    {
+     "word": "and",
+     "frame": 3325
+    },
+    {
+     "word": "one",
+     "frame": 3329
+    },
+    {
+     "word": "pole",
+     "frame": 3334
+    },
+    {
+     "word": "pair",
+     "frame": 3340
+    },
+    {
+     "word": "where",
+     "frame": 3346
+    },
+    {
+     "word": "each",
+     "frame": 3350
+    },
+    {
+     "word": "number",
+     "frame": 3357
+    },
+    {
+     "word": "is",
+     "frame": 3365
+    },
+    {
+     "word": "something",
+     "frame": 3371
+    },
+    {
+     "word": "you",
+     "frame": 3378
+    },
+    {
+     "word": "can",
+     "frame": 3383
+    },
+    {
+     "word": "see.",
+     "frame": 3388
+    },
+    {
+     "word": "Run",
+     "frame": 3404
+    },
+    {
+     "word": "three",
+     "frame": 3409
+    },
+    {
+     "word": "in",
+     "frame": 3415
+    },
+    {
+     "word": "a",
+     "frame": 3420
+    },
+    {
+     "word": "row.",
+     "frame": 3422
+    },
+    {
+     "word": "That's",
+     "frame": 3436
+    },
+    {
+     "word": "a",
+     "frame": 3443
+    },
+    {
+     "word": "cascade.",
+     "frame": 3445
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "Each section is rounded alone, at a step of one over sixty-four. Every pole lands at point nine seven six, safely inside. The whine keeps one point three percent at most, the voice ninety-nine and a half. Tiny errors aren't always tiny trouble. Stability is a line, and crowded poles get pushed across it.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-breath/line10.wav",
+   "at": 116.18,
+   "start": 116.18,
+   "end": 131.6,
+   "start_frame": 3485,
+   "words": [
+    {
+     "word": "Each",
+     "frame": 3485
+    },
+    {
+     "word": "section",
+     "frame": 3497
+    },
+    {
+     "word": "is",
+     "frame": 3507
+    },
+    {
+     "word": "rounded",
+     "frame": 3512
+    },
+    {
+     "word": "alone,",
+     "frame": 3519
+    },
+    {
+     "word": "at",
+     "frame": 3535
+    },
+    {
+     "word": "a",
+     "frame": 3539
+    },
+    {
+     "word": "step",
+     "frame": 3542
+    },
+    {
+     "word": "of",
+     "frame": 3548
+    },
+    {
+     "word": "1",
+     "frame": 3553
+    },
+    {
+     "word": "over",
+     "frame": 3558
+    },
+    {
+     "word": "64.",
+     "frame": 3563
+    },
+    {
+     "word": "Every",
+     "frame": 3599
+    },
+    {
+     "word": "pole",
+     "frame": 3603
+    },
+    {
+     "word": "lands",
+     "frame": 3611
+    },
+    {
+     "word": "at",
+     "frame": 3621
+    },
+    {
+     "word": ".976,",
+     "frame": 3626
+    },
+    {
+     "word": "safely",
+     "frame": 3657
+    },
+    {
+     "word": "inside.",
+     "frame": 3666
+    },
+    {
+     "word": "The",
+     "frame": 3700
+    },
+    {
+     "word": "wine",
+     "frame": 3703
+    },
+    {
+     "word": "keeps",
+     "frame": 3709
+    },
+    {
+     "word": "1",
+     "frame": 3716
+    },
+    {
+     "word": ".3",
+     "frame": 3724
+    },
+    {
+     "word": "%",
+     "frame": 3736
+    },
+    {
+     "word": "at",
+     "frame": 3744
+    },
+    {
+     "word": "most,",
+     "frame": 3749
+    },
+    {
+     "word": "the",
+     "frame": 3760
+    },
+    {
+     "word": "voice",
+     "frame": 3761
+    },
+    {
+     "word": "99",
+     "frame": 3767
+    },
+    {
+     "word": ".5.",
+     "frame": 3779
+    },
+    {
+     "word": "Tiny",
+     "frame": 3801
+    },
+    {
+     "word": "errors",
+     "frame": 3808
+    },
+    {
+     "word": "aren't",
+     "frame": 3818
+    },
+    {
+     "word": "always",
+     "frame": 3828
+    },
+    {
+     "word": "tiny",
+     "frame": 3837
+    },
+    {
+     "word": "trouble.",
+     "frame": 3845
+    },
+    {
+     "word": "Stability",
+     "frame": 3862
+    },
+    {
+     "word": "is",
+     "frame": 3872
+    },
+    {
+     "word": "a",
+     "frame": 3880
+    },
+    {
+     "word": "line,",
+     "frame": 3884
+    },
+    {
+     "word": "and",
+     "frame": 3894
+    },
+    {
+     "word": "crowded",
+     "frame": 3896
+    },
+    {
+     "word": "poles",
+     "frame": 3905
+    },
+    {
+     "word": "get",
+     "frame": 3913
+    },
+    {
+     "word": "pushed",
+     "frame": 3919
+    },
+    {
+     "word": "across",
+     "frame": 3926
+    },
+    {
+     "word": "it.",
+     "frame": 3934
+    }
+   ]
+  },
+  {
+   "line": 11,
+   "text": "The chips go out, and the whine is gone for good. Then the wideband line starts leaking a faint ripple of high tones, through a filter that's already ideal on paper.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-breath/line11.wav",
+   "at": 132.6,
+   "start": 132.6,
+   "end": 141.21,
+   "start_frame": 3978,
+   "words": [
+    {
+     "word": "The",
+     "frame": 4006
+    },
+    {
+     "word": "chips",
+     "frame": 4011
+    },
+    {
+     "word": "go",
+     "frame": 4017
+    },
+    {
+     "word": "out,",
+     "frame": 4025
+    },
+    {
+     "word": "and",
+     "frame": 4036
+    },
+    {
+     "word": "the",
+     "frame": 4038
+    },
+    {
+     "word": "wine",
+     "frame": 4041
+    },
+    {
+     "word": "is",
+     "frame": 4049
+    },
+    {
+     "word": "gone",
+     "frame": 4053
+    },
+    {
+     "word": "for",
+     "frame": 4059
+    },
+    {
+     "word": "good.",
+     "frame": 4064
+    },
+    {
+     "word": "Then",
+     "frame": 4080
+    },
+    {
+     "word": "the",
+     "frame": 4084
+    },
+    {
+     "word": "wideband",
+     "frame": 4088
+    },
+    {
+     "word": "line",
+     "frame": 4100
+    },
+    {
+     "word": "starts",
+     "frame": 4107
+    },
+    {
+     "word": "leaking",
+     "frame": 4117
+    },
+    {
+     "word": "a",
+     "frame": 4125
+    },
+    {
+     "word": "faint",
+     "frame": 4130
+    },
+    {
+     "word": "ripple",
+     "frame": 4138
+    },
+    {
+     "word": "of",
+     "frame": 4147
+    },
+    {
+     "word": "high",
+     "frame": 4152
+    },
+    {
+     "word": "tones",
+     "frame": 4157
+    },
+    {
+     "word": "through",
+     "frame": 4173
+    },
+    {
+     "word": "a",
+     "frame": 4176
+    },
+    {
+     "word": "filter",
+     "frame": 4179
+    },
+    {
+     "word": "that's",
+     "frame": 4187
+    },
+    {
+     "word": "already",
+     "frame": 4195
+    },
+    {
+     "word": "ideal",
+     "frame": 4202
+    },
+    {
+     "word": "on",
+     "frame": 4213
+    },
+    {
+     "word": "paper.",
+     "frame": 4219
+    }
+   ]
+  }
+ ]
+}
