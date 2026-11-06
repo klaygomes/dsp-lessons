@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Ghost in the Sweep</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block">
+<style>
+:root {
+  --paper: #F6F1E7;
+  --paper-2: #ECE4D6;
+  --ink: #26272B;
+  --ink-soft: #5E5F66;
+  --rule: #D9D0C1;
+  --accent: #D9573B;
+  --accent-ink: #B23F25;
+  --accent-soft: #F6D9CF;
+  --input: #2F7F7A;
+  --input-soft: #D3E7E4;
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --serif: "Instrument Serif", Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 500; }
+.scene, .cam, .layer { position: absolute; inset: 0; }
+.layer svg { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
+.fl { --sw: 5px; }
+.fl path[fill="none"], .fl line { stroke-width: var(--sw); }
+.reveal { --p: 0; --x0: 0px; --w: 1920px; clip-path: inset(-2000px calc(1920px - var(--x0) - var(--p) * var(--w)) -2000px -2000px); }
+.lbl { position: absolute; font-family: var(--mono); font-size: 52px; line-height: 62px; white-space: pre; color: var(--ink); }
+.lbl.s { font-size: 50px; line-height: 58px; color: var(--ink-soft); }
+.lbl.acc { color: var(--accent-ink); }
+.lbl.ok { color: var(--input); }
+.lbl.big { font-size: 80px; line-height: 96px; }
+.lbl.m { font-size: 50px; line-height: 58px; }
+.note { position: absolute; font-family: var(--serif); font-style: italic; font-size: 64px; line-height: 76px; white-space: pre; color: var(--ink-soft); }
+.note.acc { color: var(--accent-ink); }
+.note.big { font-size: 96px; line-height: 110px; color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<div id="main"></div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const SCHEDULE = {"fps":30,"duration":147.0,"wpm":196,"lines":[{"line":1,"text":"Remember lesson five's wideband line? Before you downsample it, a ready-made filter, thirty-one numbers long, removes every tone above four thousand hertz. Today a test engineer sweeps a tone through it, from four thousand up to eight thousand hertz. She expects silence.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line01.wav","at":0.6,"start":0.6,"end":13.95,"start_frame":18,"words":[{"word":"Remember","frame":18},{"word":"Lesson","frame":32},{"word":"5's","frame":44},{"word":"Wideband","frame":55},{"word":"line?","frame":68},{"word":"Before","frame":82},{"word":"you","frame":91},{"word":"downsample","frame":96},{"word":"it,","frame":113},{"word":"a","frame":119},{"word":"ready","frame":123},{"word":"-made","frame":127},{"word":"filter,","frame":133},{"word":"31","frame":161},{"word":"numbers","frame":161},{"word":"long,","frame":172},{"word":"removes","frame":187},{"word":"every","frame":196},{"word":"tone","frame":205},{"word":"above","frame":211},{"word":"4000","frame":219},{"word":"Hz.","frame":233},{"word":"Today","frame":252},{"word":"a","frame":260},{"word":"test","frame":266},{"word":"engineer","frame":272},{"word":"sweeps","frame":282},{"word":"a","frame":294},{"word":"tone","frame":303},{"word":"through","frame":304},{"word":"it,","frame":310},{"word":"from","frame":319},{"word":"4000","frame":324},{"word":"up","frame":339},{"word":"to","frame":347},{"word":"8000","frame":351},{"word":"Hz.","frame":365},{"word":"She","frame":379},{"word":"expects","frame":385},{"word":"silence.","frame":395}]},{"line":2,"text":"Instead, a ghost glides down to where voices live, swelling and fading: nine percent at thirty-five hundred hertz, five at three thousand, two at one thousand. And voices near thirty-five hundred come out louder. How can a filter that only multiplies and adds make anything louder?","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line02.wav","at":14.55,"start":14.55,"end":28.32,"start_frame":436,"words":[{"word":"Instead,","frame":436},{"word":"a","frame":454},{"word":"ghost","frame":456},{"word":"glides","frame":463},{"word":"down","frame":474},{"word":"to","frame":483},{"word":"where","frame":488},{"word":"voices","frame":491},{"word":"live,","frame":501},{"word":"swelling","frame":515},{"word":"and","frame":525},{"word":"fading.","frame":530},{"word":"9","frame":552},{"word":"%","frame":557},{"word":"at","frame":565},{"word":"3","frame":571},{"word":",500","frame":578},{"word":"Hz,","frame":592},{"word":"5","frame":609},{"word":"at","frame":615},{"word":"3","frame":620},{"word":",000,","frame":627},{"word":"2","frame":646},{"word":"at","frame":650},{"word":"1","frame":655},{"word":",000,","frame":661},{"word":"and","frame":675},{"word":"voices","frame":682},{"word":"near","frame":691},{"word":"3","frame":698},{"word":",500","frame":705},{"word":"come","frame":718},{"word":"out","frame":728},{"word":"louder.","frame":733},{"word":"How","frame":753},{"word":"can","frame":758},{"word":"a","frame":762},{"word":"filter","frame":765},{"word":"that","frame":772},{"word":"only","frame":778},{"word":"multiplies","frame":786},{"word":"and","frame":804},{"word":"ads","frame":808},{"word":"make","frame":814},{"word":"anything","frame":820},{"word":"louder?","frame":830}]},{"line":3,"text":"Start from the perfect filter, the ideal low-pass: below four thousand hertz everything passes, above it nothing. With no feedback, a filter is just a list of coefficients. Send in one click, and the list comes back out. But the ideal list never ends.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line03.wav","at":29.52,"start":29.52,"end":41.72,"start_frame":886,"words":[{"word":"Start","frame":886},{"word":"from","frame":897},{"word":"the","frame":902},{"word":"perfect","frame":906},{"word":"filter,","frame":913},{"word":"the","frame":931},{"word":"ideal","frame":934},{"word":"low","frame":942},{"word":"pass.","frame":948},{"word":"Below","frame":963},{"word":"4000","frame":968},{"word":"Hz","frame":984},{"word":"everything","frame":992},{"word":"passes,","frame":1002},{"word":"above","frame":1021},{"word":"it","frame":1025},{"word":"nothing.","frame":1030},{"word":"With","frame":1049},{"word":"no","frame":1054},{"word":"feedback,","frame":1059},{"word":"a","frame":1076},{"word":"filter","frame":1079},{"word":"is","frame":1086},{"word":"just","frame":1093},{"word":"a","frame":1097},{"word":"list","frame":1101},{"word":"of","frame":1106},{"word":"coefficients.","frame":1110},{"word":"Send","frame":1140},{"word":"in","frame":1145},{"word":"one","frame":1149},{"word":"click","frame":1155},{"word":"and","frame":1163},{"word":"the","frame":1169},{"word":"list","frame":1172},{"word":"comes","frame":1177},{"word":"back","frame":1184},{"word":"out,","frame":1190},{"word":"but","frame":1202},{"word":"the","frame":1207},{"word":"ideal","frame":1210},{"word":"list","frame":1219},{"word":"never","frame":1226},{"word":"ends.","frame":1232}]},{"line":4,"text":"So lesson five kept the middle thirty-one and threw the rest away. That's truncation. At zero hertz the gain is the sum. Point five. Add a pair: one point one four. Another: point nine two. It overshoots, and swings around one.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line04.wav","at":42.32,"start":42.32,"end":53.7,"start_frame":1270,"words":[{"word":"So","frame":1270},{"word":"lesson","frame":1279},{"word":"5","frame":1286},{"word":"kept","frame":1295},{"word":"the","frame":1303},{"word":"middle","frame":1307},{"word":"31","frame":1312},{"word":"and","frame":1321},{"word":"threw","frame":1331},{"word":"the","frame":1335},{"word":"rest","frame":1339},{"word":"away.","frame":1345},{"word":"That's","frame":1363},{"word":"truncation.","frame":1367},{"word":"At","frame":1404},{"word":"0","frame":1408},{"word":"Hz","frame":1414},{"word":"the","frame":1421},{"word":"gain","frame":1428},{"word":"is","frame":1433},{"word":"the","frame":1438},{"word":"sum.","frame":1442},{"word":".5,","frame":1457},{"word":"add","frame":1474},{"word":"a","frame":1479},{"word":"pair,","frame":1483},{"word":"1","frame":1492},{"word":".14,","frame":1497},{"word":"another","frame":1519},{"word":".92.","frame":1528},{"word":"It","frame":1557},{"word":"overshoots","frame":1559},{"word":"and","frame":1576},{"word":"swings","frame":1580},{"word":"around","frame":1587},{"word":"1.","frame":1595}]},{"line":5,"text":"Each pair adds an arrow and its mirror, which leaves a plain number, sometimes negative. At forty-five hundred hertz, every pair pulls down, to minus point oh nine. Nine percent of that tone gets out, upside down, and lands at thirty-five hundred.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line05.wav","at":54.3,"start":54.3,"end":66.78,"start_frame":1629,"words":[{"word":"Each","frame":1629},{"word":"pair","frame":1640},{"word":"adds","frame":1646},{"word":"an","frame":1654},{"word":"arrow","frame":1657},{"word":"in","frame":1666},{"word":"its","frame":1670},{"word":"mirror,","frame":1675},{"word":"which","frame":1689},{"word":"leaves","frame":1693},{"word":"a","frame":1699},{"word":"plain","frame":1702},{"word":"number,","frame":1708},{"word":"sometimes","frame":1721},{"word":"negative.","frame":1730},{"word":"At","frame":1777},{"word":"4500","frame":1781},{"word":"Hz,","frame":1805},{"word":"every","frame":1819},{"word":"pair","frame":1824},{"word":"pulls","frame":1830},{"word":"down","frame":1840},{"word":"to","frame":1847},{"word":"minus","frame":1853},{"word":"0","frame":1859},{"word":".09.","frame":1867},{"word":"9","frame":1896},{"word":"%","frame":1899},{"word":"of","frame":1907},{"word":"that","frame":1912},{"word":"tone","frame":1917},{"word":"gets","frame":1924},{"word":"out","frame":1930},{"word":"upside","frame":1937},{"word":"down","frame":1947},{"word":"and","frame":1957},{"word":"lands","frame":1963},{"word":"at","frame":1970},{"word":"3500.","frame":1975}]},{"line":6,"text":"So keep more coefficients? Sixty-three. Two hundred fifty-five. The bump slides toward the cliff and narrows, but it stays nine percent tall. That's the Gibbs phenomenon. Why won't it shrink?","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line06.wav","at":67.58,"start":67.58,"end":76.98,"start_frame":2027,"words":[{"word":"so","frame":2027},{"word":"keep","frame":2036},{"word":"more","frame":2042},{"word":"coefficients","frame":2047},{"word":"63","frame":2062},{"word":"255","frame":2089},{"word":"the","frame":2129},{"word":"bump","frame":2141},{"word":"slides","frame":2147},{"word":"toward","frame":2158},{"word":"the","frame":2165},{"word":"cliff","frame":2169},{"word":"and","frame":2175},{"word":"narrows","frame":2180},{"word":"but","frame":2193},{"word":"it","frame":2198},{"word":"stays","frame":2204},{"word":"nine","frame":2211},{"word":"percent","frame":2218},{"word":"tall","frame":2227},{"word":"that's","frame":2237},{"word":"the","frame":2246},{"word":"gibbs","frame":2249},{"word":"phenomenon","frame":2257},{"word":"why","frame":2270},{"word":"won't","frame":2287},{"word":"it","frame":2294},{"word":"shrink","frame":2297}]},{"line":7,"text":"Cutting the list multiplies it by a window: one for each coefficient you keep, zero for the rest. A rectangle. And a window has its own response: a tall hump, with side lobes from its sharp edges.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line07.wav","at":78.18,"start":78.18,"end":87.65,"start_frame":2345,"words":[{"word":"Cutting","frame":2345},{"word":"the","frame":2358},{"word":"list","frame":2361},{"word":"multiplies","frame":2366},{"word":"it","frame":2381},{"word":"by","frame":2384},{"word":"a","frame":2387},{"word":"window,","frame":2390},{"word":"one","frame":2405},{"word":"for","frame":2410},{"word":"each","frame":2414},{"word":"coefficient","frame":2419},{"word":"you","frame":2432},{"word":"keep,","frame":2438},{"word":"zero","frame":2453},{"word":"for","frame":2459},{"word":"the","frame":2465},{"word":"rest,","frame":2468},{"word":"a","frame":2479},{"word":"rectangle.","frame":2484},{"word":"And","frame":2506},{"word":"a","frame":2509},{"word":"window","frame":2511},{"word":"has","frame":2518},{"word":"its","frame":2524},{"word":"own","frame":2528},{"word":"response,","frame":2533},{"word":"a","frame":2552},{"word":"tall","frame":2560},{"word":"hump","frame":2566},{"word":"with","frame":2574},{"word":"side","frame":2580},{"word":"lobes","frame":2588},{"word":"from","frame":2597},{"word":"its","frame":2603},{"word":"sharp","frame":2607},{"word":"edges.","frame":2614}]},{"line":8,"text":"The cut filter's response is the step, smeared by that hump: slide it along, and add up what's still on the pass side. When the hump touches the cliff, the lobes past it are left out, and they add up to minus nine percent. Oh, so a hundred and nine is left. A longer rectangle just narrows the lobes, so the share stays.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line08.wav","at":88.25,"start":88.25,"end":103.88,"start_frame":2648,"words":[{"word":"The","frame":2648},{"word":"cut","frame":2655},{"word":"filter's","frame":2661},{"word":"response","frame":2673},{"word":"is","frame":2684},{"word":"the","frame":2690},{"word":"step,","frame":2694},{"word":"smeared","frame":2706},{"word":"by","frame":2716},{"word":"that","frame":2721},{"word":"hump.","frame":2726},{"word":"Slide","frame":2748},{"word":"it","frame":2752},{"word":"along,","frame":2756},{"word":"and","frame":2769},{"word":"add","frame":2773},{"word":"up","frame":2779},{"word":"what's","frame":2782},{"word":"still","frame":2789},{"word":"on","frame":2794},{"word":"the","frame":2798},{"word":"pass","frame":2801},{"word":"side.","frame":2808},{"word":"When","frame":2825},{"word":"the","frame":2829},{"word":"hump","frame":2831},{"word":"touches","frame":2837},{"word":"the","frame":2846},{"word":"cliff,","frame":2852},{"word":"the","frame":2864},{"word":"lobes","frame":2868},{"word":"past","frame":2876},{"word":"it","frame":2884},{"word":"are","frame":2888},{"word":"left","frame":2891},{"word":"out,","frame":2897},{"word":"and","frame":2910},{"word":"they","frame":2918},{"word":"add","frame":2922},{"word":"up","frame":2928},{"word":"to","frame":2931},{"word":"minus","frame":2935},{"word":"9%.","frame":2941},{"word":"Oh,","frame":2968},{"word":"so","frame":2978},{"word":"109","frame":2979},{"word":"is","frame":2995},{"word":"left.","frame":3000},{"word":"A","frame":3020},{"word":"longer","frame":3023},{"word":"rectangle","frame":3031},{"word":"just","frame":3044},{"word":"narrows","frame":3051},{"word":"the","frame":3062},{"word":"lobes,","frame":3065},{"word":"so","frame":3076},{"word":"the","frame":3083},{"word":"share","frame":3087},{"word":"stays.","frame":3093}]},{"line":9,"text":"The cure isn't a longer window, but one without sharp edges: a taper. The Hamming window fades from one in the middle to almost zero at the ends. Its side lobes almost vanish, but its hump is twice as wide: the cliff becomes a slope.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line09.wav","at":104.88,"start":104.88,"end":116.07,"start_frame":3146,"words":[{"word":"The","frame":3146},{"word":"cure","frame":3154},{"word":"isn't","frame":3161},{"word":"a","frame":3169},{"word":"longer","frame":3172},{"word":"window","frame":3179},{"word":"but","frame":3188},{"word":"one","frame":3194},{"word":"without","frame":3200},{"word":"sharp","frame":3206},{"word":"edges,","frame":3216},{"word":"a","frame":3232},{"word":"taper.","frame":3236},{"word":"The","frame":3258},{"word":"hamming","frame":3261},{"word":"window","frame":3270},{"word":"fades","frame":3278},{"word":"from","frame":3287},{"word":"one","frame":3293},{"word":"in","frame":3298},{"word":"the","frame":3301},{"word":"middle","frame":3304},{"word":"to","frame":3308},{"word":"almost","frame":3314},{"word":"zero","frame":3323},{"word":"at","frame":3333},{"word":"the","frame":3339},{"word":"ends.","frame":3342},{"word":"Its","frame":3364},{"word":"side","frame":3367},{"word":"lobes","frame":3373},{"word":"almost","frame":3379},{"word":"vanish","frame":3388},{"word":"but","frame":3399},{"word":"its","frame":3406},{"word":"hump","frame":3411},{"word":"is","frame":3416},{"word":"twice","frame":3421},{"word":"as","frame":3428},{"word":"wide,","frame":3433},{"word":"the","frame":3444},{"word":"cliff","frame":3449},{"word":"becomes","frame":3455},{"word":"a","frame":3465},{"word":"slope.","frame":3468}]},{"line":10,"text":"Your line leaves the top of its band empty, so the slope can land there. Pass up to thirty-four hundred hertz within one percent, remove above forty-six hundred to below one percent. The plain cut needs two hundred seventy-one coefficients. Your chip affords forty-seven. Hamming at forty-five: point two four percent on both. The ghost is gone.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line10.wav","at":116.67,"start":116.67,"end":133.43,"start_frame":3500,"words":[{"word":"your","frame":3500},{"word":"line","frame":3509},{"word":"leaves","frame":3516},{"word":"the","frame":3522},{"word":"top","frame":3526},{"word":"of","frame":3532},{"word":"its","frame":3535},{"word":"band","frame":3540},{"word":"empty","frame":3545},{"word":"so","frame":3557},{"word":"the","frame":3566},{"word":"slope","frame":3569},{"word":"can","frame":3577},{"word":"land","frame":3582},{"word":"there","frame":3589},{"word":"pass","frame":3596},{"word":"up","frame":3609},{"word":"to","frame":3613},{"word":"3400","frame":3616},{"word":"hertz","frame":3637},{"word":"within","frame":3643},{"word":"one","frame":3656},{"word":"percent","frame":3659},{"word":"remove","frame":3670},{"word":"above","frame":3687},{"word":"4600","frame":3698},{"word":"to","frame":3717},{"word":"below","frame":3724},{"word":"one","frame":3731},{"word":"percent","frame":3738},{"word":"the","frame":3750},{"word":"plane","frame":3764},{"word":"cut","frame":3771},{"word":"needs","frame":3778},{"word":"271","frame":3787},{"word":"coefficients","frame":3818},{"word":"your","frame":3846},{"word":"chip","frame":3850},{"word":"affords","frame":3856},{"word":"47","frame":3867},{"word":"hamming","frame":3883},{"word":"at","frame":3904},{"word":"45","frame":3908},{"word":".24","frame":3923},{"word":"on","frame":3943},{"word":"both","frame":3959},{"word":"the","frame":3968},{"word":"ghost","frame":3976},{"word":"is","frame":3982},{"word":"gone","frame":3987}]},{"line":11,"text":"Shape sets the ripple, length sets the slope. Next ticket: you copy the old analog exchange's filter with the textbook recipe. Its cutoff was thirty-four hundred hertz. The copy's lands at twenty-three sixty-three.","clip":"/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line11.wav","at":134.43,"start":134.43,"end":146.3,"start_frame":4033,"words":[{"word":"Shape","frame":4033},{"word":"sets","frame":4045},{"word":"the","frame":4051},{"word":"ripple,","frame":4056},{"word":"length","frame":4071},{"word":"sets","frame":4076},{"word":"the","frame":4084},{"word":"slope.","frame":4089},{"word":"Next","frame":4140},{"word":"ticket,","frame":4145},{"word":"you","frame":4160},{"word":"copy","frame":4167},{"word":"the","frame":4175},{"word":"old","frame":4180},{"word":"Analog","frame":4186},{"word":"Exchanges","frame":4198},{"word":"filter","frame":4212},{"word":"with","frame":4220},{"word":"the","frame":4227},{"word":"textbook","frame":4230},{"word":"recipe.","frame":4240},{"word":"Its","frame":4267},{"word":"cutoff","frame":4270},{"word":"was","frame":4279},{"word":"3400","frame":4283},{"word":"Hz.","frame":4306},{"word":"The","frame":4328},{"word":"copies","frame":4330},{"word":"lands","frame":4339},{"word":"at","frame":4346},{"word":"2363.","frame":4351}]}]};
+const FPS = 30;
+const M = Motion.film({ fps: FPS, duration: SCHEDULE.duration, width: 1920, height: 1080, clock: 'smooth' });
+const C = { ink: '#26272B', soft: '#5E5F66', rule: '#D9D0C1', accent: '#D9573B', accentInk: '#B23F25', accentSoft: '#F6D9CF', input: '#2F7F7A', inputSoft: '#D3E7E4', paper: '#F6F1E7', paper2: '#ECE4D6' };
+const main = document.getElementById('main');
+const LEAD = 9;
+const END = Math.round(SCHEDULE.duration * FPS);
+const lineStart = i => SCHEDULE.lines[i - 1].start_frame;
+const sceneStart = i => Math.max(0, lineStart(i) - LEAD);
+const sceneEnd = i => i < SCHEDULE.lines.length ? sceneStart(i + 1) : END;
+const MISSES = [];
+const word = (i, forms, nth = 0) => {
+  const fs = [].concat(forms);
+  const hits = SCHEDULE.lines[i - 1].words.filter(w => { const t = w.word.toLowerCase().replace(/[^a-z0-9.,%'−-]/g, '').replace(/[.,%]+$/, '').replace(/^,+/, ''); return fs.some(f => t === f); });
+  if (!hits[nth]) MISSES.push(`${i}:${fs[0]}:${nth}`);
+  return (hits[nth] || hits[hits.length - 1] || { frame: lineStart(i) }).frame - 2;
+};
+let uid = 0;
+
+const range = (a, b, s = 1) => { const o = []; for (let v = a; v <= b + 1e-9; v += s) o.push(v); return o; };
+const path = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
+const cosd = a => Math.cos(a * Math.PI / 180), sind = a => Math.sin(a * Math.PI / 180);
+const pt = (cx, cy, R, a) => [cx + R * cosd(a), cy - R * sind(a)];
+const arcD = (cx, cy, r, a0, a1) => {
+  const dir = a1 >= a0 ? 1 : -1, sweep = dir > 0 ? 0 : 1;
+  let a = a0, d = 'M' + pt(cx, cy, r, a0).map(v => v.toFixed(1)).join(' ');
+  while (Math.abs(a1 - a) > 1e-9) { const b = dir > 0 ? Math.min(a + 170, a1) : Math.max(a - 170, a1); d += `A${r} ${r} 0 0 ${sweep} ${pt(cx, cy, r, b).map(v => v.toFixed(1)).join(' ')}`; a = b; }
+  return d;
+};
+
+function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
+const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); s.style.transformOrigin = '960px 447px'; s.style.transform = 'scale(0.87)'; const k = el('div', { id: id + 'cam', class: 'cam' }, s); k.style.transformOrigin = '960px 447px'; });
+const cam = n => document.getElementById(`s${n}cam`);
+function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
+function layer(parent, inner, reveal) {
+  const id = 'L' + (++uid), d = el('div', { id, class: 'layer' + (reveal ? ' reveal' : '') }, parent);
+  if (reveal) { d.style.setProperty('--x0', reveal[0] + 'px'); d.style.setProperty('--w', (reveal[1] - reveal[0]) + 'px'); }
+  d.innerHTML = `<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  return '#' + id;
+}
+function label(parent, text, x, y, cls = 'lbl', anchor = 'left') {
+  const id = 'T' + (++uid), e = el('div', { id, class: cls }, parent); e.textContent = text; e.style.top = y + 'px';
+  if (anchor === 'left') e.style.left = x + 'px'; else if (anchor === 'right') e.style.right = (1920 - x) + 'px'; else { e.style.left = (x - 900) + 'px'; e.style.width = '1800px'; e.style.textAlign = 'center'; }
+  return '#' + id;
+}
+const reveal = (sel, a, b, ease = 'softInOut') => M.kf(sel, '--p', [[0, 0], [a, 0], [b, 1, ease]]);
+const origin = (sel, x, y) => { document.querySelector(sel).style.transformOrigin = `${x}px ${y}px`; };
+const drift = (n, a = 1, b = 1.03) => M.drift(`#s${n}cam`, { prop: 'scale', from: a, to: b, start: sceneStart(n), end: sceneEnd(n) });
+const grow = (sel, x, y, at, len = 8) => { origin(sel, x, y); M.show(sel, at); M.kf(sel, 'scaleY', [[0, 0], [at, 0], [at + len, 1, 'softLand']]); return sel; };
+const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[0, 0], [at, 0], [at + len, 1]]); return sel; };
+
+const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
+const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
+const dotSvg = (x, y, r = 16, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
+const ringSvg = (x, y, r = 16, color = C.ink, w = 5) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="${w}"/>`;
+function tick(c, x, y, s = 1) { return layer(c, `<path d="M ${x} ${y} l ${16 * s} ${18 * s} l ${34 * s} ${-40 * s}" fill="none" stroke="${C.input}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`); }
+const rnd = k => { const v = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+const flicker = (sel, x, y, a, b, lo = 0.8, seed = 0, w = 5, op = true) => { const keys = [[0, 1], [a, 1]], sw = [[0, w], [a, w]]; for (let f = a + 2; f < b - 2; f += 2) { keys.push([f, 0.8 + 0.2 * rnd(f + seed)]); sw.push([f, w * (0.4 + 1.8 * rnd(f + seed + 0.5))]); } keys.push([b, 1]); sw.push([b, w]); document.querySelector(sel).classList.add('fl'); if (op) M.kf(sel, 'opacity', keys); M.kf(sel, '--sw', sw, { fmt: v => v.toFixed(2) + 'px' }); };
+const bracket = (x1, x2, y, color = C.accent, h = 16, w = 5) => `<path d="M${x1.toFixed(1)} ${y - h}V${y}H${x2.toFixed(1)}V${y - h}" fill="none" stroke="${color}" stroke-width="${w}"/>`;
+function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
+  layer(c, hline(X(x0), X(x1) + 20, Y(y0), C.ink, 3) + vline(X(x0), Y(y0), Y(y1) - 20, C.ink, 3));
+  xs.forEach(([v, t]) => { layer(c, vline(X(v), Y(y0), Y(y0) + 12, C.ink, 3)); label(c, t, X(v), Y(y0) + 36, 'lbl s', 'center'); });
+  ys.forEach(([v, t]) => { layer(c, hline(X(x0) - 12, X(x0), Y(v), C.ink, 3)); label(c, t, X(x0) - 22, Y(v) - 29, 'lbl s', 'right'); });
+  if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
+}
+
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+  const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
+  const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
+  return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
+};
+const stepped = (c, a, b, stepF, draw) => {
+  const n = Math.max(1, Math.floor((b - a) / stepF));
+  for (let k = 0; k <= n; k++) { const from = a + k * stepF, to = k === n ? b : a + (k + 1) * stepF; M.show(layer(c, draw(k / n)), from, to > from ? to : from + 1); }
+};
+const trace = (c, pos, a, b, per, color = C.accent, r = 13) => { if (b - a < 4) return; stepped(c, a, b, 2, p => { const fr = a + p * (b - a), q = ((fr - a) % per) / per, [x, y] = pos(q); return ringSvg(x, y, r, color, 5); }); };
+const box = (x, y, w, h, color = C.ink, fill = C.paper) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="${color}" stroke-width="5"/>`;
+const hatchDefs = `<defs><pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="16" height="16" fill="${C.accentSoft}"/><line x1="0" y1="0" x2="0" y2="16" stroke="${C.accent}" stroke-width="4"/></pattern><pattern id="stripe" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="18" height="18" fill="${C.paper}"/><line x1="0" y1="0" x2="0" y2="18" stroke="${C.soft}" stroke-width="3" opacity="0.5"/></pattern></defs>`;
+
+const FS = 16000, PI = Math.PI;
+const hI = m => (m === 0 ? 0.5 : Math.sin(PI * m / 2) / (PI * m));
+const WEIGHT = { rect: () => 1, hamming: (m, N) => 0.54 + 0.46 * Math.cos(2 * PI * m / (N - 1)) };
+const resp = (kind, N) => {
+  const half = (N - 1) / 2, c = range(0, half).map(m => hI(m) * WEIGHT[kind](m, N));
+  return f => { const t = 2 * PI * f / FS; let s = c[0]; for (let m = 1; m <= half; m++) s += 2 * c[m] * Math.cos(t * m); return s; };
+};
+const winResp = (kind, N) => {
+  const half = (N - 1) / 2, w = range(0, half).map(m => WEIGHT[kind](m, N)), w0 = w[0] + 2 * w.slice(1).reduce((a, b) => a + b, 0);
+  return f => { const t = 2 * PI * f / FS; let s = w[0]; for (let m = 1; m <= half; m++) s += 2 * w[m] * Math.cos(t * m); return s / w0; };
+};
+const H31 = resp('rect', 31), H63 = resp('rect', 63), H255 = resp('rect', 255), H47 = resp('rect', 47), HM31 = resp('hamming', 31), HM45 = resp('hamming', 45), HM89 = resp('hamming', 89);
+const W31 = winResp('rect', 31), W127 = winResp('rect', 127), WH31 = winResp('hamming', 31);
+const db = g => Math.max(-80, 20 * Math.log10(Math.max(1e-6, Math.abs(g))));
+const hz = f => f.toLocaleString('en-US');
+const pct = g => (100 * g).toFixed(2) + '%';
+const clampY = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const worst = (H, lo, hi) => { let e = 0; for (let f = 0; f <= lo; f += 2) e = Math.max(e, Math.abs(H(f) - 1)); for (let f = hi; f <= 8000; f += 2) e = Math.max(e, Math.abs(H(f))); return e; };
+const peakBelow = H => { let b = 0, at = 0; for (let f = 2000; f < 4000; f += 1) { const v = H(f); if (v > b) { b = v; at = f; } } return [b, at]; };
+
+{
+  const c = cam(1);
+  const wi = word(1, 'wideband'), rm = word(1, 'removes'), sw = word(1, 'sweeps'), ei = word(1, ['eight', '8000', '8,000']), ex = word(1, 'expects'), si = word(1, 'silence');
+  label(c, 'lesson 5: the wideband line', 960, 20, 'lbl s', 'center');
+  const y = 210;
+  M.show(label(c, '16,000/s', 80, y - 31, 'lbl s'), wi);
+  M.show(layer(c, arrowSvg(350, y, 520, y, C.ink, 5) + box(520, y - 60, 340, 120) + arrowSvg(860, y, 1010, y, C.ink, 5) + box(1010, y - 60, 500, 120) + arrowSvg(1510, y, 1640, y, C.ink, 5)), wi);
+  M.show(label(c, 'filter', 690, y - 31, 'lbl', 'center'), wi);
+  M.show(label(c, 'keep every 2nd', 1260, y - 31, 'lbl', 'center'), wi);
+  M.show(label(c, 'yours', 1660, y - 31, 'lbl s'), wi);
+  M.show(label(c, '31 coefficients', 690, y + 80, 'lbl s', 'center'), wi + 12);
+  M.show(label(c, 'removes above 4,000 Hz', 690, y + 150, 'lbl acc', 'center'), rm);
+  const X = t => 300 + t * 135, Y = f => 770 - (f - 4000) * 0.065;
+  const p = sub(c);
+  M.show('#' + p.id, sw);
+  axes(p, X, Y, [[0, '0'], [5, '5'], [10, '10 s']], [[4000, '4,000'], [8000, '8,000']], 0, 10, 4000, 8000, '');
+  const sl = layer(p, seg(X(0), Y(4000), X(10), Y(8000), C.ink, 7), [X(0) - 6, X(10) + 6]);
+  reveal(sl, sw, ei + 6, 'cruise');
+  trace(p, q => [X(10 * q), Y(4000 + 4000 * q)], ei + 6, sceneEnd(1), 300, C.ink);
+  M.show(label(p, 'the sweep (Hz): one tone, rising', X(0) + 40, Y(8000) - 10, 'lbl'), sw);
+  M.show(label(c, 'expected on your line:', 1720, 640, 'lbl s', 'right'), ex);
+  M.show(label(c, 'silence', 1720, 696, 'lbl ok', 'right'), si);
+  drift(1);
+}
+{
+  const c = cam(2);
+  const gl = word(2, 'glides'), sw = word(2, 'swelling'), ni = word(2, ['nine', '9']), fi = word(2, ['five', '5']), tw = word(2, ['two', '2']), lo = word(2, 'louder'), an = word(2, 'anything');
+  label(c, 'your line: what comes out (Hz)', 200, 20, 'lbl s');
+  const X = t => 300 + t * 140, Y = f => 790 - f * 0.115;
+  layer(c, `<rect x="${X(0)}" y="${Y(3400)}" width="${X(10) - X(0)}" height="${Y(0) - Y(3400)}" fill="${C.paper2}"/>`);
+  axes(c, X, Y, [[0, '0'], [5, '5'], [10, '10 s']], [[0, '0'], [3400, '3,400'], [4000, '4,000']], 0, 10, 0, 4000, '');
+  M.show(label(c, 'where voices live', X(0) + 20, 700, 'lbl s'), gl);
+  M.show(label(c, 'thickness = loudness', X(0) + 20, 630, 'lbl s'), gl);
+  const half = t => Math.max(0, Math.min(40, 300 * Math.abs(H31(4000 + 400 * t))) - 1.5);
+  const ts = range(0, 10, 0.01);
+  const d = 'M' + ts.map(t => `${X(t).toFixed(1)} ${(Y(4000 - 400 * t) - half(t)).toFixed(1)}`).join('L') + 'L' + ts.slice().reverse().map(t => `${X(t).toFixed(1)} ${(Y(4000 - 400 * t) + half(t)).toFixed(1)}`).join('L') + 'Z';
+  layer(c, seg(X(0), Y(4000), X(10), Y(0), C.soft, 3, DOTS));
+  const gb = layer(c, `<path d="${d}" fill="${C.accent}"/>`, [X(0) - 40, X(10) + 40]);
+  reveal(gb, sceneStart(2), sw + 30, 'cruise');
+  trace(c, q => [X(10 * q), Y(4000 - 4000 * q)], sw + 30, sceneEnd(2), 300, C.ink);
+  flicker(gb, X(5), Y(2000), sw + 30, sceneEnd(2), 0.8, 3);
+  M.show(label(c, 'the ghost', 1720, 420, 'lbl acc', 'right'), gl);
+  M.show(label(c, '9% at 3,500 Hz', 440, 250, 'lbl acc'), ni);
+  M.show(layer(c, ringSvg(X(1.25), Y(3500), 26, C.ink, 5)), ni);
+  M.show(label(c, '5% at 3,000', 720, 360, 'lbl acc'), fi);
+  M.show(layer(c, ringSvg(X(2.5), Y(3000), 22, C.ink, 5)), fi);
+  M.show(label(c, '2% at 1,000', 1190, 540, 'lbl acc'), tw);
+  M.show(layer(c, ringSvg(X(7.5), Y(1000), 18, C.ink, 5)), tw);
+  M.show(label(c, 'voices at 3,500 Hz: 109%', 1720, 110, 'lbl acc', 'right'), lo);
+  M.show(label(c, 'louder?', 1720, 200, 'note acc', 'right'), an);
+  drift(2);
+}
+{
+  const c = cam(3);
+  const id = word(3, 'ideal'), pa = word(3, 'passes'), no = word(3, 'nothing'), fe = word(3, 'feedback'), li = word(3, 'list'), cl = word(3, 'click'), co = word(3, 'comes'), ne = word(3, 'never'), en = word(3, 'ends');
+  const X = f => 200 + f * 0.08, Y = g => 400 - g * 230;
+  axes(c, X, Y, [[0, '0'], [4000, '4,000'], [8000, '8,000 Hz']], [[0, '0'], [1, '1']], 0, 8000, 0, 1.1, '');
+  M.show(label(c, 'ideal low-pass', 200, 20, 'lbl'), id);
+  const st = layer(c, curve([[X(0), Y(1)], [X(4000), Y(1)], [X(4000), Y(0)], [X(8000), Y(0)]], C.ink, 7), [X(0) - 6, X(8000) + 6]);
+  reveal(st, id, no + 6, 'cruise');
+  flicker(st, 0, 0, no + 6, sceneEnd(3), 0.9, 34, 7);
+  M.show(label(c, 'pass', X(2000), Y(1) - 70, 'lbl ok', 'center'), pa);
+  M.show(label(c, 'remove', X(6000), Y(0) - 70, 'lbl acc', 'center'), no);
+  M.show(label(c, 'no feedback:', 1060, 60, 'lbl s'), fe);
+  M.show(label(c, 'a coefficient list', 1060, 130, 'lbl'), li);
+  M.show(label(c, 'click in: 1, 0, 0, ...', 1060, 230, 'lbl s'), cl);
+  M.show(label(c, 'out: the list itself', 1060, 300, 'lbl'), co);
+  const SX = n => 960 + n * 34, base = 730, A = 380;
+  layer(c, hline(SX(-22) - 20, SX(22) + 20, base, C.rule, 3));
+  range(-22, 22).forEach(n => {
+    const v = hI(Math.abs(n));
+    const s = layer(c, Math.abs(v) < 1e-9 ? ringSvg(SX(n), base, 7, C.soft, 4) : stemSvg(SX(n), base, base - A * v, C.ink, 6, 10));
+    fadeIn(s, li + Math.abs(n) * 2, 6);
+    if (n % 2) M.hide(s, ne);
+  });
+  M.show(label(c, 'h[0] = 0.5', SX(0) + 30, base - A * 0.5 - 30, 'lbl s'), li + 4);
+  M.show(layer(c, arrowSvg(SX(-22) + 10, base + 110, SX(-22) - 120, base + 110, C.accent, 6) + arrowSvg(SX(22) - 10, base + 110, SX(22) + 120, base + 110, C.accent, 6)), ne);
+  M.show(label(c, 'shrinks like 1 ÷ n, forever', 960, base + 80, 'lbl acc', 'center'), en);
+  const stx = layer(c, range(-22, 22).filter(n => n % 2).map(n => stemSvg(SX(n), base, base - A * hI(Math.abs(n)), C.ink, 6, 10)).join(''));
+  M.show(stx, ne); flicker(stx, 960, base, ne, sceneEnd(3), 0.8, 33, 6);
+  drift(3);
+}
+{
+  const c = cam(4);
+  const mi = word(4, 'middle'), th = word(4, 'threw'), tr = word(4, 'truncation'), su = word(4, 'sum'), fv = word(4, ['five', '5', '0.5', '.5'], 1), pr = word(4, 'pair'), an = word(4, 'another'), ov = word(4, 'overshoots'), sg = word(4, 'swings');
+  const SX = n => 960 + n * 30, base = 300, A = 330;
+  layer(c, hline(SX(-25) - 20, SX(25) + 20, base, C.rule, 3));
+  range(-25, 25).forEach(n => {
+    const v = hI(Math.abs(n)), kept = Math.abs(n) <= 15;
+    const s = layer(c, Math.abs(v) < 1e-9 ? ringSvg(SX(n), base, 6, C.soft, 3) : stemSvg(SX(n), base, base - A * v, C.ink, 5, 9));
+    if (!kept) M.kf(s, 'opacity', [[0, 1], [th, 1], [th + 10, 0.18]]);
+  });
+  M.show(layer(c, bracket(SX(-15), SX(15), base + 70, C.ink, -16, 4)), mi);
+  M.show(label(c, 'kept: the middle 31', 960, base + 80, 'lbl', 'center'), mi);
+  M.show(label(c, 'truncation', 200, 20, 'lbl acc'), tr);
+  const kept = [1, 3, 7, 11, 15, 19, 23, 27, 31];
+  const sums = []; let s0 = 0.5; sums.push(s0); for (let m = 1; m <= 15; m += 2) { s0 += 2 * hI(m); sums.push(s0); }
+  const X = k => 260 + k * 26, Y = g => 770 - (g - 0.4) * 380;
+  axes(c, X, Y, [[1, '1'], [15, '15'], [31, '31']], [[0.5, '0.5'], [1, '1']], 0, 33, 0.4, 1.2, '');
+  M.show(label(c, 'gain at 0 Hz', 1260, 470, 'lbl s'), su);
+  M.show(label(c, 'pair: one each side of the middle', 1720, 20, 'lbl s', 'right'), pr);
+  layer(c, hline(X(0), X(33), Y(1), C.soft, 3, DASH));
+  const times = [fv, pr + 6, an + 4, ov, ov + 6, ov + 12, sg, sg + 6, sg + 12];
+  kept.forEach((k, i) => {
+    const next = i + 1 < kept.length ? kept[i + 1] : 33;
+    const segs = (i ? seg(X(k), Y(sums[i - 1]), X(k), Y(sums[i]), C.accent, 5) : '') + seg(X(k), Y(sums[i]), X(next), Y(sums[i]), C.accent, 5) + dotSvg(X(k), Y(sums[i]), 10, C.accent);
+    const sg = layer(c, segs); M.show(sg, times[i]); flicker(sg, 0, 0, times[i] + 2, sceneEnd(4), 0.9, 40 + i, 5);
+  });
+  const vals = ['0.500', '1.137', '0.924'];
+  vals.forEach((t, i) => M.show(label(c, t, 1260, 545 + i * 75, i === 1 ? 'lbl acc' : 'lbl'), times[i]));
+  M.show(label(c, '... 0.980 at 31', 1260, 545 + 3 * 75, 'lbl'), sg + 12);
+  M.show(label(c, 'overshoots', 420, 630, 'lbl acc'), ov);
+  drift(4);
+}
+{
+  const c = cam(5);
+  const ar = word(5, 'arrow'), mr = word(5, 'mirror'), pl = word(5, 'plain'), ne = word(5, 'negative'), fh = word(5, ['forty', '45', '4,500', '4500']), pu = word(5, 'pulls'), mn = word(5, ['minus', '-0.09', '−0.09']), up = word(5, 'upside'), la = word(5, 'lands');
+  const cx = 470, cy = 470, R = 250;
+  layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.rule}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
+  label(c, 'a pair: arrow + mirror', cx, 20, 'lbl', 'center');
+  const thAt = fr => fr < pl ? 30 : 30 + 71.25 * Math.min(1, (fr - pl) / Math.max(1, ne + 10 - pl));
+  const drawAt = th => {
+    const P1 = pt(cx, cy, R / 2, -th), P2 = [cx + R * cosd(th), cy];
+    return arrowSvg(cx, cy, ...P1, C.ink, 7) + arrowSvg(...P1, ...P2, C.soft, 6, '14 9', true) + (Math.abs(cosd(th)) > 0.12 ? arrowSvg(cx, cy, ...P2, C.accent, 8) : dotSvg(cx, cy, 10, C.accent));
+  };
+  M.show(layer(c, arrowSvg(cx, cy, ...pt(cx, cy, R / 2, -30), C.ink, 7)), sceneStart(5), mr);
+  stepped(c, mr, fh, 2, p => drawAt(thAt(mr + p * (fh - mr))));
+  M.show(layer(c, drawAt(101.25)), fh);
+  M.show(label(c, '4,500 Hz, pair 1: 101.25°', cx, 150, 'lbl s', 'center'), fh);
+  stepped(c, mr, fh, 4, p => { const th = thAt(mr + p * (fh - mr)); return `<text x="${cx}" y="${cy + R + 80}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">sum: a plain number${th > 90 ? ',' : ''}</text>` + (th > 90 ? `<text x="${cx}" y="${cy + R + 140}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">here negative</text>` : ''); });
+  M.show(layer(c, `<text x="${cx}" y="${cy + R + 80}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">sum: a plain number,</text><text x="${cx}" y="${cy + R + 140}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">here negative</text>`), fh);
+  M.show(label(c, 'dashed: the mirror', cx, 90, 'lbl s', 'center'), mr);
+  const BX = i => 1060 + i * 66, base = 330, A = 380;
+  M.show(label(c, '4,500 Hz, pair by pair', 1020, 20, 'lbl'), fh);
+  const parts = [0.5]; for (let m = 1; m <= 15; m += 2) parts.push(2 * hI(m) * cosd(m * 101.25));
+  const total = parts.reduce((a, b) => a + b, 0);
+  M.show(layer(c, hline(BX(-0.6), BX(10.6), base, C.ink, 3)), fh);
+  parts.forEach((v, i) => { const s = layer(c, `<rect x="${BX(i) - 22}" y="${Math.min(base, base - A * v)}" width="44" height="${Math.abs(A * v)}" fill="${C.ink}"/>`); grow(s, BX(i), base, (i ? pu : fh + 6) + i * 3, 8); });
+  const tb = layer(c, `<rect x="${BX(10) - 26}" y="${base}" width="52" height="${-A * total}" fill="${C.accent}"/>`);
+  grow(tb, BX(10), base, mn - 4, 8);
+  M.show(label(c, 'sum', BX(10), base - 70, 'lbl s', 'center'), mn - 4);
+  M.show(label(c, '= −0.09', BX(10), base + 50, 'lbl acc', 'right'), mn);
+  M.show(label(c, '9% gets out, flipped', 1020, 560, 'lbl acc'), up);
+  M.show(label(c, 'heard at 3,500 Hz', 1020, 650, 'lbl acc'), la);
+  M.show(label(c, '8,000 − 4,500', 1020, 730, 'lbl s'), la + 6);
+  drift(5);
+}
+{
+  const c = cam(6);
+  const mo = word(6, 'more'), sx = word(6, ['sixty', '63']), tw = word(6, ['two', '255']), sl = word(6, 'slides'), na = word(6, 'narrows'), ni = word(6, ['nine', '9']), gi = word(6, 'gibbs'), sh = word(6, 'shrink');
+  const X = f => 260 + (f - 2000) * 0.36, Y = g => 770 - (g + 0.2) * 375;
+  axes(c, X, Y, [[2000, '2,000'], [4000, '4,000'], [6000, '6,000 Hz']], [[0, '0'], [1, '1']], 2000, 6000, -0.2, 1.25, '');
+  const draw = (H, dash, w) => curve(range(2000, 6000, 2).map(f => [X(f), Y(H(f))]), C.ink, w, dash);
+  const c31 = layer(c, draw(H31, '', 5));
+  trace(c, q => { const f = 2000 + 4000 * q; return [X(f), Y(H31(f))]; }, sceneStart(6), sceneEnd(6), 150);
+  flicker(c31, X(4000), Y(0), sceneStart(6), sx, 0.9, 61);
+  const c63 = layer(c, draw(H63, DASH, 5), [X(2000) - 6, X(6000) + 6]);
+  reveal(c63, sx, sx + 20, 'cruise');
+  const c255 = layer(c, curve(range(2000, 6000, 0.5).map(f => [X(f), Y(H255(f))]), C.ink, 6, '2 11').replace('stroke-linejoin', 'stroke-linecap="round" stroke-linejoin'), [X(2000) - 6, X(6000) + 6]);
+  reveal(c255, tw, tw + 20, 'cruise');
+  flicker(c63, X(4000), Y(0), sx + 20, sceneEnd(6), 0.92, 62);
+  flicker(c255, X(4000), Y(0), tw + 20, sceneEnd(6), 0.92, 63, 6);
+  label(c, 'solid: 31, peak 1.09', 260, 20, 'lbl');
+  M.show(label(c, 'dashed: 63, peak 1.09', 260, 90, 'lbl'), sx);
+  M.show(label(c, 'dotted: 255, peak 1.09', 260, 160, 'lbl'), tw);
+  M.show(layer(c, hline(X(2000), X(4000), Y(1.0895), C.accent, 4, '10 8')), ni);
+  M.show(label(c, '9% over', X(4000) + 30, Y(1.0895) - 40, 'lbl acc'), ni);
+  M.show(label(c, 'ripple: these swings', 300, 400, 'lbl acc'), na);
+  M.show(label(c, 'the Gibbs phenomenon', 1720, 420, 'lbl acc', 'right'), gi);
+  M.show(label(c, 'why won’t it shrink?', 1720, 510, 'note', 'right'), sh);
+  drift(6);
+}
+{
+  const c = cam(7), a = sub(c), b = sub(c);
+  const cu = word(7, 'cutting'), wi = word(7, 'window'), ke = word(7, 'keep'), ze = word(7, ['zero', '0']), re = word(7, 'rectangle'), rs = word(7, 'response'), hu = word(7, 'hump'), lb = word(7, 'lobes'), ed = word(7, 'edges');
+  M.show('#' + a.id, 0, rs); M.show('#' + b.id, rs);
+  const SX = n => 1000 + n * 28, rows = [220, 480, 740], A = 300;
+  [['ideal', 0], ['× window', 1], ['= kept', 2]].forEach(([t, i]) => M.show(label(a, t, 270, rows[i] - 29, 'lbl s', 'right'), i === 1 ? wi : i === 2 ? ke : sceneStart(7)));
+  rows.forEach((y, i) => M.show(layer(a, hline(SX(-25) - 14, SX(25) + 14, y, C.rule, 3)), i === 1 ? wi : i === 2 ? ke : sceneStart(7)));
+  const row = (y, f, color, at) => { const s = layer(a, range(-25, 25).map(n => { const v = f(n); return Math.abs(v) < 1e-9 ? ringSvg(SX(n), y, 5, C.soft, 3) : stemSvg(SX(n), y, y - A * v, color, 5, 8); }).join('')); fadeIn(s, at, 8); flicker(s, 0, 0, at + 10, rs, 0.8, at, 5, false); return s; };
+  row(rows[0], n => hI(Math.abs(n)), C.ink, sceneStart(7));
+  row(rows[1], n => (Math.abs(n) <= 15 ? 0.5 : 0), C.input, wi);
+  row(rows[2], n => (Math.abs(n) <= 15 ? hI(Math.abs(n)) : 0), C.ink, ze);
+  M.show(label(a, '1 kept', SX(0), rows[1] - 0.5 * A - 70, 'lbl ok', 'center'), ke);
+  M.show(label(a, '0', SX(21), rows[1] - 75, 'lbl s', 'center'), ze);
+  M.show(label(a, 'a rectangle', 1720, rows[1] + 20, 'lbl', 'right'), re);
+  label(b, 'the rectangle’s own response, 31 long', 260, 20, 'lbl s');
+  label(b, 'across: Hz away from the hump’s centre', 260, 90, 'lbl s');
+  const X = f => 960 + f * 0.36, Y = w => 700 - w * 440;
+  layer(b, hline(X(-2000), X(2000), Y(0), C.ink, 3));
+  [[-2000, '−2,000'], [0, '0'], [2000, '2,000 Hz']].forEach(([f, t]) => { layer(b, vline(X(f), Y(0), Y(0) + 12, C.ink, 3)); label(b, t, X(f), Y(0) + 70, 'lbl s', 'center'); });
+  const pts = range(-2000, 2000, 2).map(f => [X(f), Y(W31(f))]);
+  const hc = layer(b, `<path d="${path(pts)}L${X(2000)} ${Y(0)}L${X(-2000)} ${Y(0)}Z" fill="${C.paper2}"/>` + curve(pts, C.ink, 5), [X(-2000) - 6, X(2000) + 6]);
+  reveal(hc, rs, hu + 10, 'cruise');
+  trace(b, q => { const f = -2000 + 4000 * q; return [X(f), Y(W31(f))]; }, hu + 10, sceneEnd(7), 150);
+  flicker(hc, X(0), Y(0), hu + 10, sceneEnd(7), 0.85, 71);
+  M.show(label(b, 'tall hump', X(0) + 200, Y(0.95), 'lbl'), hu);
+  M.show(layer(b, ringSvg(X(-774), Y(W31(774)), 24, C.accent, 5) + ringSvg(X(774), Y(W31(774)), 24, C.accent, 5)), lb);
+  M.show(label(b, 'side lobes', X(1250), Y(0.5), 'lbl acc', 'center'), lb);
+  M.show(label(b, 'first: −22%', X(1250), Y(0.36), 'lbl acc', 'center'), lb + 8);
+  M.show(label(b, 'from the sharp edges', X(-1250), Y(0.5), 'lbl s', 'center'), ed);
+  drift(7);
+}
+{
+  const c = cam(8);
+  const sm = word(8, 'smeared'), sl = word(8, 'slide'), pa = word(8, 'pass'), to = word(8, 'touches'), lf = word(8, 'left'), mn = word(8, 'minus'), hu = word(8, ['hundred', '109']), lo = word(8, 'longer'), na = word(8, 'narrows'), st = word(8, 'stays');
+  layer(c, hatchDefs);
+  const X = f => 200 + (f - 2000) * 0.375;
+  const YT = w => 400 - w * 230, YB = g => 840 - (g - 0.5) * 500;
+  const clipB = inner => { const id = 'CB' + (++uid); return `<defs><clipPath id="${id}"><rect x="0" y="0" width="1920" height="${YB(0.5) + 2}"/></clipPath></defs><g clip-path="url(#${id})">${inner}</g>`; };
+  M.show(label(c, 'slide the hump along the step', 200, 20, 'lbl s'), sceneStart(8), lo);
+  M.show(label(c, 'longer: narrower, same −9%', 200, 20, 'lbl s'), lo);
+  layer(c, curve([[X(2000), YT(1)], [X(4000), YT(1)], [X(4000), YT(0)], [X(6000), YT(0)]], C.soft, 4, DASH) + hline(X(2000), X(6000), YT(0), C.rule, 2));
+  [[3000, '3,000'], [4000, '4,000'], [5000, '5,000 Hz']].forEach(([f, t]) => { layer(c, vline(X(f), YT(0), YT(0) + 12, C.ink, 3)); label(c, t, X(f), YT(0) + 62, 'lbl s', 'center'); });
+  layer(c, vline(X(2000), YB(0.5), YB(1.15), C.ink, 3) + hline(X(2000), X(6000), YB(1), C.soft, 3, '6 8'));
+  label(c, '1', X(2000) - 22, YB(1) - 29, 'lbl s', 'right');
+  label(c, '0.5', X(2000) - 22, YB(0.5) - 29, 'lbl s', 'right');
+  const hump = (W, f0, span, edge = C.soft, dash = '') => {
+    const lo2 = Math.max(2000, f0 - span), hi2 = Math.min(6000, f0 + span);
+    const pts = range(lo2, hi2, 2).map(f => [X(f), YT(W(f - f0))]);
+    const pass = pts.filter(p => p[0] <= X(4000)), out = pts.filter(p => p[0] >= X(4000));
+    const fill = (ps, col) => ps.length > 1 ? `<path d="${path(ps)}L${ps[ps.length - 1][0]} ${YT(0)}L${ps[0][0]} ${YT(0)}Z" fill="${col}"/>` : '';
+    return { pass: fill(pass, C.paper2), out: fill(out, 'url(#hatch)'), line: curve(pts, edge, 4, dash) };
+  };
+  const PEAK = 4000 - FS / 31;
+  const f0At = fr => fr <= sl ? 2300 : 2300 + (PEAK - 2300) * Math.min(1, (fr - sl) / Math.max(1, to - sl));
+  stepped(c, sceneStart(8), to, 2, p => { const f0 = f0At(sceneStart(8) + p * (to - sceneStart(8))), h = hump(W31, f0, 1800); return h.pass + h.out + h.line + vline(X(f0), YT(0), Math.min(YB(0.5), YB(H31(f0))), C.soft, 2, '4 8'); });
+  const parked = hump(W31, PEAK, 2000);
+  M.show(layer(c, parked.pass + parked.line), to, lo);
+  M.show(layer(c, parked.out), lf, lo);
+  const cut = layer(c, clipB(curve(range(2000, 6000, 2).map(f => [X(f), YB(H31(f))]), C.ink, 6)), [X(2000) - 6, X(6000) + 6]);
+  M.kf(cut, '--p', [[0, 0], [sceneStart(8), (f0At(sceneStart(8)) - 2000) / 4000], [to, (PEAK - 2000) / 4000], [lo, (PEAK - 2000) / 4000], [lo + 24, 1]]);
+  flicker(cut, 0, 0, to, sceneEnd(8), 0.9, 81, 6);
+  M.show(label(c, 'pass side: counts', X(2500), YT(1) - 80, 'lbl ok', 'center'), pa);
+  M.show(label(c, '−9% left out', 1720, 150, 'lbl big acc', 'right'), mn);
+  M.show(layer(c, hline(X(2000), X(4000), YB(1.0895), C.accent, 4, '10 8')), hu);
+  M.show(layer(c, dotSvg(X(PEAK), YB(H31(PEAK)), 14, C.accent)), hu, lo);
+  M.show(label(c, '1.09', X(2000) - 22, YB(1.0895) - 50, 'lbl acc', 'right'), hu);
+  M.show(label(c, 'what’s left: 109%', X(2000) + 30, YB(0.6) - 20, 'lbl acc'), hu);
+  const P127 = 4000 - FS / 127, h127 = hump(W127, P127, 1000, C.ink);
+  M.show(layer(c, h127.pass + h127.out + h127.line), lo);
+  const c127 = layer(c, clipB(curve(range(2000, 6000, 1).map(f => [X(f), YB(resp('rect', 127)(f))]), C.ink, 4, '12 8')), [X(2000) - 6, X(6000) + 6]);
+  reveal(c127, na, na + 24, 'cruise');
+  M.show(label(c, 'dashed: 127 long', 1720, YB(0.55), 'lbl s', 'right'), na);
+  M.show(label(c, 'still 1.09', 1720, YB(0.85), 'lbl acc', 'right'), st);
+  const H127 = resp('rect', 127); let pk127 = 3500; for (let f = 3500; f < 4000; f++) if (H127(f) > H127(pk127)) pk127 = f;
+  M.show(layer(c, dotSvg(X(pk127), YB(H127(pk127)), 14, C.accent)), na + 24);
+  drift(8, 1, 1.04);
+}
+{
+  const c = cam(9), a = sub(c), b = sub(c);
+  const ta = word(9, 'taper'), ha = word(9, 'hamming'), mi = word(9, 'middle'), ze = word(9, ['zero', '0']), va = word(9, 'vanish'), tw = word(9, 'twice'), cl = word(9, 'cliff'), sl = word(9, 'slope');
+  const SX = n => 960 + n * 40, base = 420, A = 240;
+  layer(c, hline(SX(-15) - 20, SX(15) + 20, base, C.rule, 3));
+  layer(c, `<path d="M${SX(-15) - 14} ${base}V${base - A}H${SX(15) + 14}V${base}" fill="none" stroke="${C.soft}" stroke-width="4" stroke-dasharray="${DASH}"/>`);
+  label(c, 'dashed: the rectangle', 200, 20, 'lbl s');
+  const ws = layer(c, range(-15, 15).map(n => stemSvg(SX(n), base, base - A * WEIGHT.hamming(n, 31), C.input, 6, 10)).join(''));
+  fadeIn(ws, ha - 6, 10);
+  M.show(label(c, 'Hamming, 31 long', 960, 90, 'lbl ok', 'center'), ha);
+  M.show(label(c, '0.08', SX(-15), base + 14, 'lbl', 'center'), ze);
+  M.show(label(c, '0.08', SX(15), base + 14, 'lbl', 'center'), ze);
+  M.show(label(c, 'a taper', 1720, 14, 'lbl big ok', 'right'), ta);
+  M.show('#' + a.id, sceneStart(9), cl); M.show('#' + b.id, cl);
+  const X = f => 960 + f * 0.3, Y = w => 820 - (w + 0.25) * 280;
+  layer(a, hline(X(-2000), X(2000), Y(0), C.ink, 3));
+  const rc = layer(a, curve(range(-2000, 2000, 2).map(f => [X(f), Y(W31(f))]), C.soft, 4, DASH));
+  const hc = layer(a, curve(range(-2000, 2000, 2).map(f => [X(f), Y(WH31(f))]), C.input, 7), [X(-2000) - 6, X(2000) + 6]);
+  reveal(hc, va - 20, va + 10, 'cruise');
+  M.show(label(a, 'side lobes: under 1%', 200, 560, 'lbl ok'), va);
+  M.show(layer(a, bracket(X(-1032), X(1032), Y(0) + 40, C.input, 16, 5)), tw);
+  M.show(label(a, 'hump: twice as wide', 1720, 505, 'lbl ok', 'right'), tw);
+  const FX = f => 360 + (f - 2000) * 0.3, FY = g => 820 - (g + 0.15) * 230;
+  layer(b, hline(FX(2000), FX(6000), FY(0), C.ink, 3));
+  [[2000, '2,000'], [4000, '4,000'], [6000, '6,000 Hz']].forEach(([f, t]) => { layer(b, vline(FX(f), FY(0), FY(0) + 12, C.ink, 3)); label(b, t, FX(f), FY(0) + 26, 'lbl s', 'center'); });
+  layer(b, curve(range(2000, 6000, 2).map(f => [FX(f), FY(H31(f))]), C.soft, 4, DASH));
+  const hf = layer(b, curve(range(2000, 6000, 2).map(f => [FX(f), FY(HM31(f))]), C.input, 7), [FX(2000) - 6, FX(6000) + 6]);
+  reveal(hf, cl, sl + 10, 'cruise');
+  trace(b, q => { const f = 2000 + 4000 * q; return [FX(f), FY(HM31(f))]; }, sl + 10, sceneEnd(9), 150, C.input);
+  flicker(hf, FX(4000), FY(0), sl + 10, sceneEnd(9), 0.9, 91, 7);
+  M.show(label(b, 'the filter’s cliff', 1720, 600, 'lbl s', 'right'), cl);
+  M.show(label(b, 'becomes a slope', 1720, 670, 'lbl ok', 'right'), sl);
+  drift(9);
+}
+{
+  const c = cam(10);
+  const yl = word(10, 'line'), em = word(10, 'empty'), sl = word(10, 'slope'), ps = word(10, 'pass'), rm = word(10, 'remove'), pl = word(10, ['plain', 'plane']), tw = word(10, ['two', '271']), af = word(10, 'affords'), ha = word(10, 'hamming'), po = word(10, ['point', '0.24', '.24']), go = word(10, 'gone');
+  layer(c, hatchDefs);
+  const X = f => 260 + f * 0.18, Y = d => 240 + (10 - d) * 6.2;
+  M.show(layer(c, `<rect x="${X(0)}" y="${Y(10)}" width="${X(3400) - X(0)}" height="${Y(-80) - Y(10)}" fill="${C.inputSoft}"/>`), ps);
+  M.show(layer(c, `<rect x="${X(3400)}" y="${Y(10)}" width="${X(4600) - X(3400)}" height="${Y(-80) - Y(10)}" fill="${C.paper2}"/>`), sl);
+  M.show(layer(c, `<rect x="${X(4600)}" y="${Y(-40)}" width="${X(8000) - X(4600)}" height="${Y(-80) - Y(-40)}" fill="url(#stripe)"/>` + hline(X(4600), X(8000), Y(-40), C.accent, 4, '10 8')), rm);
+  axes(c, X, Y, [[0, '0'], [3400, '3,400'], [4600, '4,600'], [8000, '8,000 Hz']], [[0, '0 dB'], [-40, '−40 dB'], [-80, '−80']], 0, 8000, -80, 10, '');
+  M.show(label(c, 'voice band: 0 to 3,400 Hz', 200, 20, 'lbl'), yl);
+  M.show(label(c, 'top 600 Hz empty; downsampled, 4,600 → 3,400', 200, 90, 'lbl s'), em);
+  M.show(label(c, 'slope', X(4000), 165, 'lbl s', 'center'), sl);
+  M.show(label(c, 'pass: within 1%', X(1700), 165, 'lbl ok', 'center'), ps);
+  M.show(label(c, 'remove: below 1%', X(6300), Y(10) + 10, 'lbl acc', 'center'), rm);
+  M.show(label(c, 'dashed red: −40 dB = 1%', 1720, Y(10) + 72, 'lbl s', 'right'), rm);
+  const pc = layer(c, curve(range(0, 8000, 4).map(f => [X(f), Y(db(H47(f)))]), C.ink, 4, DASH), [X(0) - 6, X(8000) + 6]);
+  reveal(pc, pl, pl + 20, 'cruise');
+  M.show(label(c, 'dashed: plain cut, 47', 290, 345, 'lbl s'), pl);
+  M.show(label(c, 'needs 271: same 9% bump,', 290, 407, 'lbl s'), tw);
+  M.show(label(c, 'squeezed into the slope', 290, 469, 'lbl s'), tw + 8);
+  M.show(label(c, 'your chip: 47 at most', 290, 531, 'lbl s'), af);
+  const hc = layer(c, curve(range(0, 8000, 2).map(f => [X(f), Y(db(HM45(f)))]), C.input, 7), [X(0) - 6, X(8000) + 6]);
+  reveal(hc, ha, ha + 24, 'cruise');
+  trace(c, q => { const f = 8000 * q; return [X(f), Y(db(HM45(f)))]; }, ha + 24, sceneEnd(10), 240, C.input);
+  flicker(pc, X(4000), Y(10), pl + 20, ha, 0.95, 101, 4);
+  flicker(hc, X(4000), Y(10), ha + 24, sceneEnd(10), 0.97, 102, 7);
+  M.show(label(c, 'solid: Hamming, 45', 290, 597, 'lbl ok'), ha);
+  M.show(label(c, `voice band: ${pct(worst(HM45, 3400, 4600))}`, 290, 659, 'lbl ok'), po);
+  M.show(label(c, `ghost: ${pct(worst(HM45, 3400, 4600))}`, 290, 721, 'lbl ok'), po + 6);
+  M.show(tick(c, 760, 752), po + 10);
+  M.show(label(c, 'the ghost is gone', 1720, 160, 'lbl ok', 'right'), go);
+  drift(10, 1, 1.02);
+}
+{
+  const c = cam(11), a = sub(c), b = sub(c);
+  const shp = word(11, 'shape'), ri = word(11, 'ripple'), le = word(11, 'length'), so = word(11, 'slope'), nx = word(11, 'next'), co = word(11, 'copy'), cu = word(11, 'cutoff'), la = word(11, 'lands');
+  M.show('#' + a.id, 0, nx); M.show('#' + b.id, nx);
+  const shp0 = sceneStart(11);
+  const panel = (x0, Ha, Hb, dashB, colA, colB) => {
+    const X = f => x0 + (f - 2500) * 0.25, Y = g => 640 - (g + 0.1) * 300;
+    return hline(X(2500), X(5500), Y(0), C.ink, 3) + curve(range(2500, 5500, 2).map(f => [X(f), Y(Ha(f))]), colA, 5) + curve(range(2500, 5500, 2).map(f => [X(f), Y(Hb(f))]), colB, 6, dashB);
+  };
+  const pA = layer(a, panel(200, H31, HM31, '', C.ink, C.input)); M.show(pA, shp0); flicker(pA, 575, 610, shp0, nx, 0.9, 111);
+  M.show(label(a, 'shape sets the ripple', 200, 120, 'lbl'), shp0);
+  M.show(label(a, 'rectangle vs Hamming', 200, 700, 'lbl s'), ri);
+  const pB = layer(a, panel(1020, HM31, HM89, DASH, C.input, C.input)); M.show(pB, le); flicker(pB, 1395, 610, le, nx, 0.9, 112);
+  M.show(label(a, 'length sets the slope', 1020, 120, 'lbl'), le);
+  M.show(label(a, 'dashed: longer, 89', 1020, 700, 'lbl s'), so);
+  label(b, 'next ticket: the analog exchange retires', 200, 20, 'lbl s');
+  const X = f => 260 + f * 0.36, Y = g => 760 - g * 420;
+  axes(b, X, Y, [[0, '0'], [2363, '2,363'], [3400, '3,400'], [4000, '4,000 Hz']], [[0, '0'], [1, '1']], 0, 4000, 0, 1.1, '');
+  const lp = (fc, n) => f => 1 / Math.sqrt(1 + Math.pow(f / fc, 2 * n));
+  const ex = layer(b, curve(range(0, 4000, 4).map(f => [X(f), Y(lp(3400, 4)(f))]), C.ink, 6)); M.show(ex, cu); flicker(ex, 960, Y(0), cu, END - 22, 0.9, 114);
+  M.show(label(b, 'the exchange: 3,400 Hz', 1720, 160, 'lbl', 'right'), cu);
+  const cc = layer(b, curve(range(0, 4000, 4).map(f => [X(f), Y(lp(2363, 4)(f))]), C.accent, 6, DASH), [X(0) - 6, X(4000) + 6]);
+  reveal(cc, la, la + 20, 'cruise');
+  trace(b, q => { const f = 4000 * q; return [X(f), Y(lp(2363, 4)(f))]; }, la + 20, END - 22, 150);
+  flicker(cc, 960, Y(0), la + 20, END - 22, 0.85, 113, 6);
+  M.show(label(b, 'your copy: 2,363 Hz', 1720, 240, 'lbl acc', 'right'), la);
+  M.show(label(b, 'textbook recipe', 1720, 80, 'lbl s', 'right'), co);
+  drift(11);
+}
+SCENES.forEach((id, i) => { if (i === 0) return; M.cut(sceneStart(i + 1), { hide: [`#${SCENES[i - 1]}`], show: [`#${id}`] }); M.hide(`#${id}`, 0); });
+window.__misses = MISSES;
+if (MISSES.length) console.error('word anchors missing: ' + MISSES.join(' '));
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

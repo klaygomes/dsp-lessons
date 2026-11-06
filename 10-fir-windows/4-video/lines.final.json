@@ -1,0 +1,2398 @@
+[
+ {
+  "i": 1,
+  "text": "Remember lesson five's wideband line? Before you downsample it, a ready-made filter, thirty-one numbers long, removes every tone above four thousand hertz. Today a test engineer sweeps a tone through it, from four thousand up to eight thousand hertz. She expects silence.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line01.wav",
+  "dur": 13.35,
+  "coverage": 0.91,
+  "start": 0.0,
+  "end": 13.35,
+  "words": [
+   {
+    "word": "Remember",
+    "start": 0.0,
+    "end": 0.48
+   },
+   {
+    "word": "Lesson",
+    "start": 0.48,
+    "end": 0.86
+   },
+   {
+    "word": "5's",
+    "start": 0.86,
+    "end": 1.24
+   },
+   {
+    "word": "Wideband",
+    "start": 1.24,
+    "end": 1.68
+   },
+   {
+    "word": "line?",
+    "start": 1.68,
+    "end": 2.12
+   },
+   {
+    "word": "Before",
+    "start": 2.12,
+    "end": 2.42
+   },
+   {
+    "word": "you",
+    "start": 2.42,
+    "end": 2.6
+   },
+   {
+    "word": "downsample",
+    "start": 2.6,
+    "end": 3.18
+   },
+   {
+    "word": "it,",
+    "start": 3.18,
+    "end": 3.38
+   },
+   {
+    "word": "a",
+    "start": 3.38,
+    "end": 3.5
+   },
+   {
+    "word": "ready",
+    "start": 3.5,
+    "end": 3.64
+   },
+   {
+    "word": "-made",
+    "start": 3.64,
+    "end": 3.82
+   },
+   {
+    "word": "filter,",
+    "start": 3.82,
+    "end": 4.4
+   },
+   {
+    "word": "31",
+    "start": 4.76,
+    "end": 4.76
+   },
+   {
+    "word": "numbers",
+    "start": 4.76,
+    "end": 5.12
+   },
+   {
+    "word": "long,",
+    "start": 5.12,
+    "end": 5.62
+   },
+   {
+    "word": "removes",
+    "start": 5.62,
+    "end": 5.94
+   },
+   {
+    "word": "every",
+    "start": 5.94,
+    "end": 6.22
+   },
+   {
+    "word": "tone",
+    "start": 6.22,
+    "end": 6.44
+   },
+   {
+    "word": "above",
+    "start": 6.44,
+    "end": 6.7
+   },
+   {
+    "word": "4000",
+    "start": 6.7,
+    "end": 7.18
+   },
+   {
+    "word": "Hz.",
+    "start": 7.18,
+    "end": 7.8
+   },
+   {
+    "word": "Today",
+    "start": 7.8,
+    "end": 8.06
+   },
+   {
+    "word": "a",
+    "start": 8.06,
+    "end": 8.26
+   },
+   {
+    "word": "test",
+    "start": 8.26,
+    "end": 8.46
+   },
+   {
+    "word": "engineer",
+    "start": 8.46,
+    "end": 8.8
+   },
+   {
+    "word": "sweeps",
+    "start": 8.8,
+    "end": 9.2
+   },
+   {
+    "word": "a",
+    "start": 9.2,
+    "end": 9.34
+   },
+   {
+    "word": "tone",
+    "start": 9.5,
+    "end": 9.54
+   },
+   {
+    "word": "through",
+    "start": 9.54,
+    "end": 9.74
+   },
+   {
+    "word": "it,",
+    "start": 9.74,
+    "end": 10.04
+   },
+   {
+    "word": "from",
+    "start": 10.04,
+    "end": 10.2
+   },
+   {
+    "word": "4000",
+    "start": 10.2,
+    "end": 10.7
+   },
+   {
+    "word": "up",
+    "start": 10.7,
+    "end": 10.96
+   },
+   {
+    "word": "to",
+    "start": 10.96,
+    "end": 11.1
+   },
+   {
+    "word": "8000",
+    "start": 11.1,
+    "end": 11.56
+   },
+   {
+    "word": "Hz.",
+    "start": 11.56,
+    "end": 12.02
+   },
+   {
+    "word": "She",
+    "start": 12.02,
+    "end": 12.24
+   },
+   {
+    "word": "expects",
+    "start": 12.24,
+    "end": 12.58
+   },
+   {
+    "word": "silence.",
+    "start": 12.58,
+    "end": 13.24
+   }
+  ]
+ },
+ {
+  "i": 2,
+  "text": "Instead, a ghost glides down to where voices live, swelling and fading: nine percent at thirty-five hundred hertz, five at three thousand, two at one thousand. And voices near thirty-five hundred come out louder. How can a filter that only multiplies and adds make anything louder?",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line02.wav",
+  "dur": 13.77,
+  "coverage": 0.89,
+  "start": 13.35,
+  "end": 27.12,
+  "words": [
+   {
+    "word": "Instead,",
+    "start": 0.0,
+    "end": 0.6
+   },
+   {
+    "word": "a",
+    "start": 0.6,
+    "end": 0.66
+   },
+   {
+    "word": "ghost",
+    "start": 0.66,
+    "end": 0.88
+   },
+   {
+    "word": "glides",
+    "start": 0.88,
+    "end": 1.26
+   },
+   {
+    "word": "down",
+    "start": 1.26,
+    "end": 1.54
+   },
+   {
+    "word": "to",
+    "start": 1.54,
+    "end": 1.7
+   },
+   {
+    "word": "where",
+    "start": 1.7,
+    "end": 1.82
+   },
+   {
+    "word": "voices",
+    "start": 1.82,
+    "end": 2.16
+   },
+   {
+    "word": "live,",
+    "start": 2.16,
+    "end": 2.62
+   },
+   {
+    "word": "swelling",
+    "start": 2.62,
+    "end": 2.94
+   },
+   {
+    "word": "and",
+    "start": 2.94,
+    "end": 3.12
+   },
+   {
+    "word": "fading.",
+    "start": 3.12,
+    "end": 3.64
+   },
+   {
+    "word": "9",
+    "start": 3.84,
+    "end": 4.02
+   },
+   {
+    "word": "%",
+    "start": 4.02,
+    "end": 4.3
+   },
+   {
+    "word": "at",
+    "start": 4.3,
+    "end": 4.5
+   },
+   {
+    "word": "3",
+    "start": 4.5,
+    "end": 4.7
+   },
+   {
+    "word": ",500",
+    "start": 4.7,
+    "end": 5.18
+   },
+   {
+    "word": "Hz,",
+    "start": 5.18,
+    "end": 5.76
+   },
+   {
+    "word": "5",
+    "start": 5.76,
+    "end": 5.96
+   },
+   {
+    "word": "at",
+    "start": 5.96,
+    "end": 6.12
+   },
+   {
+    "word": "3",
+    "start": 6.12,
+    "end": 6.34
+   },
+   {
+    "word": ",000,",
+    "start": 6.34,
+    "end": 6.98
+   },
+   {
+    "word": "2",
+    "start": 6.98,
+    "end": 7.12
+   },
+   {
+    "word": "at",
+    "start": 7.12,
+    "end": 7.28
+   },
+   {
+    "word": "1",
+    "start": 7.28,
+    "end": 7.48
+   },
+   {
+    "word": ",000,",
+    "start": 7.48,
+    "end": 7.96
+   },
+   {
+    "word": "and",
+    "start": 7.96,
+    "end": 8.18
+   },
+   {
+    "word": "voices",
+    "start": 8.18,
+    "end": 8.48
+   },
+   {
+    "word": "near",
+    "start": 8.48,
+    "end": 8.72
+   },
+   {
+    "word": "3",
+    "start": 8.72,
+    "end": 8.96
+   },
+   {
+    "word": ",500",
+    "start": 8.96,
+    "end": 9.4
+   },
+   {
+    "word": "come",
+    "start": 9.4,
+    "end": 9.7
+   },
+   {
+    "word": "out",
+    "start": 9.7,
+    "end": 9.88
+   },
+   {
+    "word": "louder.",
+    "start": 9.88,
+    "end": 10.38
+   },
+   {
+    "word": "How",
+    "start": 10.56,
+    "end": 10.7
+   },
+   {
+    "word": "can",
+    "start": 10.7,
+    "end": 10.84
+   },
+   {
+    "word": "a",
+    "start": 10.84,
+    "end": 10.94
+   },
+   {
+    "word": "filter",
+    "start": 10.94,
+    "end": 11.2
+   },
+   {
+    "word": "that",
+    "start": 11.2,
+    "end": 11.4
+   },
+   {
+    "word": "only",
+    "start": 11.4,
+    "end": 11.64
+   },
+   {
+    "word": "multiplies",
+    "start": 11.64,
+    "end": 12.24
+   },
+   {
+    "word": "and",
+    "start": 12.24,
+    "end": 12.38
+   },
+   {
+    "word": "ads",
+    "start": 12.38,
+    "end": 12.58
+   },
+   {
+    "word": "make",
+    "start": 12.58,
+    "end": 12.8
+   },
+   {
+    "word": "anything",
+    "start": 12.8,
+    "end": 13.12
+   },
+   {
+    "word": "louder?",
+    "start": 13.12,
+    "end": 13.66
+   }
+  ]
+ },
+ {
+  "i": 3,
+  "text": "Start from the perfect filter, the ideal low-pass: below four thousand hertz everything passes, above it nothing. With no feedback, a filter is just a list of coefficients. Send in one click, and the list comes back out. But the ideal list never ends.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line03.wav",
+  "dur": 12.2,
+  "coverage": 0.97,
+  "start": 27.12,
+  "end": 39.32,
+  "words": [
+   {
+    "word": "Start",
+    "start": 0.0,
+    "end": 0.38
+   },
+   {
+    "word": "from",
+    "start": 0.38,
+    "end": 0.56
+   },
+   {
+    "word": "the",
+    "start": 0.56,
+    "end": 0.68
+   },
+   {
+    "word": "perfect",
+    "start": 0.68,
+    "end": 0.92
+   },
+   {
+    "word": "filter,",
+    "start": 0.92,
+    "end": 1.5
+   },
+   {
+    "word": "the",
+    "start": 1.5,
+    "end": 1.62
+   },
+   {
+    "word": "ideal",
+    "start": 1.62,
+    "end": 1.88
+   },
+   {
+    "word": "low",
+    "start": 1.88,
+    "end": 2.08
+   },
+   {
+    "word": "pass.",
+    "start": 2.08,
+    "end": 2.58
+   },
+   {
+    "word": "Below",
+    "start": 2.58,
+    "end": 2.74
+   },
+   {
+    "word": "4000",
+    "start": 2.74,
+    "end": 3.28
+   },
+   {
+    "word": "Hz",
+    "start": 3.28,
+    "end": 3.56
+   },
+   {
+    "word": "everything",
+    "start": 3.56,
+    "end": 3.88
+   },
+   {
+    "word": "passes,",
+    "start": 3.88,
+    "end": 4.5
+   },
+   {
+    "word": "above",
+    "start": 4.5,
+    "end": 4.64
+   },
+   {
+    "word": "it",
+    "start": 4.64,
+    "end": 4.8
+   },
+   {
+    "word": "nothing.",
+    "start": 4.8,
+    "end": 5.28
+   },
+   {
+    "word": "With",
+    "start": 5.46,
+    "end": 5.6
+   },
+   {
+    "word": "no",
+    "start": 5.6,
+    "end": 5.78
+   },
+   {
+    "word": "feedback,",
+    "start": 5.78,
+    "end": 6.34
+   },
+   {
+    "word": "a",
+    "start": 6.34,
+    "end": 6.46
+   },
+   {
+    "word": "filter",
+    "start": 6.46,
+    "end": 6.68
+   },
+   {
+    "word": "is",
+    "start": 6.68,
+    "end": 6.9
+   },
+   {
+    "word": "just",
+    "start": 6.9,
+    "end": 7.06
+   },
+   {
+    "word": "a",
+    "start": 7.06,
+    "end": 7.18
+   },
+   {
+    "word": "list",
+    "start": 7.18,
+    "end": 7.34
+   },
+   {
+    "word": "of",
+    "start": 7.34,
+    "end": 7.48
+   },
+   {
+    "word": "coefficients.",
+    "start": 7.48,
+    "end": 8.26
+   },
+   {
+    "word": "Send",
+    "start": 8.48,
+    "end": 8.64
+   },
+   {
+    "word": "in",
+    "start": 8.64,
+    "end": 8.78
+   },
+   {
+    "word": "one",
+    "start": 8.78,
+    "end": 8.98
+   },
+   {
+    "word": "click",
+    "start": 8.98,
+    "end": 9.26
+   },
+   {
+    "word": "and",
+    "start": 9.26,
+    "end": 9.46
+   },
+   {
+    "word": "the",
+    "start": 9.46,
+    "end": 9.54
+   },
+   {
+    "word": "list",
+    "start": 9.54,
+    "end": 9.72
+   },
+   {
+    "word": "comes",
+    "start": 9.72,
+    "end": 9.94
+   },
+   {
+    "word": "back",
+    "start": 9.94,
+    "end": 10.14
+   },
+   {
+    "word": "out,",
+    "start": 10.14,
+    "end": 10.54
+   },
+   {
+    "word": "but",
+    "start": 10.54,
+    "end": 10.7
+   },
+   {
+    "word": "the",
+    "start": 10.7,
+    "end": 10.8
+   },
+   {
+    "word": "ideal",
+    "start": 10.8,
+    "end": 11.1
+   },
+   {
+    "word": "list",
+    "start": 11.1,
+    "end": 11.34
+   },
+   {
+    "word": "never",
+    "start": 11.34,
+    "end": 11.54
+   },
+   {
+    "word": "ends.",
+    "start": 11.54,
+    "end": 12.04
+   }
+  ]
+ },
+ {
+  "i": 4,
+  "text": "So lesson five kept the middle thirty-one and threw the rest away. That's truncation. At zero hertz the gain is the sum. Point five. Add a pair: one point one four. Another: point nine two. It overshoots, and swings around one.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line04.wav",
+  "dur": 11.38,
+  "coverage": 0.87,
+  "start": 39.32,
+  "end": 50.7,
+  "words": [
+   {
+    "word": "So",
+    "start": 0.0,
+    "end": 0.32
+   },
+   {
+    "word": "lesson",
+    "start": 0.32,
+    "end": 0.56
+   },
+   {
+    "word": "5",
+    "start": 0.56,
+    "end": 0.86
+   },
+   {
+    "word": "kept",
+    "start": 0.86,
+    "end": 1.12
+   },
+   {
+    "word": "the",
+    "start": 1.12,
+    "end": 1.24
+   },
+   {
+    "word": "middle",
+    "start": 1.24,
+    "end": 1.42
+   },
+   {
+    "word": "31",
+    "start": 1.42,
+    "end": 1.72
+   },
+   {
+    "word": "and",
+    "start": 1.72,
+    "end": 2.04
+   },
+   {
+    "word": "threw",
+    "start": 2.04,
+    "end": 2.18
+   },
+   {
+    "word": "the",
+    "start": 2.18,
+    "end": 2.3
+   },
+   {
+    "word": "rest",
+    "start": 2.3,
+    "end": 2.52
+   },
+   {
+    "word": "away.",
+    "start": 2.52,
+    "end": 2.98
+   },
+   {
+    "word": "That's",
+    "start": 3.1,
+    "end": 3.26
+   },
+   {
+    "word": "truncation.",
+    "start": 3.26,
+    "end": 3.94
+   },
+   {
+    "word": "At",
+    "start": 4.48,
+    "end": 4.6
+   },
+   {
+    "word": "0",
+    "start": 4.6,
+    "end": 4.82
+   },
+   {
+    "word": "Hz",
+    "start": 4.82,
+    "end": 5.06
+   },
+   {
+    "word": "the",
+    "start": 5.06,
+    "end": 5.28
+   },
+   {
+    "word": "gain",
+    "start": 5.28,
+    "end": 5.46
+   },
+   {
+    "word": "is",
+    "start": 5.46,
+    "end": 5.62
+   },
+   {
+    "word": "the",
+    "start": 5.62,
+    "end": 5.74
+   },
+   {
+    "word": "sum.",
+    "start": 5.74,
+    "end": 6.12
+   },
+   {
+    "word": ".5,",
+    "start": 6.24,
+    "end": 6.82
+   },
+   {
+    "word": "add",
+    "start": 6.82,
+    "end": 6.98
+   },
+   {
+    "word": "a",
+    "start": 6.98,
+    "end": 7.1
+   },
+   {
+    "word": "pair,",
+    "start": 7.1,
+    "end": 7.4
+   },
+   {
+    "word": "1",
+    "start": 7.4,
+    "end": 7.58
+   },
+   {
+    "word": ".14,",
+    "start": 7.58,
+    "end": 8.3
+   },
+   {
+    "word": "another",
+    "start": 8.3,
+    "end": 8.6
+   },
+   {
+    "word": ".92.",
+    "start": 8.6,
+    "end": 9.42
+   },
+   {
+    "word": "It",
+    "start": 9.58,
+    "end": 9.66
+   },
+   {
+    "word": "overshoots",
+    "start": 9.66,
+    "end": 10.2
+   },
+   {
+    "word": "and",
+    "start": 10.2,
+    "end": 10.34
+   },
+   {
+    "word": "swings",
+    "start": 10.34,
+    "end": 10.58
+   },
+   {
+    "word": "around",
+    "start": 10.58,
+    "end": 10.86
+   },
+   {
+    "word": "1.",
+    "start": 10.86,
+    "end": 11.22
+   }
+  ]
+ },
+ {
+  "i": 5,
+  "text": "Each pair adds an arrow and its mirror, which leaves a plain number, sometimes negative. At forty-five hundred hertz, every pair pulls down, to minus point oh nine. Nine percent of that tone gets out, upside down, and lands at thirty-five hundred.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line05.wav",
+  "dur": 12.48,
+  "coverage": 0.84,
+  "start": 50.2,
+  "end": 62.68,
+  "words": [
+   {
+    "word": "Each",
+    "start": 0.0,
+    "end": 0.38
+   },
+   {
+    "word": "pair",
+    "start": 0.38,
+    "end": 0.56
+   },
+   {
+    "word": "adds",
+    "start": 0.56,
+    "end": 0.82
+   },
+   {
+    "word": "an",
+    "start": 0.82,
+    "end": 0.94
+   },
+   {
+    "word": "arrow",
+    "start": 0.94,
+    "end": 1.22
+   },
+   {
+    "word": "in",
+    "start": 1.22,
+    "end": 1.38
+   },
+   {
+    "word": "its",
+    "start": 1.38,
+    "end": 1.52
+   },
+   {
+    "word": "mirror,",
+    "start": 1.52,
+    "end": 2.0
+   },
+   {
+    "word": "which",
+    "start": 2.0,
+    "end": 2.14
+   },
+   {
+    "word": "leaves",
+    "start": 2.14,
+    "end": 2.34
+   },
+   {
+    "word": "a",
+    "start": 2.34,
+    "end": 2.44
+   },
+   {
+    "word": "plain",
+    "start": 2.44,
+    "end": 2.64
+   },
+   {
+    "word": "number,",
+    "start": 2.64,
+    "end": 3.06
+   },
+   {
+    "word": "sometimes",
+    "start": 3.06,
+    "end": 3.38
+   },
+   {
+    "word": "negative.",
+    "start": 3.38,
+    "end": 4.2
+   },
+   {
+    "word": "At",
+    "start": 4.94,
+    "end": 5.06
+   },
+   {
+    "word": "4500",
+    "start": 5.06,
+    "end": 5.86
+   },
+   {
+    "word": "Hz,",
+    "start": 5.86,
+    "end": 6.32
+   },
+   {
+    "word": "every",
+    "start": 6.32,
+    "end": 6.5
+   },
+   {
+    "word": "pair",
+    "start": 6.5,
+    "end": 6.7
+   },
+   {
+    "word": "pulls",
+    "start": 6.7,
+    "end": 7.02
+   },
+   {
+    "word": "down",
+    "start": 7.02,
+    "end": 7.26
+   },
+   {
+    "word": "to",
+    "start": 7.26,
+    "end": 7.46
+   },
+   {
+    "word": "minus",
+    "start": 7.46,
+    "end": 7.68
+   },
+   {
+    "word": "0",
+    "start": 7.68,
+    "end": 7.92
+   },
+   {
+    "word": ".09.",
+    "start": 7.92,
+    "end": 8.6
+   },
+   {
+    "word": "9",
+    "start": 8.9,
+    "end": 9.0
+   },
+   {
+    "word": "%",
+    "start": 9.0,
+    "end": 9.26
+   },
+   {
+    "word": "of",
+    "start": 9.26,
+    "end": 9.44
+   },
+   {
+    "word": "that",
+    "start": 9.44,
+    "end": 9.6
+   },
+   {
+    "word": "tone",
+    "start": 9.6,
+    "end": 9.82
+   },
+   {
+    "word": "gets",
+    "start": 9.82,
+    "end": 10.04
+   },
+   {
+    "word": "out",
+    "start": 10.04,
+    "end": 10.26
+   },
+   {
+    "word": "upside",
+    "start": 10.26,
+    "end": 10.6
+   },
+   {
+    "word": "down",
+    "start": 10.6,
+    "end": 10.94
+   },
+   {
+    "word": "and",
+    "start": 10.94,
+    "end": 11.12
+   },
+   {
+    "word": "lands",
+    "start": 11.12,
+    "end": 11.38
+   },
+   {
+    "word": "at",
+    "start": 11.38,
+    "end": 11.52
+   },
+   {
+    "word": "3500.",
+    "start": 11.52,
+    "end": 12.36
+   }
+  ]
+ },
+ {
+  "i": 6,
+  "text": "So keep more coefficients? Sixty-three. Two hundred fifty-five. The bump slides toward the cliff and narrows, but it stays nine percent tall. That's the Gibbs phenomenon. Why won't it shrink?",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line06.wav",
+  "dur": 9.4,
+  "coverage": 0.93,
+  "start": 62.18,
+  "end": 71.58,
+  "words": [
+   {
+    "word": "so",
+    "start": 0.0,
+    "end": 0.28
+   },
+   {
+    "word": "keep",
+    "start": 0.28,
+    "end": 0.48
+   },
+   {
+    "word": "more",
+    "start": 0.48,
+    "end": 0.66
+   },
+   {
+    "word": "coefficients",
+    "start": 0.66,
+    "end": 1.16
+   },
+   {
+    "word": "63",
+    "start": 1.16,
+    "end": 2.04
+   },
+   {
+    "word": "255",
+    "start": 2.04,
+    "end": 3.4
+   },
+   {
+    "word": "the",
+    "start": 3.4,
+    "end": 3.8
+   },
+   {
+    "word": "bump",
+    "start": 3.8,
+    "end": 4.0
+   },
+   {
+    "word": "slides",
+    "start": 4.0,
+    "end": 4.34
+   },
+   {
+    "word": "toward",
+    "start": 4.34,
+    "end": 4.6
+   },
+   {
+    "word": "the",
+    "start": 4.6,
+    "end": 4.72
+   },
+   {
+    "word": "cliff",
+    "start": 4.72,
+    "end": 4.92
+   },
+   {
+    "word": "and",
+    "start": 4.92,
+    "end": 5.08
+   },
+   {
+    "word": "narrows",
+    "start": 5.08,
+    "end": 5.52
+   },
+   {
+    "word": "but",
+    "start": 5.52,
+    "end": 5.7
+   },
+   {
+    "word": "it",
+    "start": 5.7,
+    "end": 5.84
+   },
+   {
+    "word": "stays",
+    "start": 5.9,
+    "end": 6.12
+   },
+   {
+    "word": "nine",
+    "start": 6.12,
+    "end": 6.36
+   },
+   {
+    "word": "percent",
+    "start": 6.36,
+    "end": 6.66
+   },
+   {
+    "word": "tall",
+    "start": 6.66,
+    "end": 7.0
+   },
+   {
+    "word": "that's",
+    "start": 7.0,
+    "end": 7.28
+   },
+   {
+    "word": "the",
+    "start": 7.28,
+    "end": 7.38
+   },
+   {
+    "word": "gibbs",
+    "start": 7.38,
+    "end": 7.64
+   },
+   {
+    "word": "phenomenon",
+    "start": 7.64,
+    "end": 8.08
+   },
+   {
+    "word": "why",
+    "start": 8.08,
+    "end": 8.66
+   },
+   {
+    "word": "won't",
+    "start": 8.66,
+    "end": 8.88
+   },
+   {
+    "word": "it",
+    "start": 8.88,
+    "end": 8.98
+   },
+   {
+    "word": "shrink",
+    "start": 8.98,
+    "end": 9.24
+   }
+  ]
+ },
+ {
+  "i": 7,
+  "text": "Cutting the list multiplies it by a window: one for each coefficient you keep, zero for the rest. A rectangle. And a window has its own response: a tall hump, with side lobes from its sharp edges.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line07.wav",
+  "dur": 9.47,
+  "coverage": 1.0,
+  "start": 71.58,
+  "end": 81.05,
+  "words": [
+   {
+    "word": "Cutting",
+    "start": 0.0,
+    "end": 0.42
+   },
+   {
+    "word": "the",
+    "start": 0.42,
+    "end": 0.52
+   },
+   {
+    "word": "list",
+    "start": 0.52,
+    "end": 0.7
+   },
+   {
+    "word": "multiplies",
+    "start": 0.7,
+    "end": 1.18
+   },
+   {
+    "word": "it",
+    "start": 1.18,
+    "end": 1.28
+   },
+   {
+    "word": "by",
+    "start": 1.28,
+    "end": 1.4
+   },
+   {
+    "word": "a",
+    "start": 1.4,
+    "end": 1.5
+   },
+   {
+    "word": "window,",
+    "start": 1.5,
+    "end": 2.0
+   },
+   {
+    "word": "one",
+    "start": 2.0,
+    "end": 2.14
+   },
+   {
+    "word": "for",
+    "start": 2.14,
+    "end": 2.28
+   },
+   {
+    "word": "each",
+    "start": 2.28,
+    "end": 2.46
+   },
+   {
+    "word": "coefficient",
+    "start": 2.46,
+    "end": 2.88
+   },
+   {
+    "word": "you",
+    "start": 2.88,
+    "end": 3.08
+   },
+   {
+    "word": "keep,",
+    "start": 3.08,
+    "end": 3.58
+   },
+   {
+    "word": "zero",
+    "start": 3.58,
+    "end": 3.8
+   },
+   {
+    "word": "for",
+    "start": 3.8,
+    "end": 3.98
+   },
+   {
+    "word": "the",
+    "start": 3.98,
+    "end": 4.08
+   },
+   {
+    "word": "rest,",
+    "start": 4.08,
+    "end": 4.46
+   },
+   {
+    "word": "a",
+    "start": 4.46,
+    "end": 4.62
+   },
+   {
+    "word": "rectangle.",
+    "start": 4.62,
+    "end": 5.22
+   },
+   {
+    "word": "And",
+    "start": 5.34,
+    "end": 5.44
+   },
+   {
+    "word": "a",
+    "start": 5.44,
+    "end": 5.52
+   },
+   {
+    "word": "window",
+    "start": 5.52,
+    "end": 5.74
+   },
+   {
+    "word": "has",
+    "start": 5.74,
+    "end": 5.96
+   },
+   {
+    "word": "its",
+    "start": 5.96,
+    "end": 6.08
+   },
+   {
+    "word": "own",
+    "start": 6.08,
+    "end": 6.24
+   },
+   {
+    "word": "response,",
+    "start": 6.24,
+    "end": 6.88
+   },
+   {
+    "word": "a",
+    "start": 6.88,
+    "end": 7.16
+   },
+   {
+    "word": "tall",
+    "start": 7.16,
+    "end": 7.36
+   },
+   {
+    "word": "hump",
+    "start": 7.36,
+    "end": 7.62
+   },
+   {
+    "word": "with",
+    "start": 7.62,
+    "end": 7.82
+   },
+   {
+    "word": "side",
+    "start": 7.82,
+    "end": 8.08
+   },
+   {
+    "word": "lobes",
+    "start": 8.08,
+    "end": 8.38
+   },
+   {
+    "word": "from",
+    "start": 8.38,
+    "end": 8.58
+   },
+   {
+    "word": "its",
+    "start": 8.58,
+    "end": 8.72
+   },
+   {
+    "word": "sharp",
+    "start": 8.72,
+    "end": 8.96
+   },
+   {
+    "word": "edges.",
+    "start": 8.96,
+    "end": 9.4
+   }
+  ]
+ },
+ {
+  "i": 8,
+  "text": "The cut filter's response is the step, smeared by that hump: slide it along, and add up what's still on the pass side. When the hump touches the cliff, the lobes past it are left out, and they add up to minus nine percent. Oh, so a hundred and nine is left. A longer rectangle just narrows the lobes, so the share stays.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line08.wav",
+  "dur": 15.63,
+  "coverage": 0.95,
+  "start": 81.05,
+  "end": 96.68,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.26
+   },
+   {
+    "word": "cut",
+    "start": 0.26,
+    "end": 0.44
+   },
+   {
+    "word": "filter's",
+    "start": 0.44,
+    "end": 0.84
+   },
+   {
+    "word": "response",
+    "start": 0.84,
+    "end": 1.22
+   },
+   {
+    "word": "is",
+    "start": 1.22,
+    "end": 1.42
+   },
+   {
+    "word": "the",
+    "start": 1.42,
+    "end": 1.54
+   },
+   {
+    "word": "step,",
+    "start": 1.54,
+    "end": 1.94
+   },
+   {
+    "word": "smeared",
+    "start": 1.94,
+    "end": 2.3
+   },
+   {
+    "word": "by",
+    "start": 2.3,
+    "end": 2.44
+   },
+   {
+    "word": "that",
+    "start": 2.44,
+    "end": 2.62
+   },
+   {
+    "word": "hump.",
+    "start": 2.62,
+    "end": 3.1
+   },
+   {
+    "word": "Slide",
+    "start": 3.36,
+    "end": 3.48
+   },
+   {
+    "word": "it",
+    "start": 3.48,
+    "end": 3.6
+   },
+   {
+    "word": "along,",
+    "start": 3.6,
+    "end": 4.06
+   },
+   {
+    "word": "and",
+    "start": 4.06,
+    "end": 4.18
+   },
+   {
+    "word": "add",
+    "start": 4.18,
+    "end": 4.38
+   },
+   {
+    "word": "up",
+    "start": 4.38,
+    "end": 4.48
+   },
+   {
+    "word": "what's",
+    "start": 4.48,
+    "end": 4.72
+   },
+   {
+    "word": "still",
+    "start": 4.72,
+    "end": 4.88
+   },
+   {
+    "word": "on",
+    "start": 4.88,
+    "end": 5.02
+   },
+   {
+    "word": "the",
+    "start": 5.02,
+    "end": 5.12
+   },
+   {
+    "word": "pass",
+    "start": 5.12,
+    "end": 5.34
+   },
+   {
+    "word": "side.",
+    "start": 5.34,
+    "end": 5.78
+   },
+   {
+    "word": "When",
+    "start": 5.92,
+    "end": 6.04
+   },
+   {
+    "word": "the",
+    "start": 6.04,
+    "end": 6.12
+   },
+   {
+    "word": "hump",
+    "start": 6.12,
+    "end": 6.32
+   },
+   {
+    "word": "touches",
+    "start": 6.32,
+    "end": 6.62
+   },
+   {
+    "word": "the",
+    "start": 6.62,
+    "end": 6.8
+   },
+   {
+    "word": "cliff,",
+    "start": 6.8,
+    "end": 7.22
+   },
+   {
+    "word": "the",
+    "start": 7.22,
+    "end": 7.34
+   },
+   {
+    "word": "lobes",
+    "start": 7.34,
+    "end": 7.6
+   },
+   {
+    "word": "past",
+    "start": 7.6,
+    "end": 7.88
+   },
+   {
+    "word": "it",
+    "start": 7.88,
+    "end": 8.02
+   },
+   {
+    "word": "are",
+    "start": 8.02,
+    "end": 8.12
+   },
+   {
+    "word": "left",
+    "start": 8.12,
+    "end": 8.32
+   },
+   {
+    "word": "out,",
+    "start": 8.32,
+    "end": 8.74
+   },
+   {
+    "word": "and",
+    "start": 8.74,
+    "end": 9.0
+   },
+   {
+    "word": "they",
+    "start": 9.0,
+    "end": 9.14
+   },
+   {
+    "word": "add",
+    "start": 9.14,
+    "end": 9.34
+   },
+   {
+    "word": "up",
+    "start": 9.34,
+    "end": 9.44
+   },
+   {
+    "word": "to",
+    "start": 9.44,
+    "end": 9.58
+   },
+   {
+    "word": "minus",
+    "start": 9.58,
+    "end": 9.78
+   },
+   {
+    "word": "9%.",
+    "start": 9.78,
+    "end": 10.3
+   },
+   {
+    "word": "Oh,",
+    "start": 10.68,
+    "end": 11.0
+   },
+   {
+    "word": "so",
+    "start": 11.0,
+    "end": 11.06
+   },
+   {
+    "word": "109",
+    "start": 11.06,
+    "end": 11.58
+   },
+   {
+    "word": "is",
+    "start": 11.58,
+    "end": 11.74
+   },
+   {
+    "word": "left.",
+    "start": 11.74,
+    "end": 12.2
+   },
+   {
+    "word": "A",
+    "start": 12.42,
+    "end": 12.52
+   },
+   {
+    "word": "longer",
+    "start": 12.52,
+    "end": 12.78
+   },
+   {
+    "word": "rectangle",
+    "start": 12.78,
+    "end": 13.22
+   },
+   {
+    "word": "just",
+    "start": 13.22,
+    "end": 13.46
+   },
+   {
+    "word": "narrows",
+    "start": 13.46,
+    "end": 13.8
+   },
+   {
+    "word": "the",
+    "start": 13.8,
+    "end": 13.92
+   },
+   {
+    "word": "lobes,",
+    "start": 13.92,
+    "end": 14.3
+   },
+   {
+    "word": "so",
+    "start": 14.3,
+    "end": 14.52
+   },
+   {
+    "word": "the",
+    "start": 14.52,
+    "end": 14.66
+   },
+   {
+    "word": "share",
+    "start": 14.66,
+    "end": 14.86
+   },
+   {
+    "word": "stays.",
+    "start": 14.86,
+    "end": 15.46
+   }
+  ]
+ },
+ {
+  "i": 9,
+  "text": "The cure isn't a longer window, but one without sharp edges: a taper. The Hamming window fades from one in the middle to almost zero at the ends. Its side lobes almost vanish, but its hump is twice as wide: the cliff becomes a slope.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line09.wav",
+  "dur": 11.19,
+  "coverage": 1.0,
+  "start": 96.68,
+  "end": 107.87,
+  "words": [
+   {
+    "word": "The",
+    "start": 0.0,
+    "end": 0.26
+   },
+   {
+    "word": "cure",
+    "start": 0.26,
+    "end": 0.48
+   },
+   {
+    "word": "isn't",
+    "start": 0.48,
+    "end": 0.74
+   },
+   {
+    "word": "a",
+    "start": 0.74,
+    "end": 0.84
+   },
+   {
+    "word": "longer",
+    "start": 0.84,
+    "end": 1.1
+   },
+   {
+    "word": "window",
+    "start": 1.1,
+    "end": 1.38
+   },
+   {
+    "word": "but",
+    "start": 1.38,
+    "end": 1.6
+   },
+   {
+    "word": "one",
+    "start": 1.6,
+    "end": 1.78
+   },
+   {
+    "word": "without",
+    "start": 1.78,
+    "end": 1.98
+   },
+   {
+    "word": "sharp",
+    "start": 1.98,
+    "end": 2.32
+   },
+   {
+    "word": "edges,",
+    "start": 2.32,
+    "end": 2.86
+   },
+   {
+    "word": "a",
+    "start": 2.86,
+    "end": 3.0
+   },
+   {
+    "word": "taper.",
+    "start": 3.0,
+    "end": 3.52
+   },
+   {
+    "word": "The",
+    "start": 3.72,
+    "end": 3.82
+   },
+   {
+    "word": "hamming",
+    "start": 3.82,
+    "end": 4.12
+   },
+   {
+    "word": "window",
+    "start": 4.12,
+    "end": 4.38
+   },
+   {
+    "word": "fades",
+    "start": 4.38,
+    "end": 4.7
+   },
+   {
+    "word": "from",
+    "start": 4.7,
+    "end": 4.88
+   },
+   {
+    "word": "one",
+    "start": 4.88,
+    "end": 5.04
+   },
+   {
+    "word": "in",
+    "start": 5.04,
+    "end": 5.16
+   },
+   {
+    "word": "the",
+    "start": 5.16,
+    "end": 5.24
+   },
+   {
+    "word": "middle",
+    "start": 5.24,
+    "end": 5.4
+   },
+   {
+    "word": "to",
+    "start": 5.4,
+    "end": 5.58
+   },
+   {
+    "word": "almost",
+    "start": 5.58,
+    "end": 5.9
+   },
+   {
+    "word": "zero",
+    "start": 5.9,
+    "end": 6.22
+   },
+   {
+    "word": "at",
+    "start": 6.22,
+    "end": 6.42
+   },
+   {
+    "word": "the",
+    "start": 6.42,
+    "end": 6.52
+   },
+   {
+    "word": "ends.",
+    "start": 6.52,
+    "end": 7.04
+   },
+   {
+    "word": "Its",
+    "start": 7.24,
+    "end": 7.36
+   },
+   {
+    "word": "side",
+    "start": 7.36,
+    "end": 7.56
+   },
+   {
+    "word": "lobes",
+    "start": 7.56,
+    "end": 7.76
+   },
+   {
+    "word": "almost",
+    "start": 7.76,
+    "end": 8.04
+   },
+   {
+    "word": "vanish",
+    "start": 8.04,
+    "end": 8.42
+   },
+   {
+    "word": "but",
+    "start": 8.42,
+    "end": 8.64
+   },
+   {
+    "word": "its",
+    "start": 8.64,
+    "end": 8.82
+   },
+   {
+    "word": "hump",
+    "start": 8.82,
+    "end": 9.0
+   },
+   {
+    "word": "is",
+    "start": 9.0,
+    "end": 9.16
+   },
+   {
+    "word": "twice",
+    "start": 9.16,
+    "end": 9.38
+   },
+   {
+    "word": "as",
+    "start": 9.38,
+    "end": 9.56
+   },
+   {
+    "word": "wide,",
+    "start": 9.56,
+    "end": 9.92
+   },
+   {
+    "word": "the",
+    "start": 9.92,
+    "end": 10.1
+   },
+   {
+    "word": "cliff",
+    "start": 10.1,
+    "end": 10.3
+   },
+   {
+    "word": "becomes",
+    "start": 10.3,
+    "end": 10.62
+   },
+   {
+    "word": "a",
+    "start": 10.62,
+    "end": 10.72
+   },
+   {
+    "word": "slope.",
+    "start": 10.72,
+    "end": 11.12
+   }
+  ]
+ },
+ {
+  "i": 10,
+  "text": "Your line leaves the top of its band empty, so the slope can land there. Pass up to thirty-four hundred hertz within one percent, remove above forty-six hundred to below one percent. The plain cut needs two hundred seventy-one coefficients. Your chip affords forty-seven. Hamming at forty-five: point two four percent on both. The ghost is gone.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line10.wav",
+  "dur": 16.76,
+  "coverage": 0.83,
+  "start": 107.87,
+  "end": 124.63,
+  "words": [
+   {
+    "word": "your",
+    "start": 0.0,
+    "end": 0.3
+   },
+   {
+    "word": "line",
+    "start": 0.3,
+    "end": 0.52
+   },
+   {
+    "word": "leaves",
+    "start": 0.52,
+    "end": 0.74
+   },
+   {
+    "word": "the",
+    "start": 0.74,
+    "end": 0.86
+   },
+   {
+    "word": "top",
+    "start": 0.86,
+    "end": 1.06
+   },
+   {
+    "word": "of",
+    "start": 1.06,
+    "end": 1.16
+   },
+   {
+    "word": "its",
+    "start": 1.16,
+    "end": 1.32
+   },
+   {
+    "word": "band",
+    "start": 1.32,
+    "end": 1.5
+   },
+   {
+    "word": "empty",
+    "start": 1.5,
+    "end": 1.9
+   },
+   {
+    "word": "so",
+    "start": 1.9,
+    "end": 2.18
+   },
+   {
+    "word": "the",
+    "start": 2.18,
+    "end": 2.3
+   },
+   {
+    "word": "slope",
+    "start": 2.3,
+    "end": 2.56
+   },
+   {
+    "word": "can",
+    "start": 2.56,
+    "end": 2.74
+   },
+   {
+    "word": "land",
+    "start": 2.74,
+    "end": 2.98
+   },
+   {
+    "word": "there",
+    "start": 2.98,
+    "end": 3.2
+   },
+   {
+    "word": "pass",
+    "start": 3.2,
+    "end": 3.62
+   },
+   {
+    "word": "up",
+    "start": 3.62,
+    "end": 3.76
+   },
+   {
+    "word": "to",
+    "start": 3.76,
+    "end": 3.88
+   },
+   {
+    "word": "3400",
+    "start": 3.88,
+    "end": 4.56
+   },
+   {
+    "word": "hertz",
+    "start": 4.56,
+    "end": 4.76
+   },
+   {
+    "word": "within",
+    "start": 4.76,
+    "end": 5.08
+   },
+   {
+    "word": "one",
+    "start": 5.2,
+    "end": 5.3
+   },
+   {
+    "word": "percent",
+    "start": 5.3,
+    "end": 5.66
+   },
+   {
+    "word": "remove",
+    "start": 5.66,
+    "end": 6.22
+   },
+   {
+    "word": "above",
+    "start": 6.22,
+    "end": 6.6
+   },
+   {
+    "word": "4600",
+    "start": 6.6,
+    "end": 7.22
+   },
+   {
+    "word": "to",
+    "start": 7.22,
+    "end": 7.48
+   },
+   {
+    "word": "below",
+    "start": 7.48,
+    "end": 7.7
+   },
+   {
+    "word": "one",
+    "start": 7.7,
+    "end": 7.94
+   },
+   {
+    "word": "percent",
+    "start": 7.94,
+    "end": 8.32
+   },
+   {
+    "word": "the",
+    "start": 8.32,
+    "end": 8.8
+   },
+   {
+    "word": "plane",
+    "start": 8.8,
+    "end": 9.04
+   },
+   {
+    "word": "cut",
+    "start": 9.04,
+    "end": 9.28
+   },
+   {
+    "word": "needs",
+    "start": 9.28,
+    "end": 9.56
+   },
+   {
+    "word": "271",
+    "start": 9.56,
+    "end": 10.6
+   },
+   {
+    "word": "coefficients",
+    "start": 10.6,
+    "end": 11.1
+   },
+   {
+    "word": "your",
+    "start": 11.54,
+    "end": 11.68
+   },
+   {
+    "word": "chip",
+    "start": 11.68,
+    "end": 11.88
+   },
+   {
+    "word": "affords",
+    "start": 11.88,
+    "end": 12.24
+   },
+   {
+    "word": "47",
+    "start": 12.24,
+    "end": 12.78
+   },
+   {
+    "word": "hamming",
+    "start": 12.78,
+    "end": 13.48
+   },
+   {
+    "word": "at",
+    "start": 13.48,
+    "end": 13.6
+   },
+   {
+    "word": "45",
+    "start": 13.6,
+    "end": 14.1
+   },
+   {
+    "word": ".24",
+    "start": 14.1,
+    "end": 14.76
+   },
+   {
+    "word": "on",
+    "start": 14.76,
+    "end": 15.3
+   },
+   {
+    "word": "both",
+    "start": 15.3,
+    "end": 15.58
+   },
+   {
+    "word": "the",
+    "start": 15.58,
+    "end": 15.86
+   },
+   {
+    "word": "ghost",
+    "start": 15.86,
+    "end": 16.06
+   },
+   {
+    "word": "is",
+    "start": 16.06,
+    "end": 16.22
+   },
+   {
+    "word": "gone",
+    "start": 16.22,
+    "end": 16.46
+   }
+  ]
+ },
+ {
+  "i": 11,
+  "text": "Shape sets the ripple, length sets the slope. Next ticket: you copy the old analog exchange's filter with the textbook recipe. Its cutoff was thirty-four hundred hertz. The copy's lands at twenty-three sixty-three.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line11.wav",
+  "dur": 11.87,
+  "coverage": 0.84,
+  "start": 124.63,
+  "end": 136.5,
+  "words": [
+   {
+    "word": "Shape",
+    "start": 0.0,
+    "end": 0.4
+   },
+   {
+    "word": "sets",
+    "start": 0.4,
+    "end": 0.62
+   },
+   {
+    "word": "the",
+    "start": 0.62,
+    "end": 0.78
+   },
+   {
+    "word": "ripple,",
+    "start": 0.78,
+    "end": 1.26
+   },
+   {
+    "word": "length",
+    "start": 1.26,
+    "end": 1.44
+   },
+   {
+    "word": "sets",
+    "start": 1.44,
+    "end": 1.7
+   },
+   {
+    "word": "the",
+    "start": 1.7,
+    "end": 1.88
+   },
+   {
+    "word": "slope.",
+    "start": 1.88,
+    "end": 2.38
+   },
+   {
+    "word": "Next",
+    "start": 3.57,
+    "end": 3.75
+   },
+   {
+    "word": "ticket,",
+    "start": 3.75,
+    "end": 4.23
+   },
+   {
+    "word": "you",
+    "start": 4.23,
+    "end": 4.47
+   },
+   {
+    "word": "copy",
+    "start": 4.47,
+    "end": 4.75
+   },
+   {
+    "word": "the",
+    "start": 4.75,
+    "end": 4.89
+   },
+   {
+    "word": "old",
+    "start": 4.89,
+    "end": 5.11
+   },
+   {
+    "word": "Analog",
+    "start": 5.11,
+    "end": 5.51
+   },
+   {
+    "word": "Exchanges",
+    "start": 5.51,
+    "end": 5.97
+   },
+   {
+    "word": "filter",
+    "start": 5.97,
+    "end": 6.23
+   },
+   {
+    "word": "with",
+    "start": 6.23,
+    "end": 6.47
+   },
+   {
+    "word": "the",
+    "start": 6.47,
+    "end": 6.57
+   },
+   {
+    "word": "textbook",
+    "start": 6.57,
+    "end": 6.89
+   },
+   {
+    "word": "recipe.",
+    "start": 6.89,
+    "end": 7.55
+   },
+   {
+    "word": "Its",
+    "start": 7.79,
+    "end": 7.91
+   },
+   {
+    "word": "cutoff",
+    "start": 7.91,
+    "end": 8.19
+   },
+   {
+    "word": "was",
+    "start": 8.19,
+    "end": 8.35
+   },
+   {
+    "word": "3400",
+    "start": 8.35,
+    "end": 9.11
+   },
+   {
+    "word": "Hz.",
+    "start": 9.11,
+    "end": 9.63
+   },
+   {
+    "word": "The",
+    "start": 9.83,
+    "end": 9.91
+   },
+   {
+    "word": "copies",
+    "start": 9.91,
+    "end": 10.21
+   },
+   {
+    "word": "lands",
+    "start": 10.21,
+    "end": 10.45
+   },
+   {
+    "word": "at",
+    "start": 10.45,
+    "end": 10.61
+   },
+   {
+    "word": "2363.",
+    "start": 10.61,
+    "end": 11.73
+   }
+  ]
+ }
+]

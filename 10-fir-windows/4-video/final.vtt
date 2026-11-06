@@ -1,0 +1,303 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.700
+Remember lesson five's wideband line?
+
+2
+00:00:02.720 --> 00:00:06.200
+Before you downsample it, a ready-made
+filter, thirty-one numbers long,
+
+3
+00:00:06.220 --> 00:00:08.380
+removes every tone
+above four thousand hertz.
+
+4
+00:00:08.400 --> 00:00:10.620
+Today a test engineer
+sweeps a tone through it,
+
+5
+00:00:10.640 --> 00:00:12.600
+from four thousand up
+to eight thousand hertz.
+
+6
+00:00:12.620 --> 00:00:13.940
+She expects silence.
+
+7
+00:00:14.550 --> 00:00:18.290
+Instead, a ghost glides down to where
+voices live, swelling and fading:
+
+8
+00:00:18.390 --> 00:00:20.290
+nine percent at thirty-five hundred hertz,
+
+9
+00:00:20.310 --> 00:00:22.490
+five at three thousand,
+two at one thousand.
+
+10
+00:00:22.510 --> 00:00:23.250
+And voices near
+
+11
+00:00:23.270 --> 00:00:25.030
+thirty-five hundred come out louder.
+
+12
+00:00:25.110 --> 00:00:28.310
+How can a filter that only multiplies
+and adds make anything louder?
+
+13
+00:00:29.520 --> 00:00:32.080
+Start from the perfect filter,
+the ideal low-pass:
+
+14
+00:00:32.100 --> 00:00:33.060
+below four thousand hertz
+
+15
+00:00:33.080 --> 00:00:34.900
+everything passes, above it nothing.
+
+16
+00:00:34.980 --> 00:00:37.880
+With no feedback,
+a filter is just a list of coefficients.
+
+17
+00:00:38.000 --> 00:00:40.040
+Send in one click,
+and the list comes back out.
+
+18
+00:00:40.060 --> 00:00:41.660
+But the ideal list never ends.
+
+19
+00:00:42.320 --> 00:00:45.400
+So lesson five kept the middle
+thirty-one and threw the rest away.
+
+20
+00:00:45.420 --> 00:00:46.360
+That's truncation.
+
+21
+00:00:46.800 --> 00:00:49.120
+At zero hertz the gain is the sum.
+Point five.
+
+22
+00:00:49.140 --> 00:00:50.600
+Add a pair: one point one four.
+
+23
+00:00:50.620 --> 00:00:51.840
+Another: point nine two.
+
+24
+00:00:51.900 --> 00:00:53.640
+It overshoots, and swings around one.
+
+25
+00:00:54.300 --> 00:00:57.340
+Each pair adds an arrow and its mirror,
+which leaves a plain number,
+
+26
+00:00:57.360 --> 00:00:58.600
+sometimes negative.
+
+27
+00:00:59.240 --> 00:01:01.540
+At forty-five hundred hertz,
+every pair pulls down,
+
+28
+00:01:01.560 --> 00:01:03.000
+to minus point oh nine.
+
+29
+00:01:03.200 --> 00:01:04.540
+Nine percent of that tone gets out,
+
+30
+00:01:04.560 --> 00:01:06.760
+upside down,
+and lands at thirty-five hundred.
+
+31
+00:01:07.580 --> 00:01:09.600
+So keep more coefficients? Sixty-three.
+
+32
+00:01:09.620 --> 00:01:10.960
+Two hundred fifty-five.
+
+33
+00:01:10.980 --> 00:01:13.080
+The bump slides toward
+the cliff and narrows,
+
+34
+00:01:13.100 --> 00:01:14.560
+but it stays nine percent tall.
+
+35
+00:01:14.580 --> 00:01:15.640
+That's the Gibbs phenomenon.
+
+36
+00:01:15.660 --> 00:01:16.920
+Why won't it shrink?
+
+37
+00:01:18.180 --> 00:01:20.160
+Cutting the list
+multiplies it by a window:
+
+38
+00:01:20.180 --> 00:01:23.500
+one for each coefficient you keep,
+zero for the rest. A rectangle.
+
+39
+00:01:23.520 --> 00:01:25.040
+And a window has its own response:
+
+40
+00:01:25.060 --> 00:01:27.680
+a tall hump,
+with side lobes from its sharp edges.
+
+41
+00:01:28.250 --> 00:01:31.450
+The cut filter's response is the step,
+smeared by that hump:
+
+42
+00:01:31.610 --> 00:01:34.130
+slide it along,
+and add up what's still on the pass side.
+
+43
+00:01:34.170 --> 00:01:35.450
+When the hump touches the cliff,
+
+44
+00:01:35.470 --> 00:01:36.970
+the lobes past it are left out,
+
+45
+00:01:36.990 --> 00:01:38.650
+and they add up to minus nine percent.
+
+46
+00:01:38.930 --> 00:01:40.550
+Oh, so a hundred and nine is left.
+
+47
+00:01:40.670 --> 00:01:43.810
+A longer rectangle just narrows the lobes,
+so the share stays.
+
+48
+00:01:44.880 --> 00:01:46.240
+The cure isn't a longer window,
+
+49
+00:01:46.260 --> 00:01:48.500
+but one without sharp edges: a taper.
+
+50
+00:01:48.600 --> 00:01:50.260
+The Hamming window fades
+from one in the middle
+
+51
+00:01:50.280 --> 00:01:52.020
+to almost zero at the ends.
+
+52
+00:01:52.120 --> 00:01:54.780
+Its side lobes almost vanish,
+but its hump is twice as wide:
+
+53
+00:01:54.800 --> 00:01:56.100
+the cliff becomes a slope.
+
+54
+00:01:56.670 --> 00:01:58.550
+Your line leaves the top
+of its band empty,
+
+55
+00:01:58.570 --> 00:01:59.850
+so the slope can land there.
+
+56
+00:01:59.870 --> 00:02:01.410
+Pass up to thirty-four hundred hertz
+
+57
+00:02:01.430 --> 00:02:03.870
+within one percent,
+remove above forty-six hundred
+
+58
+00:02:03.890 --> 00:02:04.970
+to below one percent.
+
+59
+00:02:04.990 --> 00:02:07.870
+The plain cut needs
+two hundred seventy-one coefficients.
+
+60
+00:02:08.210 --> 00:02:09.430
+Your chip affords forty-seven.
+
+61
+00:02:09.450 --> 00:02:10.750
+Hamming at forty-five:
+
+62
+00:02:10.770 --> 00:02:12.230
+point two four percent on both.
+
+63
+00:02:12.250 --> 00:02:13.230
+The ghost is gone.
+
+64
+00:02:14.430 --> 00:02:16.910
+Shape sets the ripple,
+length sets the slope.
+
+65
+00:02:18.000 --> 00:02:20.640
+Next ticket:
+you copy the old analog exchange's filter
+
+66
+00:02:20.660 --> 00:02:22.080
+with the textbook recipe.
+
+67
+00:02:22.220 --> 00:02:24.160
+Its cutoff was thirty-four hundred hertz.
+
+68
+00:02:24.260 --> 00:02:26.260
+The copy's lands
+at twenty-three sixty-three.

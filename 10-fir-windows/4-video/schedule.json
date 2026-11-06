@@ -1,0 +1,1948 @@
+{
+ "fps": 30,
+ "duration": 147.0,
+ "wpm": 196,
+ "lines": [
+  {
+   "line": 1,
+   "text": "Remember lesson five's wideband line? Before you downsample it, a ready-made filter, thirty-one numbers long, removes every tone above four thousand hertz. Today a test engineer sweeps a tone through it, from four thousand up to eight thousand hertz. She expects silence.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line01.wav",
+   "at": 0.6,
+   "start": 0.6,
+   "end": 13.95,
+   "start_frame": 18,
+   "words": [
+    {
+     "word": "Remember",
+     "frame": 18
+    },
+    {
+     "word": "Lesson",
+     "frame": 32
+    },
+    {
+     "word": "5's",
+     "frame": 44
+    },
+    {
+     "word": "Wideband",
+     "frame": 55
+    },
+    {
+     "word": "line?",
+     "frame": 68
+    },
+    {
+     "word": "Before",
+     "frame": 82
+    },
+    {
+     "word": "you",
+     "frame": 91
+    },
+    {
+     "word": "downsample",
+     "frame": 96
+    },
+    {
+     "word": "it,",
+     "frame": 113
+    },
+    {
+     "word": "a",
+     "frame": 119
+    },
+    {
+     "word": "ready",
+     "frame": 123
+    },
+    {
+     "word": "-made",
+     "frame": 127
+    },
+    {
+     "word": "filter,",
+     "frame": 133
+    },
+    {
+     "word": "31",
+     "frame": 161
+    },
+    {
+     "word": "numbers",
+     "frame": 161
+    },
+    {
+     "word": "long,",
+     "frame": 172
+    },
+    {
+     "word": "removes",
+     "frame": 187
+    },
+    {
+     "word": "every",
+     "frame": 196
+    },
+    {
+     "word": "tone",
+     "frame": 205
+    },
+    {
+     "word": "above",
+     "frame": 211
+    },
+    {
+     "word": "4000",
+     "frame": 219
+    },
+    {
+     "word": "Hz.",
+     "frame": 233
+    },
+    {
+     "word": "Today",
+     "frame": 252
+    },
+    {
+     "word": "a",
+     "frame": 260
+    },
+    {
+     "word": "test",
+     "frame": 266
+    },
+    {
+     "word": "engineer",
+     "frame": 272
+    },
+    {
+     "word": "sweeps",
+     "frame": 282
+    },
+    {
+     "word": "a",
+     "frame": 294
+    },
+    {
+     "word": "tone",
+     "frame": 303
+    },
+    {
+     "word": "through",
+     "frame": 304
+    },
+    {
+     "word": "it,",
+     "frame": 310
+    },
+    {
+     "word": "from",
+     "frame": 319
+    },
+    {
+     "word": "4000",
+     "frame": 324
+    },
+    {
+     "word": "up",
+     "frame": 339
+    },
+    {
+     "word": "to",
+     "frame": 347
+    },
+    {
+     "word": "8000",
+     "frame": 351
+    },
+    {
+     "word": "Hz.",
+     "frame": 365
+    },
+    {
+     "word": "She",
+     "frame": 379
+    },
+    {
+     "word": "expects",
+     "frame": 385
+    },
+    {
+     "word": "silence.",
+     "frame": 395
+    }
+   ]
+  },
+  {
+   "line": 2,
+   "text": "Instead, a ghost glides down to where voices live, swelling and fading: nine percent at thirty-five hundred hertz, five at three thousand, two at one thousand. And voices near thirty-five hundred come out louder. How can a filter that only multiplies and adds make anything louder?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line02.wav",
+   "at": 14.55,
+   "start": 14.55,
+   "end": 28.32,
+   "start_frame": 436,
+   "words": [
+    {
+     "word": "Instead,",
+     "frame": 436
+    },
+    {
+     "word": "a",
+     "frame": 454
+    },
+    {
+     "word": "ghost",
+     "frame": 456
+    },
+    {
+     "word": "glides",
+     "frame": 463
+    },
+    {
+     "word": "down",
+     "frame": 474
+    },
+    {
+     "word": "to",
+     "frame": 483
+    },
+    {
+     "word": "where",
+     "frame": 488
+    },
+    {
+     "word": "voices",
+     "frame": 491
+    },
+    {
+     "word": "live,",
+     "frame": 501
+    },
+    {
+     "word": "swelling",
+     "frame": 515
+    },
+    {
+     "word": "and",
+     "frame": 525
+    },
+    {
+     "word": "fading.",
+     "frame": 530
+    },
+    {
+     "word": "9",
+     "frame": 552
+    },
+    {
+     "word": "%",
+     "frame": 557
+    },
+    {
+     "word": "at",
+     "frame": 565
+    },
+    {
+     "word": "3",
+     "frame": 571
+    },
+    {
+     "word": ",500",
+     "frame": 578
+    },
+    {
+     "word": "Hz,",
+     "frame": 592
+    },
+    {
+     "word": "5",
+     "frame": 609
+    },
+    {
+     "word": "at",
+     "frame": 615
+    },
+    {
+     "word": "3",
+     "frame": 620
+    },
+    {
+     "word": ",000,",
+     "frame": 627
+    },
+    {
+     "word": "2",
+     "frame": 646
+    },
+    {
+     "word": "at",
+     "frame": 650
+    },
+    {
+     "word": "1",
+     "frame": 655
+    },
+    {
+     "word": ",000,",
+     "frame": 661
+    },
+    {
+     "word": "and",
+     "frame": 675
+    },
+    {
+     "word": "voices",
+     "frame": 682
+    },
+    {
+     "word": "near",
+     "frame": 691
+    },
+    {
+     "word": "3",
+     "frame": 698
+    },
+    {
+     "word": ",500",
+     "frame": 705
+    },
+    {
+     "word": "come",
+     "frame": 718
+    },
+    {
+     "word": "out",
+     "frame": 728
+    },
+    {
+     "word": "louder.",
+     "frame": 733
+    },
+    {
+     "word": "How",
+     "frame": 753
+    },
+    {
+     "word": "can",
+     "frame": 758
+    },
+    {
+     "word": "a",
+     "frame": 762
+    },
+    {
+     "word": "filter",
+     "frame": 765
+    },
+    {
+     "word": "that",
+     "frame": 772
+    },
+    {
+     "word": "only",
+     "frame": 778
+    },
+    {
+     "word": "multiplies",
+     "frame": 786
+    },
+    {
+     "word": "and",
+     "frame": 804
+    },
+    {
+     "word": "ads",
+     "frame": 808
+    },
+    {
+     "word": "make",
+     "frame": 814
+    },
+    {
+     "word": "anything",
+     "frame": 820
+    },
+    {
+     "word": "louder?",
+     "frame": 830
+    }
+   ]
+  },
+  {
+   "line": 3,
+   "text": "Start from the perfect filter, the ideal low-pass: below four thousand hertz everything passes, above it nothing. With no feedback, a filter is just a list of coefficients. Send in one click, and the list comes back out. But the ideal list never ends.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line03.wav",
+   "at": 29.52,
+   "start": 29.52,
+   "end": 41.72,
+   "start_frame": 886,
+   "words": [
+    {
+     "word": "Start",
+     "frame": 886
+    },
+    {
+     "word": "from",
+     "frame": 897
+    },
+    {
+     "word": "the",
+     "frame": 902
+    },
+    {
+     "word": "perfect",
+     "frame": 906
+    },
+    {
+     "word": "filter,",
+     "frame": 913
+    },
+    {
+     "word": "the",
+     "frame": 931
+    },
+    {
+     "word": "ideal",
+     "frame": 934
+    },
+    {
+     "word": "low",
+     "frame": 942
+    },
+    {
+     "word": "pass.",
+     "frame": 948
+    },
+    {
+     "word": "Below",
+     "frame": 963
+    },
+    {
+     "word": "4000",
+     "frame": 968
+    },
+    {
+     "word": "Hz",
+     "frame": 984
+    },
+    {
+     "word": "everything",
+     "frame": 992
+    },
+    {
+     "word": "passes,",
+     "frame": 1002
+    },
+    {
+     "word": "above",
+     "frame": 1021
+    },
+    {
+     "word": "it",
+     "frame": 1025
+    },
+    {
+     "word": "nothing.",
+     "frame": 1030
+    },
+    {
+     "word": "With",
+     "frame": 1049
+    },
+    {
+     "word": "no",
+     "frame": 1054
+    },
+    {
+     "word": "feedback,",
+     "frame": 1059
+    },
+    {
+     "word": "a",
+     "frame": 1076
+    },
+    {
+     "word": "filter",
+     "frame": 1079
+    },
+    {
+     "word": "is",
+     "frame": 1086
+    },
+    {
+     "word": "just",
+     "frame": 1093
+    },
+    {
+     "word": "a",
+     "frame": 1097
+    },
+    {
+     "word": "list",
+     "frame": 1101
+    },
+    {
+     "word": "of",
+     "frame": 1106
+    },
+    {
+     "word": "coefficients.",
+     "frame": 1110
+    },
+    {
+     "word": "Send",
+     "frame": 1140
+    },
+    {
+     "word": "in",
+     "frame": 1145
+    },
+    {
+     "word": "one",
+     "frame": 1149
+    },
+    {
+     "word": "click",
+     "frame": 1155
+    },
+    {
+     "word": "and",
+     "frame": 1163
+    },
+    {
+     "word": "the",
+     "frame": 1169
+    },
+    {
+     "word": "list",
+     "frame": 1172
+    },
+    {
+     "word": "comes",
+     "frame": 1177
+    },
+    {
+     "word": "back",
+     "frame": 1184
+    },
+    {
+     "word": "out,",
+     "frame": 1190
+    },
+    {
+     "word": "but",
+     "frame": 1202
+    },
+    {
+     "word": "the",
+     "frame": 1207
+    },
+    {
+     "word": "ideal",
+     "frame": 1210
+    },
+    {
+     "word": "list",
+     "frame": 1219
+    },
+    {
+     "word": "never",
+     "frame": 1226
+    },
+    {
+     "word": "ends.",
+     "frame": 1232
+    }
+   ]
+  },
+  {
+   "line": 4,
+   "text": "So lesson five kept the middle thirty-one and threw the rest away. That's truncation. At zero hertz the gain is the sum. Point five. Add a pair: one point one four. Another: point nine two. It overshoots, and swings around one.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line04.wav",
+   "at": 42.32,
+   "start": 42.32,
+   "end": 53.7,
+   "start_frame": 1270,
+   "words": [
+    {
+     "word": "So",
+     "frame": 1270
+    },
+    {
+     "word": "lesson",
+     "frame": 1279
+    },
+    {
+     "word": "5",
+     "frame": 1286
+    },
+    {
+     "word": "kept",
+     "frame": 1295
+    },
+    {
+     "word": "the",
+     "frame": 1303
+    },
+    {
+     "word": "middle",
+     "frame": 1307
+    },
+    {
+     "word": "31",
+     "frame": 1312
+    },
+    {
+     "word": "and",
+     "frame": 1321
+    },
+    {
+     "word": "threw",
+     "frame": 1331
+    },
+    {
+     "word": "the",
+     "frame": 1335
+    },
+    {
+     "word": "rest",
+     "frame": 1339
+    },
+    {
+     "word": "away.",
+     "frame": 1345
+    },
+    {
+     "word": "That's",
+     "frame": 1363
+    },
+    {
+     "word": "truncation.",
+     "frame": 1367
+    },
+    {
+     "word": "At",
+     "frame": 1404
+    },
+    {
+     "word": "0",
+     "frame": 1408
+    },
+    {
+     "word": "Hz",
+     "frame": 1414
+    },
+    {
+     "word": "the",
+     "frame": 1421
+    },
+    {
+     "word": "gain",
+     "frame": 1428
+    },
+    {
+     "word": "is",
+     "frame": 1433
+    },
+    {
+     "word": "the",
+     "frame": 1438
+    },
+    {
+     "word": "sum.",
+     "frame": 1442
+    },
+    {
+     "word": ".5,",
+     "frame": 1457
+    },
+    {
+     "word": "add",
+     "frame": 1474
+    },
+    {
+     "word": "a",
+     "frame": 1479
+    },
+    {
+     "word": "pair,",
+     "frame": 1483
+    },
+    {
+     "word": "1",
+     "frame": 1492
+    },
+    {
+     "word": ".14,",
+     "frame": 1497
+    },
+    {
+     "word": "another",
+     "frame": 1519
+    },
+    {
+     "word": ".92.",
+     "frame": 1528
+    },
+    {
+     "word": "It",
+     "frame": 1557
+    },
+    {
+     "word": "overshoots",
+     "frame": 1559
+    },
+    {
+     "word": "and",
+     "frame": 1576
+    },
+    {
+     "word": "swings",
+     "frame": 1580
+    },
+    {
+     "word": "around",
+     "frame": 1587
+    },
+    {
+     "word": "1.",
+     "frame": 1595
+    }
+   ]
+  },
+  {
+   "line": 5,
+   "text": "Each pair adds an arrow and its mirror, which leaves a plain number, sometimes negative. At forty-five hundred hertz, every pair pulls down, to minus point oh nine. Nine percent of that tone gets out, upside down, and lands at thirty-five hundred.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line05.wav",
+   "at": 54.3,
+   "start": 54.3,
+   "end": 66.78,
+   "start_frame": 1629,
+   "words": [
+    {
+     "word": "Each",
+     "frame": 1629
+    },
+    {
+     "word": "pair",
+     "frame": 1640
+    },
+    {
+     "word": "adds",
+     "frame": 1646
+    },
+    {
+     "word": "an",
+     "frame": 1654
+    },
+    {
+     "word": "arrow",
+     "frame": 1657
+    },
+    {
+     "word": "in",
+     "frame": 1666
+    },
+    {
+     "word": "its",
+     "frame": 1670
+    },
+    {
+     "word": "mirror,",
+     "frame": 1675
+    },
+    {
+     "word": "which",
+     "frame": 1689
+    },
+    {
+     "word": "leaves",
+     "frame": 1693
+    },
+    {
+     "word": "a",
+     "frame": 1699
+    },
+    {
+     "word": "plain",
+     "frame": 1702
+    },
+    {
+     "word": "number,",
+     "frame": 1708
+    },
+    {
+     "word": "sometimes",
+     "frame": 1721
+    },
+    {
+     "word": "negative.",
+     "frame": 1730
+    },
+    {
+     "word": "At",
+     "frame": 1777
+    },
+    {
+     "word": "4500",
+     "frame": 1781
+    },
+    {
+     "word": "Hz,",
+     "frame": 1805
+    },
+    {
+     "word": "every",
+     "frame": 1819
+    },
+    {
+     "word": "pair",
+     "frame": 1824
+    },
+    {
+     "word": "pulls",
+     "frame": 1830
+    },
+    {
+     "word": "down",
+     "frame": 1840
+    },
+    {
+     "word": "to",
+     "frame": 1847
+    },
+    {
+     "word": "minus",
+     "frame": 1853
+    },
+    {
+     "word": "0",
+     "frame": 1859
+    },
+    {
+     "word": ".09.",
+     "frame": 1867
+    },
+    {
+     "word": "9",
+     "frame": 1896
+    },
+    {
+     "word": "%",
+     "frame": 1899
+    },
+    {
+     "word": "of",
+     "frame": 1907
+    },
+    {
+     "word": "that",
+     "frame": 1912
+    },
+    {
+     "word": "tone",
+     "frame": 1917
+    },
+    {
+     "word": "gets",
+     "frame": 1924
+    },
+    {
+     "word": "out",
+     "frame": 1930
+    },
+    {
+     "word": "upside",
+     "frame": 1937
+    },
+    {
+     "word": "down",
+     "frame": 1947
+    },
+    {
+     "word": "and",
+     "frame": 1957
+    },
+    {
+     "word": "lands",
+     "frame": 1963
+    },
+    {
+     "word": "at",
+     "frame": 1970
+    },
+    {
+     "word": "3500.",
+     "frame": 1975
+    }
+   ]
+  },
+  {
+   "line": 6,
+   "text": "So keep more coefficients? Sixty-three. Two hundred fifty-five. The bump slides toward the cliff and narrows, but it stays nine percent tall. That's the Gibbs phenomenon. Why won't it shrink?",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line06.wav",
+   "at": 67.58,
+   "start": 67.58,
+   "end": 76.98,
+   "start_frame": 2027,
+   "words": [
+    {
+     "word": "so",
+     "frame": 2027
+    },
+    {
+     "word": "keep",
+     "frame": 2036
+    },
+    {
+     "word": "more",
+     "frame": 2042
+    },
+    {
+     "word": "coefficients",
+     "frame": 2047
+    },
+    {
+     "word": "63",
+     "frame": 2062
+    },
+    {
+     "word": "255",
+     "frame": 2089
+    },
+    {
+     "word": "the",
+     "frame": 2129
+    },
+    {
+     "word": "bump",
+     "frame": 2141
+    },
+    {
+     "word": "slides",
+     "frame": 2147
+    },
+    {
+     "word": "toward",
+     "frame": 2158
+    },
+    {
+     "word": "the",
+     "frame": 2165
+    },
+    {
+     "word": "cliff",
+     "frame": 2169
+    },
+    {
+     "word": "and",
+     "frame": 2175
+    },
+    {
+     "word": "narrows",
+     "frame": 2180
+    },
+    {
+     "word": "but",
+     "frame": 2193
+    },
+    {
+     "word": "it",
+     "frame": 2198
+    },
+    {
+     "word": "stays",
+     "frame": 2204
+    },
+    {
+     "word": "nine",
+     "frame": 2211
+    },
+    {
+     "word": "percent",
+     "frame": 2218
+    },
+    {
+     "word": "tall",
+     "frame": 2227
+    },
+    {
+     "word": "that's",
+     "frame": 2237
+    },
+    {
+     "word": "the",
+     "frame": 2246
+    },
+    {
+     "word": "gibbs",
+     "frame": 2249
+    },
+    {
+     "word": "phenomenon",
+     "frame": 2257
+    },
+    {
+     "word": "why",
+     "frame": 2270
+    },
+    {
+     "word": "won't",
+     "frame": 2287
+    },
+    {
+     "word": "it",
+     "frame": 2294
+    },
+    {
+     "word": "shrink",
+     "frame": 2297
+    }
+   ]
+  },
+  {
+   "line": 7,
+   "text": "Cutting the list multiplies it by a window: one for each coefficient you keep, zero for the rest. A rectangle. And a window has its own response: a tall hump, with side lobes from its sharp edges.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line07.wav",
+   "at": 78.18,
+   "start": 78.18,
+   "end": 87.65,
+   "start_frame": 2345,
+   "words": [
+    {
+     "word": "Cutting",
+     "frame": 2345
+    },
+    {
+     "word": "the",
+     "frame": 2358
+    },
+    {
+     "word": "list",
+     "frame": 2361
+    },
+    {
+     "word": "multiplies",
+     "frame": 2366
+    },
+    {
+     "word": "it",
+     "frame": 2381
+    },
+    {
+     "word": "by",
+     "frame": 2384
+    },
+    {
+     "word": "a",
+     "frame": 2387
+    },
+    {
+     "word": "window,",
+     "frame": 2390
+    },
+    {
+     "word": "one",
+     "frame": 2405
+    },
+    {
+     "word": "for",
+     "frame": 2410
+    },
+    {
+     "word": "each",
+     "frame": 2414
+    },
+    {
+     "word": "coefficient",
+     "frame": 2419
+    },
+    {
+     "word": "you",
+     "frame": 2432
+    },
+    {
+     "word": "keep,",
+     "frame": 2438
+    },
+    {
+     "word": "zero",
+     "frame": 2453
+    },
+    {
+     "word": "for",
+     "frame": 2459
+    },
+    {
+     "word": "the",
+     "frame": 2465
+    },
+    {
+     "word": "rest,",
+     "frame": 2468
+    },
+    {
+     "word": "a",
+     "frame": 2479
+    },
+    {
+     "word": "rectangle.",
+     "frame": 2484
+    },
+    {
+     "word": "And",
+     "frame": 2506
+    },
+    {
+     "word": "a",
+     "frame": 2509
+    },
+    {
+     "word": "window",
+     "frame": 2511
+    },
+    {
+     "word": "has",
+     "frame": 2518
+    },
+    {
+     "word": "its",
+     "frame": 2524
+    },
+    {
+     "word": "own",
+     "frame": 2528
+    },
+    {
+     "word": "response,",
+     "frame": 2533
+    },
+    {
+     "word": "a",
+     "frame": 2552
+    },
+    {
+     "word": "tall",
+     "frame": 2560
+    },
+    {
+     "word": "hump",
+     "frame": 2566
+    },
+    {
+     "word": "with",
+     "frame": 2574
+    },
+    {
+     "word": "side",
+     "frame": 2580
+    },
+    {
+     "word": "lobes",
+     "frame": 2588
+    },
+    {
+     "word": "from",
+     "frame": 2597
+    },
+    {
+     "word": "its",
+     "frame": 2603
+    },
+    {
+     "word": "sharp",
+     "frame": 2607
+    },
+    {
+     "word": "edges.",
+     "frame": 2614
+    }
+   ]
+  },
+  {
+   "line": 8,
+   "text": "The cut filter's response is the step, smeared by that hump: slide it along, and add up what's still on the pass side. When the hump touches the cliff, the lobes past it are left out, and they add up to minus nine percent. Oh, so a hundred and nine is left. A longer rectangle just narrows the lobes, so the share stays.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line08.wav",
+   "at": 88.25,
+   "start": 88.25,
+   "end": 103.88,
+   "start_frame": 2648,
+   "words": [
+    {
+     "word": "The",
+     "frame": 2648
+    },
+    {
+     "word": "cut",
+     "frame": 2655
+    },
+    {
+     "word": "filter's",
+     "frame": 2661
+    },
+    {
+     "word": "response",
+     "frame": 2673
+    },
+    {
+     "word": "is",
+     "frame": 2684
+    },
+    {
+     "word": "the",
+     "frame": 2690
+    },
+    {
+     "word": "step,",
+     "frame": 2694
+    },
+    {
+     "word": "smeared",
+     "frame": 2706
+    },
+    {
+     "word": "by",
+     "frame": 2716
+    },
+    {
+     "word": "that",
+     "frame": 2721
+    },
+    {
+     "word": "hump.",
+     "frame": 2726
+    },
+    {
+     "word": "Slide",
+     "frame": 2748
+    },
+    {
+     "word": "it",
+     "frame": 2752
+    },
+    {
+     "word": "along,",
+     "frame": 2756
+    },
+    {
+     "word": "and",
+     "frame": 2769
+    },
+    {
+     "word": "add",
+     "frame": 2773
+    },
+    {
+     "word": "up",
+     "frame": 2779
+    },
+    {
+     "word": "what's",
+     "frame": 2782
+    },
+    {
+     "word": "still",
+     "frame": 2789
+    },
+    {
+     "word": "on",
+     "frame": 2794
+    },
+    {
+     "word": "the",
+     "frame": 2798
+    },
+    {
+     "word": "pass",
+     "frame": 2801
+    },
+    {
+     "word": "side.",
+     "frame": 2808
+    },
+    {
+     "word": "When",
+     "frame": 2825
+    },
+    {
+     "word": "the",
+     "frame": 2829
+    },
+    {
+     "word": "hump",
+     "frame": 2831
+    },
+    {
+     "word": "touches",
+     "frame": 2837
+    },
+    {
+     "word": "the",
+     "frame": 2846
+    },
+    {
+     "word": "cliff,",
+     "frame": 2852
+    },
+    {
+     "word": "the",
+     "frame": 2864
+    },
+    {
+     "word": "lobes",
+     "frame": 2868
+    },
+    {
+     "word": "past",
+     "frame": 2876
+    },
+    {
+     "word": "it",
+     "frame": 2884
+    },
+    {
+     "word": "are",
+     "frame": 2888
+    },
+    {
+     "word": "left",
+     "frame": 2891
+    },
+    {
+     "word": "out,",
+     "frame": 2897
+    },
+    {
+     "word": "and",
+     "frame": 2910
+    },
+    {
+     "word": "they",
+     "frame": 2918
+    },
+    {
+     "word": "add",
+     "frame": 2922
+    },
+    {
+     "word": "up",
+     "frame": 2928
+    },
+    {
+     "word": "to",
+     "frame": 2931
+    },
+    {
+     "word": "minus",
+     "frame": 2935
+    },
+    {
+     "word": "9%.",
+     "frame": 2941
+    },
+    {
+     "word": "Oh,",
+     "frame": 2968
+    },
+    {
+     "word": "so",
+     "frame": 2978
+    },
+    {
+     "word": "109",
+     "frame": 2979
+    },
+    {
+     "word": "is",
+     "frame": 2995
+    },
+    {
+     "word": "left.",
+     "frame": 3000
+    },
+    {
+     "word": "A",
+     "frame": 3020
+    },
+    {
+     "word": "longer",
+     "frame": 3023
+    },
+    {
+     "word": "rectangle",
+     "frame": 3031
+    },
+    {
+     "word": "just",
+     "frame": 3044
+    },
+    {
+     "word": "narrows",
+     "frame": 3051
+    },
+    {
+     "word": "the",
+     "frame": 3062
+    },
+    {
+     "word": "lobes,",
+     "frame": 3065
+    },
+    {
+     "word": "so",
+     "frame": 3076
+    },
+    {
+     "word": "the",
+     "frame": 3083
+    },
+    {
+     "word": "share",
+     "frame": 3087
+    },
+    {
+     "word": "stays.",
+     "frame": 3093
+    }
+   ]
+  },
+  {
+   "line": 9,
+   "text": "The cure isn't a longer window, but one without sharp edges: a taper. The Hamming window fades from one in the middle to almost zero at the ends. Its side lobes almost vanish, but its hump is twice as wide: the cliff becomes a slope.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line09.wav",
+   "at": 104.88,
+   "start": 104.88,
+   "end": 116.07,
+   "start_frame": 3146,
+   "words": [
+    {
+     "word": "The",
+     "frame": 3146
+    },
+    {
+     "word": "cure",
+     "frame": 3154
+    },
+    {
+     "word": "isn't",
+     "frame": 3161
+    },
+    {
+     "word": "a",
+     "frame": 3169
+    },
+    {
+     "word": "longer",
+     "frame": 3172
+    },
+    {
+     "word": "window",
+     "frame": 3179
+    },
+    {
+     "word": "but",
+     "frame": 3188
+    },
+    {
+     "word": "one",
+     "frame": 3194
+    },
+    {
+     "word": "without",
+     "frame": 3200
+    },
+    {
+     "word": "sharp",
+     "frame": 3206
+    },
+    {
+     "word": "edges,",
+     "frame": 3216
+    },
+    {
+     "word": "a",
+     "frame": 3232
+    },
+    {
+     "word": "taper.",
+     "frame": 3236
+    },
+    {
+     "word": "The",
+     "frame": 3258
+    },
+    {
+     "word": "hamming",
+     "frame": 3261
+    },
+    {
+     "word": "window",
+     "frame": 3270
+    },
+    {
+     "word": "fades",
+     "frame": 3278
+    },
+    {
+     "word": "from",
+     "frame": 3287
+    },
+    {
+     "word": "one",
+     "frame": 3293
+    },
+    {
+     "word": "in",
+     "frame": 3298
+    },
+    {
+     "word": "the",
+     "frame": 3301
+    },
+    {
+     "word": "middle",
+     "frame": 3304
+    },
+    {
+     "word": "to",
+     "frame": 3308
+    },
+    {
+     "word": "almost",
+     "frame": 3314
+    },
+    {
+     "word": "zero",
+     "frame": 3323
+    },
+    {
+     "word": "at",
+     "frame": 3333
+    },
+    {
+     "word": "the",
+     "frame": 3339
+    },
+    {
+     "word": "ends.",
+     "frame": 3342
+    },
+    {
+     "word": "Its",
+     "frame": 3364
+    },
+    {
+     "word": "side",
+     "frame": 3367
+    },
+    {
+     "word": "lobes",
+     "frame": 3373
+    },
+    {
+     "word": "almost",
+     "frame": 3379
+    },
+    {
+     "word": "vanish",
+     "frame": 3388
+    },
+    {
+     "word": "but",
+     "frame": 3399
+    },
+    {
+     "word": "its",
+     "frame": 3406
+    },
+    {
+     "word": "hump",
+     "frame": 3411
+    },
+    {
+     "word": "is",
+     "frame": 3416
+    },
+    {
+     "word": "twice",
+     "frame": 3421
+    },
+    {
+     "word": "as",
+     "frame": 3428
+    },
+    {
+     "word": "wide,",
+     "frame": 3433
+    },
+    {
+     "word": "the",
+     "frame": 3444
+    },
+    {
+     "word": "cliff",
+     "frame": 3449
+    },
+    {
+     "word": "becomes",
+     "frame": 3455
+    },
+    {
+     "word": "a",
+     "frame": 3465
+    },
+    {
+     "word": "slope.",
+     "frame": 3468
+    }
+   ]
+  },
+  {
+   "line": 10,
+   "text": "Your line leaves the top of its band empty, so the slope can land there. Pass up to thirty-four hundred hertz within one percent, remove above forty-six hundred to below one percent. The plain cut needs two hundred seventy-one coefficients. Your chip affords forty-seven. Hamming at forty-five: point two four percent on both. The ghost is gone.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line10.wav",
+   "at": 116.67,
+   "start": 116.67,
+   "end": 133.43,
+   "start_frame": 3500,
+   "words": [
+    {
+     "word": "your",
+     "frame": 3500
+    },
+    {
+     "word": "line",
+     "frame": 3509
+    },
+    {
+     "word": "leaves",
+     "frame": 3516
+    },
+    {
+     "word": "the",
+     "frame": 3522
+    },
+    {
+     "word": "top",
+     "frame": 3526
+    },
+    {
+     "word": "of",
+     "frame": 3532
+    },
+    {
+     "word": "its",
+     "frame": 3535
+    },
+    {
+     "word": "band",
+     "frame": 3540
+    },
+    {
+     "word": "empty",
+     "frame": 3545
+    },
+    {
+     "word": "so",
+     "frame": 3557
+    },
+    {
+     "word": "the",
+     "frame": 3566
+    },
+    {
+     "word": "slope",
+     "frame": 3569
+    },
+    {
+     "word": "can",
+     "frame": 3577
+    },
+    {
+     "word": "land",
+     "frame": 3582
+    },
+    {
+     "word": "there",
+     "frame": 3589
+    },
+    {
+     "word": "pass",
+     "frame": 3596
+    },
+    {
+     "word": "up",
+     "frame": 3609
+    },
+    {
+     "word": "to",
+     "frame": 3613
+    },
+    {
+     "word": "3400",
+     "frame": 3616
+    },
+    {
+     "word": "hertz",
+     "frame": 3637
+    },
+    {
+     "word": "within",
+     "frame": 3643
+    },
+    {
+     "word": "one",
+     "frame": 3656
+    },
+    {
+     "word": "percent",
+     "frame": 3659
+    },
+    {
+     "word": "remove",
+     "frame": 3670
+    },
+    {
+     "word": "above",
+     "frame": 3687
+    },
+    {
+     "word": "4600",
+     "frame": 3698
+    },
+    {
+     "word": "to",
+     "frame": 3717
+    },
+    {
+     "word": "below",
+     "frame": 3724
+    },
+    {
+     "word": "one",
+     "frame": 3731
+    },
+    {
+     "word": "percent",
+     "frame": 3738
+    },
+    {
+     "word": "the",
+     "frame": 3750
+    },
+    {
+     "word": "plane",
+     "frame": 3764
+    },
+    {
+     "word": "cut",
+     "frame": 3771
+    },
+    {
+     "word": "needs",
+     "frame": 3778
+    },
+    {
+     "word": "271",
+     "frame": 3787
+    },
+    {
+     "word": "coefficients",
+     "frame": 3818
+    },
+    {
+     "word": "your",
+     "frame": 3846
+    },
+    {
+     "word": "chip",
+     "frame": 3850
+    },
+    {
+     "word": "affords",
+     "frame": 3856
+    },
+    {
+     "word": "47",
+     "frame": 3867
+    },
+    {
+     "word": "hamming",
+     "frame": 3883
+    },
+    {
+     "word": "at",
+     "frame": 3904
+    },
+    {
+     "word": "45",
+     "frame": 3908
+    },
+    {
+     "word": ".24",
+     "frame": 3923
+    },
+    {
+     "word": "on",
+     "frame": 3943
+    },
+    {
+     "word": "both",
+     "frame": 3959
+    },
+    {
+     "word": "the",
+     "frame": 3968
+    },
+    {
+     "word": "ghost",
+     "frame": 3976
+    },
+    {
+     "word": "is",
+     "frame": 3982
+    },
+    {
+     "word": "gone",
+     "frame": 3987
+    }
+   ]
+  },
+  {
+   "line": 11,
+   "text": "Shape sets the ripple, length sets the slope. Next ticket: you copy the old analog exchange's filter with the textbook recipe. Its cutoff was thirty-four hundred hertz. The copy's lands at twenty-three sixty-three.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line11.wav",
+   "at": 134.43,
+   "start": 134.43,
+   "end": 146.3,
+   "start_frame": 4033,
+   "words": [
+    {
+     "word": "Shape",
+     "frame": 4033
+    },
+    {
+     "word": "sets",
+     "frame": 4045
+    },
+    {
+     "word": "the",
+     "frame": 4051
+    },
+    {
+     "word": "ripple,",
+     "frame": 4056
+    },
+    {
+     "word": "length",
+     "frame": 4071
+    },
+    {
+     "word": "sets",
+     "frame": 4076
+    },
+    {
+     "word": "the",
+     "frame": 4084
+    },
+    {
+     "word": "slope.",
+     "frame": 4089
+    },
+    {
+     "word": "Next",
+     "frame": 4140
+    },
+    {
+     "word": "ticket,",
+     "frame": 4145
+    },
+    {
+     "word": "you",
+     "frame": 4160
+    },
+    {
+     "word": "copy",
+     "frame": 4167
+    },
+    {
+     "word": "the",
+     "frame": 4175
+    },
+    {
+     "word": "old",
+     "frame": 4180
+    },
+    {
+     "word": "Analog",
+     "frame": 4186
+    },
+    {
+     "word": "Exchanges",
+     "frame": 4198
+    },
+    {
+     "word": "filter",
+     "frame": 4212
+    },
+    {
+     "word": "with",
+     "frame": 4220
+    },
+    {
+     "word": "the",
+     "frame": 4227
+    },
+    {
+     "word": "textbook",
+     "frame": 4230
+    },
+    {
+     "word": "recipe.",
+     "frame": 4240
+    },
+    {
+     "word": "Its",
+     "frame": 4267
+    },
+    {
+     "word": "cutoff",
+     "frame": 4270
+    },
+    {
+     "word": "was",
+     "frame": 4279
+    },
+    {
+     "word": "3400",
+     "frame": 4283
+    },
+    {
+     "word": "Hz.",
+     "frame": 4306
+    },
+    {
+     "word": "The",
+     "frame": 4328
+    },
+    {
+     "word": "copies",
+     "frame": 4330
+    },
+    {
+     "word": "lands",
+     "frame": 4339
+    },
+    {
+     "word": "at",
+     "frame": 4346
+    },
+    {
+     "word": "2363.",
+     "frame": 4351
+    }
+   ]
+  }
+ ]
+}
