@@ -7,7 +7,7 @@
   },
   "leakage": {
     "title": "One tone, five bins",
-    "caption": "On a bin, the tone fills one bin. Halfway between bins it spreads into every bin. The hatched bars are leakage: matches where no tone is anywhere near.",
+    "caption": "On a bin, the tone fills one bin. Halfway between bins it spreads into every bin. The hatched bars are leakage: matches beyond the two bins nearest the tone.",
     "animated": true,
     "phone": true
   },
@@ -49,7 +49,7 @@
   },
   "keypad-leak": {
     "title": "A loud 770 Hz across the row bins",
-    "caption": "The 7's bin (843.75 Hz) sits on the second side lobe of the plain curve and catches 13%, over the 12% bar. The dashed Hann curve leaves it 3%.",
+    "caption": "The 7's bin (843.75 Hz) sits on the second side lobe of the 770 Hz curve and catches 13%, over the 12% bar.",
     "animated": false,
     "phone": true
   },
@@ -102,8 +102,8 @@
     "phone": true
   },
   "lobe-vs-length": {
-    "title": "Why 256 works",
-    "caption": "Any block between the crossing at 219 samples and the 40 ms limit at 320 keeps the next row outside the main lobe. 256 sits inside that range.",
+    "title": "Where the bins land",
+    "caption": "Each mark is one block length. Its height is how close a neighbouring tone lands to the bin you read. For loud keys ten times the faint ones, closer than about 1.75 bins is too close: 224 fails, while 208, 216 and 232 just get through. A hotter line makes taller leaks and needs more room. Every block shorter than 176 fails too.",
     "animated": false,
     "phone": true
   },

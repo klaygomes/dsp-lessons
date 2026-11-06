@@ -9,13 +9,14 @@
 <style>
 <!--KIT:fig.css-->
 <!--KIT:page.css-->
+.nowrap { white-space: nowrap; }
 .key i { display: inline-block; vertical-align: middle; margin-right: 6px; font-style: normal; }
 .key .k-own { width: 12px; height: 12px; background: var(--ink); }
 .key .k-leak { width: 12px; height: 12px; background: repeating-linear-gradient(135deg, var(--accent) 0 1.5px, var(--accent-soft) 1.5px 4px); border: 1px solid var(--accent); }
 .key .k-tone { width: 0; height: 14px; border-left: 2px solid var(--input); }
 .key .k-long { width: 22px; border-top: 2px solid var(--ink); }
 .key .k-mirror { width: 22px; border-top: 2px dotted var(--ink-soft); }
-.key .k-total { width: 22px; border-top: 2.5px solid var(--accent); }
+.key .k-total { width: 22px; border-top: 3px dashed var(--accent); }
 .key .k-pin { width: 16px; border-top: 2px dashed var(--input); }
 .key .k-bar { width: 22px; border-top: 2.5px solid var(--input); }
 .key .k-leakmark { color: var(--accent); font-size: 12px; }
@@ -35,13 +36,20 @@
 .pad-key.sel { outline: 2px solid var(--ink); outline-offset: 2px; }
 .pad-key[aria-pressed="true"] { background: inherit; }
 .pad-key.k-thrown[aria-pressed="true"] { background: var(--accent-soft); }
+@media (max-width: 520px) {
+  table.worked { font-size: 12px; }
+  table.worked td, table.worked th { padding: 5px 5px 5px 0; }
+  table.worked td:first-child, table.worked th:first-child { min-width: 0; }
+  table.alt th { font-size: 11px; letter-spacing: 0; }
+}
+.table { background: linear-gradient(to right, var(--paper) 30%, transparent), linear-gradient(to left, var(--paper) 30%, transparent) 100% 0, radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--ink) 22%, transparent), transparent), radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--ink) 22%, transparent), transparent) 100% 0; background-repeat: no-repeat; background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%; background-attachment: local, local, scroll, scroll; }
 </style>
 
 <div class="wrap">
   <header>
     <p class="topic">Discrete-Time Signal Processing · lesson 14 · chapter 10</p>
     <h1>The Keys That Blur</h1>
-    <p class="question">A loud 4 lights up the bin that belongs to 7, and a faint key never clears the bar at all. The bins are 31.25 Hz apart and the keypad tones 73 Hz or more. So where does a tone's sound go?</p>
+    <p class="question">A loud 4 lights up the bin that belongs to 7, and a faint key never scores high enough to count. The bins are 31.25 Hz apart and the keypad tones 73 Hz or more apart. So where does a tone's sound go?</p>
   </header>
 
 <!--BODY-->

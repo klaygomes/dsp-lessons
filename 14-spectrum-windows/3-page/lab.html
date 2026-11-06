@@ -36,7 +36,7 @@
     <div class="control">
       <label data-for="tone">Tone: <output data-k="tone-out"></output></label>
       <input data-k="tone" type="range" min="0" max="4000" step="62.5" value="1250" disabled>
-      <div class="row"><button type="button" data-k="t770" class="quiet" disabled>The keypad's 770 Hz at 256 samples, bin 27</button></div>
+      <div class="row"><button type="button" data-k="t770" class="quiet" disabled>770 Hz at 256 samples, chains for the 7's bin (27)</button></div>
     </div>
     <div class="control">
       <label data-for="start">Start, where the dot begins: <output data-k="start-out">0°</output></label>
@@ -60,9 +60,10 @@
     </div>
     <div class="control">
       <label data-for="bar">The bar: <output data-k="bar-out"></output></label>
-      <input data-k="bar" type="range" min="0" max="20" step="0.1" value="12" disabled>
+      <input data-k="bar" type="range" min="0" max="20" step="0.5" value="12" disabled>
     </div>
     <div class="pads" data-k="pads"></div>
+    <p class="note">✓ decoded at every start · ✗ thrown out · – never heard · ? read as another key. Pick a key to see its bars at its worst start.</p>
   </div>
   <div class="row">
     <button type="button" data-k="play">Play the block on repeat</button>
@@ -71,6 +72,7 @@
     <button type="button" data-k="another" hidden>Try another line</button>
     <button type="button" data-k="reset">Reset</button>
   </div>
+  <p class="note" data-k="pin-note">Pin this keeps the current matches as teal dashes over the bars, so you can move a control and compare.</p>
   <p class="k-now" data-k="now" aria-live="polite"></p>
   <p class="jump" data-k="jump"><a href="#your-turn">Ready for the real bug? Jump to the challenge.</a></p>
 </template>

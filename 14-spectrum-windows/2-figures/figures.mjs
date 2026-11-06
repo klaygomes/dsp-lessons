@@ -1,5 +1,5 @@
 export default k => {
-  const { g, line, path, rect, circle, text, masked, plot, axes, step, fmt, hz, range } = k;
+  const { g, line, path, rect, circle, text, masked, plot, axes, step, fmt, hz, range, cross } = k;
   const FS = 8000, TAU = 2 * Math.PI, M = '−';
   const r2 = v => Math.round(v * 100) / 100;
   const pct = (v, d = 0) => `${(v * 100).toFixed(d)}%`;
@@ -58,6 +58,7 @@ export default k => {
       : kind === 'hamming' ? [line(x, y - 4, x + 26, y - 4, { cls: 'l-ref' }), tri(x + 13, y - 4, 4.5)]
       : kind === 'faint' ? [line(x, y - 4, x + 26, y - 4, { cls: 'k-curve-faint' })]
       : kind === 'solid' ? [line(x, y - 4, x + 26, y - 4, { cls: 'k-line' })]
+      : kind === 'fail' ? [cross(x + 13, y - 4, {})]
       : [];
     return g({}, mark, lab(x + 34, y, label, 'k-label', 'start'));
   };
@@ -109,7 +110,7 @@ export default k => {
     const kb = keyBins(256), rowV = S(25 * 31.25), colV = S(43 * 31.25);
     return [
       axes(P, { yTicks: [[0, '0%'], [0.05, '5%'], [0.1, '10%'], [0.15, '15%']], xTicks: L.phone ? [[0, '0 Hz'], [2000, '2,000'], [4000, '4,000']] : [[0, '0 Hz'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']], yTitle: 'match' }),
-      L.phone ? '' : lab(P.x1, P.y1 + 36, 'bin tone, every bin of a 256-sample block', 'k-tick', 'end'),
+      L.phone ? '' : lab(P.x1, P.y1 + 36, 'frequency of each bin: all 129 bins of a 256-sample block', 'k-tick', 'end'),
       poly(pts, { cls: 'l-plain' }),
       line(P.x0, P.Y(0.12), P.x1, P.Y(0.12), { cls: 'l-bar' }),
       lab(P.x1, P.Y(0.12) - 8, 'bar 12%', 'k-num-input', 'end'),
@@ -141,15 +142,15 @@ export default k => {
       step(1, 'a 1,000 Hz tone sits on a bin: one bar at 100%, the rest at 0%',
         g({}, toneMark(A, 1000), on.map((v, i) => (v ? bar(A, i, v, 'k-bar') : '')), on.map((v, i) => (v ? lab(A.X(i) + bw / 2 + 6, A.Y(v) + 12, pct(v), 'k-num', 'start') : lab(A.X(i), A.Y(v) - 8, pct(v), 'k-num'))))),
       step(2, 'the tone slides from 1,000 to 1,500 Hz',
-        toneMark(B, 1500, { k: 'move', dx: -(B.X(1.5) - B.X(1)), d: 1, len: 1.5 }),
-        g({ cls: 'k-ghost', 'aria-hidden': 'true', anim: { k: 'flash', d: 1, len: 2 } }, bar(B, 1, 1, 'k-bar'))),
+        toneMark(B, 1500, { k: 'move', dx: -(B.X(1.5) - B.X(1)), d: 0, len: 1.2 }),
+        g({ cls: 'k-ghost', 'aria-hidden': 'true', anim: { k: 'flash', d: 0, len: 1.8 } }, bar(B, 1, 1, 'k-bar'))),
       step(3, 'the single bar melts into 25, 60, 70, 30 and 25 percent',
-        g({ anim: { k: 'scale', sy: 0, d: 2.6, len: 1.2 }, style: origin(B) },
+        g({ anim: { k: 'scale', sy: 0, d: 1.2, len: 1 }, style: origin(B) },
           off.map((v, i) => (i === 1 || i === 2 ? bar(B, i, v, 'k-bar') : bar(B, i, v, 'k-bar-hatch', { fill: `url(#${L.slug}-hatch)` })))),
-        g({ anim: { k: 'in', d: 3.8 } }, off.map((v, i) => lab(B.X(i), B.Y(v) - 8, pct(v), 'k-num')))),
-      step(4, 'hatched bars are leakage: the tone shows up in bins far from it',
-        g({ anim: { k: 'in', d: 4.4 } }, L.phone ? keys(L.slug, 20, 536, [['solidbar', 'the two nearest bins'], ['hatch', 'leakage into far bins']], { cols: 1 })
-          : keys(L.slug, 70, 330, [['solidbar', 'the two nearest bins'], ['hatch', 'leakage into far bins, where no tone is near']], { dx: 230 }))),
+        g({ anim: { k: 'in', d: 2.2 } }, off.map((v, i) => lab(B.X(i), B.Y(v) - 8, pct(v), 'k-num')))),
+      step(4, 'hatched bars are leakage: the tone shows up beyond the two bins nearest it',
+        g({ anim: { k: 'in', d: 2.8 } }, L.phone ? keys(L.slug, 20, 536, [['solidbar', 'the two nearest bins'], ['hatch', 'leakage: bins beyond them']], { cols: 1 })
+          : keys(L.slug, 70, 330, [['solidbar', 'the two nearest bins'], ['hatch', 'leakage: every bin beyond them']], { dx: 230 }))),
     ];
   };
 
@@ -257,12 +258,12 @@ export default k => {
     const chainPic = (ox, oy, Lv, Sv, ang, name, totalText, opts = {}) => {
       const lx = ox + Lv * sc, sx = lx + Sv * sc * Math.cos(ang * Math.PI / 180), sy = oy - Sv * sc * Math.sin(ang * Math.PI / 180);
       return { lx, sx, sy,
-        base: g({}, lab(ox, oy - (opts.titleUp || 40), name, 'k-name', 'start'), vec(L.slug, ox, oy, lx, oy, 'ink'), lab(ox + Lv * sc / 2, oy + 20, `long ${opts.lText || pct(Lv)}`, 'k-num')),
+        base: g({}, lab(ox, oy - (opts.titleUp || 40), name, 'k-name', 'start'), vec(L.slug, ox, oy, lx, oy, 'ink'), lab(ox + Lv * sc * (opts.lAt || 0.5), oy + 20, `long ${opts.lText || pct(Lv)}`, 'k-num')),
         short: vec(L.slug, lx, oy, sx, sy, 'soft'),
         total: g({}, line(ox, oy, sx, sy, { cls: 'l-total' }), opts.left ? lab(sx - 10, sy - 8, totalText, 'k-num-accent', 'end') : lab(sx + 8, sy - 8, totalText, 'k-num-accent', 'start')) };
     };
     const [mx, my] = L.phone ? [24, 200] : [40, 230];
-    const main = chainPic(mx, my, 0.641, 0.15, 112.5, '1,000 Hz bin', '60% from this start', { titleUp: L.phone ? 140 : 170, left: true });
+    const main = chainPic(mx, my, 0.641, 0.15, 112.5, '1,000 Hz bin', '60% from this start', { titleUp: L.phone ? 140 : 170, left: true, lAt: L.phone ? 0.22 : 0.32 });
     const r = 0.15 * sc;
     const ins = L.phone
       ? [chainPic(24, 400, 0.641, 0.127, 67.5, '2,000 Hz bin', '70%', { titleUp: 64 }), chainPic(24, 530, 0.225, 0.127, 67.5, '3,000 Hz bin', '30%', { titleUp: 64, lText: '22.5%' })]
@@ -271,7 +272,7 @@ export default k => {
       main.base,
       circle(main.lx, my, r, { cls: 'l-circle' }),
       circle(main.lx + r, my, 4, { cls: 'l-ring' }), lab(main.lx + r + 8, my - 8, 'with: 79%', 'k-tick', 'start'),
-      circle(main.lx - r, my, 4, { cls: 'l-ring' }), lab(main.lx - r, my + 38, 'against: 49%', 'k-tick'),
+      circle(main.lx - r, my, 4, { cls: 'l-ring' }), lab(main.lx - r, my + 20, 'against: 49%', 'k-tick'),
       lab(main.lx + 12, my - r - 8, 'mirror 15%', 'k-num', 'start'),
       step(1, 'the short mirror chain swings around the end of the long one as the start changes, from with to this start, 112.5 degrees off',
         g({ anim: { k: 'turn', r0: '112.5deg', steps: 16, d: 0.3, len: 2.4 }, style: `transform-origin:${main.lx}px ${my}px` }, main.short)),
@@ -313,37 +314,35 @@ export default k => {
       poly(fnPts(P, at, -11, 11, 900, top), { cls: 'l-plain' }),
       lab(P.X(0), P.y0 - 8, 'main lobe, up to 100%', 'k-tick'),
       lab(P.X(1.43) + 8, P.Y(0.24), L.phone ? '22%' : 'first side lobe: 22%', 'k-num', 'start'),
-      lab(P.X(-8), P.Y(0.1), '1 ÷ (π d)', 'k-tick'),
+      lab(P.X(-6.5), P.Y(0.1), L.phone ? '1 ÷ (π × bins)' : '1 ÷ (π × bins away)', 'k-tick'),
       dot(P.X(10.5), P.Y(at(10.5)), 3.5), lab(P.X(10.5), P.Y(at(10.5)) - 26, L.phone ? '3%' : '10.5 bins: 3%', 'k-num', 'end'),
       dot(P.X(b27), P.Y(at(b27)), 5, 'l-dot-accent'), lab(P.X(b27) + 10, P.Y(at(b27)) + 4, L.phone ? 'bin 27: 13%' : "bin 27, the 7's row: 13%", 'k-num-accent', 'start'),
       dot(P.X(b22), P.Y(at(b22)), 5), line(P.X(b22), P.Y(at(b22)) - 7, P.X(b22), P.Y(0.165), { cls: 'l-ref' }),
       lab(P.X(b22) + 4, P.Y(0.165) - 6, L.phone ? 'bin 22: 10%' : "bin 22, the 1's row: 10%", 'k-num', 'end'),
-      keys(L.slug, P.x0, L.phone ? P.y1 + 66 : P.y1 + 62, [['plain', 'match of a 770 Hz tone'], ['ref', 'envelope 1 ÷ (π d)']], { dx: 260, cols: L.phone ? 1 : 2 }),
+      keys(L.slug, P.x0, L.phone ? P.y1 + 66 : P.y1 + 62, [['plain', 'match of a 770 Hz tone'], ['ref', 'envelope: 1 ÷ (π × bins away)']], { dx: 260, cols: L.phone ? 1 : 2 }),
     ];
   };
 
   const keypadLeak = L => {
     const P = L.phone ? plot({ x: 46, y: 50, w: 300, h: 200, xs: [600, 1000], ys: [0, 1] }) : plot({ x: 80, y: 50, w: 590, h: 220, xs: [600, 1000], ys: [0, 1] });
-    const Sp = spectrum([[770]], 256), Sh = spectrum([[770]], 256, 'hann');
+    const Sp = spectrum([[770]], 256);
     const bins = [22, 25, 27, 30].map(b => b * 31.25), names = ['22', '25', '27', '30'];
     const rowY = P.y1 + 20;
     return [
       axes(P, { yTicks: [[0, '0%'], [0.5, '50%'], [1, '100%']], xTicks: [], yTitle: 'match' }),
       lab(P.x0, P.y1 + 18, '600 Hz', 'k-tick', 'start'), lab(P.x1, P.y1 + 18, '1,000 Hz', 'k-tick', 'end'),
       poly(fnPts(P, Sp, 600, 1000, 400), { cls: 'l-plain' }),
-      poly(fnPts(P, Sh, 600, 1000, 400), { cls: 'l-hann' }),
       line(P.x0, P.Y(0.12), P.x1, P.Y(0.12), { cls: 'l-bar' }), lab(P.x0 + 6, P.Y(0.12) - 8, 'bar 12%', 'k-num-input', 'start'),
       bins.map((f, i) => g({},
         line(P.X(f), P.y1, P.X(f), P.y1 + 5, { cls: 'k-axis' }),
-        dot(P.X(f), P.Y(Sp(f)), 4.5, i === 2 ? 'l-dot-accent' : 'l-dot'), sq(P.X(f), P.Y(Sh(f)), 8),
+        dot(P.X(f), P.Y(Sp(f)), 4.5, i === 2 ? 'l-dot-accent' : 'l-dot'),
         lab(P.X(f), rowY + 16, hzf(f), 'k-tick', 'middle', L.phone ? { style: 'font-size:9.5px' } : {}),
-        lab(P.X(f), rowY + 36, pct(Sp(f)), i === 2 ? 'k-num-accent' : 'k-num'),
-        lab(P.X(f), rowY + 56, pct(Sh(f)), 'k-num'))),
-      lab(P.x0 - 8, rowY + 16, 'bin', 'k-tick', 'end'), lab(P.x0 - 8, rowY + 36, 'plain', 'k-tick', 'end'), lab(P.x0 - 8, rowY + 56, 'Hann', 'k-tick', 'end'),
+        lab(P.X(f), rowY + 36, pct(Sp(f)), i === 2 ? 'k-num-accent' : 'k-num'))),
+      lab(P.x0 - 8, rowY + 16, 'bin', 'k-tick', 'end'), lab(P.x0 - 8, rowY + 36, 'match', 'k-tick', 'end'),
       L.phone ? lab(P.X(843.75) + 6, P.Y(0.3), 'second side lobe', 'k-tick', 'start')
         : lab(P.X(843.75) + 8, P.Y(0.27), 'bin 27 sits on the second side lobe', 'k-tick', 'start'),
       line(P.X(843.75), P.Y(0.24), P.X(843.75), P.Y(0.16), { cls: 'l-ref' }),
-      keys(L.slug, L.phone ? 46 : 80, P.y1 + 104, [['plain', 'plain block, 256 samples'], ['hann', 'Hann window, 256 samples'], ['bar', 'the bar']], { dx: L.phone ? 0 : 220, cols: L.phone ? 1 : 3 }),
+      keys(L.slug, L.phone ? 46 : 80, P.y1 + 84, [['plain', 'a loud 770 Hz tone, 256 samples'], ['bar', 'the bar']], { dx: 300, cols: L.phone ? 1 : 2 }),
     ];
   };
 
@@ -430,7 +429,7 @@ export default k => {
     const kx = L.phone ? 24 : 400;
     return [
       circle(cx, cy, rho, { cls: 'l-circle' }),
-      line(cx, cy, sx, sy, { cls: 'l-ref' }), circle(cx, cy, 3, { cls: 'l-dot' }), lab((cx + sx) / 2 - 8, (cy + sy) / 2, 'radius 1', 'k-tick', 'end'),
+      line(cx, cy, cx - rho, cy, { cls: 'l-ref' }), circle(cx, cy, 3, { cls: 'l-dot' }), lab(cx - rho / 2, cy - 8, 'radius 1', 'k-tick'),
       range(0, 7).map(i => vec(L.slug, pts[i][0], pts[i][1], pts[i + 1][0], pts[i + 1][1], 'ink')),
       line(sx, sy, ex, ey, { cls: 'l-total' }),
       circle(sx, sy, 4, { cls: 'l-dot-accent' }), circle(ex, ey, 4, { cls: 'l-dot-accent' }),
@@ -443,7 +442,7 @@ export default k => {
       L.phone ? [rich(24, 400, ['gap: |1 − e', { sup: 'jNΔ' }, '|'], 'k-math', 'start'), rich(24, 440, ['one step: |1 − e', { sup: 'jΔ' }, '|'], 'k-math', 'start'),
         lab(24, 474, 'on the chain\'s circle, radius 1', 'k-label', 'start')] : '',
       lab(L.phone ? 180 : 200, L.phone ? 30 : 40, '8 arrows, 22.5° apart', 'k-name'),
-      lab((sx + ex) / 2 - 10, (sy + ey) / 2 - 20, 'gap', 'k-num-accent', 'end'),
+      lab((sx + ex) / 2 + 12, (sy + ey) / 2 + 24, 'gap', 'k-num-accent', 'start'),
     ];
   };
 
@@ -485,7 +484,7 @@ export default k => {
     const span = Math.max(bp[1] - bp[0], bp[3] - bp[2], bh[1] - bh[0], bh[3] - bh[2]);
     const side = L.phone ? 150 : 170, sc = side / span;
     const place = (pts, bb, cx, cy) => pts.map(([px, py]) => [cx + (px - (bb[0] + bb[1]) / 2) * sc, cy + (py - (bb[2] + bb[3]) / 2) * sc]);
-    const [c1, c2] = L.phone ? [[180, 560], [180, 800]] : [[200, 370], [520, 370]];
+    const [c1, c2] = L.phone ? [[180, 560], [180, 800]] : [[200, 400], [520, 400]];
     const pw = place(plain1, bp, ...c1), hw = place(hann1, bh, ...c2);
     const gap = pts => Math.hypot(pts[N][0] - pts[0][0], pts[N][1] - pts[0][1]) / (sc * N);
     const gp = gap(pw), gh = gap(hw);
@@ -507,7 +506,8 @@ export default k => {
         g({ anim: { k: 'in', d: 3, len: 1.2 } }, poly(pw, { cls: 'k-line' }), ends(pw), below(c1, `gap ${pct(gp, 1)}: full-length end arrows`))),
       step(4, `the Hann chain: short arrows at both ends, so it ends ${pct(gh, 1)} from the start`,
         g({ anim: { k: 'in', d: 4.4, len: 1.2 } }, poly(hw, { cls: 'l-hann' }), ends(hw), below(c2, `gap ${pct(gh, 1)}: short end arrows`))),
-      lab(L.phone ? 180 : 360, L.H - 14, 'first side lobe: 22% plain, 2.7% Hann', 'k-note'),
+      lab(L.phone ? 180 : 360, L.H - (L.phone ? 40 : 38), L.phone ? 'one scale: both full piles equally long' : 'one scale: Hann\'s middle arrows are drawn longer, so both full piles are equally long', 'k-tick'),
+      lab(L.phone ? 180 : 360, L.H - 12, 'first side lobe: 22% plain, 2.7% Hann', 'k-note'),
     ];
   };
 
@@ -555,7 +555,7 @@ export default k => {
       axes(B, { yTicks: [[0, '0%'], [1, '100%']], xTicks: xt }),
       poly(fnPts(B, hannAt, -4, 4), { cls: 'l-hann' }),
       [-4, -3, -2, 2, 3, 4].map(d => circle(B.X(d), B.Y(0), 4.5, { cls: 'l-ring-accent' })),
-      L.phone ? lab(B.x1, B.Y(0) - 14, 'zeros from 2 bins', 'k-num-accent', 'end') : lab(B.X(2) + 10, B.Y(0) - 12, 'first zero: 2 bins out', 'k-num-accent', 'start'),
+      L.phone ? [lab(B.x1, B.Y(0.36), 'zeros from', 'k-num-accent', 'end'), lab(B.x1, B.Y(0.36) + 16, '2 bins out', 'k-num-accent', 'end')] : lab(B.X(2) + 10, B.Y(0) - 12, 'first zero: 2 bins out', 'k-num-accent', 'start'),
       lab(B.X(1) + 8, B.Y(0.5), '50%', 'k-num', 'start'), lab(B.x1, B.y1 + 36, 'bins from the tone', 'k-tick', 'end'),
     ];
   };
@@ -584,21 +584,61 @@ export default k => {
     ];
   };
 
+  const landing = N => {
+    let best = null;
+    for (const set of [ROWS, COLS]) for (const t of set) for (const o of set) {
+      if (t === o) continue;
+      const kb = Math.round(o * N / FS), d = Math.abs(t * N / FS - kb);
+      if (!best || d < best.d) best = { d, tone: t, owner: o, binHz: kb * FS / N };
+    }
+    return best;
+  };
+  const decodesAll = N => {
+    const w = range(0, N - 1).map(n => hannW(n, N)), sw = w.reduce((x, y) => x + y, 0);
+    const tones = [...ROWS, ...COLS], bins = keyBins(N);
+    const C = tones.map(f => bins.map(b => {
+      let ar = 0, ai = 0, cr = 0, ci = 0;
+      for (let n = 0; n < N; n++) {
+        const t1 = (TAU * f / FS - TAU * b / N) * n, t2 = (-TAU * f / FS - TAU * b / N) * n;
+        ar += w[n] * Math.cos(t1); ai += w[n] * Math.sin(t1); cr += w[n] * Math.cos(t2); ci += w[n] * Math.sin(t2);
+      }
+      return [ar / sw, ai / sw, cr / sw, ci / sw];
+    }));
+    const starts = range(0, 15).map(i => TAU * i / 16);
+    let leak = 0, own = 9;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) for (const pr of starts) for (const pc of starts) {
+      const m = bins.map((_, bi) => {
+        let re = 0, im = 0;
+        [[r, pr], [4 + c, pc]].forEach(([ti, ph]) => {
+          const [ar, ai, cr, ci] = C[ti][bi], cs = Math.cos(ph), sn = Math.sin(ph);
+          re += ar * cs - ai * sn + cr * cs + ci * sn; im += ar * sn + ai * cs - cr * sn + ci * cs;
+        });
+        return Math.hypot(re, im);
+      });
+      m.forEach((v, i) => { if (i === r || i === 4 + c) own = Math.min(own, v); else leak = Math.max(leak, v); });
+    }
+    return leak < 0.1 * own;
+  };
+
   const lobeLength = L => {
-    const P = L.phone ? plot({ x: 50, y: 60, w: 290, h: 220, xs: [128, 400], ys: [0, 130] }) : plot({ x: 80, y: 50, w: 590, h: 230, xs: [128, 400], ys: [0, 130] });
-    const hw = N => 16000 / N;
+    const P = L.phone ? plot({ x: 50, y: 70, w: 290, h: 230, xs: [170, 342], ys: [1.2, 2.9] }) : plot({ x: 80, y: 60, w: 590, h: 230, xs: [170, 342], ys: [1.2, 2.9] });
+    const Ns = range(22, 42).map(i => i * 8);
+    const pts = Ns.map(N => ({ N, ...landing(N), ok: decodesAll(N) }));
+    const at = N => pts.find(q => q.N === N);
+    const p224 = at(224), p256 = at(256);
     return [
-      rect(P.X(219.2), P.y0, P.X(320) - P.X(219.2), P.h, { cls: 'l-shade' }),
-      axes(P, { yTicks: [[0, '0 Hz'], [50, '50'], [100, '100']], xTicks: (L.phone ? [128, 219, 320, 400] : [128, 200, 219, 256, 320, 400]).map(n => [n, String(n)]) }),
-      lab(P.x1, P.y1 + 36, 'block length N, samples', 'k-tick', 'end'),
-      lab(P.x0, P.y0 - 12, 'Hann main lobe reach, Hz each side', 'k-tick', 'start'),
-      line(P.x0, P.Y(73), P.x1, P.Y(73), { cls: 'l-ref' }), lab(P.x1, P.Y(73) - 8, L.phone ? '73 Hz' : '73 Hz: 697 to 770', 'k-tick', 'end'),
-      line(P.X(320), P.y0, P.X(320), P.y1, { cls: 'k-axis' }), lab(P.X(320) + 6, P.y0 + 14, L.phone ? '40 ms' : '320: 40 ms, a short press', 'k-tick', 'start'),
-      poly(fnPts(P, hw, 128, 400), { cls: 'l-plain' }),
-      lab(P.X(165), P.Y(110), '2 × 8,000 ÷ N', 'k-num', 'start'),
-      circle(P.X(219.2), P.Y(73), 4, { cls: 'l-dot' }),
-      dot(P.X(256), P.Y(62.5), 5.5, 'l-dot-accent'), line(P.X(256), P.Y(62.5) + 8, P.X(256), P.Y(36), { cls: 'l-ref' }), lab(P.X(256), P.Y(36) + 16, '256: 62.5 Hz', 'k-num-accent'),
-      lab(P.X(270), P.Y(10), 'this range works', 'k-num'),
+      axes(P, { yTicks: [[1.5, '1.5'], [2, '2'], [2.5, '2.5']], xTicks: (L.phone ? [176, 224, 256, 320] : [176, 200, 224, 256, 288, 320]).map(n => [n, String(n)]) }),
+      lab(P.x1, P.y1 + 36, 'block length N, samples (the lab\'s steps of 8)', 'k-tick', 'end'),
+      lab(P.x0 - 30, P.y0 - 34, L.phone ? 'closest neighbour tone,' : 'closest neighbour tone, in bins from the bin you read', 'k-tick', 'start'),
+      L.phone ? lab(P.x0 - 30, P.y0 - 18, 'in bins from the bin you read', 'k-tick', 'start') : '',
+      line(P.x0, P.Y(2), P.x1, P.Y(2), { cls: 'l-ref' }),
+      lab(P.x0 + 4, P.Y(2) - 6, L.phone ? 'main lobe edge' : 'edge of the Hann main lobe: 2 bins', 'k-tick', 'start'),
+      line(P.X(320), P.y0, P.X(320), P.y1, { cls: 'k-axis' }), lab(P.X(320) + 6, P.y0 + 12, L.phone ? '40 ms' : '40 ms', 'k-tick', 'start'),
+      pts.map(q => (q.ok ? dot(P.X(q.N), P.Y(q.d), L.phone ? 4 : 5) : cross(P.X(q.N), P.Y(q.d), {}))),
+      L.phone ? lab(P.X(224) + 10, P.Y(p224.d) + 4, '224', 'k-num-accent', 'start')
+        : [lab(P.X(224) + 12, P.Y(p224.d) + 4, `224: ${hz(p224.tone)} Hz lands ${p224.d.toFixed(2)} bins`, 'k-num-accent', 'start'), lab(P.X(224) + 12, P.Y(p224.d) + 20, `from the bin of the ${hz(p224.owner)} Hz row`, 'k-num-accent', 'start')],
+      lab(P.X(256), P.Y(p256.d) - 12, `256: ${p256.d.toFixed(2)}`, 'k-num'),
+      keys(L.slug, L.phone ? 24 : 80, P.y1 + (L.phone ? 66 : 62), [['coarse', 'decodes all 32 presses'], ['fail', 'some press fails']], { dx: 260, cols: L.phone ? 1 : 2 }),
     ];
   };
 
@@ -644,7 +684,7 @@ export default k => {
       'A faint 5 on the rural line. The screen draws every bin, so your eye finds the two bumps. The detector reads only the eight keypad bins, and both sit under the 12% bar.', screen),
     fig('leakage', [380, 600], 'One tone, five bins',
       'Matches of an 8-sample block at the five bins: a 1,000 Hz tone gives 100% in one bin and 0% elsewhere; a 1,500 Hz tone gives 25, 60, 70, 30 and 25%.',
-      'On a bin, the tone fills one bin. Halfway between bins it spreads into every bin. The hatched bars are leakage: matches where no tone is anywhere near.', leakage, 4),
+      'On a bin, the tone fills one bin. Halfway between bins it spreads into every bin. The hatched bars are leakage: matches beyond the two bins nearest the tone.', leakage, 4),
     fig('mid-turn', [430, 640], 'Whole turn, half a turn',
       'The 8 samples of 1,000 Hz and 1,500 Hz with each tone\'s dot on a wheel: 1,000 Hz ends back at the start after one turn; 1,500 Hz stops halfway round after one and a half.',
       'The 1,000 Hz dot ends the block back where it started. The 1,500 Hz dot stops half a turn short, so the next sample (the hollow dot) jumps from 1.00 to −1.00.', midTurn, 6),
@@ -661,11 +701,11 @@ export default k => {
       'The match of a plain block against distance from the tone, −3 to +3 bins: a hump that reaches 0 one bin away on each side, 31.25 Hz for a 256-sample block.',
       'This is lesson 10\'s central hump, now named: the main lobe. It falls to zero one bin out on each side, where the leftover arrow makes one whole turn.', mainLobe),
     fig('side-lobes', [370, 400], 'The side lobes',
-      'The match of a 770 Hz tone from −11 to +11 bins: shaded side lobes, the first at 22%, shrinking like 1 ÷ (π d) to 3% at 10.5 bins, with bin 27 at 13% and bin 22 at 10%.',
+      'The match of a 770 Hz tone from −11 to +11 bins: shaded side lobes, the first at 22%, shrinking like 1 ÷ (π × bins away) to 3% at 10.5 bins, with bin 27 at 13% and bin 22 at 10%.',
       'Beyond the main lobe the curve rises into side lobes that shrink slowly. The 7\'s bin and the 1\'s bin both sit on side lobes of the 770 Hz tone.', sideLobes),
-    fig('keypad-leak', [410, 420], 'A loud 770 Hz across the row bins',
-      'The match curve of a loud 770 Hz tone, 600 to 1,000 Hz: plain, the row bins read 10%, 81%, 13% and 6%, with the 13% above the 12% bar; with a Hann window they read 2%, 92%, 3% and 0%.',
-      'The 7\'s bin (843.75 Hz) sits on the second side lobe of the plain curve and catches 13%, over the 12% bar. The dashed Hann curve leaves it 3%.', keypadLeak),
+    fig('keypad-leak', [380, 400], 'A loud 770 Hz across the row bins',
+      'The match curve of a loud 770 Hz tone, 600 to 1,000 Hz: the row bins read 10%, 81%, 13% and 6%, with the 13% above the 12% bar.',
+      'The 7\'s bin (843.75 Hz) sits on the second side lobe of the 770 Hz curve and catches 13%, over the 12% bar.', keypadLeak),
     fig('phase-wobble', [400, 700], 'Why only sometimes',
       'The 7\'s bin as joined chains for a loud 4: the 770 Hz chain, 12.2%, plus its mirror and the 1,209 Hz column tone\'s chains; over 256 pairs of starts the total runs 8.9% to 14.6%, and 144 pass the 12% bar.',
       'The long chain is fixed. The small chains move with the starts, so the end lands somewhere in a small cloud. Filled dots land past the bar: those presses are thrown out.', phaseWobble, 4),
@@ -678,7 +718,7 @@ export default k => {
     fig('chord', [320, 400], 'The chord',
       'The unit circle with the points 1 and e^{jx}: the chord between them is 2 sin(x/2), two half-chords split by the line from the centre at angle x/2.',
       'The line from the centre to the chord\'s midpoint splits the angle x in half and the chord in two halves, each sin(x/2) long.', chord),
-    fig('hann-taper', [530, 940], 'Taper the edges',
+    fig('hann-taper', [580, 960], 'Taper the edges',
       'A 256-sample block of 770 Hz and the same block times the Hann window, then the chains into bin 27: the plain chain stops 12.2% of a full pile from the start, the Hann chain 2.7%.',
       'The window shrinks the arrows near both ends of the block. The plain chain\'s full-length end arrows leave a wide gap; the Hann chain\'s short ones leave it nearly closed.', hannTaper, 4),
     fig('effective-length', [360, 580], 'Half the block does the work',
@@ -690,9 +730,9 @@ export default k => {
     fig('window-trade', [370, 620], 'The window\'s trade',
       'Around 697 Hz with 128 samples, the Hann main lobe reaches 125 Hz and the 750 Hz bin reads 61%; with 256 samples it reaches 62.5 Hz and 770 Hz falls outside it.',
       'At 128 samples the Hann main lobe swallows the next row\'s tone. At 256 samples it stops short of it.', windowTrade),
-    fig('lobe-vs-length', [340, 360], 'Why 256 works',
-      'The Hann main lobe\'s reach, 2 × 8,000 ÷ N Hz, against block length: it drops below the 73 Hz row gap at N = 219, and 320 samples is the longest block that fits a press; 256 reaches 62.5 Hz.',
-      'Any block between the crossing at 219 samples and the 40 ms limit at 320 keeps the next row outside the main lobe. 256 sits inside that range.', lobeLength),
+    fig('lobe-vs-length', [380, 420], 'Where the bins land',
+      'For every Hann block length from 176 to 336 samples in steps of 8, the closest distance between a keypad tone and the bin read for its neighbouring row or column, in bins, marked by whether all 32 presses of the loud and rural customers decode.',
+      'Each mark is one block length. Its height is how close a neighbouring tone lands to the bin you read. For loud keys ten times the faint ones, closer than about 1.75 bins is too close: 224 fails, while 208, 216 and 232 just get through. A hotter line makes taller leaks and needs more room. Every block shorter than 176 fails too.', lobeLength),
     fig('zero-padding', [380, 400], 'Zero padding',
       'The plain 256-sample curve of 770 Hz with its bins 31.25 Hz apart and, after padding to 2,048 samples, bins 3.9 Hz apart on the same curve: 769.5 Hz reads 100%, 843.75 Hz still 11.6% to 12.8%.',
       'The padded bins fall on exactly the same curve. A bin now sits on the tone, but the leak at 843.75 Hz is unchanged.', zeroPad, 3),

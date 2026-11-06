@@ -2,7 +2,7 @@
 
 ## A new complaint
 
-Your keypad detector runs live. Every key sends a row tone and a column tone, and the DFT checks each block of samples against test wheels to find them (lesson 12). Thanks to the FFT (lesson 13), the cheap chip keeps up. It reads blocks of 256 samples, 32 milliseconds of sound, and looks at the eight bins where the keypad tones land.
+Your keypad detector runs live. Every key sends a row tone and a column tone, and the DFT checks each block of samples against test wheels to find them (lesson 12: one wheel per bin, a dot that makes a whole number of turns in the block). Thanks to the FFT (lesson 13), the cheap chip keeps up. It reads blocks of 256 samples, 32 milliseconds of sound, and looks at the eight bins where the keypad tones land.
 
 | | 1,209 Hz | 1,336 Hz | 1,477 Hz | 1,633 Hz |
 |---|---|---|---|---|
@@ -19,9 +19,7 @@ Then two complaints arrive. First, presses of 4 keep getting thrown away. In tho
 
 Easy, you think: lower the bar to 6%. The rural keys come through. But now every loud key in the top three rows clears the bar in two or three rows at once. Every one of those presses is thrown out, and many presses of *, 0 and # are too. Raise the bar back, and the rural line goes silent again.
 
-On paper, the detector is fine. The bins are 8,000 ÷ 256 = 31.25 Hz apart, the closest keypad tones are 73 Hz apart, and every tone has its own bin. So why does a loud 4 light up the bin that belongs to 7?
-
-Remember the spill from lesson 12, when 770 Hz landed between two bins and a little of it showed up next door? That's our suspect.
+On paper, the detector is fine. Bin k sits at k × 8,000 ÷ N Hz, where N is the block length, so with 256 samples the bins are 31.25 Hz apart. The closest keypad tones are 73 Hz apart, and every tone has its own bin: the 7's row, 852 Hz, is read at bin 27, 843.75 Hz. So why does a loud 4 light up the bin that belongs to 7?
 
 ## Eight samples, two tones
 
@@ -35,7 +33,7 @@ First, a tone that lands right on a bin: 1,000 Hz.
 
 The matches at the five bins are 0%, 100%, 0%, 0%, 0%. One tone, one bin, everything else exactly zero. That's the picture lesson 12 started from.
 
-Now move the tone halfway between two bins, to 1,500 Hz. Before you look, guess. Will the 1,000 and 2,000 Hz bins split it, half each, and the rest stay at zero?
+Now move the tone halfway between two bins, to 1,500 Hz. Before you look at the numbers, guess what the five bins catch.
 
 [[predict-split]]
 
@@ -47,11 +45,11 @@ Now move the tone halfway between two bins, to 1,500 Hz. Before you look, guess.
 |---|---|---|---|---|---|
 | match | 25% | 60% | 70% | 30% | 25% |
 
-Not even close. The two nearest bins catch 60% and 70%, and neither sees the full tone. Every other bin matches something too, even the 0 Hz bin, and nothing is playing anywhere near 0 Hz. (The 0 Hz and 4,000 Hz bins are their own mirrors, so a tone sitting exactly on one would score 200% on our scale. Their 25% is leak, not a quarter of a tone.) That spill finally gets its name. **Leakage** is the part of a tone that shows up in bins other than its own. It happens because the block ends partway through a turn.
+Not even close. The two nearest bins catch 60% and 70%, and neither sees the full tone. Every other bin matches something too, even the 0 Hz bin, and nothing is playing anywhere near 0 Hz. Remember the spill from lesson 12, when 770 Hz landed between two bins? It finally gets its name. **Leakage** is the part of a tone that shows up in bins beyond the one or two nearest it. It happens because the block ends partway through a turn.
 
 [[diagram:leakage]]
 
-What does "partway through a turn" mean? Look at the two tones across the block. The 1,000 Hz tone makes exactly one turn in 8 samples and ends ready to start again. The 1,500 Hz tone makes one and a half turns and stops halfway round.
+What makes 1,500 Hz different? Look at the two tones across the block. The 1,000 Hz tone makes exactly one turn in 8 samples and ends ready to start again. The 1,500 Hz tone makes one and a half turns and stops halfway round, partway through a turn.
 
 [[diagram:mid-turn]]
 
@@ -65,7 +63,7 @@ Lesson 6 added a second arrow. A real tone, the cosine we hear, is two half-size
 
 [[diagram:two-arrows]]
 
-Lesson 12 showed what a bin does with the pair. Its test wheel turns every arrow back, and the turned arrows are laid tip to tail into a chain. For a tone on the bin, that freezes the counter-clockwise arrow, so its copies pile up into one straight chain. Call that the full pile. It's the 100% every match is measured against, and since each arrow is half-size, a full pile is N ÷ 2 long. The mirror arrow, meanwhile, now turns clockwise twice as fast, and its chain curls up to nothing. So every bin builds two chains, one from each arrow.
+Lesson 12 showed what a bin does with the pair. Its test wheel turns every arrow back, and the turned arrows are laid tip to tail into a chain. For a tone on the bin, that freezes the counter-clockwise arrow, so its copies pile up into one straight chain. Call that the full pile. It's the 100% every match is measured against, and since each arrow is half-size, a full pile is N ÷ 2 long, with N the block length. The mirror arrow, meanwhile, now turns clockwise twice as fast, and its chain curls up to nothing. So every bin builds two chains, one from each arrow.
 
 ## The leftover arrow
 
@@ -85,17 +83,17 @@ Check it on the 1,000 Hz tone. Against the 2,000 Hz bin, its leftover arrow turn
 
 ## The second chain
 
-Now the 1,500 Hz tone's mirror arrow. It turns −67.5° per sample, clockwise. The 1,000 Hz test wheel turns it back another 45°, so its leftover arrow turns −112.5° per sample. Over the block that's −900°, two and a half turns. Not whole, so this chain doesn't close either. It's a short chain, 15% long, because the arrows spin around fast and mostly cancel.
+The mirror arrow builds a chain too. Against the 1,000 Hz bin its leftover arrow spins fast, −112.5° per sample, two and a half turns over the block. Not whole, so this chain doesn't close either, but its arrows mostly cancel and it ends up short: 15%.
 
-The bin's match is the length of the two chains joined end to end. If they point the same way, the lengths add: 64 + 15 = 79%. If they point opposite ways, they subtract: 64 − 15 = 49%. Which way each chain points depends on where the dot sits when the block begins. Our 1,500 Hz tone starts at the far right, at 1.00. From that start, the short chain points 112.5° away from the long one at the 1,000 Hz bin. That's more than a right angle, so it pulls partly backwards, and the match drops to 60%. At the 2,000 Hz bin the chains are 64% and 13%, only 67.5° apart, so the short one pulls partly forwards: 70%.
+The bin's match is the two chains joined end to end.
 
 [[diagram:two-chains]]
 
-The 3,000 Hz bin works the same way: 22.5% and 13%, 67.5° apart, giving 30%.
+If they point the same way, the lengths add: 64 + 15 = 79%. Opposite, they subtract: 64 − 15 = 49%. Which way the short one points depends on where the dot sits when the block begins. Our tone starts at the far right, and from there the short chain points 112.5° away from the long one, partly backwards, so the match drops to 60%.
 
-So every bin a tone doesn't sit on gets two chains that don't close. The long one sets the size of the leak. The short one nudges it up or down, depending on where the tone started. Hold on to that nudge.
+The other bins work the same way. At the 2,000 Hz bin the chains are 64% and 13%, only 67.5° apart, so the short one pulls partly forwards: 70%. At the 3,000 Hz bin, 22.5% and 13%, 67.5° apart, give 30%.
 
-Nothing here is broken. The tone is steady and the DFT is exact. A bin can only cancel a tone that makes whole turns in the block, and real tones don't care where your block stops.
+So the long chain sets the size of a leak, and the short one nudges it up or down with the start. Hold on to that nudge. Nothing here is broken: a bin can only cancel a tone that makes whole turns in the block, and real tones don't care where your block stops.
 
 Try it. Slide the tone between two bins and watch the matches spread. Then change the tone's starting point, and watch the matches breathe.
 
@@ -117,13 +115,7 @@ Now back to the loud 4.
 
 ## The keypad at 256 samples
 
-Here are the four row tones, each alone at full strength, matched by the four row bins.
-
-| row bin | 22 | 25 | 27 | 30 |
-|---|---|---|---|---|
-| tone of the bin | 687.5 Hz | 781.25 Hz | 843.75 Hz | 937.5 Hz |
-
-None of the tones sits on its bin. 770 Hz, for instance, sits at 24.64 bins, a third of a bin below bin 25.
+The four row bins are 22, 25, 27 and 30, at 687.5, 781.25, 843.75 and 937.5 Hz. None of the tones sits on its bin: 770 Hz, for instance, sits at 24.64 bins, a third of a bin below bin 25. Here are the four row tones, each alone at full strength, matched by those bins.
 
 | tone | 697 bin | 770 bin | 852 bin | 941 bin |
 |---|---|---|---|---|
@@ -132,29 +124,37 @@ None of the tones sits on its bin. 770 Hz, for instance, sits at 24.64 bins, a t
 | 852 Hz | 5% | 11% | **89%** | 8% |
 | 941 Hz | 2% | 2% | 4% | **98%** |
 
-Read the 770 Hz row. A 770 Hz tone matches 81% in its own bin and 13% in the 852 bin. Bin 27 sits two and a third bins away, on the 770 Hz tone's second side lobe, between the zeros at two and three bins.
+Read the 770 Hz row. A 770 Hz tone matches 81% in its own bin and 13% in the 852 bin, bin 27, which sits two and a third bins away on its second side lobe. That's the biggest leak on the keypad, and it has company: 10% into the 1's row.
 
 [[diagram:keypad-leak]]
 
-That's the biggest leak on the keypad, but it has company. The same tone puts 10% into the 697 bin, the row of 1, and the 852 Hz tone puts 11% back into the 770 bin.
+Now the nudge. A real 4 is two tones, each with its own start, and each sends its chains into bin 27. Join them all as arrows and a loud 4 lands anywhere from 8.9% to 14.6% in the 7's bin.
 
-Now the nudge. The long chain from 770 Hz into bin 27 is 12.2%. The mirror arrow is about 52 bins away, so its chain is tiny, 0.6%, and the tone alone matches 11.6% to 12.8% there. But a real 4 also carries its 1,209 Hz column tone, which leaks 1.8% to 2.7% into bin 27, from an unrelated start. Join all the chains and a loud 4 lands anywhere from 8.9% to 14.6% in the 7's bin.
+The long chain from 770 Hz into bin 27 is 12.2%. The mirror arrow is about 52 bins away, so its chain is tiny, 0.6%, and the tone alone matches 11.6% to 12.8% there. The 4's 1,209 Hz column tone adds a chain of its own, 2.3%, from an unrelated start.
 
 [[diagram:phase-wobble]]
 
 That's the "sometimes". Over 256 different pairs of starts, a loud 4 cleared the 12% bar in the 7's row 144 times, and in the 1's row another 60 times. That's 204 presses thrown out, and the 5, 6 and B in the same row fare about as badly.
 
-Now the rural customer. Everything is a tenth as strong, so across all 16 keys their own bins score 7.7% to 10.2%.
+Now put the rural keys on the same scale.
 
 [[diagram:bar-seesaw]]
 
-Put the two numbers on one scale. To hear every rural key, the bar must sit below 7.7%. To keep a loud 4's leak out of the 7's row, it must sit above 14.6%. No bar is both. A faint key's real tone is weaker than a loud key's leak. Moving the bar was never going to work, because the bar was never the problem.
+To hear every rural key, the bar must sit below 7.7%. To keep a loud 4's leak out of the 7's row, it must sit above 14.6%. No bar is both. A faint key's real tone is weaker than a loud key's leak. Moving the bar was never going to work, because the bar was never the problem.
 
 The spectrum screen draws the whole curve, so your eye finds the rural bumps. The detector sees eight bins and a bar, and there a leak and a faint tone look the same.
 
 ## Why the leak has this shape
 
-Let's derive the curve and check the 22%. This is chapter 10 of Oppenheim and Schafer's *Discrete-Time Signal Processing* (1989), and it's one sum lesson 12 already showed you.
+Here is the whole curve in one line. Call d the distance from the tone to the bin, counted in bins. With no window, the long chain's match is
+
+\[ \text{match} = \left| \frac{\sin(\pi d)}{N \sin(\pi d / N)} \right| \]
+
+Read it like this. The angles are in radians, where π is half a turn, so the top is zero whenever d is a whole number, which is when the leftover arrow makes whole turns: those are the zeros, one bin apart, so the main lobe reaches one bin out on each side. Between the zeros the top swings back up to 1 while the bottom, about \(\pi d\), keeps growing. So the side lobes shrink like 1 ÷ (π d). Near one and a half bins that's the first side lobe's 22%. At ten and a half bins it's still 3%. That slow fall is why a loud tone reaches so far.
+
+Check it on the napkin: 8 samples, the tone half a bin away, so the match is \(1 / (8 \sin(\pi/16)) = 0.64\). There's the fan of arrows.
+
+The formula comes from chapter 10 of Oppenheim and Schafer's *Discrete-Time Signal Processing* (1989), and it's one sum lesson 12 already showed you. The four steps are below if you want them.
 
 Two reminders from lesson 6 first. The angle per sample in radians is \(\omega = 2\pi \times \text{tone} / 8000\), so \(\pi\) means 4,000 Hz. And \(j\) is a quarter turn counter-clockwise, so \(j \times j = -1\), and \(e^{j\omega n}\) is the dot itself after \(n\) samples.
 
@@ -184,15 +184,11 @@ Use it on the top, with \(x = N\Delta\), and on the bottom, with \(x = \Delta\).
 
 \[ \left| X[k] \right| = \left| \frac{\sin(N\Delta/2)}{\sin(\Delta/2)} \right| \]
 
-**Step four: divide by N** to get the long chain's match. We used a full-size arrow, whose full pile is N long. A real tone's arrows are half-size, so both its chain and its full pile are halved, and the halves cancel. That's why a full pile is N ÷ 2 for a real tone and N here: the match is the same.
+**Step four: divide by N** to get the long chain's match. We used a full-size arrow, whose full pile is N long. A real tone's arrows are half-size, so both its chain and its full pile are halved, and the halves cancel: the match is the same. A tone d bins from the bin has \(\Delta = 2\pi d / N\), so \(N\Delta/2 = \pi d\) and \(\Delta/2 = \pi d / N\):
 
-\[ \text{match} = \left| \frac{\sin(N\Delta/2)}{N \sin(\Delta/2)} \right| \]
+\[ \text{match} = \left| \frac{\sin(N\Delta/2)}{N \sin(\Delta/2)} \right| = \left| \frac{\sin(\pi d)}{N \sin(\pi d / N)} \right| \]
 
-**Step five: the zeros.** The top is zero when \(N\Delta/2\) is a whole multiple of \(\pi\), which means the leftover arrow makes whole turns. One whole turn over the block is a gap of 8,000 ÷ N Hz, one bin. So the zeros sit one bin apart, and the main lobe reaches one bin out on each side.
-
-**Step six: the side lobes.** Between the zeros, the top swings back up to 1 while the bottom keeps growing. Measure the gap in bins: a tone d bins from the bin has \(\Delta = 2\pi d / N\), so the bottom is \(N \sin(\pi d / N)\), which is about \(\pi d\). So the side lobes shrink like 1 ÷ (π d). Near one and a half bins that's the first side lobe's 22%. At ten and a half bins it's still 3%. That slow fall is why a loud tone reaches so far.
-
-Check it on the napkin. With 8 samples and the tone halfway between bins, \(N\Delta/2 = \pi/2\) and \(\Delta/2 = \pi/16\). The match is \(1 / (8 \sin(\pi/16)) = 0.64\). There's the fan of arrows.
+That's the line we started from.
 
 ## Taper the edges
 
@@ -208,7 +204,7 @@ It's Hamming's shape with a half and a half in place of 0.54 and 0.46, so it rea
 
 Now the arrows near the cut are short. In the picture, look at the two ends of the chain: the first and last arrows have almost no length. So the unfinished turn barely counts, and the chain ends nearly where a whole turn would have put it. With a Hann window the first side lobe drops from 22% to 2.7% of the tone. The window also shrinks the full pile, to half the window's total instead of half of N, so we divide by that. A tone on its bin still matches 100%.
 
-Windowing costs one multiplication per sample. That's 256 per block, small next to the FFT's 4,096 multiplications, counted the way lesson 13 counts them: four ordinary multiplications per butterfly.
+Windowing costs one multiplication per sample. That's 256 per block, small next to the FFT's 4,096 multiplications, counted the way lesson 13 counts them: four ordinary multiplications per butterfly, the FFT's step that combines two values into two.
 
 Here's the keypad at 256 samples with a Hann window, each row tone alone.
 
@@ -236,7 +232,9 @@ The window paid for its low side lobes with a fatter main lobe. Look at where it
 
 [[diagram:effective-length]]
 
-In fact it's exactly twice. The window's cosine is two mirror arrows, one bin's turn each way. So the Hann chain is built from three plain chains, added as arrows before any rescaling. It's half the plain chain at the tone, minus a quarter of the plain chain shifted one bin each way. Each plain curve is zero at every whole bin except its own centre. Add the three as arrows, and the Hann curve is zero at every whole bin except the tone's own and the two next to it. Its first zero is two bins out.
+In fact it's exactly twice: the Hann curve's first zero sits two bins out, not one. The reason is below, if you want it.
+
+The window's cosine is two mirror arrows, one bin's turn each way. So the Hann chain is built from three plain chains, added as arrows before any rescaling: half the plain chain at the tone, minus a quarter of the plain chain shifted one bin each way. Each plain curve is zero at every whole bin except its own centre. Add the three as arrows, and the Hann curve is zero at every whole bin except the tone's own and the two next to it.
 
 [[diagram:hann-three-curves]]
 
@@ -248,15 +246,17 @@ That's the trade every window makes. Low side lobes hear a faint tone far from a
 
 ## Choose both
 
-So the keypad needs both. The faint line needs low side lobes, so: a Hann window. The close rows need the main lobe to end before the neighbor's tone. For Hann it reaches 2 × 8,000 ÷ N Hz to each side, so to keep 73 Hz outside it:
+So the keypad needs both. The faint line needs low side lobes, so: a Hann window. The close rows need something too, and it's tempting to say "keep the main lobe narrower than 73 Hz". For Hann that means 2 × 8,000 ÷ N < 73, so any block longer than 219 samples. But 224 samples clears that and still fails.
 
-\[ \frac{2 \times 8000}{N} < 73 \quad\Rightarrow\quad N > 219 \]
+Here's why. The detector never reads the curve, only the bins. So the leak of 770 Hz into the 1's row is the 770 Hz curve read at the 1's row bin, wherever that bin happens to land. At 224 samples the bins are 35.7 Hz apart, and the 697 Hz row's bin lands at 714.3 Hz, only 55.7 Hz from 770 Hz. That's 1.56 bins, deep inside the Hann main lobe: a loud 4 leaks 14% into the 1's row, far above any rural key.
 
-There's a ceiling too. A key press can be as short as about 40 milliseconds, 320 samples, and the block must fit inside one press. Your 256 samples sit between the two, with the main lobe reaching 62.5 Hz to each side, inside the 73 Hz gap. Lesson 13 picked 256 for the FFT. Now it has a second reason.
+So measure each length the way the detector does: how many bins does each neighbouring tone land from the bin you read? The main lobe ends at 2 bins, and near its edge the Hann curve is already small: 5% at 1.79 bins, but 9% at 1.67 and 14% at 1.56. So the rule is about where the bins land. With loud keys about ten times as strong as the faint ones, as here, every neighbouring tone must land at least about 1.75 bins from the bin you read. A hotter line makes taller leaks and needs more room.
 
 [[diagram:lobe-vs-length]]
 
-Could length alone do it? The longest block that fits a press, 320 samples with no window, still leaks up to 10.7%, while faint keys score as little as 6.8%. Window alone failed at 128. You need both: the window for how faint a tone you must hear, the length for how close a pair you must tell apart.
+There's a ceiling too. A key press can be as short as about 40 milliseconds, 320 samples, and the block must fit inside one press. Your 256 samples pass: the closest neighbour, 852 Hz, lands 2.26 bins from the 770 Hz row's bin at 781.25 Hz. Lesson 13 picked 256 for the FFT. Now it has a second reason. Longer isn't automatically better, though: 208 works and 224 doesn't.
+
+Could length alone do it? The longest block that fits a press, 320 samples with no window, still leaks up to 10.7%, while faint keys score as little as 6.9%. Window alone failed at 128. You need both: the window for how faint a tone you must hear, and a length whose bins land clear of the neighbours, for how close a pair you must tell apart.
 
 ## Zero padding
 
@@ -264,13 +264,13 @@ There's one more knob people reach for. Take the 256-sample block, add 1,792 zer
 
 The 770 Hz tone matched 81% because it fell a third of a bin from bin 25. Now a bin sits at 769.5 Hz and matches about 100%. Padding put a bin where the tone is.
 
-And the leak? The padded bin at 843.75 Hz, where the 7's bin used to be, still matches 11.6% to 12.8%, the same as before. The zeros add no sound, so they change nothing about the curve.
+And the leak? The padded bin at 843.75 Hz, where the 7's bin used to be, still matches the same as before. The zeros add no sound, so they change nothing about the curve.
 
 [[diagram:zero-padding]]
 
 ## Your turn
 
-Now you fix the detector. In the lab, a loud customer and the rural customer each press all 16 keys. You have three controls: the window, the block length, and the bar.
+Now you fix the detector. In the lab a call centre joins the line, with headsets so hot that its keys arrive twice as strong as the loud customer's. It and the rural customer each press all 16 keys. You have three controls: the window, the block length, and the bar.
 
 1. Find a setting where all 32 presses decode correctly.
 2. Keep the block inside one 40 millisecond key press.
@@ -292,9 +292,9 @@ Zero padding shows the same curve in finer steps. To separate close tones, you n
 - A tone that doesn't land on a bin spreads into every bin. That's **leakage**, and it comes from the block ending partway through a turn of the leftover arrow.
 - Each bin builds two chains, one per arrow. The long one sets the leak. The short one, and other tones' leaks, nudge it with the starts.
 - The matches follow one curve around the tone: the **main lobe** out to the first zeros, then the **side lobes** carrying leakage to far bins.
-- With no window, the main lobe reaches 8,000 ÷ N Hz to each side and the first side lobe is 22% of the tone.
+- With no window, the main lobe reaches one bin, 8,000 ÷ N Hz, to each side and the first side lobe is 22% of the tone.
 - A Hann window drops the side lobes to 2.7% but doubles the main lobe's reach.
-- The keypad needs Hann and more than about 220 samples, and 256 fits.
+- The keypad needs Hann and a block length whose bins land clear of every neighbouring tone: at least about 1.75 bins when loud keys are ten times the faint ones, more for a hotter line. 256 does; 224 doesn't, even though it's longer than 208, which does.
 - **Zero padding** puts more bins on the same curve. It never narrows the main lobe.
 
 ## Next on the line

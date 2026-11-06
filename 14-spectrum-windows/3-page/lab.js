@@ -19,6 +19,22 @@
     x.strokeStyle = c.accent; x.lineWidth = 1.5; x.beginPath(); x.moveTo(-1, 7); x.lineTo(7, -1); x.stroke();
     return ctx.createPattern(t, 'repeat');
   }
+  function plate(pen, ctx, c, s, x, y, o = {}) {
+    const size = o.size || 11, align = o.align || 'center';
+    ctx.font = `${o.weight || 400} ${size}px "Geist Mono", ui-monospace, monospace`;
+    const tw = ctx.measureText(s).width, x0 = align === 'center' ? x - tw / 2 : align === 'right' ? x - tw : x;
+    pen.rect(x0 - 2, y - size + 1, tw + 4, size + 3, c.paper);
+    pen.text(s, x, y, o);
+  }
+  function closestLanding(N) {
+    let best = null;
+    for (const set of [ROWS, COLS]) for (const a of set) for (const b of set) {
+      if (a === b) continue;
+      const kb = Math.round(b * N / FS), d = Math.abs(a * N / FS - kb);
+      if (!best || d < best.d) best = { d, tone: a, owner: b, bin: kb, hz: Math.abs(a - kb * FS / N) };
+    }
+    return best;
+  }
 
   function blockMatches(f, phi, N) {
     const out = [];
@@ -101,11 +117,11 @@
   }
 
   const CASES = [
-    { loud: 2, faint: 0.1, off: 0.31, text: 'A call centre has joined the line. Its headsets run hot, so its keys arrive louder than any you have tested. The rural customer is calling too. Each presses all 16 keys. Find a window, a block length and a bar that decode all 32 presses, with the block inside one 40 ms press.',
+    { loud: 2, faint: 0.1, off: 0.31, names: ['Call centre', 'Rural customer'], text: 'A call centre has joined the line. Its headsets run hot, so its keys arrive twice as strong as the loud customer\'s, and their own bins read near 200%. The rural customer is calling too. Each presses all 16 keys. Find a window, a block length and a bar that decode all 32 presses, with the block inside one 40 ms press.',
       end: 'The call centre stops reporting phantom keys, and the rural customer gets through on the first try.' },
-    { loud: 1, faint: 0.04, off: 0.6, text: 'A second rural exchange comes online, fainter still, and the loud customer is back at the usual strength. Measure the two marks and set the detector again.',
+    { loud: 1, faint: 0.04, off: 0.6, names: ['Loud customer', 'Far rural exchange'], text: 'A second rural exchange comes online, fainter still, and the loud customer is back at the usual strength. Measure the two marks and set the detector again.',
       end: 'The far exchange decodes too.' },
-    { loud: 1.6, faint: 0.05, off: 0.13, text: 'Both at once: a hot headset and a very faint line. The gap between the marks is thin. Find a setting that opens it.',
+    { loud: 1.6, faint: 0.05, off: 0.13, names: ['Hot headset', 'Very faint line'], text: 'Both at once: a headset 1.6 times as strong as the loud customer\'s and a line half as strong as the rural one. Set the detector again.',
       end: 'Both customers decode, through a gap that was barely there.' },
   ];
   const keyName = (r, c) => LABELS[r][c];
@@ -117,6 +133,7 @@
     host.querySelectorAll('[data-k]').forEach(el => { el.id = uid + el.dataset.k; });
     host.querySelectorAll('[data-for]').forEach(el => { el.htmlFor = uid + el.dataset.for; });
     const explore = mode === 'explore';
+    $('pin').setAttribute('aria-describedby', uid + 'pin-note');
     const st = explore
       ? { N: 16, f: 1250, phi: 0, bin: 3, revealed: false, dial: false, pinned: null, steady: false }
       : { caseIx: 0, win: 'none', N: 256, bar: 0.12, unlocked: false, sel: { who: 'loud', r: 1, c: 0 }, solved: false };
@@ -132,7 +149,7 @@
     function drawExplore(s, pen, c, w, h, ctx) {
       const stacked = w < 560, N = st.N, nb = N / 2;
       const A = stacked ? { x: 44, y: 22, w: w - 60, h: 170 } : { x: 44, y: 24, w: Math.round(w * 0.58) - 60, h: h - 70 };
-      const X = k => A.x + (k / nb) * A.w, Y = v => A.y + A.h - Math.min(v, 1.05) / 1.05 * A.h;
+      const pad = 14, X = k => A.x + pad + (k / nb) * (A.w - 2 * pad), Y = v => A.y + A.h - Math.min(v, 1.05) / 1.05 * A.h;
       pen.line([[A.x, A.y + A.h], [A.x + A.w, A.y + A.h]], c.soft, 1);
       [[0, '0%'], [0.5, '50%'], [1, '100%']].forEach(([v, t]) => { pen.text(t, A.x - 6, Y(v) + 4, { align: 'right', color: c.soft, size: 10 }); pen.line([[A.x, Y(v)], [A.x + A.w, Y(v)]], c.rule, 1); });
       pen.text('0 Hz', A.x, A.y + A.h + 16, { color: c.soft, size: 10, align: 'left' }); pen.text('2,000', X(nb / 2), A.y + A.h + 16, { color: c.soft, size: 10 }); pen.text('4,000 Hz', A.x + A.w, A.y + A.h + 16, { color: c.soft, size: 10, align: 'right' });
@@ -142,18 +159,18 @@
         return;
       }
       const m = blockMatches(st.f, st.phi, N), fb = st.f * N / FS, lo = Math.floor(fb + 1e-9), hi = Math.ceil(fb - 1e-9);
-      const bw = Math.max(1.5, Math.min(26, A.w / (nb + 1) * 0.62));
+      const bw = Math.max(1.5, Math.min(22, (A.w - 2 * pad) / (nb + 1) * 0.62));
       m.forEach((v, k) => {
         const x = X(k) - bw / 2, top = Y(v), own = k === lo || k === hi;
         if (v < 1e-6) { pen.line([[x, A.y + A.h - 0.5], [x + bw, A.y + A.h - 0.5]], c.ink, 1.5); return; }
         if (own) pen.rect(x, top, bw, A.y + A.h - top, c.ink);
         else { ctx.fillStyle = pattern; ctx.fillRect(x, top, bw, A.y + A.h - top); if (bw > 3) { ctx.strokeStyle = c.accent; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, top + 0.5, bw - 1, A.y + A.h - top - 1); } }
-        if (v > 1.05) pen.text(p0(v), X(k), A.y + 10, { color: c.ink, size: 10 });
-        if (nb <= 16) pen.text(p0(v), X(k), Math.max(A.y + 10, top - 5), { color: c.ink, size: 10 });
       });
       if (st.pinned && st.pinned.N === N) st.pinned.m.forEach((v, k) => { const top = Y(v); pen.line([[X(k) - bw / 2 - 2, top], [X(k) + bw / 2 + 2, top]], c.input, 2, [3, 2]); });
       const tx = X(fb);
       pen.line([[tx, A.y + 2], [tx, A.y + A.h]], c.input, 1.5);
+      const roomy = (A.w - 2 * pad) / (nb + 1) >= 24;
+      m.forEach((v, k) => { if (roomy || v > 1.05) plate(pen, ctx, c, p0(v), X(k), Math.max(A.y + 10, Y(v) - 5), { color: c.ink, size: 10 }); });
       pen.text(`tone ${hzx(st.f)}`, Math.min(Math.max(tx, A.x + 40), A.x + A.w - 40), A.y + A.h + 32, { color: c.input, size: 11, weight: 500 });
       const bx = X(st.bin);
       ctx.strokeStyle = c.ink; ctx.lineWidth = 1; ctx.setLineDash([2, 2]); ctx.strokeRect(bx - bw / 2 - 3, A.y, bw + 6, A.h + 4); ctx.setLineDash([]);
@@ -168,7 +185,7 @@
       pen.text(`bin ${st.bin} (${hzx(st.bin * FS / N)}): the two chains`, B.x, B.y + 6, { align: 'left', color: c.soft, size: 11 });
       pen.line(ch.a.map(P), c.ink, 1.6);
       pen.line(ch.b.map(P), c.soft, 1.8, [1, 3]);
-      pen.line([P([0, 0]), P(ch.b[ch.b.length - 1])], c.accent, 2.2);
+      pen.line([P([0, 0]), P(ch.b[ch.b.length - 1])], c.accent, 3, [7, 4]);
       pen.dot(...P([0, 0]), 3, c.ink); pen.dot(...P(ch.b[ch.b.length - 1]), 3.5, c.accent);
       const barPx = Math.min(B.w * 0.4, 0.1 * sc) > 8 ? 0.1 * sc : 0.01 * sc;
       const barVal = Math.min(B.w * 0.4, 0.1 * sc) > 8 ? '10%' : '1%';
@@ -186,19 +203,23 @@
       const sel = sv.presses.find(p => p.who === st.sel.who && p.r === st.sel.r && p.c === st.sel.c);
       const label = `${sel.who === 'loud' ? 'loud' : 'rural'} ${keyName(sel.r, sel.c)}, its worst start`;
       pen.text(st.unlocked ? label : 'the eight keypad bins', A.x, A.y - 26, { align: 'left', color: c.soft, size: 11 });
+      if (st.unlocked && sel.who === 'loud' && CASES[st.caseIx].loud > 1) pen.text(`its own bins pass 100%: ${num(CASES[st.caseIx].loud, 1)} times a full-strength tone`, A.x, A.y + A.h + 46, { align: 'left', color: c.soft, size: stacked ? 9 : 10 });
       const slot = A.w / 8, bw = Math.min(26, slot * 0.55);
       [...ROWS, ...COLS].forEach((f, i) => {
         const x = A.x + slot * (i + 0.5);
-        pen.text(i < 4 ? hz(f) : hz(f), x, A.y + A.h + 15, { color: c.soft, size: stacked ? 9 : 10 });
+        pen.text(hz(f), x, A.y + A.h + 15, { color: c.soft, size: 10 });
         if (!st.unlocked) return;
         const v = sel.worst[i], own = i === sel.r || i === 4 + sel.c, y = Y(v);
         if (own) pen.rect(x - bw / 2, y, bw, A.y + A.h - y, c.ink);
         else { ctx.fillStyle = pattern; ctx.fillRect(x - bw / 2, y, bw, A.y + A.h - y); }
         if (v > top) pen.line([[x - bw / 2 - 2, A.y + 6], [x + bw / 2 + 2, A.y + 2]], c.paper, 3);
-        pen.text(v > top ? p0(v) : p1(v), x, y - 5, { color: own ? c.ink : c.accentInk, size: stacked ? 9 : 10 });
       });
       pen.text('rows', A.x + slot * 2, A.y + A.h + 30, { color: c.soft, size: 10 }); pen.text('columns', A.x + slot * 6, A.y + A.h + 30, { color: c.soft, size: 10 });
       pen.line([[A.x, Y(st.bar)], [A.x + A.w, Y(st.bar)]], c.input, 2);
+      if (st.unlocked) [...ROWS, ...COLS].forEach((f, i) => {
+        const x = A.x + slot * (i + 0.5), v = sel.worst[i], own = i === sel.r || i === 4 + sel.c;
+        plate(pen, ctx, c, v > top || (stacked && v >= 0.1) ? p0(v) : p1(v), x, Math.max(A.y - 6, Y(v) - 5), { color: own ? c.ink : c.accentInk, size: stacked ? 11 : 10 });
+      });
       const M = stacked ? { x: 24, y: 290, w: w - 48, h: h - 300 } : { x: Math.round(w * 0.56) + 16, y: 26, w: w - Math.round(w * 0.56) - 40, h: h - 60 };
       const sx = v => M.x + Math.min(v, 0.2) / 0.2 * M.w, axisY = M.y + Math.min(M.h / 2 + 8, 110);
       pen.text('one scale, 0% to 20%', M.x, M.y, { align: 'left', color: c.soft, size: 11 });
@@ -212,26 +233,27 @@
       pen.rect(fx - 5, axisY + 4, 10, 10, c.ink);
       const lt = `${L > 0.2 ? '› ' : ''}leak ${p1(L)}`, ft = `${F > 0.2 ? '› ' : ''}rural ${p1(F)}`;
       const clampX = (x, t) => Math.min(Math.max(x, M.x + t.length * 3.3), M.x + M.w - t.length * 3.3);
-      pen.text(lt, clampX(lx, lt), axisY - 22, { color: c.accentInk, size: 11 });
-      pen.text(ft, clampX(fx, ft), axisY + 30, { color: c.ink, size: 11 });
       const bx = sx(st.bar);
-      pen.line([[bx, axisY - 42], [bx, axisY + 16]], c.input, 2.5);
-      pen.text(`bar ${num(st.bar * 100, 1)}%`, clampX(bx, 'bar 00.0%'), axisY - 48, { color: c.input, size: 11, weight: 500 });
+      pen.line([[bx, axisY - 14], [bx, axisY + 16]], c.input, 2.5);
+      plate(pen, ctx, c, lt, clampX(lx, lt), axisY - 22, { color: c.accentInk, size: 11 });
+      plate(pen, ctx, c, ft, clampX(fx, ft), axisY + 30, { color: c.ink, size: 11 });
+      plate(pen, ctx, c, `bar ${num(st.bar * 100, 1)}%`, clampX(bx, 'bar 00.0%'), axisY - 40, { color: c.input, size: 11, weight: 500 });
     }
 
     function exploreWhy(m) {
       const N = st.N, fb = st.f * N / FS, d = fb - Math.round(fb), spacing = hzx(FS / N);
       const kk = Math.round(fb);
       if (near(d, 0, 1e-6)) {
-        if (kk === 0 || kk === N / 2) return `${hzx(st.f)} sits on bin ${kk}, a bin that is its own mirror: both arrows freeze there and pile up together, so it reads ${p0(m[kk])} on our scale, up to 200% depending on the start. Every other bin reads 0%.`;
+        if (kk === 0 || kk === N / 2) return `${hzx(st.f)} sits on bin ${kk}, a bin that is its own mirror: both arrows freeze there and pile up together, so on our scale it reads anything up to 200%, depending on the start: ${p0(m[kk])} now. Every other bin reads 0%.`;
         return `${hzx(st.f)} sits exactly on bin ${kk}. Against every other bin the leftover arrow makes whole turns, and so does the mirror arrow, so every chain but one closes: 100% in bin ${kk}, 0% everywhere else. The start dial changes nothing here.`;
       }
       const lo = Math.floor(fb), hi = lo + 1, far = m.map((v, k) => (k === lo || k === hi ? 1 : v)).reduce((a, b) => Math.min(a, b), 1);
       const half = near(Math.abs(fb - lo), 0.5, 1e-6);
-      const edge = fb < 1 || fb > N / 2 - 1 ? ` The tone is within one bin of ${fb < 1 ? '0 Hz' : '4,000 Hz'}, where its mirror arrow sits close by, so the mirror chain is long too and the start moves the matches a lot.` : '';
+      const edge = fb < 1 || fb > N / 2 - 1 ? ` The tone is within one bin of ${fb < 1 ? '0 Hz' : '4,000 Hz'}, where its mirror arrow sits close by, so the mirror chain is long too. It adds on top of the long chain, which can push a match past 100% in a short block, and the start moves the matches a lot.` : '';
       const head = half ? `${hzx(st.f)} sits halfway between bins ${lo} and ${hi}, ${spacing} apart. Neither sees the whole tone: ${p0(m[lo])} and ${p0(m[hi])}.`
         : `${hzx(st.f)} sits ${num(Math.abs(d), 2)} of a bin from bin ${kk}. The nearest bins read ${p0(m[lo] ?? 0)} and ${p0(m[hi] ?? 0)}.`;
-      return `${head} No leftover arrow makes a whole number of turns, so every bin leaks: even the quietest reads ${p1(far)}.${edge}`;
+      const over = !edge && Math.max(m[lo] ?? 0, m[hi] ?? 0) > 1.005 ? ' A match can pass 100% in a short block: the mirror chain is long there and adds on top of the long chain.' : '';
+      return `${head} No leftover arrow makes a whole number of turns, so every bin leaks: even the quietest reads ${p1(far)}.${edge}${over}`;
     }
     function chainText() {
       const ch = chains(st.f, st.phi, st.N, st.bin);
@@ -241,15 +263,19 @@
     function fixFeedback(sv) {
       const L = sv.leak, F = sv.faint, N = st.N, bar = st.bar;
       const lname = `a loud ${keyName(L.r, L.c)} reads ${p1(L.v)} in ${rowOf(L.bin)}`, fname = `the rural ${keyName(F.r, F.c)}'s weakest own bin reads ${p1(F.v)}`;
-      const tooLong = N > MAX_N ? `A block of ${N} samples lasts ${ms(N)}, longer than the shortest press, 40 ms: it would run into the next key. Keep it at ${MAX_N} or less. ` : '';
+      if (N > MAX_N) return `A block of ${N} samples lasts ${ms(N)}, longer than the shortest press, 40 ms: it runs into the next key.`;
       if (L.v >= F.v) {
-        if (st.win === 'none') return `${tooLong}With no window, ${lname}, while ${fname}. The leak mark sits above the rural mark, so no bar fits between them, and the side lobes stay this tall at any length that fits a press.`;
-        if (FS * 2 / N > 73) return `${tooLong}With Hann at ${N} samples the main lobe reaches ${hzx(FS * 2 / N)} to each side, past the 73 Hz from 697 to 770 Hz: ${lname}, above the rural mark (${p1(F.v)}). Make the block longer.`;
-        return `${tooLong}With Hann at ${N} samples the main lobe ends inside the gap, but at this length the bins land unluckily: ${lname}, above the rural mark (${p1(F.v)}). Try a block a little longer or shorter.`;
+        if (st.win === 'none') return `With no window, ${lname}, while ${fname}. The leak mark sits above the rural mark, so no bar can sit between them.`;
+        const tones = [ROWS[L.r], COLS[L.c]], binHz = engine(N, 'hann').bins[L.bin] * FS / N;
+        const src = tones.reduce((a, b) => (Math.abs(b - binHz) < Math.abs(a - binHz) ? b : a)), d = Math.abs(src - binHz) / (FS / N);
+        const ratio = CASES[st.caseIx].loud / CASES[st.caseIx].faint;
+        const taller = near(ratio / 10, 2, 1e-6) ? 'twice' : `${num(ratio / 10, 1)} times`;
+        const where = d < 1.75 ? 'inside its main lobe, which reaches 2 bins' : 'near the edge of its main lobe';
+        const room = d < 1.75 ? '' : ` That much room was enough when the loud keys were ten times the faint ones. Here they are ${num(ratio, 0)} times, so every leak is ${taller} as tall.`;
+        return `With Hann at ${N} samples the bins are ${hzx(FS / N)} apart. The bin for ${rowOf(L.bin)} lands at ${hzx(binHz)}, ${hzx(Math.abs(src - binHz))} (${num(d, 2)} bins) from the ${hz(src)} Hz tone, ${where}: ${lname}, above the rural mark.${room}`;
       }
-      if (tooLong) return `${tooLong}The marks are in the right order, ${p1(L.v)} under ${p1(F.v)}, but the block has to fit inside one press.`;
-      if (bar <= L.v) return `The marks are in order: the worst leak is ${p1(L.v)} and the faintest rural key ${p1(F.v)}. But your bar, ${num(bar * 100, 1)}%, sits at or under the leak, so ${lname} and that press is thrown out. Raise the bar into the gap.`;
-      if (bar >= F.v) return `The marks are in order: the worst leak is ${p1(L.v)} and the faintest rural key ${p1(F.v)}. But your bar, ${num(bar * 100, 1)}%, sits at or above the rural mark, so ${fname} and it is never heard. Lower the bar into the gap.`;
+      if (bar <= L.v) return `Your bar, ${num(bar * 100, 1)}%, does not clear every leak: ${lname}, so that press is thrown out.`;
+      if (bar >= F.v) return `Your bar, ${num(bar * 100, 1)}%, is over a rural key: ${fname}, so that key is never heard.`;
       return null;
     }
 
@@ -285,12 +311,13 @@
       });
     }
     function renderPads(sv) {
+      host.querySelectorAll('.pad-title').forEach((t, i) => { t.textContent = CASES[st.caseIx].names[i]; t.nextElementSibling.setAttribute('aria-label', `${t.textContent}'s 16 presses`); });
       host.querySelectorAll('.pad-key').forEach(b => {
         const p = sv.presses.find(q => q.who === b.dataset.who && q.r === Number(b.dataset.r) && q.c === Number(b.dataset.c));
         const [cls, text] = pressStatus(p), lab = keyName(p.r, p.c);
         const isSel = st.sel.who === p.who && st.sel.r === p.r && st.sel.c === p.c;
         b.className = `pad-key k-${cls}${isSel ? ' sel' : ''}`;
-        b.textContent = `${lab} ${cls === 'ok' ? '✓' : cls === 'thrown' ? '✗' : cls === 'unheard' ? '○' : '?'}`;
+        b.textContent = `${lab} ${cls === 'ok' ? '✓' : cls === 'thrown' ? '✗' : cls === 'unheard' ? '–' : '?'}`;
         b.setAttribute('aria-label', `${p.who === 'loud' ? 'Loud' : 'Rural'} ${lab}: ${text}`);
         b.setAttribute('aria-pressed', String(isSel));
         b.tabIndex = (st.sel.who === p.who ? (isSel ? 0 : -1) : (p.r === 0 && p.c === 0 ? 0 : -1));
@@ -343,10 +370,11 @@
         if (st.pinned) {
           if (st.pinned.N !== N) $('compare').textContent = `Pinned: ${st.pinned.N} samples, ${hzx(st.pinned.f)}. Switch back to ${st.pinned.N} samples to compare bin by bin.`;
           else {
-            let big = 0, kb = 0;
-            m.forEach((v, k) => { if (Math.abs(v - st.pinned.m[k]) > big) { big = Math.abs(v - st.pinned.m[k]); kb = k; } });
+            const big = m.reduce((a, v, k) => Math.max(a, Math.abs(v - st.pinned.m[k])), 0), kb = st.bin;
+            const fb = st.f * N / FS, lo = Math.max(0, Math.floor(fb + 1e-9)), hi = Math.min(N / 2, Math.ceil(fb - 1e-9));
+            const near2 = lo === hi ? `bin ${lo}, the tone's own, reads ${p1(st.pinned.m[lo])} pinned and ${p1(m[lo])} now` : `the nearest bins ${lo} and ${hi} read ${p1(st.pinned.m[lo])} and ${p1(st.pinned.m[hi])} pinned, ${p1(m[lo])} and ${p1(m[hi])} now`;
             $('compare').textContent = big < 0.0005 ? `Pinned: ${hzx(st.pinned.f)}, start ${st.pinned.deg}°. Nothing has changed yet: move a control to compare.`
-              : `Pinned: ${hzx(st.pinned.f)}, start ${st.pinned.deg}°. The biggest change is bin ${kb}: ${p1(st.pinned.m[kb])} pinned, ${p1(m[kb])} now.`;
+              : `Pinned: ${hzx(st.pinned.f)}, start ${st.pinned.deg}°. Bin ${kb}, whose chains you see: ${p1(st.pinned.m[kb])} pinned, ${p1(m[kb])} now. Around the tone, ${near2}.`;
           }
         }
         $('stage').setAttribute('aria-label', st.revealed ? `Matches of a ${hzx(st.f)} tone over a ${N}-sample block at every bin from 0 to 4,000 Hz, and the two chains of bin ${st.bin}.` : 'The bins of the block, before your prediction.');
@@ -356,7 +384,7 @@
         host.querySelectorAll('[data-win]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.win === st.win)); b.disabled = !st.unlocked; });
         Object.assign($('len'), { value: st.N, disabled: !st.unlocked });
         $('len-out').textContent = `${st.N} samples, ${ms(st.N)}${st.N > MAX_N ? ', longer than a press' : ''}`;
-        Object.assign($('bar'), { value: Math.round(st.bar * 1000) / 10, disabled: !st.unlocked });
+        Object.assign($('bar'), { value: Math.round(st.bar * 200) / 2, disabled: !st.unlocked });
         $('bar-out').textContent = `${num(st.bar * 100, 1)}%`;
         $('task-text').textContent = CASES[st.caseIx].text;
         $('play').disabled = !st.unlocked;
@@ -387,13 +415,13 @@
     function buildAsks() {
       if (explore) {
         K.ask($('ask'), {
-          question: 'A block of 16 samples, so the bins are 500 Hz apart. The tone is 1,250 Hz, halfway between the 1,000 and 1,500 Hz bins. Which bins will read exactly 0%?',
-          options: [['far', 'Every bin except the two nearest'], ['even', 'Every other bin'], ['none', 'None of them']], right: 'none',
-          hints: { far: 'Try the 2,500 Hz bin. Against it the leftover arrow turns 56.25° per sample, 900° over 16 samples. Is that a whole number of turns?',
-            even: 'Try the 2,000 Hz bin. Against it the leftover arrow turns 33.75° per sample, 540° over 16 samples: one and a half turns. Does that chain close?' },
-          explain: 'None. Halfway between bins, every leftover arrow ends half a turn short of whole, so no chain closes and every bin leaks. The slider, the block length and the chains are yours now.',
+          question: 'The lab starts at 16 samples with 1,250 Hz, halfway between the 1,000 and 1,500 Hz bins. Double the block to 32 samples and put the tone halfway between two bins again, at 1,125 Hz. What will the two nearest bins read?',
+          options: [['up', 'Closer to 100%'], ['same', 'About the same'], ['down', 'Closer to 0%']], right: 'same',
+          hints: { up: 'Count in bins, not in hertz. At 32 samples, how far is 1,125 Hz from the bins on each side, measured in bins? And at 16 samples?',
+            down: 'Count in bins, not in hertz. At 32 samples, how far is 1,125 Hz from the bins on each side, measured in bins? And at 16 samples?' },
+          explain: 'About the same: 61% and 66% now, against 60% and 68% at 16 samples. Halfway is half a bin at any length, and the leftover arrow again makes half a turn. The lab is at 32 samples; press 16 to compare. The slider, the block length and the chains are yours now.',
           reveal: 'Skip: show me', solved: st.revealed ? 'right' : null,
-          onSolved: () => { st.revealed = true; render(); askDial(); }, focusAfter: () => $('tone'),
+          onSolved: () => { if (!st.revealed) { st.N = 32; st.f = 1125; st.bin = 4; } st.revealed = true; render(); askDial(); }, focusAfter: () => $('tone'),
         });
         if (st.revealed) askDial();
         return;
@@ -403,11 +431,11 @@
       const q = document.createElement('div');
       $('ask2').append(q);
       K.ask(q, {
-        question: 'Before you touch anything: suppose you switch on the Hann window at 256 samples and keep the live 12% bar. What happens on these two lines?',
-        options: [['all', 'Every press decodes'], ['rural', 'The loud presses decode; the rural keys are never heard'], ['loud', 'The rural keys decode; the loud presses are thrown out']], right: 'rural',
-        hints: { all: 'The window lowers the leak, but does it make a rural key any louder? Its own bins sit near a tenth of a full match.',
-          loud: 'Even from a key twice as loud, Hann at 256 leaks only a few percent. Is that anywhere near 12%?' },
-        explain: 'The window cures the loud keys, but 12% is still above every rural key. The controls are yours: watch the two marks and find a setting that decodes all 32.',
+        question: 'Before you touch anything. The figure in "Choose both" shows three Hann lengths under 240 that decode the loud customer and the rural line: 208, 216 and 232. The call centre\'s keys are twice as strong. Which of the three still work for it?',
+        options: [['all', 'All three'], ['one', 'Only 208'], ['none', 'None of them']], right: 'one',
+        hints: { all: 'Something about the line changed. What does it do to every leak?',
+          none: 'Look again at the three marks in the figure.' },
+        explain: 'Only 208. The call centre makes every leak twice as tall, and 216 and 232 land closer to their neighbours than 208 does. The controls are yours.',
         onSolved: () => { st.unlocked = true; render(); }, focusAfter: () => host.querySelector('[data-win="hann"]'),
       });
     }
@@ -424,7 +452,7 @@
     }
 
     if (!explore) {
-      ['explore-controls', 'key1', 'pin', 'steady', 'jump'].forEach(k => { $(k).hidden = true; });
+      ['explore-controls', 'key1', 'pin', 'pin-note', 'steady', 'jump'].forEach(k => { $(k).hidden = true; });
       ['fix-controls', 'task', 'key2'].forEach(k => { $(k).hidden = false; });
       $('title').textContent = 'Lab, act 2: fix the detector';
       $('play').textContent = 'Play this key';
@@ -448,14 +476,14 @@
         const r = $('stage').getBoundingClientRect(), w = r.width, x = ev.clientX - r.left, y = ev.clientY - r.top;
         const stacked = w < 560, Aw = stacked ? w - 60 : Math.round(w * 0.58) - 60, Ah = stacked ? 170 : r.height - 70;
         if (x < 44 || x > 44 + Aw || y > 24 + Ah + 20) return;
-        st.bin = Math.max(0, Math.min(st.N / 2, Math.round((x - 44) / Aw * st.N / 2))); render();
+        st.bin = Math.max(0, Math.min(st.N / 2, Math.round((x - 58) / (Aw - 28) * st.N / 2))); render();
       });
       $('pin').addEventListener('click', () => { st.pinned = { N: st.N, f: st.f, deg: Math.round(st.phi * 180 / Math.PI), m: blockMatches(st.f, st.phi, st.N) }; render(); });
       $('steady').addEventListener('click', () => { st.steady = !st.steady; render(); });
     } else {
       host.querySelectorAll('[data-win]').forEach(b => b.addEventListener('click', () => { st.win = b.dataset.win; render(); }));
       $('len').addEventListener('input', () => { const v = Math.round(Number($('len').value) / 8) * 8; st.N = Math.max(64, Math.min(512, v)); render(); });
-      $('bar').addEventListener('input', () => { const v = Math.round(Number($('bar').value) * 10) / 1000; st.bar = Math.max(0, Math.min(0.2, v)); render(); });
+      $('bar').addEventListener('input', () => { const v = Math.round(Number($('bar').value) * 2) / 200; st.bar = Math.max(0, Math.min(0.2, v)); render(); });
       $('another').addEventListener('click', () => {
         audio.stop();
         st.caseIx = (st.caseIx + 1) % CASES.length;
@@ -475,10 +503,10 @@
   }
 
   K.ask(document.getElementById('predict-split'), {
-    question: 'Will the 1,000 and 2,000 Hz bins split the 1,500 Hz tone, half each, with every other bin at zero?',
-    options: [['split', 'Yes: half each, the rest at 0%'], ['near', 'The two nearest get most of it, but the rest are not zero'], ['one', 'One of the two bins takes it all']], right: 'near',
-    hints: { split: 'Remember lesson 12: when 770 Hz fell between two bins, did the bins next door stay empty?', one: 'The tone sits exactly halfway between them. Why would one side win?' },
-    explain: 'Neither nearest bin sees the whole tone, and every other bin catches some of it. Here are the numbers.',
+    question: 'What do the five bins read for the 1,500 Hz tone?',
+    options: [['split', '50% in two bins, 0% in three'], ['one', '100% in one bin, 0% in four'], ['near', 'Something in all five bins']], right: 'near',
+    hints: { split: 'Remember lesson 12: when 770 Hz fell between two bins, did the bins next door stay empty?', one: 'The tone sits exactly halfway between the 1,000 and 2,000 Hz bins. What would make one side win?' },
+    explain: 'Every bin catches some of it, and neither nearest bin sees the whole tone. Here are the numbers.',
     onSolved: () => document.dispatchEvent(new CustomEvent('k:solved', { detail: 'predict-split' })),
   });
 
