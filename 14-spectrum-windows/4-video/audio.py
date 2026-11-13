@@ -6,6 +6,7 @@ here = Path(__file__).resolve().parent
 out = here / "vo-breath"
 out.mkdir(exist_ok=True)
 lines = json.loads((here / "vo/lines.json").read_text())
+lines[2] = dict(json.loads((here / "vo-fix6/lines.json").read_text())[0], i=3)
 lines[6] = dict(json.loads((here / "vo-fix5/lines.json").read_text())[0], i=7)
 lines[7] = dict(json.loads((here / "vo-fix4/lines.json").read_text())[0], i=8)
 lines[8] = dict(json.loads((here / "vo-fix5/lines.json").read_text())[1], i=9)

@@ -1,5 +1,5 @@
 #!/bin/bash
-LOCK=/private/tmp/claude-502/-Users-cleiton-loiola-personal-dsp-lessons/3d285345-5080-40c7-b733-e614ac72bcb9/scratchpad/voice.lock
+LOCK=/private/tmp/claude-502/-Users-cleiton-loiola-personal-dsp-lessons/911f07aa-3ba1-4325-8f81-5a4e3ec102e4/scratchpad/voice.lock
 HERE=/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video
 TXT=$HERE/$1
 OUT=$HERE/$2

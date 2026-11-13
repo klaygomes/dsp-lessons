@@ -54,221 +54,222 @@ and loud keys are thrown out instead.
 Why does a loud four light up seven's bin?
 
 14
-00:00:24.310 --> 00:00:25.690
-Shrink it to a napkin:
-
-15
-00:00:25.710 --> 00:00:27.790
-eight samples,
+00:00:24.310 --> 00:00:27.810
+Shrink it to a napkin: eight samples,
 bins a thousand hertz apart.
 
-16
-00:00:27.810 --> 00:00:30.510
+15
+00:00:27.830 --> 00:00:30.310
 A thousand hertz tone sits on its bin:
 one hundred percent,
 
-17
-00:00:30.530 --> 00:00:32.070
+16
+00:00:30.330 --> 00:00:31.810
 and zero everywhere else.
 
-18
-00:00:32.170 --> 00:00:33.810
+17
+00:00:31.830 --> 00:00:33.530
 Move it halfway, to fifteen hundred:
 
-19
-00:00:33.830 --> 00:00:35.290
+18
+00:00:33.550 --> 00:00:35.550
 sixty and seventy in the nearest bins,
 
-20
-00:00:35.310 --> 00:00:36.790
-and every bin catches something.
+19
+00:00:35.570 --> 00:00:37.490
+and the tone spreads past
+them into all the others.
 
-21
-00:00:36.890 --> 00:00:37.710
+20
+00:00:37.510 --> 00:00:38.190
 That's leakage.
 
-22
-00:00:38.350 --> 00:00:41.070
+21
+00:00:39.140 --> 00:00:41.860
 A thousand hertz makes
 exactly one turn in the block.
 
-23
-00:00:41.310 --> 00:00:42.870
+22
+00:00:42.100 --> 00:00:43.660
 Fifteen hundred stops halfway round:
 
-24
-00:00:42.890 --> 00:00:44.710
+23
+00:00:43.680 --> 00:00:45.500
 the block ends partway through a turn.
 
-25
-00:00:45.280 --> 00:00:48.140
+24
+00:00:46.070 --> 00:00:48.930
 The test wheel turns each arrow
 back and lays them tip to tail.
 
-26
-00:00:48.160 --> 00:00:50.160
+25
+00:00:48.950 --> 00:00:50.950
 On the bin,
 they freeze and pile up straight.
 
-27
-00:00:50.180 --> 00:00:52.240
+26
+00:00:50.970 --> 00:00:53.030
 Off it, the leftover arrow keeps turning,
 
-28
-00:00:52.260 --> 00:00:55.140
+27
+00:00:53.050 --> 00:00:55.930
 half a turn over the block,
 so the chain fans out: sixty-four percent.
 
-29
-00:00:55.160 --> 00:00:58.260
+28
+00:00:55.950 --> 00:00:59.050
 The mirror's short chain
 nudges it to sixty.
 
-30
-00:00:58.280 --> 00:01:00.020
+29
+00:00:59.070 --> 00:01:00.810
 Only whole turns close a chain.
 
+30
+00:01:01.490 --> 00:01:03.870
+Slide the tone:
+the matches trace one curve:
+
 31
-00:01:00.700 --> 00:01:04.280
-Slide the tone: the matches trace
-one curve: lesson ten's tall hump,
+00:01:03.890 --> 00:01:05.070
+lesson ten's tall hump,
 
 32
-00:01:04.300 --> 00:01:05.920
+00:01:05.090 --> 00:01:06.710
 the main lobe, one bin each side.
 
 33
-00:01:05.940 --> 00:01:08.100
+00:01:06.730 --> 00:01:08.890
 Then side lobes:
 the first reaches twenty-two percent,
 
 34
-00:01:08.120 --> 00:01:09.540
+00:01:08.910 --> 00:01:10.330
 and the rest shrink slowly.
 
 35
-00:01:10.110 --> 00:01:13.510
+00:01:10.900 --> 00:01:14.300
 On the keypad, the seven's bin sits
 on a side lobe of seven seventy.
 
 36
-00:01:13.530 --> 00:01:15.670
+00:01:14.320 --> 00:01:16.460
 Depending on where each
 tone starts in the block,
 
 37
-00:01:15.690 --> 00:01:17.990
+00:01:16.480 --> 00:01:18.780
 a loud four leaks about nine
 to fifteen percent there,
 
 38
-00:01:18.010 --> 00:01:19.710
+00:01:18.800 --> 00:01:20.500
 and a faint key can score under eight.
 
 39
-00:01:19.730 --> 00:01:23.450
+00:01:20.520 --> 00:01:24.240
 A faint key's real tone is weaker
 than a loud key's leak. No bar fits.
 
 40
-00:01:25.200 --> 00:01:27.880
+00:01:25.990 --> 00:01:28.670
 The trouble is the edges:
 the block cuts a turn short,
 
 41
-00:01:27.900 --> 00:01:29.280
+00:01:28.690 --> 00:01:30.070
 and the end arrows count in full.
 
 42
-00:01:29.300 --> 00:01:31.580
+00:01:30.090 --> 00:01:32.370
 Lesson ten cured a sharp cut with a taper.
 
 43
-00:01:31.600 --> 00:01:33.700
+00:01:32.390 --> 00:01:34.490
 Multiply the block by the Hann window,
 
 44
-00:01:33.720 --> 00:01:36.000
+00:01:34.510 --> 00:01:36.790
 Hamming's cousin,
 fading to zero at both ends.
 
 45
-00:01:36.020 --> 00:01:37.160
+00:01:36.810 --> 00:01:37.950
 The end arrows shrink,
 
 46
-00:01:37.180 --> 00:01:40.060
+00:01:37.970 --> 00:01:40.850
 and the side lobe falls from twenty-two
 percent to two point seven.
 
 47
-00:01:41.300 --> 00:01:43.340
+00:01:42.090 --> 00:01:44.130
 Now the faintest key
 scores nine point two,
 
 48
-00:01:43.360 --> 00:01:45.680
+00:01:44.150 --> 00:01:46.470
 and a bar at five percent
 decodes every press.
 
 49
-00:01:46.970 --> 00:01:48.290
+00:01:47.760 --> 00:01:49.080
 Why not a shorter block?
 
 50
-00:01:48.310 --> 00:01:51.570
+00:01:49.100 --> 00:01:52.360
 At one twenty-eight, a loud one leaks
 sixty-one percent into the four's bin:
 
 51
-00:01:51.590 --> 00:01:54.710
+00:01:52.380 --> 00:01:55.500
 the taper bought low side lobes
 with a main lobe twice as wide.
 
 52
-00:01:54.730 --> 00:01:57.810
+00:01:55.520 --> 00:01:58.600
 Longer isn't the rule:
 two twenty-four fails, two oh eight works.
 
 53
-00:01:57.830 --> 00:01:59.590
+00:01:58.620 --> 00:02:00.380
 What counts is where the bins land.
 
 54
-00:01:59.610 --> 00:02:01.310
+00:02:00.400 --> 00:02:02.100
 With loud keys ten times the faint,
 
 55
-00:02:01.330 --> 00:02:04.610
+00:02:02.120 --> 00:02:05.400
 every neighbouring tone must land
 at least about one point seven five bins
 
 56
-00:02:04.630 --> 00:02:05.870
+00:02:05.420 --> 00:02:06.660
 from the bin you read.
 
 57
-00:02:05.890 --> 00:02:08.030
+00:02:06.680 --> 00:02:08.820
 Two fifty-six gives two point two six.
 
 58
-00:02:09.010 --> 00:02:10.210
+00:02:09.800 --> 00:02:11.000
 Your turn, in the lab:
 
 59
-00:02:10.230 --> 00:02:12.210
+00:02:11.020 --> 00:02:13.000
 a call centre joins, twice as loud.
 
 60
-00:02:12.230 --> 00:02:15.370
+00:02:13.020 --> 00:02:16.160
 Choose window, length and bar until
 all thirty-two presses decode.
 
 61
-00:02:15.390 --> 00:02:18.670
+00:02:16.180 --> 00:02:19.460
 Next ticket: a tip line shifts
 every call up three hundred hertz,
 
 62
-00:02:18.690 --> 00:02:20.210
+00:02:19.480 --> 00:02:21.000
 and a second voice mumbles underneath.

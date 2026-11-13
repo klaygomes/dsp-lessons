@@ -413,227 +413,257 @@
  },
  {
   "i": 3,
-  "text": "Shrink it to a napkin: eight samples, bins a thousand hertz apart. A thousand hertz tone sits on its bin: one hundred percent, and zero everywhere else. Move it halfway, to fifteen hundred: sixty and seventy in the nearest bins, and every bin catches something. That's leakage.",
-  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo/line03.wav",
-  "dur": 13.44,
-  "coverage": 0.84,
-  "start": 21.91,
-  "end": 35.35,
+  "text": "Shrink it to a napkin: eight samples, bins a thousand hertz apart. A thousand hertz tone sits on its bin: one hundred percent, and zero everywhere else. Move it halfway, to fifteen hundred: sixty and seventy in the nearest bins, and the tone spreads past them into all the others. That's leakage.",
+  "clip": "/Users/cleiton.loiola/personal/dsp-lessons/14-spectrum-windows/4-video/vo-fix6/line01.wav",
+  "dur": 14.23,
+  "coverage": 0.91,
+  "start": 0.0,
+  "end": 14.23,
   "words": [
    {
-    "word": "Shrink",
+    "word": "shrink",
     "start": 0.0,
-    "end": 0.46
+    "end": 0.34
    },
    {
     "word": "it",
-    "start": 0.46,
-    "end": 0.54
+    "start": 0.34,
+    "end": 0.48
    },
    {
     "word": "to",
-    "start": 0.54,
-    "end": 0.66
+    "start": 0.48,
+    "end": 0.58
    },
    {
     "word": "a",
-    "start": 0.66,
-    "end": 0.76
+    "start": 0.58,
+    "end": 0.68
    },
    {
-    "word": "napkin.",
-    "start": 0.76,
-    "end": 1.28
+    "word": "napkin",
+    "start": 0.68,
+    "end": 1.08
    },
    {
-    "word": "8",
-    "start": 1.4,
-    "end": 1.56
+    "word": "eight",
+    "start": 1.08,
+    "end": 1.64
    },
    {
-    "word": "samples,",
-    "start": 1.56,
-    "end": 2.2
+    "word": "samples",
+    "start": 1.64,
+    "end": 2.12
    },
    {
     "word": "bins",
-    "start": 2.2,
-    "end": 2.38
+    "start": 2.12,
+    "end": 2.44
    },
    {
-    "word": "1000",
-    "start": 2.38,
-    "end": 2.74
+    "word": "a",
+    "start": 2.44,
+    "end": 2.6
    },
    {
-    "word": "Hz",
-    "start": 2.74,
-    "end": 2.98
+    "word": "thousand",
+    "start": 2.6,
+    "end": 2.88
    },
    {
-    "word": "apart.",
-    "start": 2.98,
-    "end": 3.5
+    "word": "hertz",
+    "start": 2.88,
+    "end": 3.12
    },
    {
-    "word": "1000",
-    "start": 3.62,
-    "end": 3.9
+    "word": "apart",
+    "start": 3.12,
+    "end": 3.52
    },
    {
-    "word": "Hz",
-    "start": 3.9,
-    "end": 4.26
+    "word": "a",
+    "start": 3.52,
+    "end": 4.06
    },
    {
-    "word": "tone",
-    "start": 4.26,
+    "word": "thousand",
+    "start": 4.06,
+    "end": 4.3
+   },
+   {
+    "word": "hertz",
+    "start": 4.3,
     "end": 4.56
    },
    {
-    "word": "sits",
+    "word": "tone",
     "start": 4.56,
-    "end": 4.8
+    "end": 4.82
+   },
+   {
+    "word": "sits",
+    "start": 4.86,
+    "end": 5.06
    },
    {
     "word": "on",
-    "start": 4.8,
-    "end": 4.94
+    "start": 5.06,
+    "end": 5.22
    },
    {
     "word": "its",
-    "start": 4.94,
-    "end": 5.08
-   },
-   {
-    "word": "bin,",
-    "start": 5.08,
-    "end": 5.52
-   },
-   {
-    "word": "100",
-    "start": 5.52,
-    "end": 5.88
-   },
-   {
-    "word": "%",
-    "start": 5.88,
-    "end": 6.22
-   },
-   {
-    "word": "and",
-    "start": 6.22,
-    "end": 6.5
-   },
-   {
-    "word": "0",
-    "start": 6.5,
-    "end": 6.72
-   },
-   {
-    "word": "everywhere",
-    "start": 6.72,
-    "end": 7.08
-   },
-   {
-    "word": "else.",
-    "start": 7.08,
-    "end": 7.66
-   },
-   {
-    "word": "Move",
-    "start": 7.86,
-    "end": 8.02
-   },
-   {
-    "word": "it",
-    "start": 8.02,
-    "end": 8.12
-   },
-   {
-    "word": "halfway",
-    "start": 8.12,
-    "end": 8.46
-   },
-   {
-    "word": "to",
-    "start": 8.46,
-    "end": 8.74
-   },
-   {
-    "word": "1500,",
-    "start": 8.74,
-    "end": 9.52
-   },
-   {
-    "word": "60,",
-    "start": 9.52,
-    "end": 9.82
-   },
-   {
-    "word": "and",
-    "start": 9.82,
-    "end": 9.94
-   },
-   {
-    "word": "70",
-    "start": 9.94,
-    "end": 10.22
-   },
-   {
-    "word": "in",
-    "start": 10.22,
-    "end": 10.36
-   },
-   {
-    "word": "the",
-    "start": 10.36,
-    "end": 10.42
-   },
-   {
-    "word": "nearest",
-    "start": 10.42,
-    "end": 10.66
-   },
-   {
-    "word": "bins",
-    "start": 10.66,
-    "end": 11.0
-   },
-   {
-    "word": "and",
-    "start": 11.0,
-    "end": 11.22
-   },
-   {
-    "word": "every",
-    "start": 11.22,
-    "end": 11.42
+    "start": 5.22,
+    "end": 5.36
    },
    {
     "word": "bin",
+    "start": 5.36,
+    "end": 5.56
+   },
+   {
+    "word": "100",
+    "start": 5.56,
+    "end": 6.02
+   },
+   {
+    "word": "and",
+    "start": 6.02,
+    "end": 6.56
+   },
+   {
+    "word": "zero",
+    "start": 6.56,
+    "end": 6.8
+   },
+   {
+    "word": "everywhere",
+    "start": 6.8,
+    "end": 7.14
+   },
+   {
+    "word": "else",
+    "start": 7.14,
+    "end": 7.52
+   },
+   {
+    "word": "move",
+    "start": 7.52,
+    "end": 8.1
+   },
+   {
+    "word": "it",
+    "start": 8.1,
+    "end": 8.22
+   },
+   {
+    "word": "halfway",
+    "start": 8.22,
+    "end": 8.54
+   },
+   {
+    "word": "to",
+    "start": 8.54,
+    "end": 8.82
+   },
+   {
+    "word": "1500",
+    "start": 8.82,
+    "end": 9.24
+   },
+   {
+    "word": "60",
+    "start": 9.24,
+    "end": 9.84
+   },
+   {
+    "word": "and",
+    "start": 9.84,
+    "end": 10.06
+   },
+   {
+    "word": "70",
+    "start": 10.06,
+    "end": 10.32
+   },
+   {
+    "word": "in",
+    "start": 10.32,
+    "end": 10.52
+   },
+   {
+    "word": "the",
+    "start": 10.52,
+    "end": 10.6
+   },
+   {
+    "word": "nearest",
+    "start": 10.6,
+    "end": 10.86
+   },
+   {
+    "word": "bins",
+    "start": 10.86,
+    "end": 11.18
+   },
+   {
+    "word": "and",
+    "start": 11.26,
+    "end": 11.42
+   },
+   {
+    "word": "the",
     "start": 11.42,
-    "end": 11.62
+    "end": 11.52
    },
    {
-    "word": "catches",
-    "start": 11.62,
-    "end": 11.92
+    "word": "tone",
+    "start": 11.52,
+    "end": 11.74
    },
    {
-    "word": "something.",
-    "start": 11.92,
-    "end": 12.38
+    "word": "spreads",
+    "start": 11.74,
+    "end": 12.04
    },
    {
-    "word": "That's",
-    "start": 12.58,
-    "end": 12.74
+    "word": "past",
+    "start": 12.04,
+    "end": 12.28
    },
    {
-    "word": "leakage.",
-    "start": 12.74,
-    "end": 13.3
+    "word": "them",
+    "start": 12.28,
+    "end": 12.46
+   },
+   {
+    "word": "into",
+    "start": 12.46,
+    "end": 12.62
+   },
+   {
+    "word": "all",
+    "start": 12.62,
+    "end": 12.78
+   },
+   {
+    "word": "the",
+    "start": 12.78,
+    "end": 12.9
+   },
+   {
+    "word": "others",
+    "start": 12.9,
+    "end": 13.2
+   },
+   {
+    "word": "that's",
+    "start": 13.2,
+    "end": 13.54
+   },
+   {
+    "word": "leakage",
+    "start": 13.54,
+    "end": 13.78
    }
   ]
  },

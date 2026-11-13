@@ -168,7 +168,7 @@ function keyChart(c, vals, at, opts = {}) {
   });
   return sels;
 }
-const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE - v * KH, color, 5, DASH));
+const barLine = (c, v, color = C.input) => layer(c, hline(KX(0) - 80, KX(7) + 80, KBASE - v * KH, color, 5));
 
 {
   const c = cam(1), a = sub(c), b = sub(c);
@@ -185,7 +185,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   M.show(label(c, 'bin', KX(0) - 110, KBASE + 14, 'lbl s', 'right'), ma);
   M.show(label(c, 'Hz', KX(0) - 110, KBASE + 74, 'lbl s', 'right'), ma);
   const bar = barLine(c, 0.12); M.show(bar, tw);
-  M.show(label(c, 'bar: 12%', KX(7) + 80, KBASE - 0.12 * KH - 70, 'lbl acc', 'right'), tw);
+  M.show(label(c, 'bar: 12%', KX(7) + 80, KBASE - 0.12 * KH - 70, 'lbl ok', 'right'), tw);
   M.show(label(a, 'loud 4', 130, 280, 'lbl'), ma);
   keyChart(a, loud4, ma, { axis: false, hot: i => i === 2, live: fa });
   M.show(label(a, pct1(loud4[2]), KX(2), KBASE - loud4[2] * KH - 64, 'lbl acc', 'center'), se);
@@ -207,7 +207,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   label(c, 'bin', KX(0) - 110, KBASE + 14, 'lbl s', 'right');
   label(c, 'Hz', KX(0) - 110, KBASE + 74, 'lbl s', 'right');
   const barAt = f => f < si ? 0.12 : f < si + 24 ? 0.12 - 0.06 * (f - si) / 24 : 0.06;
-  anim(c, sceneStart(2), sceneEnd(2), f => { const v = barAt(f), y = KBASE - v * KH; return hline(KX(0) - 80, KX(7) + 80, y, C.accent, 5, DASH) + `<text x="${KX(7) + 80}" y="${(y - 18).toFixed(1)}" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">bar: ${Math.round(v * 100)}%</text>`; }, 2);
+  anim(c, sceneStart(2), sceneEnd(2), f => { const v = barAt(f), y = KBASE - v * KH; return hline(KX(0) - 80, KX(7) + 80, y, C.input, 5) + `<text x="${KX(7) + 80}" y="${(y - 18).toFixed(1)}" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.input}">bar: ${Math.round(v * 100)}%</text>`; }, 2);
   M.show(label(a, 'faint 5, rural line', 130, 280, 'lbl'), sceneStart(2));
   keyChart(a, faint5, sceneStart(2) - 8, { axis: false, hot: () => false, live: lo });
   M.show(label(a, 'heard: 5', 1180, 300, 'lbl ok'), ru);
@@ -223,7 +223,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
 }
 {
   const c = cam(3);
-  const ei = word(3, ['eight', '8']), th = word(3, ['thousand', '1000', '1,000'], 1), on = word(3, ['hundred', '100', '100%']), ha = word(3, 'halfway'), fi = word(3, ['fifteen', '1500', '1,500']), si = word(3, ['sixty', '60']), ev = word(3, 'every'), le = word(3, 'leakage');
+  const ei = word(3, ['eight', '8']), th = word(3, ['thousand', '1000', '1,000'], 1), on = word(3, ['hundred', '100', '100%']), ha = word(3, 'halfway'), fi = word(3, ['fifteen', '1500', '1,500']), si = word(3, ['sixty', '60']), le = word(3, 'leakage');
   M.show(label(c, '8 samples: bins 1,000 Hz apart', 960, 80, 'lbl', 'center'), sceneStart(3));
   const panel = (x0, f, at, valsAt, leakAt) => {
     const vals = range(0, 4).map(k => binMatch([[f, 1, 0]], 8, k, false));
@@ -344,8 +344,8 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   reveal(cv, ke - 6, ke + 26, 'cruise');
   flicker(cv, 0, 0, ke + 28, fa, 0.5, 71);
   M.show(label(a, 'bin 25: 81% ↑', X(745) - 12, Y(0.27) - 20, 'lbl s', 'right'), ke + 20);
-  M.show(layer(a, hline(X(600), X(1000), Y(0.12), C.accent, 5, DASH)), ke);
-  M.show(label(a, 'bar: 12%', X(1000), Y(0.12) - 66, 'lbl acc', 'right'), ke);
+  M.show(layer(a, hline(X(600), X(1000), Y(0.12), C.input, 5)), ke);
+  M.show(label(a, 'bar: 12%', X(1000), Y(0.12) - 66, 'lbl ok', 'right'), ke);
   ROWS.forEach((f, i) => {
     const k = Math.round(f * 256 / FS), bf = k * 31.25, v = toneCurve(770, 256, bf, false), hot = k === 27;
     if (k === 25) return;
@@ -357,7 +357,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   M.show(label(a, 'loud 4, all starts:', 1790, 120, 'lbl s', 'right'), st);
   M.show(label(a, '8.9% to 14.6%', 1790, 180, 'lbl acc', 'right'), ni);
   const SY = v => 800 - v * 32, LX = 720, FX = 1440;
-  layer(b, vline(480, SY(0), SY(16), C.ink, 3) + range(0, 16, 4).map(v => hline(468, 480, SY(v), C.ink, 3)).join(''));
+  layer(b, vline(480, SY(0), SY(13.5), C.ink, 3) + range(0, 12, 4).map(v => hline(468, 480, SY(v), C.ink, 3)).join(''));
   range(0, 12, 4).forEach(v => label(b, v + '%', 450, SY(v) - 29, 'lbl s', 'right'));
   layer(b, `<rect x="${LX - 110}" y="${SY(14.6)}" width="220" height="${SY(8.9) - SY(14.6)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="5"/>`);
   label(b, 'loud 4: leak', LX, SY(14.6) - 193, 'lbl acc', 'center');
@@ -366,7 +366,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   M.show(label(b, 'faint keys', FX, SY(14.6) - 193, 'lbl ok', 'center'), un);
   M.show(label(b, '7.7% to 10.2%', FX, SY(14.6) - 133, 'lbl ok', 'center'), un);
   const barAt = f => 12 - 6 * (0.5 - 0.5 * Math.cos(TAU * Math.max(0, f - un) / 80));
-  anim(b, fa, sceneEnd(7), f => { const v = barAt(f); return hline(500, 1600, SY(v), C.accent, 5, DASH) + `<text x="1790" y="790" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">bar: ${v.toFixed(1)}%</text>`; }, 2);
+  anim(b, fa, sceneEnd(7), f => { const v = barAt(f); return hline(500, 1600, SY(v), C.input, 5) + `<text x="1790" y="790" text-anchor="end" font-family="Geist Mono" font-size="52" fill="${C.input}">bar: ${v.toFixed(1)}%</text>`; }, 2);
   M.show(label(b, 'above bar → thrown out', LX, SY(14.6) - 73, 'lbl s acc', 'center'), fa);
   M.show(label(b, 'below bar → never heard', FX, SY(14.6) - 73, 'lbl s ok', 'center'), un);
   M.show(label(b, 'no bar fits', 960, 700, 'lbl big acc', 'center'), fi);
@@ -384,7 +384,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   const ends = layer(a, [0, 255].map(n => `<circle cx="${BX(n).toFixed(1)}" cy="${(BY - BA * xs(n)).toFixed(1)}" r="24" fill="none" stroke="${C.accent}" stroke-width="5"/>`).join(''));
   M.show(ends, cu, fd);
   M.show(label(a, 'cut mid-turn, at full size', 200, 350, 'lbl acc'), cu, ha - 4);
-  const win = layer(a, curve(range(0, 256).map(n => [BX(n), BY - (BA + 10) * hannW(n, N)]), C.input, 6) + curve(range(0, 256).map(n => [BX(n), BY + (BA + 10) * hannW(n, N)]), C.input, 6, '10 8'), [BX(0) - 6, BX(256) + 6]);
+  const win = layer(a, curve(range(0, 256).map(n => [BX(n), BY - (BA + 10) * hannW(n, N)]), C.input, 6, DASH) + curve(range(0, 256).map(n => [BX(n), BY + (BA + 10) * hannW(n, N)]), C.input, 6, DASH), [BX(0) - 6, BX(256) + 6]);
   reveal(win, ha - 4, ha + 20, 'cruise');
   M.show(label(a, 'Hann window: 0 at both ends', 200, 350, 'lbl ok'), ha);
   const windowed = layer(a, hline(BX(0), BX(255), BY, C.rule, 2) + curve(range(0, 255).map(n => [BX(n), BY - BA * hannW(n, N) * xs(n)]), C.ink, 3));
@@ -393,22 +393,22 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   const X = d => 960 + d * 100, base = 740, H = 290, Y = v => base - v * H;
   axes(a, X, Y, range(-6, 6, 2).map(d => [d, d > 0 ? '+' + d : String(d).replace('-', '−')]), [[1, '100%']], -6.6, 6.6, 0, 1);
   label(a, 'bins', X(6.6), base - 70, 'lbl s', 'right');
-  const pc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(plainAt(d))]), C.soft, 4, DASH));
+  const pc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(plainAt(d))]), C.soft, 4));
   M.show(pc, sceneStart(8));
-  const hc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(hannAt(d))]), C.input, 6), [X(-6.6) - 6, X(6.6) + 6]);
+  const hc = layer(a, curve(range(-6.6, 6.6, 0.02).map(d => [X(d), Y(hannAt(d))]), C.input, 6, DASH), [X(-6.6) - 6, X(6.6) + 6]);
   reveal(hc, sh, fl, 'cruise');
   flicker(hc, 0, 0, fl + 2, no, 0.5, 83);
   flicker(pc, 0, 0, sceneStart(8) + 2, no, 0.5, 84);
-  M.show(label(a, 'dashed: no window', 330, 470, 'lbl s'), sceneStart(8));
-  M.show(label(a, 'solid: Hann', 330, 530, 'lbl ok'), sh);
+  M.show(label(a, 'solid: no window', 330, 470, 'lbl s'), sceneStart(8));
+  M.show(label(a, 'dashed: Hann', 330, 530, 'lbl ok'), sh);
   M.show(label(a, 'first side lobe: 22%', 1790, 470, 'lbl s', 'right'), fl);
   M.show(label(a, '→ 2.7%', 1790, 530, 'lbl ok', 'right'), two);
   const SY = v => 800 - v * 32, LX = 780, FX = 1440;
   label(b, 'Hann, 256 samples', 130, 80, 'lbl');
   layer(b, vline(480, SY(0), SY(16), C.ink, 3) + range(0, 16, 4).map(v => hline(468, 480, SY(v), C.ink, 3)).join(''));
   range(0, 16, 4).forEach(v => label(b, v + '%', 450, SY(v) - 29, 'lbl s', 'right'));
-  layer(b, `<rect x="${LX - 110}" y="${SY(14.6)}" width="220" height="${SY(8.9) - SY(14.6)}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="10 8"/><rect x="${FX - 110}" y="${SY(10.2)}" width="220" height="${SY(7.7) - SY(10.2)}" fill="none" stroke="${C.soft}" stroke-width="3" stroke-dasharray="10 8"/>`);
-  label(b, 'dashed: no window', 900, 360, 'lbl s');
+  layer(b, `<rect x="${LX - 110}" y="${SY(14.6)}" width="220" height="${SY(8.9) - SY(14.6)}" fill="none" stroke="${C.soft}" stroke-width="3"/><rect x="${FX - 110}" y="${SY(10.2)}" width="220" height="${SY(7.7) - SY(10.2)}" fill="none" stroke="${C.soft}" stroke-width="3"/>`);
+  label(b, 'outlines: no window', 915, 360, 'lbl s');
   const leak = layer(b, `<rect x="${LX - 110}" y="${SY(2.7)}" width="220" height="${SY(0) - SY(2.7)}" fill="${C.accentSoft}" stroke="${C.accent}" stroke-width="5"/>`);
   grow(leak, LX, SY(0), no, 10);
   flicker(leak, 0, 0, no + 12, sceneEnd(8), 0.5, 85);
@@ -417,8 +417,8 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   M.show(layer(b, `<rect x="${FX - 110}" y="${SY(9.9)}" width="220" height="${SY(9.2) - SY(9.9)}" fill="${C.inputSoft}" stroke="${C.input}" stroke-width="5"/>`), fn);
   label(b, 'faint: weakest', FX, SY(14.6) - 70, 'lbl ok', 'center');
   M.show(label(b, '9.2%', FX + 130, SY(9.2) - 10, 'lbl ok'), fn);
-  M.show(layer(b, hline(500, 1500, SY(5), C.accent, 6, DASH)), ba);
-  M.show(label(b, 'bar: 5%', 1520, SY(5) - 30, 'lbl acc'), ba);
+  M.show(layer(b, hline(500, 1500, SY(5), C.input, 6)), ba);
+  M.show(label(b, 'bar: 5%', 1520, SY(5) - 30, 'lbl ok'), ba);
   M.show(label(b, 'every press decodes', 1790, 80, 'lbl big ok', 'right'), ev);
   M.show(tick(b, 1720, 470, 1.3), ev + 4);
   drift(8, 1, 1.04);
@@ -430,14 +430,14 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   const X = f => 280 + (f - 550) * 3.1, base = 760, H = 560, Y = v => base - v * H;
   axes(a, X, Y, [[600, '600'], [700, '700'], [800, '800'], [900, '900'], [1000, '1,000 Hz']], [[1, '100%'], [0.5, '50%']], 550, 1020, 0, 1);
   M.show(label(a, 'loud 697 Hz, 128 samples', 130, 84, 'lbl s'), sceneStart(9));
-  const pp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, false))]), C.soft, 4, DASH));
+  const pp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, false))]), C.soft, 4));
   M.show(pp, on);
-  const hp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, true))]), C.input, 6), [X(550) - 6, X(1020) + 6]);
+  const hp = layer(a, curve(range(550, 1020, 1).map(f => [X(f), Y(toneCurve(697, 128, f, true))]), C.input, 6, DASH), [X(550) - 6, X(1020) + 6]);
   reveal(hp, on, on + 24, 'cruise');
   flicker(hp, 0, 0, on + 26, lg, 0.5, 91);
   flicker(pp, 0, 0, on + 2, lg, 0.5, 92);
-  M.show(label(a, 'dashed: no window', 1790, 210, 'lbl s', 'right'), on);
-  M.show(label(a, 'solid: Hann', 1790, 270, 'lbl ok', 'right'), on);
+  M.show(label(a, 'solid: no window', 1790, 210, 'lbl s', 'right'), on);
+  M.show(label(a, 'dashed: Hann', 1790, 270, 'lbl ok', 'right'), on);
   [11, 12, 14, 15].forEach(k => {
     const f = k * 62.5, v = toneCurve(697, 128, f, true), hot = k === 12;
     M.show(layer(a, vline(X(f), Y(0), Y(v), C.rule, 3, '6 6') + dotSvg(X(f), Y(v), 15, hot ? C.accent : C.ink)), on + 20);
@@ -453,7 +453,8 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   M.show(label(b, 'where the bins land', 130, 84, 'lbl s'), la);
   M.show(label(b, 'closest tone, bins from the bin read', 130, 144, 'lbl s'), rd);
   layer(b, hline(LX(170), LX(326), LY(1), C.ink, 3) + vline(LX(170), LY(1), LY(3), C.ink, 3));
-  [176, 208, 256, 320].forEach(n => { layer(b, vline(LX(n), LY(1), LY(1) + 12, C.ink, 3)); label(b, n === 320 ? '320 samples' : String(n), LX(n), LY(1) + 22, 'lbl s', 'center'); });
+  [176, 208, 256, 320].forEach(n => { layer(b, vline(LX(n), LY(1), LY(1) + 12, C.ink, 3)); label(b, String(n), LX(n), LY(1) + 22, 'lbl s', 'center'); });
+  label(b, 'samples', LX(320) + 60, LY(1) + 22, 'lbl s');
   [1, 2, 3].forEach(d => { layer(b, hline(LX(170) - 12, LX(170), LY(d), C.ink, 3)); label(b, String(d), LX(170) - 22, LY(d) - 29, 'lbl s', 'right'); });
   LEN.forEach((n, i) => {
     const x = LX(n), y = LY(DIST[i]);
@@ -465,7 +466,7 @@ const barLine = (c, v, color = C.accent) => layer(c, hline(KX(0) - 80, KX(7) + 8
   const tone = layer(b, dotSvg(IX(770), IY, 15, C.accent));
   M.show(tone, tf);
   flicker(tone, 0, 0, tf + 6, sceneEnd(9), 0.4, 97);
-  M.show(label(b, "224: 1's bin, 714 Hz", IX(20 * bw) - 80, IY - 90, 'lbl s', 'center'), tf);
+  M.show(label(b, "224: 1's bin, 714 Hz", IX(20 * bw) - 110, IY - 90, 'lbl s', 'center'), tf);
   M.show(label(b, '770 Hz', IX(770), IY - 90, 'lbl s acc', 'center'), tf);
   M.show(label(b, '1.56 bins (55.7 Hz)', (IX(20 * bw) + IX(770)) / 2, IY + 40, 'lbl s acc', 'center'), tf + 6);
   M.show(layer(b, ringSvg(LX(224), LY(1.56), 24, C.accent, 5).replace(`fill="${C.paper}"`, 'fill="none"')), tf);
