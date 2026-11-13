@@ -32,8 +32,8 @@
   --leading-tight: 1.4;
 
   --page-width: 1072px;
-  --column: 780px;
-  --measure: 34em;
+  --column: 920px;
+  --measure: 36em;
   --gutter: 16px;
   --space-section: 80px;
   --space-block: 18px;
@@ -74,6 +74,12 @@ h2 { font-size: var(--size-heading); line-height: var(--leading-heading); }
 header { gap: var(--space-element); }
 .question { font-size: var(--size-lead); line-height: var(--leading-tight); color: var(--text-quiet); max-width: 32em; }
 section { margin-top: var(--space-section); gap: var(--space-block); }
+.wrap > header, .wrap > section { grid-template-columns: [wide-start] minmax(0, 1fr) [text-start] minmax(0, var(--measure)) [text-end] minmax(0, 1fr) [wide-end]; }
+.wrap > :is(header, section) > * { grid-column: text; }
+.wrap > :is(header, section) > :is(.k-runner, .k-figure, .lab, .act2, .tb-machine, template) { grid-column: wide; }
+.wrap > section > .k-figure { grid-template-columns: inherit; }
+.wrap > section > .k-figure > * { grid-column: wide; }
+.wrap > section > .k-figure > :is(figcaption, .k-replay) { grid-column: text; }
 figcaption { font-size: var(--size-label); color: var(--text-quiet); }
 
 button { font: 500 var(--size-label)/1 var(--font-text); letter-spacing: var(--text-tracking); color: var(--text-strong); background: var(--surface-pill); border: 0; border-radius: var(--radius-pill); min-height: var(--pill-height); padding: 0 20px; box-shadow: none; transition: background-color 160ms var(--ease), box-shadow 160ms var(--ease); }
