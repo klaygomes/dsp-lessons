@@ -42,23 +42,23 @@ def bug(text):
 
 def row(r):
     title = html.escape(r["title"])
-    meta = []
+    actions = []
     if r["page"]:
-        title = f'<a href="{html.escape(r["page"])}">{title}</a>'
-        draft = "" if r["page_ready"] else " (draft)"
-        meta.append(f'<a href="{html.escape(r["page"])}" tabindex="-1" aria-hidden="true">Read the lesson</a>{draft}')
+        href = html.escape(r["page"])
+        title = f'<a href="{href}">{title}</a>'
+        draft = " (draft)" if not r["page_ready"] else ""
+        actions.append(f'<a class="pill primary" href="{href}" tabindex="-1" aria-hidden="true">Read the lesson{draft}</a>')
     else:
-        meta.append('<span class="soon">Lesson in progress</span>')
+        actions.append('<span class="soon">Lesson in progress</span>')
     if r["video"]:
-        draft = "" if r["video_ready"] else " (draft)"
-        meta.append(f'<a href="{html.escape(r["video"])}">Watch the video</a>{draft}')
+        draft = " (draft)" if not r["video_ready"] else ""
+        actions.append(f'<a class="pill" href="{html.escape(r["video"])}">Watch the video{draft}</a>')
     else:
-        meta.append('<span class="soon">Video in progress</span>')
-    if r["chapter"]:
-        meta.append(f'<span class="soon">Chapter&nbsp;{r["chapter"]}</span>')
-    return (f'<li><span class="n">{r["n"]}</span><div><h2>{title}</h2>'
+        actions.append('<span class="soon">Video in progress</span>')
+    chapter = f' · Chapter&nbsp;{r["chapter"]}' if r["chapter"] else ""
+    return (f'<li><p class="eyebrow">Lesson {r["n"]}{chapter}</p><h2>{title}</h2>'
             f'<p class="bug">{bug(r["bug"])}</p>'
-            f'<p class="meta">{" · ".join(meta)}</p></div></li>')
+            f'<p class="actions">{"".join(actions)}</p></li>')
 
 
 def build():
@@ -72,25 +72,29 @@ def build():
 <meta name="description" content="Story-driven lessons in discrete-time signal processing. Build a digital phone line and fix the bugs your callers can hear, one lab at a time.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="lesson.css">
+<link rel="stylesheet" href="_kit/theme.css">
 <style>
 :root {{ scrollbar-color: var(--rule) var(--paper); }}
-header {{ padding-top: 72px; gap: 0; }}
-h1 {{ font-size: clamp(48px, 9vw, 84px); line-height: 0.95; letter-spacing: -0.02em; }}
-.deck {{ font-family: var(--font-title); font-style: italic; font-size: clamp(22px, 3vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 10px; }}
-.question {{ margin-top: 28px; font-size: 20px; line-height: 1.5; max-width: 31em; text-wrap: pretty; }}
-.course {{ list-style: none; margin: 56px 0 0; padding: 0; border-bottom: 1px solid var(--rule); }}
-.course li {{ display: grid; grid-template-columns: 3.25rem 1fr; gap: 18px; border-top: 1px solid var(--rule); padding: 22px 0 24px; }}
-.course .n {{ font-family: var(--font-title); font-size: 44px; line-height: 0.9; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }}
-.course h2 {{ font-size: 21px; line-height: 1.3; }}
-.course h2 a {{ color: var(--ink); text-decoration: none; }}
-.course h2 a:hover {{ color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; }}
-.course .bug {{ font-family: var(--font-title); font-style: italic; font-size: 21px; line-height: 1.3; margin-top: 6px; max-width: 34em; text-wrap: pretty; }}
-.course .meta {{ margin-top: 10px; font-size: 15px; color: var(--ink-soft); }}
-.course li:hover .n {{ color: var(--accent-ink); }}
-.soon {{ color: var(--ink-soft); }}
-footer {{ border-top: 0; margin-top: 40px; }}
-footer a {{ color: inherit; }}
-@media (max-width: 520px) {{ header {{ padding-top: 44px; }} .course li {{ grid-template-columns: 2.5rem 1fr; gap: 12px; }} .course .n {{ font-size: 32px; }} .course .bug {{ font-size: 19px; }} }}
+.wrap {{ max-width: var(--page-width); }}
+header {{ padding-top: calc(var(--space-section) * 1.2); gap: var(--space-element); justify-items: center; text-align: center; }}
+h1 {{ font-size: var(--size-display); }}
+.deck {{ font-size: var(--size-lead); font-weight: 500; color: var(--eyebrow-color); }}
+.question {{ max-width: 34em; margin-inline: auto; text-wrap: pretty; }}
+.course {{ list-style: none; margin: var(--space-section) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: var(--space-element); }}
+.course li {{ display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; padding: var(--space-card); border-radius: var(--radius-card); box-shadow: var(--ring); background: var(--surface-page); transition: box-shadow 160ms var(--ease), background-color 160ms var(--ease); }}
+.course li:hover {{ box-shadow: var(--ring-strong); background: var(--surface-panel); }}
+.eyebrow {{ font-size: var(--size-eyebrow); font-weight: 600; color: var(--eyebrow-color); font-variant-numeric: tabular-nums; }}
+.course h2 {{ font-size: var(--size-card-title); line-height: var(--leading-heading); }}
+.course h2 a {{ color: var(--text-strong); text-decoration: none; }}
+.course h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 1px; }}
+.course .bug {{ color: var(--text-quiet); max-width: none; text-wrap: pretty; }}
+.course .actions {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }}
+.pill {{ display: inline-flex; align-items: center; min-height: var(--pill-height-small); padding: 0 16px; border-radius: var(--radius-pill); background: var(--surface-pill); color: var(--text-strong); font-size: var(--size-label); font-weight: 500; text-decoration: none; }}
+.pill:hover {{ background: color-mix(in srgb, var(--surface-pill) 70%, var(--rule)); }}
+.pill.primary {{ background: var(--fill-primary); color: var(--label-primary); }}
+.pill.primary:hover {{ background: color-mix(in srgb, var(--fill-primary) 85%, var(--paper)); }}
+.soon {{ color: var(--text-quiet); font-size: var(--size-label); }}
+footer {{ border-top: 1px solid var(--rule); display: grid; gap: 4px; }}
 </style>
 <div class="wrap">
 <header>

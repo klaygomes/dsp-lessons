@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --font-display: "Plus Jakarta Sans", "Geist", system-ui, sans-serif;
+  --font-text: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-label: var(--font-mono);
+
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --text-tracking: -0.013em;
+
+  --size-display: clamp(40px, 7vw, 68px);
+  --size-title: clamp(34px, 5vw, 52px);
+  --size-heading: clamp(26px, 3.4vw, 34px);
+  --size-card-title: 23px;
+  --size-lead: 19px;
+  --size-body: 17px;
+  --size-label: 15px;
+  --size-eyebrow: 14px;
+  --size-meta: 13px;
+
+  --leading-display: 1.08;
+  --leading-heading: 1.12;
+  --leading-body: 1.6;
+  --leading-tight: 1.4;
+
+  --page-width: 1072px;
+  --column: 780px;
+  --measure: 34em;
+  --gutter: 16px;
+  --space-section: 80px;
+  --space-block: 18px;
+  --space-element: 16px;
+  --space-card: 28px;
+  --header-height: 72px;
+
+  --radius-panel: 12px;
+  --radius-card: 10px;
+  --radius-pill: 999px;
+  --radius-link: 6px;
+  --pill-height: 44px;
+  --pill-height-small: 34px;
+
+  --surface-page: var(--paper);
+  --surface-panel: color-mix(in srgb, var(--paper-2) 45%, var(--paper));
+  --surface-lab: var(--paper);
+  --surface-pill: var(--paper-2);
+  --surface-pill-pressed: var(--input-soft);
+  --fill-primary: var(--ink);
+  --label-primary: var(--paper);
+  --text-strong: var(--ink);
+  --text-quiet: var(--ink-soft);
+  --eyebrow-color: var(--accent-ink);
+  --ring: inset 0 0 0 1px var(--rule);
+  --ring-strong: inset 0 0 0 1.5px var(--ink-soft);
+  --ring-pressed: inset 0 0 0 1.5px var(--input);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body { background: var(--surface-page); font-family: var(--font-text); font-size: var(--size-body); line-height: var(--leading-body); letter-spacing: var(--text-tracking); }
+.wrap { max-width: var(--column); padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+p + p { margin-top: var(--space-block); }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); color: var(--text-strong); }
+h1 { font-size: var(--size-title); line-height: var(--leading-display); }
+h2 { font-size: var(--size-heading); line-height: var(--leading-heading); }
+header { gap: var(--space-element); }
+.question { font-size: var(--size-lead); line-height: var(--leading-tight); color: var(--text-quiet); max-width: 32em; }
+section { margin-top: var(--space-section); gap: var(--space-block); }
+figcaption { font-size: var(--size-label); color: var(--text-quiet); }
+
+button { font: 500 var(--size-label)/1 var(--font-text); letter-spacing: var(--text-tracking); color: var(--text-strong); background: var(--surface-pill); border: 0; border-radius: var(--radius-pill); min-height: var(--pill-height); padding: 0 20px; box-shadow: none; transition: background-color 160ms var(--ease), box-shadow 160ms var(--ease); }
+button:hover { background: color-mix(in srgb, var(--surface-pill) 70%, var(--rule)); }
+button[aria-pressed="true"] { background: var(--surface-pill-pressed); box-shadow: var(--ring-pressed); }
+button.quiet { background: transparent; box-shadow: var(--ring); color: var(--text-quiet); }
+button.quiet:hover { box-shadow: var(--ring-strong); }
+:focus-visible { border-radius: var(--radius-link); }
+button:focus-visible { border-radius: var(--radius-pill); }
+
+.lab { border: 0; box-shadow: var(--ring); border-radius: var(--radius-panel); background: var(--surface-lab); padding: var(--space-card); gap: var(--space-element); }
+.lab h3 { font-size: var(--size-card-title); line-height: var(--leading-heading); }
+canvas.stage { border-radius: var(--radius-card); }
+.myth { border-left: 0; padding: var(--space-card); border-radius: var(--radius-panel); background: var(--surface-panel); }
+
+footer { margin-top: var(--space-section); padding-top: var(--space-element); font-size: var(--size-meta); line-height: 1.5; color: var(--text-quiet); }
+footer a { color: inherit; }
+
+@media (max-width: 520px) {
+  :root { --space-section: 56px; --space-card: 18px; --size-body: 17px; --size-lead: 18px; }
+  .lab { padding: var(--space-card); }
+}

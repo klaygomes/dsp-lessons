@@ -16,6 +16,7 @@ flowchart LR
 |---|---|
 | `fig.mjs` | SVG primitives as pure functions returning strings. Runs in node (figures) and in the browser (labs that want SVG). |
 | `fig.css` | Figure styles, the CSS-only motion classes and the wide/phone switch. Colors come only from the `lesson.css` tokens. |
+| `theme.css` | Layout and type tokens (fonts, type scale, spacing, widths, radii, surfaces) plus the base rules that read them. Linked, not inlined, by the index and every lesson page, so editing a token restyles the whole site without a rebuild. Colours stay in `lesson.css`, which the figures and videos share. |
 | `page.css` | Page components shared by every lesson: prose blocks, tables with an edge shadow while they scroll sideways, aligned equations, questions with a tick on the right answer, meters, the locked working. |
 | `page.js` | Page runtime: holds each animated figure at its first frame until it is on screen, plays it once, adds "Replay"; unlocks the working when a lab reports it is solved, after which its button shows and hides it. Plays nothing under reduced motion. |
 | `lab.js` | `window.Kit` for labs: prediction questions, meters, canvas stage, pen, 30 fps loop, WAV parser, 8,000 samples/s player, tone sizes from a block of samples. |
