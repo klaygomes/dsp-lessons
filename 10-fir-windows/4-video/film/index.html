@@ -120,8 +120,8 @@ function axes(c, X, Y, xs, ys, x0, x1, y0, y1, title) {
   if (title) label(c, title, X(x0) - 22, Y(y1) - 112, 'lbl s');
 }
 
-const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false) => {
-  const a = Math.atan2(y2 - y1, x2 - x1), h = 26, s = 13;
+const arrowSvg = (x1, y1, x2, y2, color = C.ink, w = 6, dash = '', open = false, k = 1) => {
+  const a = Math.atan2(y2 - y1, x2 - x1), h = 26 * k, s = 13 * k;
   const bx = x2 - h * Math.cos(a), by = y2 - h * Math.sin(a);
   const p1 = [bx + s * Math.sin(a), by - s * Math.cos(a)], p2 = [bx - s * Math.sin(a), by + s * Math.cos(a)];
   return seg(x1, y1, bx, by, color, w, dash) + `<path d="M${x2.toFixed(1)} ${y2.toFixed(1)}L${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}Z" fill="${open ? C.paper : color}" stroke="${color}" stroke-width="4" stroke-linejoin="round"/>`;
@@ -271,21 +271,23 @@ const peakBelow = H => { let b = 0, at = 0; for (let f = 2000; f < 4000; f += 1)
 {
   const c = cam(5);
   const ar = word(5, 'arrow'), mr = word(5, 'mirror'), pl = word(5, 'plain'), ne = word(5, 'negative'), fh = word(5, ['forty', '45', '4,500', '4500']), pu = word(5, 'pulls'), mn = word(5, ['minus', '-0.09', '−0.09']), up = word(5, 'upside'), la = word(5, 'lands');
-  const cx = 470, cy = 470, R = 250;
-  layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.rule}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
-  label(c, 'a pair: arrow + mirror', cx, 20, 'lbl', 'center');
+  const cx = 480, cy = 720, R = 450;
+  layer(c, `<path d="M${cx - R} ${cy}A${R} ${R} 0 0 1 ${cx + R} ${cy}" fill="none" stroke="${C.rule}" stroke-width="5"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 3));
+  label(c, 'arrow + mirror (dashed)', cx, 20, 'lbl', 'center');
   const thAt = fr => fr < pl ? 30 : 30 + 71.25 * Math.min(1, (fr - pl) / Math.max(1, ne + 10 - pl));
+  const arc = th => { const r = 90, [ax, ay] = pt(cx, cy, r, th); return `<path d="M${cx + r} ${cy}A${r} ${r} 0 0 0 ${ax.toFixed(1)} ${ay.toFixed(1)}" fill="none" stroke="${C.soft}" stroke-width="5"/>`; };
   const drawAt = th => {
-    const P1 = pt(cx, cy, R / 2, -th), P2 = [cx + R * cosd(th), cy];
-    return arrowSvg(cx, cy, ...P1, C.ink, 7) + arrowSvg(...P1, ...P2, C.soft, 6, '14 9', true) + (Math.abs(cosd(th)) > 0.12 ? arrowSvg(cx, cy, ...P2, C.accent, 8) : dotSvg(cx, cy, 10, C.accent));
+    const P1 = pt(cx, cy, R / 2, th), P2 = [cx + R * cosd(th), cy];
+    return arc(th) + arrowSvg(cx, cy, ...P1, C.ink, 14, '', false, 2) + arrowSvg(...P1, ...P2, C.soft, 11, '24 14', true, 2) + (Math.abs(cosd(th)) > 0.12 ? arrowSvg(cx, cy, ...P2, C.accent, 16, '', false, 1.6) : dotSvg(cx, cy, 18, C.accent));
   };
-  M.show(layer(c, arrowSvg(cx, cy, ...pt(cx, cy, R / 2, -30), C.ink, 7)), sceneStart(5), mr);
+  M.show(layer(c, arc(30) + arrowSvg(cx, cy, ...pt(cx, cy, R / 2, 30), C.ink, 14, '', false, 2)), sceneStart(5), mr);
   stepped(c, mr, fh, 2, p => drawAt(thAt(mr + p * (fh - mr))));
   M.show(layer(c, drawAt(101.25)), fh);
-  M.show(label(c, '4,500 Hz, pair 1: 101.25°', cx, 150, 'lbl s', 'center'), fh);
-  stepped(c, mr, fh, 4, p => { const th = thAt(mr + p * (fh - mr)); return `<text x="${cx}" y="${cy + R + 80}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">sum: a plain number${th > 90 ? ',' : ''}</text>` + (th > 90 ? `<text x="${cx}" y="${cy + R + 140}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">here negative</text>` : ''); });
-  M.show(layer(c, `<text x="${cx}" y="${cy + R + 80}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">sum: a plain number,</text><text x="${cx}" y="${cy + R + 140}" text-anchor="middle" font-family="Geist Mono" font-size="52" fill="${C.accentInk}">here negative</text>`), fh);
-  M.show(label(c, 'dashed: the mirror', cx, 90, 'lbl s', 'center'), mr);
+  M.show(label(c, 'pair 1: arrows turn 101.25°', cx, 98, 'lbl m', 'center'), fh);
+  M.show(label(c, '= 360° × 4,500 ÷ 16,000', cx, 160, 'lbl s', 'center'), fh);
+  const sumTxt = (neg) => `<text x="${cx}" y="${cy + 92}" text-anchor="middle" font-family="Geist Mono" font-size="50" fill="${C.accentInk}">sum: a plain number${neg ? ',' : ''}</text>` + (neg ? `<text x="${cx}" y="${cy + 150}" text-anchor="middle" font-family="Geist Mono" font-size="50" fill="${C.accentInk}">here negative</text>` : '');
+  stepped(c, mr, fh, 4, p => sumTxt(thAt(mr + p * (fh - mr)) > 90));
+  M.show(layer(c, sumTxt(true)), fh);
   const BX = i => 1060 + i * 66, base = 330, A = 380;
   M.show(label(c, '4,500 Hz, pair by pair', 1020, 20, 'lbl'), fh);
   const parts = [0.5]; for (let m = 1; m <= 15; m += 2) parts.push(2 * hI(m) * cosd(m * 101.25));
@@ -298,7 +300,8 @@ const peakBelow = H => { let b = 0, at = 0; for (let f = 2000; f < 4000; f += 1)
   M.show(label(c, '= −0.09', BX(10), base + 50, 'lbl acc', 'right'), mn);
   M.show(label(c, '9% gets out, flipped', 1020, 560, 'lbl acc'), up);
   M.show(label(c, 'heard at 3,500 Hz', 1020, 650, 'lbl acc'), la);
-  M.show(label(c, '8,000 − 4,500', 1020, 730, 'lbl s'), la + 6);
+  M.show(label(c, 'alias after downsampling:', 1020, 740, 'lbl s'), la + 4);
+  M.show(label(c, '8,000 − 4,500', 1020, 800, 'lbl s'), la + 4);
   drift(5);
 }
 {
