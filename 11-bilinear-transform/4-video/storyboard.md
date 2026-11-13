@@ -100,3 +100,5 @@ Round 3 viewer judge (fresh agent, sheet plus narration): "ready", nothing block
 - Scene 4's wrap panel shows three rings folding at 4,000 Hz (5,000 on the second ring sits over 3,000 on the first), standing for the figure's spiral.
 - Scene 9 states the largest gap below the cutoff (1.6 dB near 3,030 Hz), from "What people get wrong"; the "top 600 Hz" remark stays on the page.
 - Scene 10 does not name the keypad's frequencies or the key; the next lesson asks.
+
+- Polish after round 3: scene 9 reads "other tones: still squeezed", matching the narration. Probe clean (margins top 59, left 178, right 163), G0 150.09 s, G2 and G3 pass (end hold 1.13 s), G5 pass.

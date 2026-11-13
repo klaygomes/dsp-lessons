@@ -392,7 +392,7 @@ const warpCurve = () => curve(range(0, 20000, 50).map(F => [WX(F), WY(A(F))]), C
   M.show(layer(c, `<path d="M${X(gf) - 10} ${Y(fixCopy(gf))}H${X(gf) + 10}M${X(gf)} ${Y(fixCopy(gf))}V${Y(exch(gf))}M${X(gf) - 10} ${Y(exch(gf))}H${X(gf) + 10}" fill="none" stroke="${C.accent}" stroke-width="5"/>`), st);
   M.show(label(c, `largest gap: ${gm.toFixed(1)} dB`, 1800, 130, 'lbl acc', 'right'), st);
   M.show(label(c, `near ${hz(Math.round(gf / 10) * 10)} Hz`, 1800, 200, 'lbl s', 'right'), st + 6);
-  M.show(label(c, 'other tones: still moved', 300, 130, 'lbl s'), sq2);
+  M.show(label(c, 'other tones: still squeezed', 300, 130, 'lbl s'), sq2);
   M.show(label(c, 'the cutoff', X(3400) - 20, Y(0) - 90, 'lbl ok', 'right'), wo);
   drift(9);
 }
