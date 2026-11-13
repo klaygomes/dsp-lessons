@@ -163,7 +163,7 @@
     stemsOf(cc, c.ink, [], a1.D);
     if (a1.pinned) stemsOf(echoCepstrum(a1.pinned.D, a1.pinned.a), c.input, [4, 3], -1);
     if (a1.a > 0) {
-      const label = `spike at ${hz(a1.D)}`, x = C.X(a1.D), right = x + 8 + label.length * 6.6 < C.x + C.w;
+      const label = `peak at ${hz(a1.D)}`, x = C.X(a1.D), right = x + 8 + label.length * 6.6 < C.x + C.w;
       pen.text(label, right ? x + 8 : x - 8, C.Y(cc[a1.D]) + 4, { align: right ? 'left' : 'right', color: c.accentInk, size: 11 });
     }
   }, { height: w => (w < 560 ? 546 : 540) });
@@ -187,7 +187,7 @@
       const up = Math.log(1 + a), down = Math.log(1 - a);
       parts.push(`In the log, the peaks reach ${fmt(up)} and the dips sink to ${fmt(down)}${a >= 0.7 ? ': the dips run far deeper than the peaks rise' : ''}.`);
     }
-    if (a1.stage >= 2) parts.push(`The tall spike sits at position ${hz(D)}: the delay.`);
+    if (a1.stage >= 2) parts.push(`The tall peak sits at position ${hz(D)}: the delay.`);
     if (D === 2400) parts.push('That is the slider’s end.');
     if (a1.stage === 2) parts.push('The strength slider opens after the question above the plots.');
     return parts.join(' ');
@@ -200,10 +200,10 @@
     if (p.a === a1.a) {
       const r = a1.D / p.D;
       const ratio = Number.isInteger(r) ? `${r} times` : Number.isInteger(1 / r) ? `${1 / r} times` : `${(r >= 1 ? r : 1 / r).toFixed(2)} times`;
-      tail = r > 1 ? `The delay is ${ratio} longer: the peaks are ${ratio} closer together, and the spike moved ${ratio} further out.` : `The delay is ${ratio} shorter: the peaks are ${ratio} further apart, and the spike moved ${ratio} closer to 0.`;
+      tail = r > 1 ? `The delay is ${ratio} longer: the peaks are ${ratio} closer together, and the cepstrum’s peak moved ${ratio} further out.` : `The delay is ${ratio} shorter: the peaks are ${ratio} further apart, and the cepstrum’s peak moved ${ratio} closer to 0.`;
     } else if (p.D === a1.D) {
-      tail = `Same delay, so the ripple keeps its spacing and the spike stays at ${hz(a1.D)}. ${a1.a > p.a ? 'More strength: the dips sink much further than the peaks rise, and the smaller spikes grow.' : 'Less strength: the ripple flattens, and the smaller spikes shrink first.'}`;
-    } else tail = 'Both changed: the delay sets where the peaks and the spike sit, the strength sets how tall they are.';
+      tail = `Same delay, so the ripple keeps its spacing and the cepstrum’s peak stays at ${hz(a1.D)}. ${a1.a > p.a ? 'More strength: the dips sink much further than the peaks rise, and the smaller spikes grow.' : 'Less strength: the ripple flattens, and the smaller spikes shrink first.'}`;
+    } else tail = 'Both changed: the delay sets where the gain’s peaks and the cepstrum’s peak sit, the strength sets how tall they are.';
     return `Pinned: ${name(p)}. Now: ${name(a1)}. ${tail}`;
   }
   let a1Queued = 0;
@@ -222,11 +222,11 @@
     $('a1-key-pin').hidden = !a1.pinned; $('a1-key-peak').hidden = a1.stage < 2; $('a1-key-sweep').hidden = !audio1.playing || reducedNow();
     const res = $('a1-result');
     res.textContent = `delay ${samples(a1.D)} (${ms(a1.D)}) · strength ${a1.a.toFixed(2)} · peak every ${perText(a1.D)} Hz`;
-    if (a1.stage >= 2 && a1.a > 0) { const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = ` · spike at ${hz(a1.D)}`; res.append(sp); }
+    if (a1.stage >= 2 && a1.a > 0) { const sp = document.createElement('span'); sp.className = 'changed'; sp.textContent = ` · peak at ${hz(a1.D)}`; res.append(sp); }
     $('a1-why').textContent = !toneDone ? 'Answer the question in “A tiny echo, sample by sample” first.' : a1.stage === 0 ? 'Answer the question above to move on.' : a1.stage === 1 ? 'Delay 8 now. One more question opens the cepstrum and the delay slider.' : a1Why();
     $('a1-compare').hidden = !a1.pinned;
     if (a1.pinned) $('a1-compare').textContent = a1Compare();
-    $('a1-stage').setAttribute('aria-label', !toneDone ? 'The lab’s plots, not open yet.' : `Delay ${a1.D} samples, strength ${a1.a.toFixed(2)}: the gain peaks every ${perText(a1.D)} Hz between ${fmt(Math.abs(1 - a1.a))} and ${fmt(1 + a1.a)}${a1.stage >= 2 && a1.a > 0 ? `; the cepstrum's tallest spike is at position ${a1.D}` : ''}.`);
+    $('a1-stage').setAttribute('aria-label', !toneDone ? 'The lab’s plots, not open yet.' : `Delay ${a1.D} samples, strength ${a1.a.toFixed(2)}: the gain peaks every ${perText(a1.D)} Hz between ${fmt(Math.abs(1 - a1.a))} and ${fmt(1 + a1.a)}${a1.stage >= 2 && a1.a > 0 ? `; the cepstrum's tallest peak is at position ${a1.D}` : ''}.`);
     stage1.redraw();
     if (audio1.playing) audio1.refresh();
     $('a1-now').textContent = now1();
@@ -267,7 +267,7 @@
   }
   function ask2() {
     K.ask(askBox(), {
-      question: 'The third plot is the cepstrum: it takes the log of the gain as a list round the whole circle of tones, 0 to 8,000 Hz, and asks which periods it repeats with, the way lesson 12’s DFT reads a list. With the delay at 8, where will its tall spike be?',
+      question: 'The third plot is the cepstrum: it takes the log of the gain as a list round the whole circle of tones, 0 to 8,000 Hz, and asks which periods it repeats with, the way lesson 12’s DFT reads a list. With the delay at 8, where will its tall peak be?',
       options: [['1000', 'At 1,000'], ['8', 'At 8'], ['125', 'At 125'], ['0', 'At 0']],
       right: '8',
       hints: {
@@ -275,7 +275,7 @@
         125: 'That is 1,000 divided by 8. Count instead: how many 1,000 Hz ripples fit in 8,000 Hz?',
         0: 'Position 0 holds the list’s average. The ripple is about repeating.',
       },
-      explain: '8,000 Hz round the circle holds eight 1,000 Hz ripples, so the spike sits at position 8: the delay itself. The next sections show why. The delay slider is yours: double it again and watch.',
+      explain: '8,000 Hz round the circle holds eight 1,000 Hz ripples, so the peak sits at position 8: the delay itself. The next sections show why. The delay slider is yours: double it again and watch.',
       onSolved: () => { a1.stage = 2; a1Render(); ask3(); },
       focusAfter: () => $('a1-ask').querySelectorAll('.k-ask')[2]?.querySelector('button'),
     });

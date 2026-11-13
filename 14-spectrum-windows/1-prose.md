@@ -17,7 +17,7 @@ Then two complaints arrive. First, presses of 4 keep getting thrown away. In tho
 
 [[diagram:spectrum-screen]]
 
-Easy, you think: lower the bar to 6%. The rural keys come through. But now every loud key in the top three rows clears the bar in two or three rows at once. Every one of those presses is thrown out, and many presses of *, 0 and # are too. Raise the bar back, and the rural line goes silent again.
+Easy, you think: lower the bar to 6%. The rural keys come through. But now every loud key in the top three rows clears the bar in two, three or even all four rows at once. Every one of those presses is thrown out, and many presses of *, 0 and # are too. Raise the bar back, and the rural line goes silent again.
 
 On paper, the detector is fine. Bin k sits at k × 8,000 ÷ N Hz, where N is the block length, so with 256 samples the bins are 31.25 Hz apart. The closest keypad tones are 73 Hz apart, and every tone has its own bin: the 7's row, 852 Hz, is read at bin 27, 843.75 Hz. So why does a loud 4 light up the bin that belongs to 7?
 
@@ -289,7 +289,7 @@ Zero padding shows the same curve in finer steps. To separate close tones, you n
 
 ## Recap
 
-- A tone that doesn't land on a bin spreads into every bin. That's **leakage**, and it comes from the block ending partway through a turn of the leftover arrow.
+- A tone that doesn't land on a bin spreads beyond its nearest bins into all the others. That's **leakage**, and it comes from the block ending partway through a turn of the leftover arrow.
 - Each bin builds two chains, one per arrow. The long one sets the leak. The short one, and other tones' leaks, nudge it with the starts.
 - The matches follow one curve around the tone: the **main lobe** out to the first zeros, then the **side lobes** carrying leakage to far bins.
 - With no window, the main lobe reaches one bin, 8,000 ÷ N Hz, to each side and the first side lobe is 22% of the tone.

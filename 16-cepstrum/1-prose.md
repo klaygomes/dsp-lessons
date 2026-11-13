@@ -66,7 +66,7 @@ An echo, seen tone by tone, is a **ripple**: the gain rises and falls in a regul
 
 Why every 2,000 Hz, and what does the 4 have to do with it? The wheel from lesson 3 answers it.
 
-A tone is a dot on a wheel of radius 1, and its pitch is simply how far it turns the wheel between two samples: 360° × tone ÷ 8,000, which is 45° for every 1,000 Hz. The echo is the same dot, 4 samples behind, so it sits back by four of those per-sample steps. For 1,000 Hz that's 4 × 45° = 180°, the opposite side of the wheel. That's why the two pulled against each other and left 1 − 0.5 = 0.5.
+A tone is a dot on a wheel of radius 1, and how far it turns the wheel between two samples, its per-sample step, is 360° × tone ÷ 8,000, which is 45° for every 1,000 Hz. The echo is the same dot, 4 samples behind, so it sits back by four of those per-sample steps. For 1,000 Hz that's 4 × 45° = 180°, the opposite side of the wheel. That's why the two pulled against each other and left 1 − 0.5 = 0.5.
 
 At 2,000 Hz each step is 90°, so the echo sits 4 × 90° = 360° behind: a full lap, right back on top of the original. The two add, 1 + 0.5 = 1.5. At 500 Hz the echo sits 90° behind, at right angles. The two arrows then add up to a length of √(1² + 0.5²) ≈ 1.12, the 1.12 in the table.
 
