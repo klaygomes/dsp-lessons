@@ -64,4 +64,3 @@ Assumptions:
 - The far end's playback rule ("play the tone below the limit") stands for ideal band-limited reconstruction; sinc interpolation is not needed for the objective.
 - The anti-aliasing filter is described by its frequency response (lesson 3) and treated as an analog box in front of the sampler; how to design one is lessons 10 and 11.
 - The clinic story replaces the old "whistle" framing but keeps the table's numbers: a 5,000 Hz whistle stored and heard as 3,000 Hz.
-- The old 1-text.md and other files in this folder were left untouched.
