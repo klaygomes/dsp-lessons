@@ -359,7 +359,7 @@ const laptopPole = (x, y, s = 11) => `<circle cx="${x.toFixed(1)}" cy="${y.toFix
 }
 {
   const c = cam(8);
-  const he = word(8, 'here'), cr = word(8, 'crammed'), ne = word(8, 'neighbors'), aw = word(8, 'away'), oh = word(8, ['oh', 'its']), tt = word(8, ['twenty', '22']), lo = word(8, 'lone'), ap = word(8, 'apart'), fs = word(8, ['five', '0.56', '.56']), sh = word(8, 'shrinks');
+  const he = word(8, 'here'), cr = word(8, 'crammed'), ne = word(8, 'neighbors'), aw = word(8, 'away'), oh = word(8, ['oh', 'its']), tt = word(8, ['twenty', '22']), lo = word(8, 'pair'), ap = word(8, 'apart'), fs = word(8, ['five', '0.56', '.56']), sh = word(8, 'shrinks');
   const cx = 420, cy = 520, R = 300, P = (r, f) => pt(cx, cy, R * r, ang(f));
   layer(c, `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(cx - R - 20, cx + R + 20, cy, C.rule, 2));
   const fsT = [1900, 2000, 2100], all = [...fsT, ...fsT.map(f => -f)];
@@ -390,9 +390,9 @@ const laptopPole = (x, y, s = 11) => `<circle cx="${x.toFixed(1)}" cy="${y.toFix
   M.show(label(c, '22', 1500, 580, 'lbl big acc'), tt);
   const lx = 1580, ly = 260, lr = 120;
   M.show(layer(c, `<circle cx="${lx}" cy="${ly}" r="${lr}" fill="none" stroke="${C.ink}" stroke-width="4"/>` + hline(lx - lr - 14, lx + lr + 14, ly, C.rule, 2) + poleSvg(lx, ly - 0.9 * lr, 9) + poleSvg(lx, ly + 0.9 * lr, 9) + arrowSvg(lx, ly + 0.9 * lr - 14, lx, ly - 0.9 * lr + 16, C.soft, 4)), lo);
-  M.show(label(c, 'lone pair', lx, 82, 'lbl s', 'center'), lo);
+  M.show(label(c, 'lesson 6’s pair', lx - 30, 82, 'lbl s', 'center'), lo);
   M.show(label(c, '1.8', lx - lr - 24, ly - 29, 'lbl s', 'right'), ap);
-  M.show(label(c, 'lesson 6’s lone pair: 1 ÷ 1.8 = 0.56', 740, 756, 'lbl m ok'), fs);
+  M.show(label(c, 'lesson 6’s pair: 1 ÷ 1.8 = 0.56', 740, 756, 'lbl m ok'), fs);
   M.show(label(c, 'the error shrinks', 740, 820, 'lbl s'), sh);
   drift(8, 1, 1.04);
 }

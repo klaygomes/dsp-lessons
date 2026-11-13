@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "duration": 141.91,
+ "duration": 141.66,
  "wpm": 204,
  "lines": [
   {
@@ -1206,96 +1206,92 @@
   },
   {
    "line": 8,
-   "text": "Here, three poles are crammed together near the top. The middle one's neighbors are just point zero seven seven away. Oh, its multiplier is twenty-two. Lesson six's lone pair sits one point eight apart, a multiplier of point five six. Its error shrinks.",
-   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line08.wav",
+   "text": "Here, three poles are crammed together near the top. The middle one's neighbors are just point zero seven seven away. Oh, its multiplier is twenty-two. Lesson six's pair sits one point eight apart, a multiplier of point five six. Its error shrinks.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-fix4b/line01.wav",
    "at": 88.38,
    "start": 88.38,
-   "end": 101.14,
+   "end": 100.89,
    "start_frame": 2651,
    "words": [
     {
-     "word": "Here",
+     "word": "Here,",
      "frame": 2651
     },
     {
      "word": "three",
-     "frame": 2661
+     "frame": 2667
     },
     {
      "word": "poles",
-     "frame": 2668
+     "frame": 2671
     },
     {
      "word": "are",
-     "frame": 2675
-    },
-    {
-     "word": "crammed",
      "frame": 2680
     },
     {
+     "word": "crammed",
+     "frame": 2684
+    },
+    {
      "word": "together",
-     "frame": 2687
+     "frame": 2692
     },
     {
      "word": "near",
-     "frame": 2698
+     "frame": 2701
     },
     {
      "word": "the",
-     "frame": 2703
+     "frame": 2705
     },
     {
      "word": "top.",
-     "frame": 2708
+     "frame": 2710
     },
     {
      "word": "The",
-     "frame": 2723
+     "frame": 2729
     },
     {
      "word": "middle",
-     "frame": 2731
+     "frame": 2729
     },
     {
      "word": "one's",
-     "frame": 2737
+     "frame": 2734
     },
     {
      "word": "neighbors",
-     "frame": 2746
+     "frame": 2744
     },
     {
      "word": "are",
-     "frame": 2755
+     "frame": 2751
     },
     {
      "word": "just",
-     "frame": 2762
-    },
-    {
-     "word": "0",
-     "frame": 2769
+     "frame": 2758
     },
     {
      "word": ".077",
-     "frame": 2774
+     "frame": 2762
     },
     {
      "word": "away.",
-     "frame": 2803
+     "frame": 2794
     },
     {
      "word": "Oh,",
-     "frame": 2821
+     "frame": 2822
     },
     {
      "word": "its",
-     "frame": 2827
+     "frame": 2828
     },
     {
      "word": "multiplier",
-     "frame": 2830
+     "frame": 2831
     },
     {
      "word": "is",
@@ -1311,63 +1307,55 @@
     },
     {
      "word": "6's",
-     "frame": 2883
-    },
-    {
-     "word": "lone",
-     "frame": 2894
+     "frame": 2879
     },
     {
      "word": "pair",
-     "frame": 2900
+     "frame": 2890
     },
     {
      "word": "sits",
-     "frame": 2908
+     "frame": 2896
     },
     {
      "word": "1",
-     "frame": 2915
+     "frame": 2904
     },
     {
      "word": ".8",
-     "frame": 2921
+     "frame": 2911
     },
     {
      "word": "apart,",
-     "frame": 2933
+     "frame": 2923
     },
     {
      "word": "a",
-     "frame": 2943
+     "frame": 2935
     },
     {
      "word": "multiplier",
-     "frame": 2949
+     "frame": 2941
     },
     {
      "word": "of",
-     "frame": 2961
-    },
-    {
-     "word": "0",
-     "frame": 2967
+     "frame": 2953
     },
     {
      "word": ".56.",
-     "frame": 2971
+     "frame": 2959
     },
     {
      "word": "Its",
-     "frame": 2996
+     "frame": 2994
     },
     {
      "word": "error",
-     "frame": 3002
+     "frame": 2998
     },
     {
      "word": "shrinks.",
-     "frame": 3010
+     "frame": 3004
     }
    ]
   },
@@ -1375,222 +1363,222 @@
    "line": 9,
    "text": "Multiplying out crowds all six poles into one rule, each coefficient a blend of all of them. So don't multiply. Build one notch at a time: a second-order section, one zero pair and one pole pair, where each number is something you can see. Run three in a row. That's a cascade.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo/line09.wav",
-   "at": 102.14,
-   "start": 102.14,
-   "end": 115.38,
-   "start_frame": 3064,
+   "at": 101.89,
+   "start": 101.89,
+   "end": 115.13,
+   "start_frame": 3057,
    "words": [
     {
      "word": "Multiplying",
-     "frame": 3064
+     "frame": 3057
     },
     {
      "word": "out",
-     "frame": 3084
+     "frame": 3076
     },
     {
      "word": "crowds",
-     "frame": 3090
+     "frame": 3082
     },
     {
      "word": "all",
-     "frame": 3098
+     "frame": 3091
     },
     {
      "word": "six",
-     "frame": 3104
+     "frame": 3097
     },
     {
      "word": "poles",
-     "frame": 3112
+     "frame": 3104
     },
     {
      "word": "into",
-     "frame": 3121
+     "frame": 3114
     },
     {
      "word": "one",
-     "frame": 3129
+     "frame": 3122
     },
     {
      "word": "rule,",
-     "frame": 3137
+     "frame": 3130
     },
     {
      "word": "each",
-     "frame": 3151
+     "frame": 3144
     },
     {
      "word": "coefficient",
-     "frame": 3157
+     "frame": 3149
     },
     {
      "word": "a",
-     "frame": 3172
+     "frame": 3165
     },
     {
      "word": "blend",
-     "frame": 3178
+     "frame": 3171
     },
     {
      "word": "of",
-     "frame": 3183
+     "frame": 3176
     },
     {
      "word": "all",
-     "frame": 3187
+     "frame": 3180
     },
     {
      "word": "of",
-     "frame": 3191
+     "frame": 3184
     },
     {
      "word": "them.",
-     "frame": 3195
+     "frame": 3188
     },
     {
      "word": "So",
-     "frame": 3208
+     "frame": 3200
     },
     {
      "word": "don't",
-     "frame": 3209
+     "frame": 3201
     },
     {
      "word": "multiply.",
-     "frame": 3215
+     "frame": 3208
     },
     {
      "word": "Build",
-     "frame": 3235
+     "frame": 3228
     },
     {
      "word": "one",
-     "frame": 3238
+     "frame": 3230
     },
     {
      "word": "notch",
-     "frame": 3244
+     "frame": 3237
     },
     {
      "word": "at",
-     "frame": 3251
+     "frame": 3244
     },
     {
      "word": "a",
-     "frame": 3256
+     "frame": 3249
     },
     {
      "word": "time,",
-     "frame": 3258
+     "frame": 3250
     },
     {
      "word": "a",
-     "frame": 3270
+     "frame": 3262
     },
     {
      "word": "second",
-     "frame": 3275
+     "frame": 3268
     },
     {
      "word": "order",
-     "frame": 3283
+     "frame": 3275
     },
     {
      "word": "section,",
-     "frame": 3289
+     "frame": 3282
     },
     {
      "word": "one",
-     "frame": 3307
+     "frame": 3299
     },
     {
      "word": "zero",
-     "frame": 3311
+     "frame": 3304
     },
     {
      "word": "pair",
-     "frame": 3318
+     "frame": 3310
     },
     {
      "word": "and",
-     "frame": 3325
+     "frame": 3318
     },
     {
      "word": "one",
-     "frame": 3329
+     "frame": 3321
     },
     {
      "word": "pole",
-     "frame": 3334
+     "frame": 3326
     },
     {
      "word": "pair",
-     "frame": 3340
+     "frame": 3332
     },
     {
      "word": "where",
-     "frame": 3346
+     "frame": 3338
     },
     {
      "word": "each",
-     "frame": 3350
+     "frame": 3343
     },
     {
      "word": "number",
-     "frame": 3357
+     "frame": 3350
     },
     {
      "word": "is",
-     "frame": 3365
+     "frame": 3358
     },
     {
      "word": "something",
-     "frame": 3371
+     "frame": 3363
     },
     {
      "word": "you",
-     "frame": 3378
+     "frame": 3370
     },
     {
      "word": "can",
-     "frame": 3383
+     "frame": 3376
     },
     {
      "word": "see.",
-     "frame": 3388
+     "frame": 3380
     },
     {
      "word": "Run",
-     "frame": 3404
+     "frame": 3397
     },
     {
      "word": "three",
-     "frame": 3409
+     "frame": 3401
     },
     {
      "word": "in",
-     "frame": 3415
+     "frame": 3407
     },
     {
      "word": "a",
-     "frame": 3420
+     "frame": 3412
     },
     {
      "word": "row.",
-     "frame": 3422
+     "frame": 3414
     },
     {
      "word": "That's",
-     "frame": 3436
+     "frame": 3429
     },
     {
      "word": "a",
-     "frame": 3443
+     "frame": 3436
     },
     {
      "word": "cascade.",
-     "frame": 3445
+     "frame": 3438
     }
    ]
   },
@@ -1598,202 +1586,202 @@
    "line": 10,
    "text": "Each section is rounded alone, at a step of one over sixty-four. Every pole lands at point nine seven six, safely inside. The whine keeps one point three percent at most, the voice ninety-nine and a half. Tiny errors aren't always tiny trouble. Stability is a line, and crowded poles get pushed across it.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-breath/line10.wav",
-   "at": 116.18,
-   "start": 116.18,
-   "end": 131.6,
-   "start_frame": 3485,
+   "at": 115.93,
+   "start": 115.93,
+   "end": 131.35,
+   "start_frame": 3478,
    "words": [
     {
      "word": "Each",
-     "frame": 3485
+     "frame": 3478
     },
     {
      "word": "section",
-     "frame": 3497
+     "frame": 3489
     },
     {
      "word": "is",
-     "frame": 3507
+     "frame": 3500
     },
     {
      "word": "rounded",
-     "frame": 3512
+     "frame": 3504
     },
     {
      "word": "alone,",
-     "frame": 3519
+     "frame": 3512
     },
     {
      "word": "at",
-     "frame": 3535
+     "frame": 3528
     },
     {
      "word": "a",
-     "frame": 3539
+     "frame": 3532
     },
     {
      "word": "step",
-     "frame": 3542
+     "frame": 3534
     },
     {
      "word": "of",
-     "frame": 3548
+     "frame": 3541
     },
     {
      "word": "1",
-     "frame": 3553
+     "frame": 3546
     },
     {
      "word": "over",
-     "frame": 3558
+     "frame": 3551
     },
     {
      "word": "64.",
-     "frame": 3563
+     "frame": 3555
     },
     {
      "word": "Every",
-     "frame": 3599
+     "frame": 3592
     },
     {
      "word": "pole",
-     "frame": 3603
+     "frame": 3595
     },
     {
      "word": "lands",
-     "frame": 3611
+     "frame": 3603
     },
     {
      "word": "at",
-     "frame": 3621
+     "frame": 3614
     },
     {
      "word": ".976,",
-     "frame": 3626
+     "frame": 3618
     },
     {
      "word": "safely",
-     "frame": 3657
+     "frame": 3650
     },
     {
      "word": "inside.",
-     "frame": 3666
+     "frame": 3659
     },
     {
      "word": "The",
-     "frame": 3700
+     "frame": 3692
     },
     {
      "word": "wine",
-     "frame": 3703
+     "frame": 3695
     },
     {
      "word": "keeps",
-     "frame": 3709
+     "frame": 3702
     },
     {
      "word": "1",
-     "frame": 3716
+     "frame": 3709
     },
     {
      "word": ".3",
-     "frame": 3724
+     "frame": 3716
     },
     {
      "word": "%",
-     "frame": 3736
+     "frame": 3729
     },
     {
      "word": "at",
-     "frame": 3744
+     "frame": 3737
     },
     {
      "word": "most,",
-     "frame": 3749
+     "frame": 3742
     },
     {
      "word": "the",
-     "frame": 3760
+     "frame": 3753
     },
     {
      "word": "voice",
-     "frame": 3761
+     "frame": 3753
     },
     {
      "word": "99",
-     "frame": 3767
+     "frame": 3760
     },
     {
      "word": ".5.",
-     "frame": 3779
+     "frame": 3771
     },
     {
      "word": "Tiny",
-     "frame": 3801
+     "frame": 3794
     },
     {
      "word": "errors",
-     "frame": 3808
+     "frame": 3800
     },
     {
      "word": "aren't",
-     "frame": 3818
+     "frame": 3810
     },
     {
      "word": "always",
-     "frame": 3828
+     "frame": 3821
     },
     {
      "word": "tiny",
-     "frame": 3837
+     "frame": 3830
     },
     {
      "word": "trouble.",
-     "frame": 3845
+     "frame": 3837
     },
     {
      "word": "Stability",
-     "frame": 3862
+     "frame": 3854
     },
     {
      "word": "is",
-     "frame": 3872
+     "frame": 3865
     },
     {
      "word": "a",
-     "frame": 3880
+     "frame": 3873
     },
     {
      "word": "line,",
-     "frame": 3884
+     "frame": 3876
     },
     {
      "word": "and",
-     "frame": 3894
+     "frame": 3887
     },
     {
      "word": "crowded",
-     "frame": 3896
+     "frame": 3888
     },
     {
      "word": "poles",
-     "frame": 3905
+     "frame": 3897
     },
     {
      "word": "get",
-     "frame": 3913
+     "frame": 3906
     },
     {
      "word": "pushed",
-     "frame": 3919
+     "frame": 3912
     },
     {
      "word": "across",
-     "frame": 3926
+     "frame": 3918
     },
     {
      "word": "it.",
-     "frame": 3934
+     "frame": 3926
     }
    ]
   },
@@ -1801,134 +1789,134 @@
    "line": 11,
    "text": "The chips go out, and the whine is gone for good. Then the wideband line starts leaking a faint ripple of high tones, through a filter that's already ideal on paper.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/09-finite-precision/4-video/vo-breath/line11.wav",
-   "at": 132.6,
-   "start": 132.6,
-   "end": 141.21,
-   "start_frame": 3978,
+   "at": 132.35,
+   "start": 132.35,
+   "end": 140.96,
+   "start_frame": 3971,
    "words": [
     {
      "word": "The",
-     "frame": 4006
+     "frame": 3998
     },
     {
      "word": "chips",
-     "frame": 4011
+     "frame": 4003
     },
     {
      "word": "go",
-     "frame": 4017
+     "frame": 4010
     },
     {
      "word": "out,",
-     "frame": 4025
+     "frame": 4017
     },
     {
      "word": "and",
-     "frame": 4036
+     "frame": 4028
     },
     {
      "word": "the",
-     "frame": 4038
+     "frame": 4031
     },
     {
      "word": "wine",
-     "frame": 4041
+     "frame": 4034
     },
     {
      "word": "is",
-     "frame": 4049
+     "frame": 4041
     },
     {
      "word": "gone",
-     "frame": 4053
+     "frame": 4045
     },
     {
      "word": "for",
-     "frame": 4059
+     "frame": 4051
     },
     {
      "word": "good.",
-     "frame": 4064
+     "frame": 4057
     },
     {
      "word": "Then",
-     "frame": 4080
+     "frame": 4073
     },
     {
      "word": "the",
-     "frame": 4084
+     "frame": 4076
     },
     {
      "word": "wideband",
-     "frame": 4088
+     "frame": 4080
     },
     {
      "word": "line",
-     "frame": 4100
+     "frame": 4093
     },
     {
      "word": "starts",
-     "frame": 4107
+     "frame": 4100
     },
     {
      "word": "leaking",
+     "frame": 4109
+    },
+    {
+     "word": "a",
      "frame": 4117
     },
     {
-     "word": "a",
-     "frame": 4125
-    },
-    {
      "word": "faint",
-     "frame": 4130
+     "frame": 4123
     },
     {
      "word": "ripple",
-     "frame": 4138
+     "frame": 4130
     },
     {
      "word": "of",
-     "frame": 4147
+     "frame": 4139
     },
     {
      "word": "high",
-     "frame": 4152
+     "frame": 4144
     },
     {
      "word": "tones",
-     "frame": 4157
+     "frame": 4150
     },
     {
      "word": "through",
-     "frame": 4173
+     "frame": 4166
     },
     {
      "word": "a",
-     "frame": 4176
+     "frame": 4168
     },
     {
      "word": "filter",
-     "frame": 4179
+     "frame": 4171
     },
     {
      "word": "that's",
-     "frame": 4187
+     "frame": 4180
     },
     {
      "word": "already",
-     "frame": 4195
+     "frame": 4187
     },
     {
      "word": "ideal",
-     "frame": 4202
+     "frame": 4195
     },
     {
      "word": "on",
-     "frame": 4213
+     "frame": 4205
     },
     {
      "word": "paper.",
-     "frame": 4219
+     "frame": 4211
     }
    ]
   }
