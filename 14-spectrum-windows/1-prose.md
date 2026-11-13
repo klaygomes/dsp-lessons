@@ -85,7 +85,7 @@ Check it on the 1,000 Hz tone. Against the 2,000 Hz bin, its leftover arrow turn
 
 The mirror arrow builds a chain too. Against the 1,000 Hz bin its leftover arrow spins fast, −112.5° per sample, two and a half turns over the block. Not whole, so this chain doesn't close either, but its arrows mostly cancel and it ends up short: 15%.
 
-The bin's match is the two chains joined end to end.
+The bin's match is the two chains joined end to end: the long one from the counter-clockwise arrow, and the short mirror chain.
 
 [[diagram:two-chains]]
 
