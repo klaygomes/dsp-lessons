@@ -77,7 +77,7 @@ const arcD = (cx, cy, r, a0, a1) => {
 
 function el(tag, attrs, parent, html) { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html !== undefined) e.innerHTML = html; parent.appendChild(e); return e; }
 const SCENES = Array.from({ length: SCHEDULE.lines.length }, (_, i) => 's' + (i + 1));
-SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); el('div', { id: id + 'cam', class: 'cam' }, s); });
+SCENES.forEach(id => { const s = el('section', { id, class: 'scene' }, main); s.style.transformOrigin = '960px 80px'; s.style.transform = 'scale(0.93)'; el('div', { id: id + 'cam', class: 'cam' }, s); });
 const cam = n => document.getElementById(`s${n}cam`);
 function sub(parent) { const id = 'P' + (++uid); el('div', { id, class: 'layer' }, parent); return document.getElementById(id); }
 function layer(parent, inner, reveal) {
@@ -100,8 +100,8 @@ const fadeIn = (sel, at, len = 10) => { M.show(sel, at); M.kf(sel, 'opacity', [[
 const hline = (x1, x2, y, color = C.soft, w = 3, dash = '') => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
 const vline = (x, y1, y2, color = C.soft, w = 3, dash = '') => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
 const seg = (x1, y1, x2, y2, color = C.ink, w = 5, dash = '') => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
-const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
-const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12';
+const curve = (pts, color = C.ink, w = 5, dash = '') => `<path d="${path(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ''}${dash === ROUND ? ' stroke-linecap="round"' : ''}/>`;
+const DASH = '16 11', DASHDOT = '26 10 6 10', DOTS = '2 12', ROUND = '0.1 15';
 const stemSvg = (x, base, y, color = C.ink, w = 7, r = 15) => `<line x1="${x.toFixed(1)}" y1="${base}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${color}"/>`;
 const zeroSvg = (x, y, r = 20, color = C.ink) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${C.paper}" stroke="${color}" stroke-width="6"/>`;
 const poleSvg = (x, y, s = 18, color = C.ink) => seg(x - s, y - s, x + s, y + s, color, 7) + seg(x - s, y + s, x + s, y - s, color, 7);
@@ -193,7 +193,7 @@ const box = (x, y, w, h, stroke = C.ink, fill = C.paper, sw = 4) => `<rect x="${
   const wave = (x0, x1, amp, hi, ph) => curve(range(x0, x1, 4).map(x => [x, yW - amp * sig(x / 40 + ph, hi)]), C.input, 5);
   layer(c, box(700, 220, 420, 220, C.ink, C.paper2));
   layer(c, vline(830, 280, 380, C.ink, 7) + vline(860, 280, 380, C.ink, 7) + `<path d="M930 ${yW}${range(0, 7).map(k => `a18 18 0 0 1 ${24} 0`).join('')}" fill="none" stroke="${C.ink}" stroke-width="5"/>`);
-  stepped(c, sceneStart(3), sceneEnd(3), 2, p => wave(160, 660, 90, 1, p * 40) + wave(1160, 1760, 80, 0.2, p * 40 - 1));
+  stepped(c, sceneStart(3), sceneEnd(3), 2, p => wave(160, 660, 90, 1, p * 70) + wave(1160, 1760, 80, 0.2, p * 70 - 1));
   label(c, 'voltage, every instant', 160, 160, 'lbl s');
   M.show(label(c, 'capacitors + coils', 910, 460, 'lbl s', 'center'), ca);
   M.show(label(c, 'analog filter', 910, 60, 'lbl big acc', 'center'), an);
@@ -363,10 +363,10 @@ const warpCurve = () => curve(range(0, 20000, 50).map(F => [WX(F), WY(A(F))]), C
   stepped(c, an + 20, sq2, 2, p => dotSvg(XT(PRE * p), YT(G(PRE * p, PRE)), 12, C.accent));
   M.show(layer(c, dotSvg(XT(PRE), YT(0.7071), 12, C.accent)), sq2);
   M.show(layer(c, seg(XT(0), YT(0) + 100, XB(0), YB(1.05) - 14, C.accent, 4) + seg(XT(PRE), YT(0) + 100, XB(3400), YB(1.05) - 14, C.accent, 4)), sq2);
-  const fc = layer(c, curve(range(0, 3990, 10).map(f => [XB(f), YB(fixCopy(f))]).concat([[XB(4000), YB(0)]]), C.input, 6, DASH), [XB(0) - 6, XB(4000) + 6]);
+  const fc = layer(c, curve(range(0, 3990, 10).map(f => [XB(f), YB(fixCopy(f))]).concat([[XB(4000), YB(0)]]), C.input, 8, ROUND), [XB(0) - 6, XB(4000) + 6]);
   reveal(fc, sq2, sq2 + 30, 'cruise');
   M.show(label(c, 'flat, then 71% at 3,400', XB(100), YB(1) + 50, 'lbl s'), fl);
-  M.show(label(c, 'solid: exchange  dashed: copy', XB(100), YB(1) + 120, 'lbl s'), me);
+  M.show(label(c, 'solid: exchange  dotted: copy', XB(100), YB(1) + 120, 'lbl s'), me);
   const ec = layer(c, curve(range(0, 4000, 10).map(f => [XB(f), YB(exch(f))]), C.ink, 4), [XB(0) - 6, XB(4000) + 6]);
   reveal(ec, me, me + 24, 'cruise');
   M.show(layer(c, dotSvg(XB(3400), YB(0.7071), 14, C.input)), se);
@@ -380,9 +380,9 @@ const warpCurve = () => curve(range(0, 20000, 50).map(F => [WX(F), WY(A(F))]), C
   const pi = word(9, 'pins'), sq2 = word(9, 'squeezed'), wo = word(9, 'worth'), st = word(9, 'strays'), de = word(9, 'decibels');
   const X = f => 300 + f * 0.3, Y = g => 800 - g * 520;
   axes(c, X, Y, [[0, '0'], [1000, '1,000'], [2000, '2,000'], [3000, '3,000'], [4000, '4,000 Hz']], [[0, '0%'], [0.5, '50%'], [1, '100%']], 0, 4000, 0, 1.08, '');
-  label(c, 'solid: the exchange   dashed: prewarped copy', 300, 70, 'lbl s');
+  label(c, 'solid: the exchange   dotted: prewarped copy', 300, 70, 'lbl s');
   const ex = layer(c, curve(range(0, 4000, 10).map(f => [X(f), Y(exch(f))]), C.ink, 5));
-  const fc = layer(c, curve(range(0, 3990, 10).map(f => [X(f), Y(fixCopy(f))]).concat([[X(4000), Y(0)]]), C.input, 6, DASH));
+  const fc = layer(c, curve(range(0, 3990, 10).map(f => [X(f), Y(fixCopy(f))]).concat([[X(4000), Y(0)]]), C.input, 8, ROUND));
   flicker(fc, sceneStart(9), sceneEnd(9), 0.75, 41);
   flicker(ex, sceneStart(9), sceneEnd(9), 0.75, 42);
   M.show(layer(c, vline(X(3400), Y(0), Y(0.7071) - 60, C.input, 4) + dotSvg(X(3400), Y(0.7071), 15, C.input)), pi);

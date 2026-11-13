@@ -18,7 +18,7 @@ try {
       const ls = [...document.querySelectorAll('.lbl, .note')].filter(vis).map(e => { const r = e.getBoundingClientRect(); const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); return { t: e.textContent, x0: q.left, x1: q.right, y0: r.top + 6, y1: r.bottom - 6 }; });
       const out = []; const m = { top: 1e9, left: 1e9, right: 1e9, bottom: 1e9 };
       ls.forEach(a => { m.top = Math.min(m.top, a.y0); m.left = Math.min(m.left, a.x0); m.right = Math.min(m.right, 1920 - a.x1); m.bottom = Math.min(m.bottom, 1080 - a.y1); });
-      ls.forEach((a, i) => { if (a.x0 < 96 || a.x1 > 1824 || a.y0 < 54 || a.y1 > 900) out.push('safe/band: ' + a.t + ' ' + [a.x0, a.x1, a.y0, a.y1].map(Math.round));
+      ls.forEach((a, i) => { if (a.x0 < 96 || a.x1 > 1824 || a.y0 < 54 || a.y1 > 840) out.push('safe/band: ' + a.t + ' ' + [a.x0, a.x1, a.y0, a.y1].map(Math.round));
         ls.slice(i + 1).forEach(b => { if (a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1) out.push('overlap: ' + a.t + ' | ' + b.t); }); });
       return { out, m }; })())`));
     for (const k in mn) mn[k] = Math.min(mn[k], res.m[k]);
