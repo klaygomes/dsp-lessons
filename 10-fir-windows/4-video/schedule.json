@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "duration": 147.0,
+ "duration": 148.1,
  "wpm": 196,
  "lines": [
   {
@@ -713,11 +713,11 @@
   },
   {
    "line": 5,
-   "text": "Each pair adds an arrow and its mirror, which leaves a plain number, sometimes negative. At forty-five hundred hertz, every pair pulls down, to minus point oh nine. Nine percent of that tone gets out, upside down, and lands at thirty-five hundred.",
-   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line05.wav",
+   "text": "Each pair adds an arrow and its mirror arrow from lesson six, which leaves a plain number, sometimes negative. At forty-five hundred hertz, every pair pulls down, to minus point oh nine. Nine percent of that tone gets out, upside down, and lands at thirty-five hundred.",
+   "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath2/line01.wav",
    "at": 54.3,
    "start": 54.3,
-   "end": 66.78,
+   "end": 67.88,
    "start_frame": 1629,
    "words": [
     {
@@ -738,143 +738,159 @@
     },
     {
      "word": "arrow",
-     "frame": 1657
+     "frame": 1658
     },
     {
-     "word": "in",
+     "word": "and",
      "frame": 1666
     },
     {
      "word": "its",
-     "frame": 1670
+     "frame": 1672
     },
     {
-     "word": "mirror,",
-     "frame": 1675
+     "word": "mirror",
+     "frame": 1676
     },
     {
-     "word": "which",
-     "frame": 1689
+     "word": "arrow",
+     "frame": 1684
     },
     {
-     "word": "leaves",
+     "word": "from",
      "frame": 1693
     },
     {
-     "word": "a",
+     "word": "Lesson",
      "frame": 1699
     },
     {
-     "word": "plain",
-     "frame": 1702
+     "word": "6,",
+     "frame": 1709
     },
     {
-     "word": "number,",
-     "frame": 1708
+     "word": "which",
+     "frame": 1722
+    },
+    {
+     "word": "leaves",
+     "frame": 1729
+    },
+    {
+     "word": "a",
+     "frame": 1736
+    },
+    {
+     "word": "plain",
+     "frame": 1739
+    },
+    {
+     "word": "number",
+     "frame": 1745
     },
     {
      "word": "sometimes",
-     "frame": 1721
+     "frame": 1754
     },
     {
      "word": "negative.",
-     "frame": 1730
+     "frame": 1763
     },
     {
      "word": "At",
-     "frame": 1777
+     "frame": 1810
     },
     {
      "word": "4500",
-     "frame": 1781
+     "frame": 1813
     },
     {
      "word": "Hz,",
-     "frame": 1805
+     "frame": 1835
     },
     {
      "word": "every",
-     "frame": 1819
-    },
-    {
-     "word": "pair",
-     "frame": 1824
-    },
-    {
-     "word": "pulls",
-     "frame": 1830
-    },
-    {
-     "word": "down",
-     "frame": 1840
-    },
-    {
-     "word": "to",
      "frame": 1847
     },
     {
-     "word": "minus",
-     "frame": 1853
+     "word": "pair",
+     "frame": 1852
     },
     {
-     "word": "0",
-     "frame": 1859
-    },
-    {
-     "word": ".09.",
-     "frame": 1867
-    },
-    {
-     "word": "9",
-     "frame": 1896
-    },
-    {
-     "word": "%",
-     "frame": 1899
-    },
-    {
-     "word": "of",
-     "frame": 1907
-    },
-    {
-     "word": "that",
-     "frame": 1912
-    },
-    {
-     "word": "tone",
-     "frame": 1917
-    },
-    {
-     "word": "gets",
-     "frame": 1924
-    },
-    {
-     "word": "out",
-     "frame": 1930
-    },
-    {
-     "word": "upside",
-     "frame": 1937
+     "word": "pulls",
+     "frame": 1858
     },
     {
      "word": "down",
-     "frame": 1947
+     "frame": 1868
     },
     {
-     "word": "and",
+     "word": "to",
+     "frame": 1875
+    },
+    {
+     "word": "minus",
+     "frame": 1881
+    },
+    {
+     "word": "0",
+     "frame": 1888
+    },
+    {
+     "word": ".09.",
+     "frame": 1895
+    },
+    {
+     "word": "9",
+     "frame": 1923
+    },
+    {
+     "word": "%",
+     "frame": 1927
+    },
+    {
+     "word": "of",
+     "frame": 1934
+    },
+    {
+     "word": "that",
+     "frame": 1940
+    },
+    {
+     "word": "tone",
+     "frame": 1944
+    },
+    {
+     "word": "gets",
+     "frame": 1951
+    },
+    {
+     "word": "out",
      "frame": 1957
     },
     {
+     "word": "upside",
+     "frame": 1964
+    },
+    {
+     "word": "down",
+     "frame": 1974
+    },
+    {
+     "word": "and",
+     "frame": 1984
+    },
+    {
      "word": "lands",
-     "frame": 1963
+     "frame": 1991
     },
     {
      "word": "at",
-     "frame": 1970
+     "frame": 2000
     },
     {
      "word": "3500.",
-     "frame": 1975
+     "frame": 2004
     }
    ]
   },
@@ -882,122 +898,122 @@
    "line": 6,
    "text": "So keep more coefficients? Sixty-three. Two hundred fifty-five. The bump slides toward the cliff and narrows, but it stays nine percent tall. That's the Gibbs phenomenon. Why won't it shrink?",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line06.wav",
-   "at": 67.58,
-   "start": 67.58,
-   "end": 76.98,
-   "start_frame": 2027,
+   "at": 68.68,
+   "start": 68.68,
+   "end": 78.08,
+   "start_frame": 2060,
    "words": [
     {
      "word": "so",
-     "frame": 2027
+     "frame": 2060
     },
     {
      "word": "keep",
-     "frame": 2036
+     "frame": 2069
     },
     {
      "word": "more",
-     "frame": 2042
+     "frame": 2075
     },
     {
      "word": "coefficients",
-     "frame": 2047
+     "frame": 2080
     },
     {
      "word": "63",
-     "frame": 2062
+     "frame": 2095
     },
     {
      "word": "255",
-     "frame": 2089
+     "frame": 2122
     },
     {
      "word": "the",
-     "frame": 2129
+     "frame": 2162
     },
     {
      "word": "bump",
-     "frame": 2141
+     "frame": 2174
     },
     {
      "word": "slides",
-     "frame": 2147
-    },
-    {
-     "word": "toward",
-     "frame": 2158
-    },
-    {
-     "word": "the",
-     "frame": 2165
-    },
-    {
-     "word": "cliff",
-     "frame": 2169
-    },
-    {
-     "word": "and",
-     "frame": 2175
-    },
-    {
-     "word": "narrows",
      "frame": 2180
     },
     {
-     "word": "but",
-     "frame": 2193
-    },
-    {
-     "word": "it",
-     "frame": 2198
-    },
-    {
-     "word": "stays",
-     "frame": 2204
-    },
-    {
-     "word": "nine",
-     "frame": 2211
-    },
-    {
-     "word": "percent",
-     "frame": 2218
-    },
-    {
-     "word": "tall",
-     "frame": 2227
-    },
-    {
-     "word": "that's",
-     "frame": 2237
+     "word": "toward",
+     "frame": 2191
     },
     {
      "word": "the",
-     "frame": 2246
+     "frame": 2198
     },
     {
-     "word": "gibbs",
-     "frame": 2249
+     "word": "cliff",
+     "frame": 2202
     },
     {
-     "word": "phenomenon",
-     "frame": 2257
+     "word": "and",
+     "frame": 2208
     },
     {
-     "word": "why",
-     "frame": 2270
+     "word": "narrows",
+     "frame": 2213
     },
     {
-     "word": "won't",
-     "frame": 2287
+     "word": "but",
+     "frame": 2226
     },
     {
      "word": "it",
-     "frame": 2294
+     "frame": 2231
+    },
+    {
+     "word": "stays",
+     "frame": 2237
+    },
+    {
+     "word": "nine",
+     "frame": 2244
+    },
+    {
+     "word": "percent",
+     "frame": 2251
+    },
+    {
+     "word": "tall",
+     "frame": 2260
+    },
+    {
+     "word": "that's",
+     "frame": 2270
+    },
+    {
+     "word": "the",
+     "frame": 2279
+    },
+    {
+     "word": "gibbs",
+     "frame": 2282
+    },
+    {
+     "word": "phenomenon",
+     "frame": 2290
+    },
+    {
+     "word": "why",
+     "frame": 2303
+    },
+    {
+     "word": "won't",
+     "frame": 2320
+    },
+    {
+     "word": "it",
+     "frame": 2327
     },
     {
      "word": "shrink",
-     "frame": 2297
+     "frame": 2330
     }
    ]
   },
@@ -1005,158 +1021,158 @@
    "line": 7,
    "text": "Cutting the list multiplies it by a window: one for each coefficient you keep, zero for the rest. A rectangle. And a window has its own response: a tall hump, with side lobes from its sharp edges.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line07.wav",
-   "at": 78.18,
-   "start": 78.18,
-   "end": 87.65,
-   "start_frame": 2345,
+   "at": 79.28,
+   "start": 79.28,
+   "end": 88.75,
+   "start_frame": 2378,
    "words": [
     {
      "word": "Cutting",
-     "frame": 2345
+     "frame": 2378
     },
     {
      "word": "the",
-     "frame": 2358
+     "frame": 2391
     },
     {
      "word": "list",
-     "frame": 2361
+     "frame": 2394
     },
     {
      "word": "multiplies",
-     "frame": 2366
+     "frame": 2399
     },
     {
      "word": "it",
-     "frame": 2381
-    },
-    {
-     "word": "by",
-     "frame": 2384
-    },
-    {
-     "word": "a",
-     "frame": 2387
-    },
-    {
-     "word": "window,",
-     "frame": 2390
-    },
-    {
-     "word": "one",
-     "frame": 2405
-    },
-    {
-     "word": "for",
-     "frame": 2410
-    },
-    {
-     "word": "each",
      "frame": 2414
     },
     {
-     "word": "coefficient",
-     "frame": 2419
+     "word": "by",
+     "frame": 2417
     },
     {
-     "word": "you",
-     "frame": 2432
+     "word": "a",
+     "frame": 2420
     },
     {
-     "word": "keep,",
+     "word": "window,",
+     "frame": 2423
+    },
+    {
+     "word": "one",
      "frame": 2438
     },
     {
-     "word": "zero",
-     "frame": 2453
-    },
-    {
      "word": "for",
-     "frame": 2459
+     "frame": 2443
     },
     {
-     "word": "the",
+     "word": "each",
+     "frame": 2447
+    },
+    {
+     "word": "coefficient",
+     "frame": 2452
+    },
+    {
+     "word": "you",
      "frame": 2465
     },
     {
+     "word": "keep,",
+     "frame": 2471
+    },
+    {
+     "word": "zero",
+     "frame": 2486
+    },
+    {
+     "word": "for",
+     "frame": 2492
+    },
+    {
+     "word": "the",
+     "frame": 2498
+    },
+    {
      "word": "rest,",
-     "frame": 2468
+     "frame": 2501
     },
     {
      "word": "a",
-     "frame": 2479
+     "frame": 2512
     },
     {
      "word": "rectangle.",
-     "frame": 2484
+     "frame": 2517
     },
     {
      "word": "And",
-     "frame": 2506
+     "frame": 2539
     },
     {
      "word": "a",
-     "frame": 2509
+     "frame": 2542
     },
     {
      "word": "window",
-     "frame": 2511
+     "frame": 2544
     },
     {
      "word": "has",
-     "frame": 2518
+     "frame": 2551
     },
     {
      "word": "its",
-     "frame": 2524
+     "frame": 2557
     },
     {
      "word": "own",
-     "frame": 2528
+     "frame": 2561
     },
     {
      "word": "response,",
-     "frame": 2533
-    },
-    {
-     "word": "a",
-     "frame": 2552
-    },
-    {
-     "word": "tall",
-     "frame": 2560
-    },
-    {
-     "word": "hump",
      "frame": 2566
     },
     {
+     "word": "a",
+     "frame": 2585
+    },
+    {
+     "word": "tall",
+     "frame": 2593
+    },
+    {
+     "word": "hump",
+     "frame": 2599
+    },
+    {
      "word": "with",
-     "frame": 2574
-    },
-    {
-     "word": "side",
-     "frame": 2580
-    },
-    {
-     "word": "lobes",
-     "frame": 2588
-    },
-    {
-     "word": "from",
-     "frame": 2597
-    },
-    {
-     "word": "its",
-     "frame": 2603
-    },
-    {
-     "word": "sharp",
      "frame": 2607
     },
     {
+     "word": "side",
+     "frame": 2613
+    },
+    {
+     "word": "lobes",
+     "frame": 2621
+    },
+    {
+     "word": "from",
+     "frame": 2630
+    },
+    {
+     "word": "its",
+     "frame": 2636
+    },
+    {
+     "word": "sharp",
+     "frame": 2640
+    },
+    {
      "word": "edges.",
-     "frame": 2614
+     "frame": 2647
     }
    ]
   },
@@ -1164,246 +1180,246 @@
    "line": 8,
    "text": "The cut filter's response is the step, smeared by that hump: slide it along, and add up what's still on the pass side. When the hump touches the cliff, the lobes past it are left out, and they add up to minus nine percent. Oh, so a hundred and nine is left. A longer rectangle just narrows the lobes, so the share stays.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line08.wav",
-   "at": 88.25,
-   "start": 88.25,
-   "end": 103.88,
-   "start_frame": 2648,
+   "at": 89.35,
+   "start": 89.35,
+   "end": 104.98,
+   "start_frame": 2680,
    "words": [
     {
      "word": "The",
-     "frame": 2648
+     "frame": 2680
     },
     {
      "word": "cut",
-     "frame": 2655
+     "frame": 2688
     },
     {
      "word": "filter's",
-     "frame": 2661
-    },
-    {
-     "word": "response",
-     "frame": 2673
-    },
-    {
-     "word": "is",
-     "frame": 2684
-    },
-    {
-     "word": "the",
-     "frame": 2690
-    },
-    {
-     "word": "step,",
      "frame": 2694
     },
     {
-     "word": "smeared",
+     "word": "response",
      "frame": 2706
     },
     {
+     "word": "is",
+     "frame": 2717
+    },
+    {
+     "word": "the",
+     "frame": 2723
+    },
+    {
+     "word": "step,",
+     "frame": 2727
+    },
+    {
+     "word": "smeared",
+     "frame": 2739
+    },
+    {
      "word": "by",
-     "frame": 2716
+     "frame": 2749
     },
     {
      "word": "that",
-     "frame": 2721
+     "frame": 2754
     },
     {
      "word": "hump.",
-     "frame": 2726
+     "frame": 2759
     },
     {
      "word": "Slide",
-     "frame": 2748
+     "frame": 2781
     },
     {
      "word": "it",
-     "frame": 2752
+     "frame": 2785
     },
     {
      "word": "along,",
-     "frame": 2756
+     "frame": 2788
     },
     {
      "word": "and",
-     "frame": 2769
+     "frame": 2802
     },
     {
      "word": "add",
-     "frame": 2773
+     "frame": 2806
     },
     {
      "word": "up",
-     "frame": 2779
+     "frame": 2812
     },
     {
      "word": "what's",
-     "frame": 2782
+     "frame": 2815
     },
     {
      "word": "still",
-     "frame": 2789
+     "frame": 2822
     },
     {
      "word": "on",
-     "frame": 2794
+     "frame": 2827
     },
     {
      "word": "the",
-     "frame": 2798
-    },
-    {
-     "word": "pass",
-     "frame": 2801
-    },
-    {
-     "word": "side.",
-     "frame": 2808
-    },
-    {
-     "word": "When",
-     "frame": 2825
-    },
-    {
-     "word": "the",
-     "frame": 2829
-    },
-    {
-     "word": "hump",
      "frame": 2831
     },
     {
-     "word": "touches",
-     "frame": 2837
+     "word": "pass",
+     "frame": 2834
+    },
+    {
+     "word": "side.",
+     "frame": 2841
+    },
+    {
+     "word": "When",
+     "frame": 2858
     },
     {
      "word": "the",
-     "frame": 2846
+     "frame": 2862
     },
     {
-     "word": "cliff,",
-     "frame": 2852
-    },
-    {
-     "word": "the",
+     "word": "hump",
      "frame": 2864
     },
     {
-     "word": "lobes",
-     "frame": 2868
+     "word": "touches",
+     "frame": 2870
     },
     {
-     "word": "past",
-     "frame": 2876
+     "word": "the",
+     "frame": 2879
     },
     {
-     "word": "it",
+     "word": "cliff,",
      "frame": 2884
     },
     {
-     "word": "are",
-     "frame": 2888
-    },
-    {
-     "word": "left",
-     "frame": 2891
-    },
-    {
-     "word": "out,",
+     "word": "the",
      "frame": 2897
     },
     {
+     "word": "lobes",
+     "frame": 2901
+    },
+    {
+     "word": "past",
+     "frame": 2908
+    },
+    {
+     "word": "it",
+     "frame": 2917
+    },
+    {
+     "word": "are",
+     "frame": 2921
+    },
+    {
+     "word": "left",
+     "frame": 2924
+    },
+    {
+     "word": "out,",
+     "frame": 2930
+    },
+    {
      "word": "and",
-     "frame": 2910
+     "frame": 2943
     },
     {
      "word": "they",
-     "frame": 2918
+     "frame": 2950
     },
     {
      "word": "add",
-     "frame": 2922
+     "frame": 2955
     },
     {
      "word": "up",
-     "frame": 2928
+     "frame": 2961
     },
     {
      "word": "to",
-     "frame": 2931
+     "frame": 2964
     },
     {
      "word": "minus",
-     "frame": 2935
-    },
-    {
-     "word": "9%.",
-     "frame": 2941
-    },
-    {
-     "word": "Oh,",
      "frame": 2968
     },
     {
+     "word": "9%.",
+     "frame": 2974
+    },
+    {
+     "word": "Oh,",
+     "frame": 3001
+    },
+    {
      "word": "so",
-     "frame": 2978
+     "frame": 3010
     },
     {
      "word": "109",
-     "frame": 2979
+     "frame": 3012
     },
     {
      "word": "is",
-     "frame": 2995
+     "frame": 3028
     },
     {
      "word": "left.",
-     "frame": 3000
+     "frame": 3033
     },
     {
      "word": "A",
-     "frame": 3020
+     "frame": 3053
     },
     {
      "word": "longer",
-     "frame": 3023
+     "frame": 3056
     },
     {
      "word": "rectangle",
-     "frame": 3031
+     "frame": 3064
     },
     {
      "word": "just",
-     "frame": 3044
+     "frame": 3077
     },
     {
      "word": "narrows",
-     "frame": 3051
+     "frame": 3084
     },
     {
      "word": "the",
-     "frame": 3062
+     "frame": 3094
     },
     {
      "word": "lobes,",
-     "frame": 3065
+     "frame": 3098
     },
     {
      "word": "so",
-     "frame": 3076
+     "frame": 3109
     },
     {
      "word": "the",
-     "frame": 3083
+     "frame": 3116
     },
     {
      "word": "share",
-     "frame": 3087
+     "frame": 3120
     },
     {
      "word": "stays.",
-     "frame": 3093
+     "frame": 3126
     }
    ]
   },
@@ -1411,190 +1427,190 @@
    "line": 9,
    "text": "The cure isn't a longer window, but one without sharp edges: a taper. The Hamming window fades from one in the middle to almost zero at the ends. Its side lobes almost vanish, but its hump is twice as wide: the cliff becomes a slope.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line09.wav",
-   "at": 104.88,
-   "start": 104.88,
-   "end": 116.07,
-   "start_frame": 3146,
+   "at": 105.98,
+   "start": 105.98,
+   "end": 117.17,
+   "start_frame": 3179,
    "words": [
     {
      "word": "The",
-     "frame": 3146
-    },
-    {
-     "word": "cure",
-     "frame": 3154
-    },
-    {
-     "word": "isn't",
-     "frame": 3161
-    },
-    {
-     "word": "a",
-     "frame": 3169
-    },
-    {
-     "word": "longer",
-     "frame": 3172
-    },
-    {
-     "word": "window",
      "frame": 3179
     },
     {
-     "word": "but",
-     "frame": 3188
+     "word": "cure",
+     "frame": 3187
     },
     {
-     "word": "one",
+     "word": "isn't",
      "frame": 3194
     },
     {
-     "word": "without",
-     "frame": 3200
-    },
-    {
-     "word": "sharp",
-     "frame": 3206
-    },
-    {
-     "word": "edges,",
-     "frame": 3216
-    },
-    {
      "word": "a",
-     "frame": 3232
+     "frame": 3202
     },
     {
-     "word": "taper.",
-     "frame": 3236
-    },
-    {
-     "word": "The",
-     "frame": 3258
-    },
-    {
-     "word": "hamming",
-     "frame": 3261
+     "word": "longer",
+     "frame": 3205
     },
     {
      "word": "window",
-     "frame": 3270
-    },
-    {
-     "word": "fades",
-     "frame": 3278
-    },
-    {
-     "word": "from",
-     "frame": 3287
-    },
-    {
-     "word": "one",
-     "frame": 3293
-    },
-    {
-     "word": "in",
-     "frame": 3298
-    },
-    {
-     "word": "the",
-     "frame": 3301
-    },
-    {
-     "word": "middle",
-     "frame": 3304
-    },
-    {
-     "word": "to",
-     "frame": 3308
-    },
-    {
-     "word": "almost",
-     "frame": 3314
-    },
-    {
-     "word": "zero",
-     "frame": 3323
-    },
-    {
-     "word": "at",
-     "frame": 3333
-    },
-    {
-     "word": "the",
-     "frame": 3339
-    },
-    {
-     "word": "ends.",
-     "frame": 3342
-    },
-    {
-     "word": "Its",
-     "frame": 3364
-    },
-    {
-     "word": "side",
-     "frame": 3367
-    },
-    {
-     "word": "lobes",
-     "frame": 3373
-    },
-    {
-     "word": "almost",
-     "frame": 3379
-    },
-    {
-     "word": "vanish",
-     "frame": 3388
+     "frame": 3212
     },
     {
      "word": "but",
-     "frame": 3399
+     "frame": 3221
     },
     {
-     "word": "its",
-     "frame": 3406
+     "word": "one",
+     "frame": 3227
     },
     {
-     "word": "hump",
-     "frame": 3411
+     "word": "without",
+     "frame": 3233
     },
     {
-     "word": "is",
-     "frame": 3416
+     "word": "sharp",
+     "frame": 3239
     },
     {
-     "word": "twice",
-     "frame": 3421
-    },
-    {
-     "word": "as",
-     "frame": 3428
-    },
-    {
-     "word": "wide,",
-     "frame": 3433
-    },
-    {
-     "word": "the",
-     "frame": 3444
-    },
-    {
-     "word": "cliff",
-     "frame": 3449
-    },
-    {
-     "word": "becomes",
-     "frame": 3455
+     "word": "edges,",
+     "frame": 3249
     },
     {
      "word": "a",
-     "frame": 3465
+     "frame": 3265
+    },
+    {
+     "word": "taper.",
+     "frame": 3269
+    },
+    {
+     "word": "The",
+     "frame": 3291
+    },
+    {
+     "word": "hamming",
+     "frame": 3294
+    },
+    {
+     "word": "window",
+     "frame": 3303
+    },
+    {
+     "word": "fades",
+     "frame": 3311
+    },
+    {
+     "word": "from",
+     "frame": 3320
+    },
+    {
+     "word": "one",
+     "frame": 3326
+    },
+    {
+     "word": "in",
+     "frame": 3331
+    },
+    {
+     "word": "the",
+     "frame": 3334
+    },
+    {
+     "word": "middle",
+     "frame": 3337
+    },
+    {
+     "word": "to",
+     "frame": 3341
+    },
+    {
+     "word": "almost",
+     "frame": 3347
+    },
+    {
+     "word": "zero",
+     "frame": 3356
+    },
+    {
+     "word": "at",
+     "frame": 3366
+    },
+    {
+     "word": "the",
+     "frame": 3372
+    },
+    {
+     "word": "ends.",
+     "frame": 3375
+    },
+    {
+     "word": "Its",
+     "frame": 3397
+    },
+    {
+     "word": "side",
+     "frame": 3400
+    },
+    {
+     "word": "lobes",
+     "frame": 3406
+    },
+    {
+     "word": "almost",
+     "frame": 3412
+    },
+    {
+     "word": "vanish",
+     "frame": 3421
+    },
+    {
+     "word": "but",
+     "frame": 3432
+    },
+    {
+     "word": "its",
+     "frame": 3439
+    },
+    {
+     "word": "hump",
+     "frame": 3444
+    },
+    {
+     "word": "is",
+     "frame": 3449
+    },
+    {
+     "word": "twice",
+     "frame": 3454
+    },
+    {
+     "word": "as",
+     "frame": 3461
+    },
+    {
+     "word": "wide,",
+     "frame": 3466
+    },
+    {
+     "word": "the",
+     "frame": 3477
+    },
+    {
+     "word": "cliff",
+     "frame": 3482
+    },
+    {
+     "word": "becomes",
+     "frame": 3488
+    },
+    {
+     "word": "a",
+     "frame": 3498
     },
     {
      "word": "slope.",
-     "frame": 3468
+     "frame": 3501
     }
    ]
   },
@@ -1602,210 +1618,210 @@
    "line": 10,
    "text": "Your line leaves the top of its band empty, so the slope can land there. Pass up to thirty-four hundred hertz within one percent, remove above forty-six hundred to below one percent. The plain cut needs two hundred seventy-one coefficients. Your chip affords forty-seven. Hamming at forty-five: point two four percent on both. The ghost is gone.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo/line10.wav",
-   "at": 116.67,
-   "start": 116.67,
-   "end": 133.43,
-   "start_frame": 3500,
+   "at": 117.77,
+   "start": 117.77,
+   "end": 134.53,
+   "start_frame": 3533,
    "words": [
     {
      "word": "your",
-     "frame": 3500
+     "frame": 3533
     },
     {
      "word": "line",
-     "frame": 3509
+     "frame": 3542
     },
     {
      "word": "leaves",
-     "frame": 3516
+     "frame": 3549
     },
     {
      "word": "the",
-     "frame": 3522
+     "frame": 3555
     },
     {
      "word": "top",
-     "frame": 3526
+     "frame": 3559
     },
     {
      "word": "of",
-     "frame": 3532
+     "frame": 3565
     },
     {
      "word": "its",
-     "frame": 3535
+     "frame": 3568
     },
     {
      "word": "band",
-     "frame": 3540
+     "frame": 3573
     },
     {
      "word": "empty",
-     "frame": 3545
+     "frame": 3578
     },
     {
      "word": "so",
-     "frame": 3557
+     "frame": 3590
     },
     {
      "word": "the",
-     "frame": 3566
+     "frame": 3598
     },
     {
      "word": "slope",
-     "frame": 3569
+     "frame": 3602
     },
     {
      "word": "can",
-     "frame": 3577
+     "frame": 3610
     },
     {
      "word": "land",
-     "frame": 3582
+     "frame": 3615
     },
     {
      "word": "there",
-     "frame": 3589
+     "frame": 3622
     },
     {
      "word": "pass",
-     "frame": 3596
+     "frame": 3629
     },
     {
      "word": "up",
-     "frame": 3609
+     "frame": 3642
     },
     {
      "word": "to",
-     "frame": 3613
+     "frame": 3646
     },
     {
      "word": "3400",
-     "frame": 3616
+     "frame": 3649
     },
     {
      "word": "hertz",
-     "frame": 3637
-    },
-    {
-     "word": "within",
-     "frame": 3643
-    },
-    {
-     "word": "one",
-     "frame": 3656
-    },
-    {
-     "word": "percent",
-     "frame": 3659
-    },
-    {
-     "word": "remove",
      "frame": 3670
     },
     {
-     "word": "above",
-     "frame": 3687
-    },
-    {
-     "word": "4600",
-     "frame": 3698
-    },
-    {
-     "word": "to",
-     "frame": 3717
-    },
-    {
-     "word": "below",
-     "frame": 3724
+     "word": "within",
+     "frame": 3676
     },
     {
      "word": "one",
-     "frame": 3731
+     "frame": 3689
     },
     {
      "word": "percent",
-     "frame": 3738
+     "frame": 3692
     },
     {
-     "word": "the",
+     "word": "remove",
+     "frame": 3703
+    },
+    {
+     "word": "above",
+     "frame": 3720
+    },
+    {
+     "word": "4600",
+     "frame": 3731
+    },
+    {
+     "word": "to",
      "frame": 3750
     },
     {
-     "word": "plane",
+     "word": "below",
+     "frame": 3757
+    },
+    {
+     "word": "one",
      "frame": 3764
     },
     {
-     "word": "cut",
+     "word": "percent",
      "frame": 3771
     },
     {
+     "word": "the",
+     "frame": 3783
+    },
+    {
+     "word": "plane",
+     "frame": 3797
+    },
+    {
+     "word": "cut",
+     "frame": 3804
+    },
+    {
      "word": "needs",
-     "frame": 3778
+     "frame": 3811
     },
     {
      "word": "271",
-     "frame": 3787
+     "frame": 3820
     },
     {
      "word": "coefficients",
-     "frame": 3818
+     "frame": 3851
     },
     {
      "word": "your",
-     "frame": 3846
+     "frame": 3879
     },
     {
      "word": "chip",
-     "frame": 3850
-    },
-    {
-     "word": "affords",
-     "frame": 3856
-    },
-    {
-     "word": "47",
-     "frame": 3867
-    },
-    {
-     "word": "hamming",
      "frame": 3883
     },
     {
+     "word": "affords",
+     "frame": 3889
+    },
+    {
+     "word": "47",
+     "frame": 3900
+    },
+    {
+     "word": "hamming",
+     "frame": 3916
+    },
+    {
      "word": "at",
-     "frame": 3904
+     "frame": 3937
     },
     {
      "word": "45",
-     "frame": 3908
+     "frame": 3941
     },
     {
      "word": ".24",
-     "frame": 3923
+     "frame": 3956
     },
     {
      "word": "on",
-     "frame": 3943
-    },
-    {
-     "word": "both",
-     "frame": 3959
-    },
-    {
-     "word": "the",
-     "frame": 3968
-    },
-    {
-     "word": "ghost",
      "frame": 3976
     },
     {
+     "word": "both",
+     "frame": 3992
+    },
+    {
+     "word": "the",
+     "frame": 4000
+    },
+    {
+     "word": "ghost",
+     "frame": 4009
+    },
+    {
      "word": "is",
-     "frame": 3982
+     "frame": 4015
     },
     {
      "word": "gone",
-     "frame": 3987
+     "frame": 4020
     }
    ]
   },
@@ -1813,134 +1829,134 @@
    "line": 11,
    "text": "Shape sets the ripple, length sets the slope. Next ticket: you copy the old analog exchange's filter with the textbook recipe. Its cutoff was thirty-four hundred hertz. The copy's lands at twenty-three sixty-three.",
    "clip": "/Users/cleiton.loiola/personal/dsp-lessons/10-fir-windows/4-video/vo-breath/line11.wav",
-   "at": 134.43,
-   "start": 134.43,
-   "end": 146.3,
-   "start_frame": 4033,
+   "at": 135.53,
+   "start": 135.53,
+   "end": 147.4,
+   "start_frame": 4066,
    "words": [
     {
      "word": "Shape",
-     "frame": 4033
+     "frame": 4066
     },
     {
      "word": "sets",
-     "frame": 4045
-    },
-    {
-     "word": "the",
-     "frame": 4051
-    },
-    {
-     "word": "ripple,",
-     "frame": 4056
-    },
-    {
-     "word": "length",
-     "frame": 4071
-    },
-    {
-     "word": "sets",
-     "frame": 4076
+     "frame": 4078
     },
     {
      "word": "the",
      "frame": 4084
     },
     {
-     "word": "slope.",
+     "word": "ripple,",
      "frame": 4089
     },
     {
+     "word": "length",
+     "frame": 4104
+    },
+    {
+     "word": "sets",
+     "frame": 4109
+    },
+    {
+     "word": "the",
+     "frame": 4117
+    },
+    {
+     "word": "slope.",
+     "frame": 4122
+    },
+    {
      "word": "Next",
-     "frame": 4140
+     "frame": 4173
     },
     {
      "word": "ticket,",
-     "frame": 4145
+     "frame": 4178
     },
     {
      "word": "you",
-     "frame": 4160
+     "frame": 4193
     },
     {
      "word": "copy",
-     "frame": 4167
+     "frame": 4200
     },
     {
      "word": "the",
-     "frame": 4175
+     "frame": 4208
     },
     {
      "word": "old",
-     "frame": 4180
+     "frame": 4213
     },
     {
      "word": "Analog",
-     "frame": 4186
+     "frame": 4219
     },
     {
      "word": "Exchanges",
-     "frame": 4198
+     "frame": 4231
     },
     {
      "word": "filter",
-     "frame": 4212
+     "frame": 4245
     },
     {
      "word": "with",
-     "frame": 4220
+     "frame": 4253
     },
     {
      "word": "the",
-     "frame": 4227
+     "frame": 4260
     },
     {
      "word": "textbook",
-     "frame": 4230
+     "frame": 4263
     },
     {
      "word": "recipe.",
-     "frame": 4240
+     "frame": 4273
     },
     {
      "word": "Its",
-     "frame": 4267
+     "frame": 4300
     },
     {
      "word": "cutoff",
-     "frame": 4270
+     "frame": 4303
     },
     {
      "word": "was",
-     "frame": 4279
+     "frame": 4312
     },
     {
      "word": "3400",
-     "frame": 4283
+     "frame": 4316
     },
     {
      "word": "Hz.",
-     "frame": 4306
-    },
-    {
-     "word": "The",
-     "frame": 4328
-    },
-    {
-     "word": "copies",
-     "frame": 4330
-    },
-    {
-     "word": "lands",
      "frame": 4339
     },
     {
+     "word": "The",
+     "frame": 4361
+    },
+    {
+     "word": "copies",
+     "frame": 4363
+    },
+    {
+     "word": "lands",
+     "frame": 4372
+    },
+    {
      "word": "at",
-     "frame": 4346
+     "frame": 4379
     },
     {
      "word": "2363.",
-     "frame": 4351
+     "frame": 4384
     }
    ]
   }
