@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 
 import course
+import glossary
 
 ROOT = Path(__file__).resolve().parent.parent
 LADDER = Path.home() / ".claude/skills/klay-learning-ladder"
@@ -88,6 +89,7 @@ h1 {{ font-size: var(--size-display); }}
 .course h2 a {{ color: var(--text-strong); text-decoration: none; }}
 .course h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 1px; }}
 .course .bug {{ color: var(--text-quiet); max-width: none; text-wrap: pretty; }}
+header .actions {{ display: flex; justify-content: center; }}
 .course .actions {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }}
 .pill {{ display: inline-flex; align-items: center; min-height: var(--pill-height-small); padding: 0 16px; border-radius: var(--radius-pill); background: var(--surface-pill); color: var(--text-strong); font-size: var(--size-label); font-weight: 500; text-decoration: none; }}
 .pill:hover {{ background: color-mix(in srgb, var(--surface-pill) 70%, var(--rule)); }}
@@ -101,6 +103,7 @@ footer {{ border-top: 1px solid var(--rule); display: grid; gap: 4px; }}
 <h1>The Phone Line</h1>
 <p class="deck">A course in discrete-time signal processing</p>
 <p class="question">You are building a digital phone line. Every lesson opens on a bug your customers can hear, and ends when you fix it yourself in a lab. Sixteen lessons, in the order of Oppenheim and Schafer's book (1989).</p>
+<p class="actions"><a class="pill" href="glossary.html">Glossary of every term</a></p>
 </header>
 <ol class="course">
 {items}
@@ -116,6 +119,7 @@ footer {{ border-top: 1px solid var(--rule); display: grid; gap: 4px; }}
     (ROOT / "index.html").write_text(page, encoding="utf-8")
     shutil.copyfile(LADDER / "assets/lesson.css", ROOT / "lesson.css")
     print(ROOT / "index.html")
+    glossary.build()
 
 
 if __name__ == "__main__":

@@ -162,7 +162,7 @@ def chrome(page, lesson):
     up = "../../"
     chapter = f" · Chapter {me['chapter']}" if me["chapter"] else ""
     runner = (f'<nav class="k-runner" aria-label="Course"><a href="{up}index.html">The Phone Line</a>'
-              f'<span>Lesson {me["n"]} of {len(rows)}{chapter}</span></nav>')
+              f'<span class="k-runner-meta"><a class="k-runner-link" href="{up}glossary.html">Glossary</a><span>Lesson {me["n"]} of {len(rows)}{chapter}</span></span></nav>')
     page = re.sub(r'<p class="topic">.*?</p>', lambda _: runner, page, count=1, flags=re.S)
     teaser = None
     m = re.search(r'\s*<span>Next lesson: (.*?)</span>', page, re.S)

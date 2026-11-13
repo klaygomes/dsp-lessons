@@ -122,7 +122,10 @@ header { padding-top: 0; }
 .k-runner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 16px; min-height: var(--header-height); margin-bottom: calc(var(--space-section) * 0.6); border-bottom: 1px solid var(--rule); font-size: var(--size-label); color: var(--text-quiet); }
 .k-runner a { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); font-size: 19px; line-height: 1.2; color: var(--text-strong); text-decoration: none; padding: 8px 10px; margin-left: -10px; border-radius: var(--radius-link); }
 .k-runner a:hover { background: var(--surface-panel); }
-.k-runner span { font-family: var(--font-text); font-size: var(--size-eyebrow); font-weight: 600; color: var(--eyebrow-color); font-variant-numeric: tabular-nums; }
+.k-runner-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.k-runner .k-runner-link { font-family: var(--font-text); font-size: var(--size-label); font-weight: 500; letter-spacing: var(--text-tracking); margin-left: 0; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--surface-pill); }
+.k-runner .k-runner-link:hover { background: color-mix(in srgb, var(--surface-pill) 70%, var(--rule)); }
+.k-runner-meta > span { font-family: var(--font-text); font-size: var(--size-eyebrow); font-weight: 600; color: var(--eyebrow-color); font-variant-numeric: tabular-nums; }
 .k-pager { margin-top: var(--space-section); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-element); }
 .k-pager a { display: grid; align-content: start; gap: 6px; padding: var(--space-card); box-shadow: var(--ring); border-radius: var(--radius-card); color: var(--text-strong); text-decoration: none; transition: box-shadow 160ms var(--ease), background-color 160ms var(--ease); }
 .k-pager a:hover { box-shadow: var(--ring-strong); background: var(--surface-panel); }
@@ -219,7 +222,7 @@ table.worked th:first-child, table.worked td:first-child { width: 11em; }
 
 <div class="wrap">
   <header>
-    <nav class="k-runner" aria-label="Course"><a href="../../index.html">The Phone Line</a><span>Lesson 6 of 16 · Chapter 4</span></nav>
+    <nav class="k-runner" aria-label="Course"><a href="../../index.html">The Phone Line</a><span class="k-runner-meta"><a class="k-runner-link" href="../../glossary.html">Glossary</a><span>Lesson 6 of 16 · Chapter 4</span></span></nav>
     <h1>The Whine on Line Two</h1>
     <p class="question">Every call on your line now carries a thin, high whine. Can a few lines of code remove it, and leave the voice alone?</p>
   </header>
