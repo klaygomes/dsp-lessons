@@ -292,7 +292,7 @@ You'll notice the trade. At ×1.6 the quiet caller comes out at 0.32 instead of 
 - **Linear**: doubling the input doubles the output, and two inputs added give their outputs added. It has to hold for every input, sums included.
 - **Time-invariant**: delaying the input only delays the output; the rule works the same at every moment.
 - A tone that goes into a linear, time-invariant system comes out as the same pitch, only bigger or smaller and shifted. No new tones, ever.
-- The real booster is not linear; it only behaves like the linear ×4 while inputs stay in range. Size it for the loudest input, sums included, and leave headroom.
+- The real booster is not linear; it only behaves like the linear ×4 while its outputs stay inside the range. Size it for the loudest input, sums included, and leave headroom.
 
 ## Next on the line
 

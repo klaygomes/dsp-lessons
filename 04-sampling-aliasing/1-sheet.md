@@ -13,7 +13,7 @@ Terms (glossary wording, unchanged; "sample" is lesson 1's term, reused, not new
 - stores: what the phone keeps after sampling.
 - the limit: half the sampling rate, here 4,000 Hz; tones safely below it are stored truthfully. The limit itself is a knife edge. (New glossary wording, replacing "the fastest tone the line can store".)
 - alias: a lower, false tone that gives the same samples as a higher, true one.
-- cutoff (small extra term, not in the table): the tone where a filter switches from keeping to removing, with no exact level (lessons 10 and 11 each pin it for their filters). The prose's filter reaches about 0% by 4,600 Hz.
+- cutoff (small extra term, not in the table): the tone where a filter switches from keeping to removing, here the half-gain point, 4,000 Hz for the prose's filter (lessons 10 and 11 each pin a level for their filters). The prose's filter reaches about 0% by 4,600 Hz.
 
 Reused from earlier lessons: sample (lesson 1), tone as a wheel (lesson 3, canonical wording recapped once, in worked example 1), frequency response and gain (lesson 3, for the filter in front of the sampler), linear, time-invariant (lessons 1 and 3, to rule out the boost as the cause), system.
 

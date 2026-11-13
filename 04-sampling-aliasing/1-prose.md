@@ -172,7 +172,7 @@ So the fix has to happen before sampling, while the sound is still a smooth wobb
 
 **Filter first.** Put a filter in front of the sampler. This one isn't a program. It's a small electronic circuit between the microphone and the sampler, so it works on the smooth sound before any numbers exist. That's the one place on the line where the true tone can still be touched. Its job is to keep the tones the line can store and remove the ones it can't. Lesson 3's frequency response still applies: it's a statement about tones, and the smooth sound is made of tones too. A circuit like this scales and delays each tone, just as the east route did.
 
-What should its frequency response be? Gain near 100% for the voice, and gain falling to nearly 0% by 4,600 Hz. The tone where a filter switches from keeping to removing is its **cutoff**. No real filter can drop from 100% to 0% in an instant. It needs some room to do it, and that's why phone lines carry the voice only up to about 3,400 Hz. The stretch from 3,400 to 4,600 Hz is the room the filter uses to go from keeping to removing. It also keeps the voice away from the knife edge. (There's a bonus, too. A true tone between 4,000 and 4,600 Hz still leaks through the slope a little, and that little folds into 3,400 to 4,000, above the voice.)
+What should its frequency response be? Gain near 100% for the voice, and gain falling to nearly 0% by 4,600 Hz. The tone where a filter switches from keeping to removing is its **cutoff**. This one's cutoff is 4,000 Hz, where it lets half through. No real filter can drop from 100% to 0% in an instant. It needs some room to do it, and that's why phone lines carry the voice only up to about 3,400 Hz. The stretch from 3,400 to 4,600 Hz is the room the filter uses to go from keeping to removing. It also keeps the voice away from the knife edge. (There's a bonus, too. A true tone between 4,000 and 4,600 Hz still leaks through the slope a little, and that little folds into 3,400 to 4,000, above the voice.)
 
 The figure shows the chain: microphone, then filter, then sampler. Above it sits the filter's gain curve, flat at 100% up to 3,400 Hz and sloping down to about 0 at 4,600. The voice is shaded, and the whistle and the squeal are marked beyond the cutoff.
 
@@ -199,7 +199,7 @@ You're done when every alias is out of the voice band and the voice keeps at lea
 
 [[lab-act2]]
 
-If you tried the filter after the sampler, you met the wall. By then the whistle is a 3,000 Hz tone and the squeal a 3,400 Hz tone, sitting among the voice's own tones. A cutoff below 3,000 removes the aliases along with the top of the voice. A cutoff above 3,400 lets both through. Anywhere in between costs you voice and still keeps the whistle's alias. Before the sampler, the same filter wins easily, because there the whistle and the squeal are still above the voice, where a cutoff can reach them.
+If you tried the filter after the sampler, you met the wall. By then the whistle is a 3,000 Hz tone and the squeal a 3,400 Hz tone, sitting among the voice's own tones. With this filter's slope, removing the whistle's alias takes a cutoff of 2,400 Hz or lower, and that eats the voice from 1,800 Hz up. A cutoff near the top of the voice lets both aliases through. Anywhere in between costs you voice and still keeps part of the whistle's alias. Before the sampler, the same filter wins easily, because there the whistle and the squeal are still above the voice, where a cutoff can reach them.
 
 ## What people get wrong
 

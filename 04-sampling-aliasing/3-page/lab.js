@@ -393,10 +393,10 @@
     explain: 'Two tones that agree at every sample and differ only in the gaps give the same list, and the phone never sees the gaps. The next table shows a pair.',
   });
   K.ask(document.getElementById('ask-fold'), {
-    question: 'The strip stops at 8,000 Hz. Where would a 10,000 Hz true tone be stored?',
-    options: [['10000', '10,000 Hz'], ['6000', '6,000 Hz'], ['2000', '2,000 Hz']], right: '2000',
-    hints: { 10000: 'Nothing above 4,000 Hz is stored as itself. 10,000 Hz turns 450° per sample: what does a full turn of that change?', 6000: '6,000 Hz is still above the limit, so it cannot be stored either. 10,000 Hz turns 450°: take off the full turn, 360°, and see which tone is left.' },
-    explain: '10,000 Hz turns 450° per sample. A full turn changes nothing, so take 360° off: 90° per sample, the turn of 2,000 Hz.',
+    question: 'Where would a 6,000 Hz true tone be stored?',
+    options: [['6000', '6,000 Hz'], ['4000', '4,000 Hz'], ['2000', '2,000 Hz']], right: '2000',
+    hints: { 6000: 'Nothing above 4,000 Hz is stored as itself. Which slower dot lands on the same spots?', 4000: 'The limit is where the fold turns, not where the tones above it pile up. How far past the limit is 6,000 Hz?' },
+    explain: '6,000 Hz turns 270° per sample, which lands where 90° turned the other way lands: the turn of 2,000 Hz. It sits as far above 4,000 as 2,000 sits below.',
   });
 
   const hints = [...document.querySelectorAll('.table, .display-math')].map(box => {

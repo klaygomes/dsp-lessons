@@ -167,7 +167,7 @@ export default k => {
           text(cx + 10, cy - 28, 'phase', { anchor: 'start', cls: 'k-note-accent' }),
           text(cx + 10, cy - 10, '90°', { anchor: 'start', cls: 'k-num-accent' }))),
       text(keyX, keyY, 'the 2,000 Hz tone, through the route', { anchor: 'start', cls: 'k-name' }),
-      g({}, circle(keyX + 8, keyY + 30, 6.5, { cls: 'k-dot-in' }), text(keyX + 24, keyY + 34, 'in: size 1, on the dashed circle', { anchor: 'start', cls: 'k-label' })),
+      g({}, circle(keyX + 8, keyY + 30, 6.5, { cls: 'k-dot-in' }), text(keyX + 24, keyY + 34, 'in: size 1, on the dashed wheel', { anchor: 'start', cls: 'k-label' })),
       g({}, circle(keyX + 8, keyY + 56, 6, { cls: 'k-dot-out' }), text(keyX + 24, keyY + 60, 'out: size 0.700', { anchor: 'start', cls: 'k-label' })),
       g({}, path(`M${keyX + 2} ${keyY + 90}L${keyX + 16} ${keyY + 90}A14 14 0 0 0 ${keyX + 2} ${keyY + 76}Z`, { cls: 'k-wedge' }), text(keyX + 24, keyY + 88, 'phase: how far out trails in', { anchor: 'start', cls: 'k-label' })),
       text(keyX, keyY + 122, ph ? 'both turn 90° per sample,' : 'both turn 90° per sample, so the gap', { anchor: 'start', cls: 'k-note' }),

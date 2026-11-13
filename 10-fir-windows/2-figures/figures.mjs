@@ -660,6 +660,6 @@ export default k => {
       'Same length, different shape: the rectangle’s ripple sits near −21 dB, Hamming’s below −51 dB.', trade),
     fig('done', [300, 450], 'What done looks like',
       'The Hamming 45 response over the job: inside the pass region from 0 to 3,400 Hz, inside the remove region above 4,600 Hz, with its slope crossing the gap; the meter reads 0.24% for the voice band and 0.24% for the ghost, both ticked.',
-      'Hamming, 45 coefficients: the voice band within 0.24%, the ghost below 0.24%, and the slope only in the margin.', done),
+      'Hamming, 45 coefficients: the voice band within 0.24%, the ghost at most 0.24%, and the slope only in the margin.', done),
   ];
 };

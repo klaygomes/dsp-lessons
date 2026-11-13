@@ -1272,7 +1272,7 @@ window.Kit = (() => {
       const dir = st.phase === 0 ? 'to the right' : `where the tone's dot started, ${phaseText(st.phase)}`;
       if (whole && mT === st.k && x0()) return `Every sample is 0: ${st.f === 0 ? 'the dot never turns, and it sits at' : 'the dot flips between'} ${st.phase === 90 ? 'the bottom' : 'the top'}${st.f === 0 ? '' : ` and ${st.phase === 90 ? 'the top' : 'the bottom'}`} of the wheel, where the left-right shadow is zero. There is nothing to pile up, so the match is 0.00.`;
       if (whole && mT === st.k && (mT === 0 || mT === N / 2)) return `${st.f === 0 ? '0 Hz never turns' : `${hz(st.f)} Hz flips every sample`}: it is its own mirror, so both halves pile up, and the match reaches N = ${N} when the tone starts at the right or the left. Here it is ${fmt(m)}.`;
-      if (whole && mT === st.k) return `The tone makes exactly ${turnsText(mT)} in ${N} samples, like the test wheel, so the forward half's ${N} half arrows all point the same way and pile up to N ÷ 2 = ${fmt(N / 2, N % 2 ? 1 : 0)}. The mirror half curls away. The match arrow points ${dir}.`;
+      if (whole && mT === st.k) return `The tone makes exactly ${turnsText(mT)} in ${N} samples, like the test wheel, so the forward half's ${N} half arrows all point the same way and pile up to N ÷ 2 = ${fmt(N / 2, N % 2 ? 1 : 0)}. The mirror half curls back to the start. The match arrow points ${dir}.`;
       if (whole) return `The tone makes ${turnsText(mT)} in the block and the test wheel ${turnsText(st.k)}: a whole number of turns of difference, so the walk closes and the match is 0.00.`;
       return `The tone makes ${turns.toFixed(2)} turns in ${N} samples, not a whole number, so no test wheel matches it exactly. The walk neither piles up fully nor closes: match ${fmt(m)}.`;
     }
@@ -1421,7 +1421,7 @@ window.Kit = (() => {
         if (!$('ask').childElementCount) K.ask($('ask'), {
           question: 'This recording is the 2,000 Hz tone started half a turn behind, at the left: −1, 0, 1, 0, and so on. Against the 2,000 Hz test wheel, with N = 8, what is the match?',
           options: [['0', '0: it hides'], ['-4', `${MINUS}4`], ['4', '4'], ['8', '8']], right: '4',
-          hints: { 0: 'It hid at a quarter turn because every product had a zero in it. Here the samples line up with the test tone, only flipped. Do the products cancel?', '-4': `${MINUS}4 is the left-right sum. The match is the length of the walk, and a length is never negative.`, 8: '8 = N is what 0 Hz and 4,000 Hz score, where both halves pile up. A 2,000 Hz tone has a mirror half that curls away.' },
+          hints: { 0: 'It hid at a quarter turn because every product had a zero in it. Here the samples line up with the test tone, only flipped. Do the products cancel?', '-4': `${MINUS}4 is the left-right sum. The match is the length of the walk, and a length is never negative.`, 8: '8 = N is what 0 Hz and 4,000 Hz score, where both halves pile up. A 2,000 Hz tone has a mirror half that curls back to the start.' },
           explain: `The walk is 4 long and points left: the left-right sum is ${MINUS}4, the up-down sum 0, and the match is 4. The arrow points where the dot started. The controls are yours now.`,
           reveal: 'Skip: show me',
           onSolved: () => { st.revealed = true; st.stage = 1; buildAsks(); render(); }, focusAfter: () => $('tone'),

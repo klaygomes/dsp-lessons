@@ -859,7 +859,7 @@ window.Kit = (() => {
     function exploreWhy() {
       const r = state.r, d = decayMs(r), swings = Math.round(d * 2);
       if (r < 0.8 - 1e-9) return `Poles far from the circle: the ring is gone in ${msText(d)} ms, about ${swings} swings. Too short to hear as a pitch, just a click, but the notch is very wide.`;
-      if (r < 0.9 - 1e-9) return `The ring falls to 1% in ${msText(d)} ms, about ${swings} swings of 2,000 Hz. Shorter than the shipped notch, and a wider notch to pay for it.`;
+      if (r < 0.9 - 1e-9) return `The ring falls to 1% in ${msText(d)} ms, about ${swings} swings of 2,000 Hz. Shorter than the notch on your line, and a wider notch to pay for it.`;
       if (Math.abs(r - 0.9) < 1e-9) return 'The notch on your line: 43.7 samples, 5.5 ms, about 11 swings of 2,000 Hz. Long enough to hear a pitch, which is the tink.';
       if (r < 0.98 - 1e-9) return `Closer to the circle: ${samplesText(decayN(r))} samples, ${msText(d)} ms, about ${swings} swings. The bell rings longer.`;
       if (Math.abs(r - 0.98) < 1e-9) return 'Lesson 6’s upgrade: 228 samples, 28.5 ms, about 57 swings. A clear little bell after every click.';
@@ -902,7 +902,7 @@ window.Kit = (() => {
     function nowText() {
       if (!audio.playing && !state.filter) return 'The notch is off, so a click is only a click: Click is off. Turn the notch on to hear the tink, or play the call to hear the whine.';
       if (!audio.playing) return explore ? 'Not playing. Press Click to hear one tink, or play a call connecting.' : 'Not playing. Play a call connecting to hear the tink at your radius.';
-      const tink = decayMs(state.r) < 3 ? 'a ring too short to hear as a pitch' : 'a tink at 2,000 Hz';
+      const tink = decayMs(state.r) <= (explore ? 4 : spec().limitMs) + 1e-9 ? 'a ring too short to hear as a pitch' : 'a tink at 2,000 Hz';
       return state.filter ? `Playing a call connecting through the notch at radius ${fmtR(state.r)}: the relay click, ${tink}, then the voice with no whine.` : 'Playing the call with the notch off: the relay click and a steady 2,000 Hz whine under the voice, but no tink.';
     }
 
