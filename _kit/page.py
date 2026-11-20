@@ -161,8 +161,10 @@ def chrome(page, lesson):
         return page
     up = "../../"
     chapter = f" · Chapter {me['chapter']}" if me["chapter"] else ""
+    has_video = "video ready" in me["status"] and (lesson / "4-video" / "final.mp4").exists()
+    video = '<a class="k-runner-link" href="../4-video/final.mp4">Video</a>' if has_video else ""
     runner = (f'<nav class="k-runner" aria-label="Course"><a href="{up}index.html">The Phone Line</a>'
-              f'<span class="k-runner-meta"><a class="k-runner-link" href="{up}glossary.html">Glossary</a><span>Lesson {me["n"]} of {len(rows)}{chapter}</span></span></nav>')
+              f'<span class="k-runner-meta">{video}<a class="k-runner-link" href="{up}glossary.html">Glossary</a><span>Lesson {me["n"]} of {len(rows)}{chapter}</span></span></nav>')
     page = re.sub(r'<p class="topic">.*?</p>', lambda _: runner, page, count=1, flags=re.S)
     teaser = None
     m = re.search(r'\s*<span>Next lesson: (.*?)</span>', page, re.S)
